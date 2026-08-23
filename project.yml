@@ -1,0 +1,205 @@
+name: GymApp
+options:
+  bundleIdPrefix: com.gymapp.forge
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+  generateEmptyDirectories: false
+  xcodeVersion: "2600"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    DEAD_CODE_STRIPPING: YES
+    ALWAYS_SEARCH_USER_PATHS: NO
+    CLANG_ENABLE_MODULES: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    "CODE_SIGN_IDENTITY[sdk=iphonesimulator*]": "-"
+    GCC_WARN_UNDECLARED_SELECTOR: YES
+    CLANG_WARN_DOCUMENTATION_COMMENTS: NO
+    SWIFT_STRICT_CONCURRENCY: minimal
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+      GCC_OPTIMIZATION_LEVEL: "0"
+      ONLY_ACTIVE_ARCH: YES
+    Release:
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+      SWIFT_COMPILATION_MODE: wholemodule
+      VALIDATE_PRODUCT: YES
+
+targetTemplates:
+  AppCommon:
+    platform: iOS
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+        ENABLE_PREVIEWS: YES
+
+targets:
+  GymApp:
+    type: application
+    platform: iOS
+    templates: [AppCommon]
+    sources:
+      - path: GymApp
+        excludes:
+          - "Resources/ExerciseMedia/**"
+          - "Resources/ExerciseDataset/**"
+          - "Resources/FoodDatabase/**"
+          - "Resources/Legal/**"
+      - path: GymApp/Resources/ExerciseMedia
+        type: folder
+        buildPhase: resources
+      - path: GymApp/Resources/ExerciseDataset
+        type: folder
+        buildPhase: resources
+      - path: GymApp/Resources/FoodDatabase
+        type: folder
+        buildPhase: resources
+      - path: GymApp/Resources/Legal
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - target: GymAppWidgets
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge
+        PRODUCT_NAME: Forge
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_CFBundleDisplayName: Forge
+        CODE_SIGN_ENTITLEMENTS: GymApp/App/GymApp.entitlements
+        SWIFT_OBJC_BRIDGING_HEADER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_HARDENED_RUNTIME: NO
+    info:
+      path: GymApp/App/Info.plist
+      properties:
+        CFBundleDisplayName: Forge
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UISupportedInterfaceOrientations~iphone:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIBackgroundModes:
+          - audio
+        NSSupportsLiveActivities: true
+        NSSupportsLiveActivitiesFrequentUpdates: true
+        NSHealthShareUsageDescription: "Forge reads body mass, height, workouts, energy, steps and sleep so your training and nutrition targets stay in sync with the Health app. Granting access is optional — every feature works without it."
+        NSHealthUpdateUsageDescription: "Forge saves the workouts you complete and the body weight you log to the Health app, so the rest of your health data stays in one place."
+        NSCameraUsageDescription: "Forge uses the camera to scan barcodes on food packaging so you can log a product without typing its nutrition facts."
+        NSUserActivityTypes:
+          - StartWorkoutIntent
+          - LogBodyWeightIntent
+          - LogWaterIntent
+          - OpenTodayWorkoutIntent
+        ITSAppUsesNonExemptEncryption: false
+        CFBundleLocalizations:
+          - en
+          - es
+          - it
+          - tr
+          - ru
+          - zh-Hans
+          - hi
+          - pl
+          - ko
+          - fr
+
+  GymAppWidgets:
+    type: app-extension
+    platform: iOS
+    templates: [AppCommon]
+    sources:
+      - path: GymAppWidgets
+      - path: GymApp/Core/SharedSnapshot
+      - path: GymApp/Resources/Assets.xcassets
+        buildPhase: resources
+      - path: GymApp/Resources/Localizable.xcstrings
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge.widgets
+        PRODUCT_NAME: ForgeWidgets
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_ENTITLEMENTS: GymAppWidgets/GymAppWidgets.entitlements
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SKIP_INSTALL: YES
+    info:
+      path: GymAppWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Forge
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
+  GymAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: GymAppTests
+    dependencies:
+      - target: GymApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge.tests
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Forge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Forge"
+
+  GymAppUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: GymAppUITests
+    dependencies:
+      - target: GymApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: GymApp
+
+schemes:
+  GymApp:
+    build:
+      targets:
+        GymApp: all
+        GymAppWidgets: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - GymAppTests
+        - GymAppUITests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
