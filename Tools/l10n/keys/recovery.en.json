@@ -1,0 +1,29 @@
+{
+  "recovery.summary.fresh": "Nothing is holding you back today. Train as planned.",
+  "recovery.summary.ready": "Recovery looks good for a full session.",
+  "recovery.summary.moderate.groups": "Partly recovered. Some muscle groups are still carrying fatigue from recent work.",
+  "recovery.summary.moderate.systemic": "Partly recovered. Overall readiness is a little below your usual.",
+  "recovery.summary.low.groups": "Several muscle groups are still carrying a lot of fatigue. An easier session is the sensible choice.",
+  "recovery.summary.low.systemic": "Readiness is low right now. Keeping today light is the sensible choice.",
+
+  "deload.summary.recommended": "An easy week looks like the right next step: around %@%% less volume and around %@%% lighter loads.",
+  "deload.summary.watch": "Nothing needs to change yet, but a couple of things are worth keeping an eye on.",
+  "deload.reason.performanceRegression": "%@ exercises have gone backwards over the last few sessions.",
+  "deload.reason.elevatedFatigue": "%@ muscle groups are still carrying high fatigue.",
+  "deload.reason.lowReadiness": "Your overall readiness has been low.",
+  "deload.reason.effortInflation": "The same loads are costing more effort on %@ exercises.",
+  "deload.reason.effortInflationSession": "Your sessions are feeling harder at the same workload.",
+  "deload.reason.blockLength": "You have trained hard for %@ weeks without an easy one.",
+  "deload.reason.subjective": "Your daily check-ins have been low for several days.",
+  "deload.reason.missedSets": "About %@%% of planned sets have gone unfinished recently.",
+
+  "autoreg.noChange": "Everything is on track. Your next session stays as planned.",
+  "autoreg.reduceLoad": "%@ came up short of its rep targets, so it starts a little lighter next time.",
+  "autoreg.reduceLoad.severe": "%@ missed its rep targets by a wide margin. Dropping the load to get the reps back.",
+  "autoreg.addSet": "The session felt easy and this muscle group is below its weekly target, so one set is being added.",
+  "autoreg.removeSet.fatigue": "This muscle group is still carrying a lot of fatigue, so one set is coming off.",
+  "autoreg.shortenSession": "The session ran about %@ minutes past your time cap, so it is being trimmed.",
+  "autoreg.restLonger": "Reps dropped away sharply between sets on %@. A longer rest should hold performance.",
+  "autoreg.swap.substituted": "You swapped %@ out during the session. A permanent replacement may suit you better.",
+  "autoreg.swap.failed": "%@ fell short on every set and there is no load to take off. A different exercise may fit better."
+}

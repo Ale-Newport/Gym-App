@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "version": "2026.08.1",
+  "foodCount": 594,
+  "source": "USDA FoodData Central — SR Legacy and Foundation Foods. Works of the US Government, in the public domain. A small number of generic composite dishes are estimated from their ingredient lists rather than taken from a single USDA record.",
+  "notes": "Every value is per 100 g, or per 100 ml where basisUnit is \"ml\". A micronutrient key is present only when a defensible value exists: an absent key means \"unknown\", never \"zero\". Energy is checked against Atwater 4/4/9, falling back to the EU fibre-adjusted calculation (fibre at 2 kcal/g) for fibrous foods and to a 15 kcal absolute bound for very low-energy plant foods; ethanol (7 kcal/g) and acetic acid (3.5 kcal/g) are accounted for separately because no macronutrient field carries them. No brand names or trademarks appear anywhere in this file.",
+  "generatedFor": "Forge",
+  "generatedAt": "2026-08-23",
+  "basisUnits": [
+    "g",
+    "ml"
+  ],
+  "dietaryTagVocabulary": [
+    "dairy",
+    "egg",
+    "fish",
+    "honey",
+    "meat",
+    "poultry",
+    "seafood"
+  ],
+  "allergenTagVocabulary": [
+    "gluten",
+    "nuts",
+    "peanut",
+    "sesame",
+    "shellfish",
+    "soy"
+  ],
+  "roleTagVocabulary": [
+    "breakfast",
+    "budget",
+    "carb_source",
+    "dinner",
+    "drink",
+    "fat_source",
+    "fruit",
+    "high_fiber",
+    "lean",
+    "lunch",
+    "protein_source",
+    "quick",
+    "snack",
+    "supplement",
+    "vegetable"
+  ]
+}
