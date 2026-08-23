@@ -19,6 +19,7 @@
   "progression.explain.bankBeforeBigJump": "Keeping %@ at %@ for one more session. The smallest step available is %@, which is %@ percent of the current load, so it is worth banking another solid session first.",
 
   "progression.explain.addReps": "Keep %@ at %@ and work towards %@ reps on every set. Your lowest set was %@ reps last time.",
+  "progression.explain.holdForMargin": "Keep %@ at %@. You reached %@ reps on every set, but finished closer to failure than the target of %@ reps in reserve, so the load waits until those reps come back with a little more left in the tank.",
   "progression.explain.addRepsUnloaded": "On %@, work towards %@ reps on every set. Your lowest set was %@ reps last time.",
   "progression.explain.extendReps": "%@ moves up to %@ to %@ reps. You reached %@ reps on every set last session.",
   "progression.explain.holdDuration": "Keep %@ at %@ to %@ seconds a set. You held %@ seconds last time, so there is still room inside the target.",

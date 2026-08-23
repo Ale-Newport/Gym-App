@@ -583,11 +583,19 @@ struct ProgressRepository: Repository {
 
     // MARK: - Private
 
-    /// Keeps only the highest value per record kind.
+    /// Keeps only the best value per record kind.
+    ///
+    /// "Best" is not always "largest": an assisted movement progresses by removing assistance, so
+    /// `lightestAssistance` reduces with `min`. Getting this backwards would hand the detector a
+    /// threshold that only ever loosens, and every assisted session would fire a record.
     private static func reduceToBests(_ records: [PersonalRecord]) -> [PersonalRecordKind: Double] {
         var bests: [PersonalRecordKind: Double] = [:]
         for record in records {
-            bests[record.kind] = max(bests[record.kind] ?? -.greatestFiniteMagnitude, record.value)
+            if record.kind.lowerIsBetter {
+                bests[record.kind] = min(bests[record.kind] ?? .greatestFiniteMagnitude, record.value)
+            } else {
+                bests[record.kind] = max(bests[record.kind] ?? -.greatestFiniteMagnitude, record.value)
+            }
         }
         return bests
     }

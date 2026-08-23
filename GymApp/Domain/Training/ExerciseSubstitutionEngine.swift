@@ -517,6 +517,12 @@ struct ExerciseSubstitutionEngine: Sendable {
     /// The first is always the relationship to the movement being replaced, because that is the
     /// question the user is actually asking. The second answers the reason they gave. The third, if
     /// there is room, is something specific about the exercise itself.
+    ///
+    /// De-duplication happens as the list is built rather than after it, which matters more than it
+    /// looks: for "I'd rather use dumbbells" the answer to the reason *is* the equipment line, so
+    /// filtering afterwards would let that repeat swallow the third slot and every candidate would
+    /// come back with two lines instead of three. Skipping the repeat lets the next distinct extra —
+    /// a favourite, a movement they are progressing on, a staple — take the place it was meant for.
     private func explanations(
         for candidate: Exercise,
         request: SubstitutionRequest,
@@ -527,22 +533,28 @@ struct ExerciseSubstitutionEngine: Sendable {
     ) -> [Explanation] {
         let original = request.original
         var keys: [String] = []
+        var seen = Set<String>()
+
+        func add(_ key: String) {
+            guard keys.count < 3, seen.insert(key).inserted else { return }
+            keys.append(key)
+        }
 
         if matchesTarget && matchesPattern {
-            keys.append(Self.sameTargetAndPatternKey(for: candidate.metadata.pushPull))
+            add(Self.sameTargetAndPatternKey(for: candidate.metadata.pushPull))
         } else if matchesTarget {
-            keys.append("substitution.reason.sameTarget")
+            add("substitution.reason.sameTarget")
         } else if matchesPattern {
-            keys.append("substitution.reason.samePattern")
+            add("substitution.reason.samePattern")
         } else if candidate.primaryGroup == original.primaryGroup {
-            keys.append("substitution.reason.sameMuscleGroup")
+            add("substitution.reason.sameMuscleGroup")
         } else {
-            keys.append("substitution.reason.similarMovement")
+            add("substitution.reason.similarMovement")
         }
 
         if let reason = request.reason,
            let specific = Self.reasonKey(reason, candidate: candidate, original: original) {
-            keys.append(specific)
+            add(specific)
         }
 
         // Fill the last slot with whichever extra is most worth saying.
@@ -551,11 +563,10 @@ struct ExerciseSubstitutionEngine: Sendable {
             preference: preference,
             history: history
         ) where keys.count < 3 {
-            keys.append(extra)
+            add(extra)
         }
 
-        var seen = Set<String>()
-        return keys.filter { seen.insert($0).inserted }.prefix(3).map { Explanation($0) }
+        return keys.map { Explanation($0) }
     }
 
     private static func sameTargetAndPatternKey(for pushPull: PushPullClass) -> String {

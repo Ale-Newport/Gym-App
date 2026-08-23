@@ -717,7 +717,31 @@ enum ExerciseMetadataDeriver {
         if m.has("hanging") { tags.insert("hanging"); tags.insert("grip_limited") }
 
         // Tags consumed by mobility-limitation filtering.
+        //
+        // "Overhead" cannot be read off the movement pattern alone. A clean, a snatch, a jerk, a
+        // thruster and a Turkish get-up all finish with a load above the head, but they classify as
+        // `hinge`, `squat` or `carry` because that is what limits them. A user who told us they
+        // cannot press overhead would otherwise be programmed a power clean and press, which is the
+        // one failure mode this filter exists to prevent — so the keyword list is the authority
+        // here, and it errs towards over-tagging: a wrongly excluded exercise costs the user one
+        // option out of 1,324, while a wrongly included one costs them a shoulder.
         if pattern == .verticalPush || m.has("overhead") { tags.insert("overhead") }
+        if m.has("clean and press", "clean and jerk", "jerk", "snatch", "thruster", "push press",
+                 "turkish get up", "get up", "muscle up", "handstand", "overhead squat",
+                 "windmill", "waiters walk", "wall walk") {
+            tags.insert("overhead")
+        }
+        // A behind-the-neck *press* or triceps extension holds the load above the head; a
+        // behind-the-neck pulldown does not.
+        if m.has("behind neck", "behind the neck"), pattern != .verticalPull, pattern != .horizontalPull {
+            tags.insert("overhead")
+        }
+        if m.has("clean", "snatch", "jerk", "thruster", "high pull", "power clean", "hang clean") {
+            tags.insert("olympic_lift")
+            // The catch and the receiving position load a deeply flexed knee and a braced spine.
+            tags.insert("deep_knee")
+            tags.insert("axial_load")
+        }
         if pattern == .squat || pattern == .hinge {
             if equipment == .barbell || equipment == .olympicBarbell || equipment == .smithMachine {
                 tags.insert("axial_load")

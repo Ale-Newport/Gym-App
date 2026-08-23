@@ -1530,7 +1530,9 @@
    }
   ],
   "dietaryTags": [],
-  "allergenTags": [],
+  "allergenTags": [
+   "gluten"
+  ],
   "roleTags": [
    "drink",
    "quick"
@@ -1563,7 +1565,9 @@
    }
   ],
   "dietaryTags": [],
-  "allergenTags": [],
+  "allergenTags": [
+   "gluten"
+  ],
   "roleTags": [
    "drink",
    "quick"
@@ -5145,7 +5149,9 @@
     "grams": 10.0
    }
   ],
-  "dietaryTags": [],
+  "dietaryTags": [
+   "meat"
+  ],
   "allergenTags": [],
   "roleTags": [
    "lean",
@@ -11658,7 +11664,9 @@
   "dietaryTags": [
    "seafood"
   ],
-  "allergenTags": [],
+  "allergenTags": [
+   "shellfish"
+  ],
   "roleTags": [
    "dinner",
    "lean",
@@ -17075,7 +17083,9 @@
   "dietaryTags": [
    "seafood"
   ],
-  "allergenTags": [],
+  "allergenTags": [
+   "shellfish"
+  ],
   "roleTags": [
    "dinner",
    "lean",
@@ -17384,7 +17394,8 @@
    "fish"
   ],
   "allergenTags": [
-   "gluten"
+   "gluten",
+   "shellfish"
   ],
   "roleTags": [
    "budget",

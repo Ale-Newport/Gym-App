@@ -40,14 +40,16 @@ fewer for the trace vitamins, which are populated mainly for the curated everyda
 
 ### Energy consistency check
 
-Every record must have energy that agrees with its macros. The check runs in three tiers and
-**594 of 594 records pass**:
+Every record must have energy that agrees with its macros. The check runs in three tiers, plus a
+fourth group whose energy does not live in the macros at all, and **594 of 594 records are
+accounted for**:
 
 | Tier | Rule | Records |
 | --- | --- | --- |
-| 1 | Atwater `protein × 4 + carbs × 4 + fat × 9` within **12%** of the stated kcal | 512 |
+| 1 | Atwater `protein × 4 + carbs × 4 + fat × 9` within **12%** of the stated kcal | 498 |
 | 2 | The EU labelling calculation, crediting fibre at 2 kcal/g instead of 4 | 61 |
-| 3 | Absolute error ≤ **15 kcal per 100 g** | 21 |
+| 3 | Absolute error ≤ **15 kcal per 100 g**, by either calculation | 26 |
+| — | Energy outside the macros: ethanol or acetic acid, checked separately below | 9 |
 
 Tier 2 exists because USDA carbohydrate is *by difference* and therefore already includes fibre,
 so plain Atwater systematically overstates fibrous plant foods. Crediting fibre at 2 kcal/g is
@@ -65,12 +67,32 @@ Two categories of energy sit outside the macros entirely and are handled explici
 being waved through:
 
 - **Alcohol.** Ethanol supplies 7 kcal/g and no macronutrient field carries it. The seven
-  alcoholic drinks in the database (lager, ale, cider, red and white wine, sparkling wine,
-  spirits) are checked against `macros + ethanol × 7` using their known ABV. Their stored macros
-  are correct; the app simply shows kcal that its own macro arithmetic cannot reproduce, which is
-  how every food tracker handles alcohol.
+  alcoholic drinks in the database are checked against `macros + ethanol × 7`, where ethanol
+  grams per 100 ml is `ABV × 0.789` (the density of ethanol). Their stored macros are correct; the
+  app simply shows kcal that its own macro arithmetic cannot reproduce, which is how every food
+  tracker handles alcohol.
+
+  | Record | ABV | Ethanol g | Macros + ethanol | Stated | Residual |
+  | --- | --- | --- | --- | --- | --- |
+  | Lager | 4.0% | 3.16 | 38.5 | 43 | −10.5% |
+  | Ale | 4.0% | 3.16 | 40.1 | 45 | −10.9% |
+  | Cider, dry | 4.5% | 3.55 | 38.9 | 49 | **−20.7%** |
+  | Sparkling wine | 11.5% | 9.07 | 69.9 | 76 | −8.0% |
+  | White wine | 12.5% | 9.86 | 79.8 | 82 | −2.6% |
+  | Red wine | 13.0% | 10.26 | 82.6 | 85 | −2.8% |
+  | Spirits | 40.0% | 31.56 | 220.9 | 231 | −4.4% |
+
+  **Dry cider is the one record this database cannot fully reconcile.** At 4.5% ABV and 3.5 g
+  carbohydrate its composition implies roughly 39 kcal per 100 ml, and the file states 49. USDA
+  FoodData Central carries no generic hard cider, so there is no authoritative figure to replace
+  either number with, and each of the three on file is individually plausible: published dry
+  ciders at this strength range from 36 to 49 kcal per 100 ml depending on residual sugar. The
+  stated energy is left alone deliberately, because the residual errs towards *over*-stating a
+  drink's calories, which is the safe direction for anyone tracking an intake target. Anyone
+  revisiting this should change carbohydrate or energy together, never one alone.
 - **Organic acids.** Balsamic and cider vinegar derive most of their energy from acetic acid at
-  roughly 3.5 kcal/g, and are checked the same way.
+  roughly 3.5 kcal/g, and are checked the same way. Both reconcile closely: balsamic at 6% acidity
+  computes to 91 kcal against a stated 88 (+3.4%), cider vinegar at 5% to 21.1 against 21 (+0.5%).
 
 A handful of USDA records were **deliberately excluded** because they cannot pass any honest
 version of this check: wheat bran, oat bran and unsweetened cocoa powder, whose
@@ -81,8 +103,16 @@ contradict themselves.
 ### Structural checks
 
 Alongside energy, every record is checked for: a valid `basisUnit`; no negative values; macros
-summing to no more than 100 g per 100 g; fibre never exceeding carbohydrate; and no non-positive
-serving size. All 594 pass.
+summing to no more than 100 g per 100 g; fibre never exceeding carbohydrate; saturated fat never
+exceeding fat; and no non-positive serving size. All 594 pass.
+
+One deliberate exception is worth knowing about before somebody "fixes" it: on the three milk
+records, **sugars exceed carbohydrate** by 0.2–0.3 g (whole milk is 4.8 g carbohydrate and 5.1 g
+sugars). That is USDA's own arithmetic, not a transcription error — carbohydrate is computed *by
+difference* while lactose is measured directly, and for milk the measured sugar comes out slightly
+above the difference. The values are kept as USDA states them. Any UI that renders "of which
+sugars" as a fraction of carbohydrate must clamp the ratio at 1 rather than assume it cannot
+exceed it.
 
 ### Tags
 
@@ -90,9 +120,31 @@ Three closed vocabularies, declared once in `FoodTagVocabulary` and enforced by 
 
 - `dietaryTags` — exactly `meat`, `poultry`, `fish`, `seafood`, `dairy`, `egg`, `honey`. This is
   precisely the set `DietType.excludedTags` matches against; anything else would silently fail to
-  filter. Coverage leaves 472 foods for a vegetarian, 365 for a vegan and 521 for a pescatarian.
+  filter. Coverage leaves 471 foods for a vegetarian, 364 for a vegan and 520 for a pescatarian.
 - `allergenTags` — `gluten`, `nuts`, `peanut`, `soy`, `shellfish`, `sesame`.
 - `roleTags` — the vocabulary `MealRecommendationEngine` reads.
+
+A dietary tag is only ever added, never inferred at read time, so the file is the whole story and
+a missing tag is invisible until somebody is handed a food they do not eat. Four categories are
+easy to miss and are called out here so the next audit starts from them:
+
+- **Animal products that do not read as animal products.** Gelatin, collagen peptides, bone broth
+  and fish oil all carry the relevant tag. Collagen peptides are hydrolysed bovine collagen and
+  carry `meat` for exactly the same reason gelatin does — a supplement that reads as pure protein
+  powder is precisely the sort of record a vegan filter must not miss.
+- **Hidden ingredients in composite foods.** Worcestershire sauce is `fish` (anchovies), Thai
+  curry paste is `seafood` (shrimp paste), mycoprotein is `egg` (egg-white binder), coleslaw and
+  potato salad are `egg` (mayonnaise), and pesto and naan are `dairy`.
+- **Molluscs are shellfish.** Every `seafood` record also carries the `shellfish` allergen,
+  crustaceans and molluscs alike — squid and octopus included. Crab sticks carry it too: the base
+  is pollock, but crab extract is a normal ingredient and the packs declare crustaceans.
+- **Beer is a cereal product.** Lager and ale carry `gluten` because they are brewed from barley
+  malt. Cider does not.
+
+Where a generic record could plausibly go either way — stock cubes, gravy, refried beans, kimchi,
+fresh gnocchi — no dietary tag is asserted, because the database describes a category rather than
+a recipe. This is the one place where the honest answer is "the app cannot know", and a tag
+invented to be safe would be a claim about somebody's dinner that the data does not support.
 
 Role tags are **derived, not hand-typed**, so they cannot drift. The thresholds are regulatory
 definitions rather than invented numbers, and `FoodRoleTagDeriver` applies the identical rules to
@@ -204,7 +256,9 @@ Their nutriment fields are the awkward part, and the mapper is built around it:
 - Per-100 keys vary. `*_100g` is preferred; failing that, `*_serving` rescaled by
   `serving_quantity`.
 - Energy: `energy-kcal_100g`, else `energy-kj_100g / 4.184`, else `energy_100g / 4.184` (their
-  generic field is kilojoules), else Atwater from the macros.
+  generic field is kilojoules), else Atwater from the macros — and the Atwater fallback is held to
+  the same 950 kcal ceiling as a stated energy value, because each macro is capped independently
+  and three capped-but-nonsensical macros would otherwise derive 1700 kcal per 100 g.
 - **Minerals and vitamins are stored in grams** in the `_100g` fields, so each is scaled to the
   unit `Micronutrients` uses — ×1000 to mg, ×1 000 000 to µg — and each carries a plausibility
   ceiling, because a hundredfold error is common when a contributor types milligrams into a grams
@@ -214,6 +268,13 @@ Their nutriment fields are the awkward part, and the mapper is built around it:
 - Dietary tags come from `categories_tags` keyword matching plus declared allergens (a legal
   statement about contents, hence trusted). An `en:vegan` analysis tag clears them outright, since
   that signal beats any category-name guess; `en:vegetarian` clears the flesh tags.
+  Keyword matching on a category slug is deliberately biased towards over-tagging: `en:peanut-
+  butters` and `en:coconut-milks` both match the `dairy` needles `butter` and `milk`, and
+  `en:eggplants` matches `egg`, so a plant product with no ingredient analysis can be hidden from
+  a vegan. That is the wrong answer, but it is the *harmless* wrong answer — one food the user
+  does not see, against the alternative of narrowing the needles and handing a vegan something
+  made of milk. The `en:vegan` analysis tag, which Open Food Facts assigns to most such products,
+  clears the false positive; nothing clears a false negative.
 - UPC-A is a 12-digit code that Open Food Facts stores as EAN-13 with a leading zero, so a
   12-digit miss is retried once with the zero prepended.
 

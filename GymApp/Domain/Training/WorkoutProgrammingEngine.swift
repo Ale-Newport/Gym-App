@@ -63,6 +63,8 @@ struct WorkoutProgrammingEngine: Sendable {
 
     /// General warm-up: raising body temperature and moving the joints that are about to be loaded.
     private static let baseWarmupSeconds = 300
+    /// Never less than this, however short the session: below two minutes it is not a warm-up.
+    private static let minimumWarmupSeconds = 120
     /// Ramp-up sets before each heavy compound. Nobody's first squat set is their working set.
     private static let rampUpSecondsPerCompound = 90
     /// Ramp-ups are only paid for the first few heavy movements: by the fourth compound the body,
@@ -297,11 +299,22 @@ struct WorkoutProgrammingEngine: Sendable {
             context.weekSelected.insert(exercise.id)
             context.weekPatterns.insert(exercise.metadata.movementPattern)
 
+            // `isPrimary` describes the heavy compound the session is built around. When the slot
+            // ladder has had to relax all the way to an isolation — a leg curl standing in for a
+            // hinge because the user's kit has nothing better — the movement is no longer that, and
+            // calling it primary would give it the extra rest, the extra rep of margin, a ramp-up
+            // allowance and the trimmer's protection, and would tell the user a leg curl is "the
+            // main lift for this muscle".
+            var effective = slot
+            if effective.isPrimary && exercise.metadata.mechanic == .isolation {
+                effective.isPrimary = false
+            }
+
             let prescription = prescribe(
-                exercise: exercise, slot: slot, request: request,
+                exercise: exercise, slot: effective, request: request,
                 orderIndex: filled.count, isLocked: isLocked
             )
-            filled.append(FilledSlot(slot: slot, exercise: exercise, prescription: prescription))
+            filled.append(FilledSlot(slot: effective, exercise: exercise, prescription: prescription))
         }
 
         // Pinned exercises that matched no slot are still the user's decision, so they are appended
@@ -324,8 +337,11 @@ struct WorkoutProgrammingEngine: Sendable {
             ))
         }
 
-        // A session with nothing in it is a bug the user experiences as a broken app.
-        if filled.isEmpty, let rescue = rescueExercise(for: blueprint, request: request) {
+        // A session with nothing in it — or with nothing but a conditioning block — is a bug the
+        // user experiences as a broken app.
+        let hasStrengthWork = filled.contains { $0.slot.group != .cardio }
+        if !hasStrengthWork, let rescue = rescueExercise(for: blueprint, request: request),
+           !sessionSelected.contains(rescue.id) {
             let slot = ExerciseSlot(
                 group: rescue.primaryGroup,
                 mechanic: rescue.metadata.mechanic,
@@ -334,11 +350,12 @@ struct WorkoutProgrammingEngine: Sendable {
                 isPrimary: rescue.metadata.mechanic == .compound
             )
             context.usedBodyweightFallback = true
-            filled.append(FilledSlot(
+            // Inserted rather than appended: the lifting comes before the conditioning.
+            filled.insert(FilledSlot(
                 slot: slot, exercise: rescue,
                 prescription: prescribe(exercise: rescue, slot: slot, request: request,
                                         orderIndex: 0, isLocked: false)
-            ))
+            ), at: 0)
         }
 
         fitToTime(&filled, blueprint: blueprint, request: request, context: &context)
@@ -365,7 +382,9 @@ struct WorkoutProgrammingEngine: Sendable {
             weekday: weekday,
             focusGroups: focus,
             pushPull: blueprint.pushPull,
-            estimatedMinutes: Int((Double(estimatedSeconds(for: filled)) / 60).rounded()),
+            estimatedMinutes: Int((Double(estimatedSeconds(
+                for: filled, capSeconds: Self.capSeconds(for: request.profile)
+            )) / 60).rounded()),
             isRestDay: false,
             exercises: exercises
         )
@@ -696,8 +715,28 @@ struct WorkoutProgrammingEngine: Sendable {
         return entry.exercise.metadata.estimatedSetSeconds
     }
 
+    /// The general warm-up a session of this length can actually afford.
+    ///
+    /// Five fixed minutes is right for an hour and absurd for twenty, where it would be a quarter
+    /// of the session before a single working set — and the trimmer would then delete real work to
+    /// pay for it. Capping the warm-up at a fifth of the session leaves a short session as mostly
+    /// training; anything from twenty-five minutes upwards is unaffected.
+    private static func warmupSeconds(capSeconds: Int) -> Int {
+        min(baseWarmupSeconds, max(minimumWarmupSeconds, capSeconds / 5))
+    }
+
+    /// The session-length ceiling this profile is planned against.
+    ///
+    /// Floored at fifteen minutes to match `VolumeAllocator.timeBudget` and
+    /// `SplitSelector.capacityFit`: a user may say ten, but nothing in the engine plans a session
+    /// shorter than a quarter of an hour, and all three places have to agree or the plan the
+    /// allocator sized will not be the plan the trimmer accepts.
+    private static func capSeconds(for profile: TrainingProfileSnapshot) -> Int {
+        max(15, profile.sessionMinutesCap) * 60
+    }
+
     /// Real elapsed seconds for a session, from the exercises actually in it.
-    private func estimatedSeconds(for filled: [FilledSlot]) -> Int {
+    private func estimatedSeconds(for filled: [FilledSlot], capSeconds: Int) -> Int {
         guard !filled.isEmpty else { return 0 }
         var total = 0.0
         var rampUps = 0
@@ -710,7 +749,7 @@ struct WorkoutProgrammingEngine: Sendable {
         }
         total += Double(max(0, filled.count - 1) * Self.transitionSeconds)
         let rampUpSeconds = min(rampUps, Self.rampUpCompoundLimit) * Self.rampUpSecondsPerCompound
-        total += Double(Self.baseWarmupSeconds + rampUpSeconds)
+        total += Double(Self.warmupSeconds(capSeconds: capSeconds) + rampUpSeconds)
         return Int(total.rounded())
     }
 
@@ -728,10 +767,10 @@ struct WorkoutProgrammingEngine: Sendable {
         context: inout FillContext
     ) {
         guard !filled.isEmpty else { return }
-        let capSeconds = max(15, request.profile.sessionMinutesCap) * 60
+        let capSeconds = Self.capSeconds(for: request.profile)
 
         var iterations = 0
-        while estimatedSeconds(for: filled) > capSeconds && iterations < 160 {
+        while estimatedSeconds(for: filled, capSeconds: capSeconds) > capSeconds && iterations < 160 {
             iterations += 1
             // Conservative pass: everything here costs almost no stimulus.
             if shortenRest(&filled, floor: 60, includingPrimary: false) { continue }
@@ -748,12 +787,16 @@ struct WorkoutProgrammingEngine: Sendable {
             break
         }
 
+        // A light day is meant to stay light. Topping an active-recovery session up to fill a
+        // two-hour cap turns the one day that exists to dissipate fatigue into another hard one.
+        guard !blueprint.titleKey.hasPrefix("session.title.activeRecovery") else { return }
+
         // Only top up when there is a comfortable five minutes spare, so the estimate's own error
         // does not push a session over the line.
         let plannedSets = blueprint.slots.reduce(0) { $0 + $1.sets }
         let extensionCeiling = plannedSets + Int(Double(plannedSets) * Self.extensionAllowance)
         iterations = 0
-        while estimatedSeconds(for: filled) < capSeconds - 300 && iterations < 40 {
+        while estimatedSeconds(for: filled, capSeconds: capSeconds) < capSeconds - 300 && iterations < 40 {
             iterations += 1
             let currentSets = filled.reduce(0) { $0 + $1.prescription.sets }
             guard currentSets < extensionCeiling else { break }
@@ -799,20 +842,48 @@ struct WorkoutProgrammingEngine: Sendable {
         return true
     }
 
-    /// Drops the last eligible exercise — the one furthest into the session, and therefore the one
-    /// carrying the least of its stimulus.
+    /// What removing one exercise costs the session, cheapest first.
+    ///
+    /// Conditioning goes before any lifting: it is the part of the session the user came for least,
+    /// and a ten-minute block is worth two accessory movements in clock time. After that, a
+    /// movement whose muscle group is still trained by something else left in the session costs
+    /// only that group's second or third exercise; a group's *only* movement costs the group
+    /// entirely.
+    private func dropCost(_ entry: FilledSlot, groupCounts: [MuscleGroup: Int]) -> Int {
+        if entry.slot.group == .cardio { return 0 }
+        return (groupCounts[entry.slot.group] ?? 0) > 1 ? 1 : 2
+    }
+
+    /// Drops the cheapest eligible exercise, breaking ties towards the one furthest into the
+    /// session — the one carrying the least of its stimulus.
+    ///
+    /// Position alone used to decide, which deleted the only curl in an upper day before it touched
+    /// the third row: the arms sort last, so they were always first out, and a four-day upper/lower
+    /// week could finish with three back movements and no direct biceps work at all — the push/pull
+    /// drift the rest of the engine exists to prevent.
     private func dropExercise(
         _ filled: inout [FilledSlot],
         keepingAtLeast minimum: Int,
         allowPrimary: Bool
     ) -> Bool {
         guard filled.count > minimum else { return false }
+        var groupCounts: [MuscleGroup: Int] = [:]
+        for entry in filled { groupCounts[entry.slot.group, default: 0] += 1 }
+
+        var victim: Int?
+        var bestCost = Int.max
         for index in filled.indices.reversed() {
             guard allowPrimary || !filled[index].slot.isPrimary else { continue }
-            filled.remove(at: index)
-            return true
+            let cost = dropCost(filled[index], groupCounts: groupCounts)
+            if cost < bestCost {
+                bestCost = cost
+                victim = index
+                if cost == 0 { break }
+            }
         }
-        return false
+        guard let victim else { return false }
+        filled.remove(at: victim)
+        return true
     }
 
     /// Adds a set to whichever exercise gives the most stimulus for the time, preferring compounds

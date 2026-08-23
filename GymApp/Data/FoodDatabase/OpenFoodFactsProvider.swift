@@ -422,7 +422,11 @@ actor OpenFoodFactsProvider: FoodDataProvider {
         var energy = per100("energy-kcal")
         if energy == nil, let kilojoules = per100("energy-kj") { energy = kilojoules / 4.184 }
         if energy == nil, let generic = per100("energy") { energy = generic / 4.184 }
-        let kilocalories = Self.clampedEnergy(energy) ?? (protein * 4 + carbs * 4 + fat * 9)
+        // The Atwater fallback is held to the same 950 kcal ceiling `clampedEnergy` enforces. Each
+        // macro is capped at 100 g independently, so three capped-but-nonsensical macros would
+        // otherwise derive 1700 kcal per 100 g and poison the user's daily total.
+        let kilocalories = Self.clampedEnergy(energy)
+            ?? min(950, protein * 4 + carbs * 4 + fat * 9)
 
         // A product with neither energy nor any macro carries no information worth logging.
         guard kilocalories > 0 || protein > 0 || carbs > 0 || fat > 0 else { return nil }

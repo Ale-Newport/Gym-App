@@ -69,8 +69,14 @@ enum ProgressionEngine {
         /// Past three minutes an isometric hold trains endurance rather than strength, so the app
         /// adds difficulty instead of time.
         static let holdCeilingSeconds = 180
-        /// Timed cardio and loaded carries have far more room before the same argument applies.
+        /// Timed cardio has far more room before the same argument applies.
         static let timedCeilingSeconds = 1800
+        /// A loaded carry is a strength movement, not conditioning. Past roughly two minutes the
+        /// limiting factor becomes grip endurance and the trunk stops being loaded hard enough to
+        /// adapt, so the carry earns weight rather than more distance. Sharing the 1800 s cardio
+        /// ceiling made a farmer's walk effectively unprogressable: starting near 40 s and growing
+        /// 5-10 s a session, it would take well over a hundred sessions to earn a single kilogram.
+        static let carryCeilingSeconds = 120
         /// A stored "rep range" whose top is below this cannot be seconds — it is the default 8–12
         /// rep window a fresh progression state carries.
         static let minimumRecognisableSeconds = 15
@@ -215,18 +221,29 @@ enum ProgressionEngine {
             Constants.deloadVolumeCeiling
         )
 
+        // Zero is a real working load on the two body-mass loadabilities — bodyweight only, and
+        // fully unassisted — so it must not be read as "no load recorded" here. An unassisted
+        // pull-up in a deload week wants assistance *added*, and a bodyweight-only dip must come
+        // back as 0 rather than `nil`, which the contract reserves for movements that carry no
+        // external load at all.
+        let zeroIsAWorkingLoad =
+            loadability == .weightedBodyweight || loadability == .assistedBodyweight
+        // A medicine ball weighs what it weighs. With no selectable step there is no lighter
+        // setting to prescribe, and rounding one would name a load that does not exist.
+        let base = LoadRounding.increment(for: loadability, profile: increments)
         var weight: Double?
         if loadability.carriesExternalLoad,
+           base > 0,
            let current = state.workingWeightKg,
-           current > 0 {
+           current.isFinite,
+           current > 0 || (zeroIsAWorkingLoad && current == 0) {
             let inverted = loadability == .assistedBodyweight
             let target = inverted ? current * (1 + intensity) : current * (1 - intensity)
             var rounded = LoadRounding.round(
                 kilograms: max(0, target), loadability: loadability, profile: increments
             )
-            let base = LoadRounding.increment(for: loadability, profile: increments)
             // A deload that rounds back onto the working load is not a deload.
-            if intensity > 0, base > 0, abs(rounded - current) < Constants.loadEpsilon {
+            if intensity > 0, abs(rounded - current) < Constants.loadEpsilon {
                 let stepped = inverted ? current + base : current - base
                 if stepped >= 0 {
                     let candidate = LoadRounding.round(
@@ -272,8 +289,12 @@ enum ProgressionEngine {
         )
 
         let explanation: Explanation
+        // The `where` clauses matter for a movement already at its floor — a bodyweight-only dip
+        // sits at 0 kg added and stays there — where "drops from 0 kg to 0 kg" is not a sentence
+        // worth showing anyone. Those fall through to the sets-only wording.
         switch (currentWeight, prescription.weightKg, baselineSets, prescription.sets) {
-        case let (.some(old), .some(new), .some(oldSets), .some(newSets)):
+        case let (.some(old), .some(new), .some(oldSets), .some(newSets))
+            where abs(old - new) >= Constants.loadEpsilon:
             explanation = Explanation("progression.explain.deload", [
                 input.exercise.name,
                 TrainingFormat.weight(old),
@@ -281,7 +302,7 @@ enum ProgressionEngine {
                 TrainingFormat.count(oldSets),
                 TrainingFormat.count(newSets)
             ])
-        case let (.some(old), .some(new), _, _):
+        case let (.some(old), .some(new), _, _) where abs(old - new) >= Constants.loadEpsilon:
             explanation = Explanation("progression.explain.deloadLoadOnly", [
                 input.exercise.name,
                 TrainingFormat.weight(old),
@@ -603,6 +624,24 @@ enum ProgressionEngine {
                     TrainingFormat.count(stalls)
                 ]),
                 successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
+            )
+        }
+
+        if evaluation.allHitTop, !evaluation.meetsRIRTarget {
+            // The reps were all there, but too close to failure to bank as evidence, so the load
+            // holds. Telling this user to "work towards `range.upper` reps" would be nonsense —
+            // they already did — and the honest instruction is to earn the same reps back with the
+            // margin the plan asks for.
+            return decision(
+                input, action: .addReps, weight: currentWeight, range: range, sets: setCount,
+                targetRIR: targetRIR,
+                explanation: Explanation("progression.explain.holdForMargin", [
+                    input.exercise.name,
+                    TrainingFormat.weight(currentWeight),
+                    TrainingFormat.count(evaluation.minReps),
+                    TrainingFormat.count(targetRIR)
+                ]),
+                successes: 0, stalls: stalls, regressions: 0, lastPerformedAt: recent.date
             )
         }
 
@@ -1255,7 +1294,11 @@ enum ProgressionEngine {
     }
 
     private static func durationCeiling(for mode: TrackingMode) -> Int {
-        mode == .duration ? Constants.holdCeilingSeconds : Constants.timedCeilingSeconds
+        switch mode {
+        case .duration: Constants.holdCeilingSeconds
+        case .weightAndDuration: Constants.carryCeilingSeconds
+        default: Constants.timedCeilingSeconds
+        }
     }
 
     private static func expandedDurationWindow(_ window: RepRange, ceiling: Int) -> RepRange? {

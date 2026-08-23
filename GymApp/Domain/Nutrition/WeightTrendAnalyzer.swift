@@ -69,7 +69,7 @@ enum WeightTrendAnalyzer {
         let daily = dailyPoints(from: entries, now: now, calendar: calendar)
         guard let first = daily.first, let last = daily.last else { return .empty }
 
-        let movingAverage = trailingMovingAverage(daily, windowDays: window)
+        let movingAverage = trailingMovingAverage(daily, windowDays: window, calendar: calendar)
         let spanDays = dayCount(from: first.date, to: last.date, calendar: calendar)
         let weeksOfData = (Double(spanDays) / 7 * 100).rounded() / 100
         let hasEnoughData = daily.count >= Constants.minimumReadings
@@ -137,17 +137,23 @@ enum WeightTrendAnalyzer {
     /// after a genuine change, which the regression below is there to catch.
     private static func trailingMovingAverage(
         _ points: [WeightTrendPoint],
-        windowDays: Int
+        windowDays: Int,
+        calendar: Calendar
     ) -> [WeightTrendPoint] {
         guard !points.isEmpty else { return [] }
-        let windowSeconds = Double(windowDays - 1) * 86_400
         var result: [WeightTrendPoint] = []
         result.reserveCapacity(points.count)
         var startIndex = 0
         var runningSum: Double = 0
         for index in points.indices {
             runningSum += points[index].weightKg
-            let cutoff = points[index].date.addingTimeInterval(-windowSeconds)
+            // Stepped with the calendar rather than `(windowDays − 1) × 86 400`. A day is 23 or 25
+            // hours across a daylight-saving change, so a fixed-seconds cutoff quietly shortens the
+            // window to six days for the whole week after an autumn transition — and a six-day
+            // window no longer closes over exactly one of every weekday, which is the entire reason
+            // the window is seven days long.
+            let cutoff = calendar.date(byAdding: .day, value: -(windowDays - 1), to: points[index].date)
+                ?? points[index].date.addingTimeInterval(-Double(windowDays - 1) * 86_400)
             while startIndex < index && points[startIndex].date < cutoff {
                 runningSum -= points[startIndex].weightKg
                 startIndex += 1
@@ -181,7 +187,11 @@ enum WeightTrendAnalyzer {
         endingAt end: Date,
         calendar: Calendar
     ) -> Regression? {
-        let start = end.addingTimeInterval(-Double(Constants.regressionWindowDays - 1) * 86_400)
+        // Calendar arithmetic for the same reason as the moving average: a fixed-seconds window
+        // drops the oldest day of the three weeks after an autumn daylight-saving change, which
+        // costs a reading and a slice of confidence for no reason the user could ever see.
+        let start = calendar.date(byAdding: .day, value: -(Constants.regressionWindowDays - 1), to: end)
+            ?? end.addingTimeInterval(-Double(Constants.regressionWindowDays - 1) * 86_400)
         let window = points.filter { $0.date >= start }
         guard window.count >= Constants.minimumRegressionReadings,
               let firstDate = window.first?.date else { return nil }

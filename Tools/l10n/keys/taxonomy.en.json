@@ -266,6 +266,7 @@
   "prKind.bestSetVolume": "Best set volume",
   "prKind.estimatedOneRepMax": "Estimated 1RM",
   "prKind.heaviestWeight": "Heaviest weight",
+  "prKind.lightestAssistance": "Least assistance",
   "prKind.longestDistance": "Longest distance",
   "prKind.longestDuration": "Longest hold",
   "prKind.mostReps": "Most reps",

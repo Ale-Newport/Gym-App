@@ -71,11 +71,26 @@ enum PersonalRecordDetector {
             }
         }
 
+        if isAssisted {
+            if let record = lightestAssistanceRecord(candidates, existing: existing) {
+                records[.lightestAssistance] = record
+            }
+        }
+
         if mode.usesReps {
-            if let record = mostRepsRecord(
-                candidates, existing: existing,
-                loadGated: mode.usesWeight && !isAssisted
-            ) {
+            // The rep gate has to face the direction the movement progresses in. On a loaded lift
+            // only sets at or above the heaviest load count; on an assisted lift only sets at or
+            // *below* the least assistance count, because more reps against a heavier counterweight
+            // is an easier set, not a record.
+            let gate: RepGate
+            if isAssisted {
+                gate = .atOrBelow(existing[.lightestAssistance])
+            } else if mode.usesWeight {
+                gate = .atOrAbove(existing[.heaviestWeight])
+            } else {
+                gate = .none
+            }
+            if let record = mostRepsRecord(candidates, existing: existing, gate: gate) {
                 records[.mostReps] = record
             }
         }
@@ -150,21 +165,71 @@ enum PersonalRecordDetector {
         )
     }
 
+    /// Which sets are allowed to set a rep record, and in which direction the load has to compare.
+    private enum RepGate {
+        /// Unloaded movement — every completed set is eligible.
+        case none
+        /// Loaded movement: only sets at or above the heaviest load ever recorded. Without this,
+        /// every deload week would fire a rep record.
+        case atOrAbove(Double?)
+        /// Assisted movement: only sets at or below the least assistance ever recorded. Assistance
+        /// is a counterweight, so a *smaller* number is the harder set.
+        case atOrBelow(Double?)
+    }
+
+    /// The least assistance the user has needed, which is how an assisted movement gets stronger.
+    ///
+    /// Mirrors `heaviestWeightRecord` with every comparison inverted. Zero assistance is a real and
+    /// meaningful value — it is an unassisted rep — so it is never treated as "no data".
+    private static func lightestAssistanceRecord(
+        _ candidates: [(index: Int, set: PerformedSet)],
+        existing: [PersonalRecordKind: Double]
+    ) -> DetectedRecord? {
+        var best: (index: Int, set: PerformedSet)?
+        for candidate in candidates {
+            guard let assistance = candidate.set.weightKg, assistance >= 0 else { continue }
+            guard let reps = candidate.set.reps, reps > 0 else { continue }
+            if let current = best?.set.weightKg {
+                if assistance < current { best = candidate }
+            } else {
+                best = candidate
+            }
+        }
+
+        guard let best, let assistance = best.set.weightKg else { return nil }
+        let previous = existing[.lightestAssistance]
+        // Inverted margin: the new value has to be meaningfully *lower*.
+        if let previous, assistance > previous - massMarginKg { return nil }
+        return DetectedRecord(
+            kind: .lightestAssistance,
+            value: assistance,
+            repsContext: best.set.reps,
+            previousValue: previous,
+            setIndex: best.index
+        )
+    }
+
     private static func mostRepsRecord(
         _ candidates: [(index: Int, set: PerformedSet)],
         existing: [PersonalRecordKind: Double],
-        loadGated: Bool
+        gate: RepGate
     ) -> DetectedRecord? {
-        // The bar to clear: on a loaded movement, only sets at or above the heaviest load ever
-        // recorded are eligible. Without that gate every deload week would fire a rep record.
-        let requiredWeight = loadGated ? existing[.heaviestWeight] : nil
-
         var best: (index: Int, set: PerformedSet)?
         for candidate in candidates {
             guard let reps = candidate.set.reps, reps > 0 else { continue }
-            if let requiredWeight {
-                guard let weight = candidate.set.weightKg,
-                      weight >= requiredWeight - massMarginKg else { continue }
+            switch gate {
+            case .none:
+                break
+            case .atOrAbove(let threshold):
+                if let threshold {
+                    guard let weight = candidate.set.weightKg,
+                          weight >= threshold - massMarginKg else { continue }
+                }
+            case .atOrBelow(let threshold):
+                if let threshold {
+                    guard let assistance = candidate.set.weightKg,
+                          assistance <= threshold + massMarginKg else { continue }
+                }
             }
             if best == nil || reps > (best?.set.reps ?? 0) { best = candidate }
         }

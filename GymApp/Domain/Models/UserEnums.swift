@@ -585,9 +585,16 @@ enum PersonalRecordKind: String, CaseIterable, Codable, Hashable, Sendable, Iden
     case sessionVolume
     case longestDuration
     case longestDistance
+    /// Assisted movements progress by *removing* assistance, so their strength record is the
+    /// smallest counterweight the user has needed. It is the one record where a lower number wins.
+    case lightestAssistance
 
     var id: String { rawValue }
     var localizationKey: String { "prKind.\(rawValue)" }
+
+    /// True when a smaller value is the better result. Comparison, display and delta arithmetic all
+    /// have to invert for these; today `lightestAssistance` is the only one.
+    var lowerIsBetter: Bool { self == .lightestAssistance }
 
     var symbolName: String {
         switch self {
@@ -598,6 +605,7 @@ enum PersonalRecordKind: String, CaseIterable, Codable, Hashable, Sendable, Iden
         case .sessionVolume: "sum"
         case .longestDuration: "timer"
         case .longestDistance: "figure.run"
+        case .lightestAssistance: "arrow.down.circle.fill"
         }
     }
 }

@@ -9287,6 +9287,17 @@
         }
       }
     },
+    "prKind.lightestAssistance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Least assistance"
+          }
+        }
+      }
+    },
     "prKind.longestDistance": {
       "extractionState": "manual",
       "localizations": {
@@ -9381,7 +9392,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld conditioning block(s) a week, placed after your lifting as you asked."
+            "value": "%@ conditioning block(s) a week, placed after your lifting as you asked."
           }
         }
       }
@@ -9392,7 +9403,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld conditioning session(s) a week, kept separate from your lifting as you asked."
+            "value": "%@ conditioning session(s) a week, kept separate from your lifting as you asked."
           }
         }
       }
@@ -9403,7 +9414,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld set(s) were added because your sessions had time to spare."
+            "value": "%@ set(s) were added because your sessions had time to spare."
           }
         }
       }
@@ -9436,7 +9447,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld muscle group(s) you prioritised get extra sets and an earlier slot in the session."
+            "value": "%@ muscle group(s) you prioritised get extra sets and an earlier slot in the session."
           }
         }
       }
@@ -9535,7 +9546,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld set(s) were removed so each session fits inside your %lld-minute limit."
+            "value": "%@ set(s) were removed so each session fits inside your %@-minute limit."
           }
         }
       }
@@ -9546,7 +9557,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Around %lld hard sets a week for each major muscle group."
+            "value": "Around %@ hard sets a week for each major muscle group."
           }
         }
       }
@@ -9590,7 +9601,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Volume is capped by the time you have: %lld sessions of up to %lld minutes."
+            "value": "Volume is capped by the time you have: %@ sessions of up to %@ minutes."
           }
         }
       }
@@ -9789,6 +9800,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keep %@ at %@ to %@ seconds a set. You held %@ seconds last time, so there is still room inside the target."
+          }
+        }
+      }
+    },
+    "progression.explain.holdForMargin": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep %@ at %@. You reached %@ reps on every set, but finished closer to failure than the target of %@ reps in reserve, so the load waits until those reps come back with a little more left in the tank."
           }
         }
       }
@@ -10827,6 +10849,28 @@
         }
       }
     },
+    "session.title.posteriorChain.c": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posterior Chain C"
+          }
+        }
+      }
+    },
+    "session.title.posteriorChain.d": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posterior Chain D"
+          }
+        }
+      }
+    },
     "session.title.pull": {
       "extractionState": "manual",
       "localizations": {
@@ -11361,7 +11405,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Six hard days is the practical ceiling, so the %lldth is light conditioning and core work."
+            "value": "Six hard days is the practical ceiling, so the %@th is light conditioning and core work."
           }
         }
       }
@@ -11372,7 +11416,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "A four-way split across %lld days: enough sessions to separate the heavy work from the accessory work."
+            "value": "A four-way split across %@ days: enough sessions to separate the heavy work from the accessory work."
           }
         }
       }
@@ -11383,7 +11427,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Full-body sessions %lld times a week: with this many days, training every muscle each session gives each one the most frequency."
+            "value": "Full-body sessions %@ times a week: with this many days, training every muscle each session gives each one the most frequency."
           }
         }
       }
@@ -11394,7 +11438,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "A posterior-chain-led split across %lld days: your back, glutes and hamstrings get the first, freshest session of the cycle."
+            "value": "A posterior-chain-led split across %@ days: your back, glutes and hamstrings get the first, freshest session of the cycle."
           }
         }
       }
@@ -11405,7 +11449,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Push, pull and legs plus an upper/lower block across %lld days: it fits a second pass at every muscle into the week."
+            "value": "Push, pull and legs plus an upper/lower block across %@ days: it fits a second pass at every muscle into the week."
           }
         }
       }
@@ -11416,7 +11460,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Push, pull and legs across %lld days: grouping muscles that work together means less overlap between sessions and more recovery for each."
+            "value": "Push, pull and legs across %@ days: grouping muscles that work together means less overlap between sessions and more recovery for each."
           }
         }
       }
@@ -11427,7 +11471,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "A %lld-day split with a dedicated day for the muscles you want to prioritise."
+            "value": "A %@-day split with a dedicated day for the muscles you want to prioritise."
           }
         }
       }
@@ -11438,7 +11482,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Torso, shoulders and arms, then legs across %lld days: it gives the smaller muscles their own session instead of tacking them onto a long one."
+            "value": "Torso, shoulders and arms, then legs across %@ days: it gives the smaller muscles their own session instead of tacking them onto a long one."
           }
         }
       }
@@ -11449,7 +11493,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "An upper/lower split across %lld days: it hits every muscle twice a week while keeping each session a sensible length."
+            "value": "An upper/lower split across %@ days: it hits every muscle twice a week while keeping each session a sensible length."
           }
         }
       }
@@ -11460,7 +11504,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Upper, lower and a full-body day across %lld days: the extra full-body session tops up frequency without adding a fourth training day."
+            "value": "Upper, lower and a full-body day across %@ days: the extra full-body session tops up frequency without adding a fourth training day."
           }
         }
       }

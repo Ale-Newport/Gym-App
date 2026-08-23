@@ -125,9 +125,10 @@ the numeric question was skipped.
 * `recentSessionCount` — sessions in the trailing 168 h with at least one completed set.
 * `readyGroups(_:threshold: 0.35)` — the point at which roughly two thirds of a hard session has
   dissipated. Sorted ascending by fatigue; cardio and neck are excluded (programmed separately).
-* `readinessSummary` — four wide bands (0.85 / 0.65 / 0.45), each with a group-level and a
-  systemic-level wording. Bands are wide because a summary that flips on a 0.01 change reads as
-  noise.
+* `readinessSummary` — four wide bands (0.85 / 0.65 / 0.45). The top two say the same thing either
+  way; the bottom two each have a group-level and a systemic-level wording, chosen by whether any
+  group is carrying ≥0.5 fatigue. Bands are wide because a summary that flips on a 0.01 change
+  reads as noise.
 
 ---
 
@@ -200,7 +201,7 @@ minutes for `shortenSession`, and 0 for `swapExercise`/`noChange`.
 | `reduceLoad` | ≥50 % of an exercise's ≥2 rated sets badly missed (≥2 reps short, or below 75 % of target), on a movement that carries external load | −5 %, or −10 % past a 75 % miss share |
 | `restLonger` | reps fell to <65 % of the first set, or ≥4 reps down, across ≥3 sets at a load that did not drop, on an exercise that did **not** just earn a load cut | +30 s |
 | `removeSet` | group fatigue ≥0.75 and the week stays at or above `VolumeTargets.minimum` | −1 set, one group |
-| `addSet` | session easy — rated `.easy`, or ≥1.5 RIR above target, and never one the user called hard or exhausting — **and** `weeklySets + 1 ≤ min(target, maximum)` **and** group fatigue ≤0.45 | +1 set, ≤2 groups |
+| `addSet` | session easy — rated `.easy`, or ≥1.5 RIR above target, and never one the user called hard or exhausting — **and** ≥95 % of the planned sets finished **and** `weeklySets + 1 ≤ min(target, maximum)` **and** group fatigue ≤0.45 | +1 set, ≤2 groups |
 | `swapExercise` | user replaced it mid-session (it is a key of `substitutedExerciseIDs`), or it fell short on all of ≥3 rated sets and the load cannot be lightened | — |
 | `shortenSession` | duration >115 % of `sessionMinutesCap` | min(overrun, 15) minutes |
 | `noChange` | nothing above fired | — |
@@ -275,3 +276,8 @@ decimal separator, so the stored argument is locale-independent). Muscle-group n
 into arguments, because an argument cannot be localised at resolution time; the group travels on
 `AutoregulationAdjustment.muscleGroup` and the UI localises it. Counts only appear where the signal
 that produced them guarantees a value of two or more, which sidesteps "1 exercises".
+
+A number in a sentence has to be the number the sentence is about, which is not always the
+`magnitude`. `autoreg.shortenSession` says how far the session ran past the cap, so its argument is
+the **overrun**, while the magnitude is the trim — `min(overrun, 15)`. Quoting the magnitude would
+tell a user who ran 45 minutes over that they ran 15 minutes over.

@@ -804,7 +804,7 @@ struct MealRecommendationEngine: Sendable {
             guard forbidden.isEmpty || tags.isDisjoint(with: forbidden) else { return nil }
             guard recipe.macrosPerServing.kilocalories > 0 else { return nil }
 
-            // Two servings only when one leaves more than half the meal's energy unfilled — the
+            // Two servings only when one leaves more than 45 % of the meal's energy unfilled — the
             // point is to fit the target, not to talk somebody into seconds.
             let single = recipe.macrosPerServing
             let double = recipe.macrosPerServing * 2

@@ -39,7 +39,7 @@ enum RecoveryTuning {
     /// `snapshot`, which has no catalogue, credits are priced at `catalogueTypicalFatigueCost`
     /// instead, so the same amount of work reads a little differently: six recorded set credits at
     /// 1.5 RIR on a session rated "hard" come to 6 × 0.45 × 1.14 × 1.15 ≈ 3.54 raw units → 0.72
-    /// fatigue on the day, 0.40 a day later, 0.19 after two.
+    /// fatigue on the day, 0.40 a day later, 0.18 after two.
     static let groupSaturationConstant: Double = 2.75
 
     /// Saturation constant for whole-body load, in raw fatigue units summed across groups.

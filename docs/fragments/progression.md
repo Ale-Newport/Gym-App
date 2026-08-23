@@ -88,6 +88,7 @@ no set reached the planned load the session is silent about it → `.maintain`, 
 | every set at the top of the range, RIR target met, on the **2nd** consecutive such session | `increaseLoad` |
 | same but only the 1st such session | `addReps` (banked; `consecutiveSuccesses += 1`) |
 | reps inside the range | `addReps` |
+| every set at the top of the range but the RIR target missed | `addReps`, load held (`progression.explain.holdForMargin`) — the reps are already there, so telling this user to "work towards `range.upper`" would be nonsense; the load waits until the same reps come back with the intended margin |
 | reps inside the range with no improvement, 4th time | `reduceLoad` −10 % |
 | short of the bottom, 1st time | `maintain` (`consecutiveRegressions += 1`) |
 | short of the bottom, 2nd time | `reduceLoad` −10 % |
@@ -149,10 +150,15 @@ carries **seconds**. `ProgressionEngine.prescribedSeconds(from:for:)` is the sup
 A stored window whose top is under 15 cannot be seconds — it is the default 8–12 rep range a fresh
 state carries — so the window is derived from `metadata.estimatedSetSeconds` instead
 (`lower = 0.6 × target` rounded to 5 s, floor 15 s). The window grows by 15 % (rounded to 5 s) per
-successful session, up to **180 s for isometric holds** — past three minutes a hold trains endurance,
-not strength — and **1800 s for timed cardio and loaded carries**. At the ceiling: add load if the
-movement is loadable (a carry), else add an interval for cardio, else say it is outgrown. Holds never
-add a set at the ceiling: a fourth three-minute plank is a longer session, not a harder plank.
+successful session, up to three ceilings: **180 s for isometric holds** — past three minutes a hold
+trains endurance, not strength — **120 s for loaded carries**, and **1800 s for timed cardio**. The
+carry ceiling is deliberately low: a carry is a strength movement, and past roughly two minutes grip
+endurance becomes the limit while the trunk stops being loaded hard enough to adapt. Sharing the
+cardio ceiling made a farmer's walk effectively unprogressable — starting near 40 s and growing
+5–10 s a session, it would have taken well over a hundred sessions to earn a single kilogram.
+At the ceiling: add load if the movement is loadable (a carry), else add an interval for cardio, else
+say it is outgrown. Holds never add a set at the ceiling: a fourth three-minute plank is a longer
+session, not a harder plank.
 
 ### Weighted and assisted movements
 
@@ -171,6 +177,14 @@ in the assessment are read as "unspecified" and replaced with those defaults; bo
 at **35 % intensity / 60 % volume** — a deload is a lighter week, not a different sport — and the set
 count never falls below 1. Target RIR rises by 2 (capped at 5): staying far from failure is the point.
 A deload that rounds back onto the working load is stepped one increment further.
+
+`deloadPrescription` treats zero as a real working load on the two body-mass loadabilities, exactly as
+`usableWorkingWeight` does: an unassisted pull-up in a deload week gets assistance *added* (0 → one
+increment), and a bodyweight-only dip comes back as `0`, not `nil` — `nil` is reserved for movements
+that carry no external load at all. It also returns `nil` where `LoadRounding.increment` is zero: with
+no selectable step there is no lighter setting to name, and rounding one would invent a load the
+implement does not have. When the load cannot move, the explanation drops to the sets-only wording
+rather than reading "drops from 0 kg to 0 kg".
 
 Crucially the **counters and the remembered working load are untouched**: a deload is a planned
 lighter week, not evidence about the user, and next week resumes where the progression left off.
@@ -199,23 +213,43 @@ the output is stable for identical inputs. Only **completed working sets** are c
 | Kind | Eligible tracking modes | Rule |
 |---|---|---|
 | `heaviestWeight` | `usesWeight`, not assisted | heaviest set; ties break towards more reps, and `repsContext` records them |
-| `mostReps` | `usesReps` | best rep count **among sets at or above the previously recorded heaviest weight** |
+| `lightestAssistance` | assisted only | **least** assistance used for a completed set — the one record where a lower number wins |
+| `mostReps` | `usesReps` | best rep count, gated on load (see below) |
 | `estimatedOneRepMax` | `usesWeight && usesReps`, not assisted | best `OneRepMaxCalculator.estimate`, which itself refuses reps above 12 |
 | `bestSetVolume` | `contributesToTonnage`, not assisted | best `weight × reps` |
 | `longestDuration` | `usesDuration` | longest completed set |
 | `longestDistance` | `usesDistance` | furthest completed set |
 
-**Why the rep gate.** Fifteen reps at 20 kg is not a rep record for someone who has pressed 60 kg for
-eight; it is a lighter session. Gating on the *previous* best weight is the only defensible reading of
-"more reps" once load is free to vary — it also stops every deload week from firing a rep PR. When no
-heaviest-weight record exists yet the gate is inert, which can happen only once per exercise.
+**Why the rep gate, and which way it faces.** Fifteen reps at 20 kg is not a rep record for someone
+who has pressed 60 kg for eight; it is a lighter session. Gating on the *previous* best load is the
+only defensible reading of "more reps" once load is free to vary — it also stops every deload week
+from firing a rep PR. When no load record exists yet the gate is inert, which can happen only once per
+exercise.
+
+The gate has a direction, and it has to match the direction the movement progresses in
+(`PersonalRecordDetector.RepGate`):
+
+| Movement | Gate | Eligible sets |
+|---|---|---|
+| unloaded (`repsOnly`) | `.none` | every completed set |
+| loaded | `.atOrAbove(heaviestWeight)` | at or above the heaviest load recorded |
+| assisted | `.atOrBelow(lightestAssistance)` | at or **below** the least assistance recorded |
+
+Assistance is a counterweight: 20 reps against 40 kg of help is a far easier set than 10 reps against
+10 kg. Without the inverted gate, an assisted movement fires a "rep record" every time the user makes
+the exercise easier — exactly the failure this section exists to prevent.
 
 **Margins.** 0.1 kg for load, e1RM and tonnage; one whole rep; 0.5 s; 1 m. Floating-point arithmetic,
 unit round-trips and a re-logged set all produce differences in the tenth decimal place, and a PR
 banner for one of those is worse than no banner.
 
-**Assisted movements** get rep records only. Assistance is stored as a positive magnitude, so a bigger
-number is an *easier* set; a "heaviest weight" record there would celebrate the wrong direction.
+**Assisted movements** get `lightestAssistance` and `mostReps`, and nothing else. Assistance is stored
+as a positive magnitude, so a bigger number is an *easier* set: `heaviestWeight`, `estimatedOneRepMax`
+and `bestSetVolume` would all celebrate the wrong direction and are skipped. `lightestAssistance` is
+the strength record for these movements, and zero — an unassisted rep — is a real and reachable value
+rather than "no data". Everything downstream that compares record values (`ProgressRepository`'s
+best-per-kind reduction, and the backup importer's keep-the-better rule) branches on
+`PersonalRecordKind.lowerIsBetter` so the inversion is honoured in one place per consumer.
 Driving assistance down is `ProgressionEngine`'s job, not the detector's.
 
 **`sessionVolume` is not produced here.** This function sees one exercise, so it cannot know a session
@@ -306,7 +340,8 @@ past it is corrupt input. The result is floored at the implement's minimum (bar 
 dumbbell, one stack increment) except for weighted and assisted movements, where zero is meaningful.
 
 Worked example — 80 kg beginner male, barbell bench, 8 reps: `0.55 × 80 = 44 kg` 1RM → `× 0.797`
-(8-rep fraction) `= 35.1` → `× 0.90 = 31.6` → rounded onto a 20 kg bar with 1.25 kg plates = **30 kg**.
+(8-rep fraction) `= 35.1` → `× 0.90 = 31.6` → rounded onto a 20 kg bar with 1.25 kg plates (so 2.5 kg
+of total load per pair) = **32.5 kg**.
 
 ### Warm-up ramp
 
@@ -329,8 +364,8 @@ Reps descend as a fraction of the movement's own top-of-range (anchored at `min(
 except before the working set, where it is half the movement's own rest quantised to quarter-minutes
 and clamped to 60–120 s — a rest timer that reads 82 seconds looks calculated rather than coached.
 Sets that round onto or past the working load are dropped, as are duplicates produced by a coarse
-ladder. Assisted movements ramp the other way, from 1.6 × down to 1.15 × the working assistance, and
-get two sets.
+ladder. Assisted movements ramp the other way — the fractions are mirrored about 1, so the two rungs
+they get land at 1.5 × and 1.25 × the working assistance.
 
 ---
 

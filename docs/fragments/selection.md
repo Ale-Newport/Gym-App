@@ -55,7 +55,7 @@ rather than merely reshuffling them); `recentRepetitionPenalty` and
 | `targetMatch` | 0.24 | 1.0 when `primaryGroup == targetGroup`, else `metadata.volumeCredit(for:)` (0.5 compound / 0.33 isolation) |
 | `secondaryUtility` | 0.06 | `0.65 · best + 0.35 · min(1, Σ/2)` over the other priority groups, each rank-decayed by `max(0.6, 1 − 0.1·index)`. With no stated priorities: `min(1, indirectCredit/1.5)` |
 | `goalSuitability` | 0.12 | Per-goal formula below, blended over the first three goals with weights 1, ½, ¼ and renormalised; ×0.6 when `preferredMechanic` mismatches |
-| `equipmentAvailability` | 0.10 | Constant 1.0 — availability is gate 4, and the weight keeps `total` on the documented scale |
+| `equipmentAvailability` | 0.10 | Constant 1.0 — availability is gate 5, and the weight keeps `total` on the documented scale |
 | `userPreference` | 0.12 | `min(1, ExercisePreferenceSnapshot.scoreMultiplier / 2)`. Multiplier runs 0…1.62 around a neutral 1.0, so "no opinion" maps to exactly 0.5 |
 | `historicalPerformance` | 0.05 | `0.5 + clamp(5·Δ, −0.35, +0.4)` where Δ is the relative change in the strength proxy across up to five sessions. 0.5 with fewer than two sessions, or whenever the two endpoints cannot be compared (see below) |
 | `movementDiversity` | 0.07 | Table below |
@@ -149,8 +149,11 @@ carries no credit at all and would otherwise be unreachable.
 `best(count:)` is greedy with re-scoring. After each pick the id is marked
 selected and the pattern marked used, so the next round's scores already reflect
 the choice; on top of that a multiplier discounts repeats:
-`1 − (0.22·patterns + 0.14·equipment + 0.10·targets)`, floored at 0.25. Two
-rules keep variety honest:
+`1 − (0.22·patterns + 0.14·equipment + 0.10·targets)`, floored at 0.25. Each
+round looks only at that round's top 24 — wide enough that a different pattern or
+a different implement is always inside the window, narrow enough that the pass
+never buys variety with a genuinely unsuitable choice. Two rules keep variety
+honest:
 
 * **Quality band.** Only candidates scoring ≥ 88 % of the round's leader are
   considered at all; everything below it is out of the running regardless of how
@@ -250,6 +253,13 @@ the replaced movement (`Same target muscle and pull pattern`), then the answer
 to the reason given (`Easier to stabilise`), then one concrete extra (favourite,
 equipment, progress, staple). Every candidate carries at least the relationship.
 
+Deduplication happens *as* the list is built, not after it. For the four
+implement reasons the answer to the reason already **is** the equipment line, so
+filtering afterwards would let that repeat consume the third slot and leave every
+candidate with two lines; skipping the repeat hands the slot to the next distinct
+extra instead. A candidate ends up with fewer than three only when there is
+genuinely nothing else true to say about it.
+
 All keys are argument-free, and none of their English values contains a format
 specifier. `Explanation.arguments` is `[String]` and resolves through
 `String(format:arguments:)`, so a `%lld` placeholder would misread a `String`
@@ -264,14 +274,16 @@ the progression area's key file rather than in `taxonomy.en.json`.
 
 ### Performance
 
-Measured on the shipping 1,324-record catalogue, release build, Apple silicon:
+Measured on the shipping 1,324-record catalogue, `-O` build, Apple silicon, with
+a full preference and history dictionary loaded — which is the expensive case,
+since every candidate then costs two dictionary lookups and a trend computation:
 
 | Call | Cost |
 |---|---|
-| Index build (`init`) | ~2 ms, once per app launch |
-| `alternatives` | 0.15 – 0.85 ms |
-| `rank` | ~0.8 ms |
-| `best(count: 6)` | ~4.7 ms (six full re-scoring rounds, as the greedy contract requires) |
+| Index build (`init`) | 3 – 4 ms per engine, once per app launch |
+| `alternatives` | 0.10 – 1.25 ms, against a mid-set budget of ~10 ms |
+| `rank` | 0.5 – 1.1 ms depending on how large the group's bucket is |
+| `best(count: 6)` | 3.4 – 6.8 ms (six full re-scoring rounds, as the greedy contract requires) |
 
 The substitution path stays cheap because it touches only the primary-group
 bucket (a few hundred records, topped up from the wider index only when fewer

@@ -31,6 +31,10 @@ enum NutritionAdjustmentEngine {
         /// A trend whose newest point is older than this is stale — the user stopped weighing in.
         static let maximumTrendAgeDays: Int = 10
 
+        /// How close to the safety floor still counts as "at the floor". A target that was clamped
+        /// upwards rarely lands exactly on it, because macro rounding moves the total by a few
+        /// kilocalories either way.
+        static let floorProximityKilocalories: Double = 25
         /// Tolerance band around the target rate. The floor covers the standard error of a
         /// three-week regression on noisy daily readings (roughly 0.1–0.2 kg/week); the
         /// proportional term keeps the band sensible for aggressive targets.
@@ -109,7 +113,27 @@ enum NutritionAdjustmentEngine {
             ]))
         }
 
-        // 4. Compare observed against intended.
+        // 4a. The floor case, which has to be handled before the comparison in 4b.
+        //
+        // When a small or older user asks for an aggressive cut, the safety floor can land *above*
+        // the intake their goal implied. `EnergyTargets.weeklyBodyMassChangeKg` faithfully reports
+        // the rate those clamped calories imply, which is a small *gain* — so a woman eating at the
+        // floor and steadily losing 0.2 kg a week compares as "gaining far less than intended" and
+        // gets told to eat more. That is not unsafe, but it actively fights the goal she chose.
+        //
+        // If the intent is a deficit, intake is already at the floor, and the scale is moving the
+        // right way, calories are simply not the lever any more.
+        if current.direction == .deficit || current.direction == .slightDeficit {
+            let safetyFloor = NutritionRecommendationEngine.safeMinimumKilocalories(for: profile)
+            if current.kilocalories <= safetyFloor + Constants.floorProximityKilocalories,
+               observedWeekly <= 0 {
+                return hold(.hold, Explanation("nutrition.adjust.floorReached", [
+                    NutritionFormat.whole(safetyFloor)
+                ]))
+            }
+        }
+
+        // 4b. Compare observed against intended.
         let targetWeekly = current.weeklyBodyMassChangeKg
         let gap = targetWeekly - observedWeekly
         let tolerance = toleranceKgPerWeek(targetWeekly: targetWeekly, confidence: trend.confidence)

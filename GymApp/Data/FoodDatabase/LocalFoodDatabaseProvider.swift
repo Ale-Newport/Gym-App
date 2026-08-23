@@ -240,7 +240,9 @@ struct FoodSearchIndex: Sendable {
             if lhs.length != rhs.length { return lhs.length < rhs.length }
             return lhs.id < rhs.id
         }
-        return scored.prefix(limit).map(\.id)
+        // `prefix(_:)` traps on a negative length, and `limit` arrives from a caller rather than
+        // from here — the remote provider already caps its own, so this one must too.
+        return scored.prefix(max(0, limit)).map(\.id)
     }
 
     private func match(word: String, in entry: Entry) -> MatchKind? {
@@ -577,7 +579,7 @@ actor LocalFoodDatabaseProvider: FoodDataProvider {
                 if lhsCurated != rhsCurated { return lhsCurated }
                 return lhs.name < rhs.name
             }
-            .prefix(limit)
+            .prefix(max(0, limit))
             .map { $0 }
     }
 }

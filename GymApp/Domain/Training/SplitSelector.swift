@@ -369,12 +369,18 @@ enum SplitSelector {
 
     /// How many lettered variants of a title exist. Only archetypes that can actually repeat inside
     /// the cycle vocabulary need them.
+    ///
+    /// The count has to be at least *one below* the most times an archetype can occur in a single
+    /// structure, because occurrences past the last variant all fall back to the unlettered base
+    /// key and two blueprints sharing a title key are two sessions the user cannot tell apart.
+    /// `expandBiased` can append up to `cycle.count - 1` extra days, so a four-entry cycle can run
+    /// its favoured archetype four times: `posteriorChain` therefore needs four variants, not two.
     private static func variantCount(for archetype: DayArchetype) -> Int {
         switch archetype {
         case .fullBody: 6
-        case .upper, .lower: 4
+        case .upper, .lower, .posteriorChain: 4
         case .push, .pull, .legs: 3
-        case .torso, .shouldersArms, .posteriorChain, .specialisation, .activeRecovery: 2
+        case .torso, .shouldersArms, .specialisation, .activeRecovery: 2
         }
     }
 
@@ -459,6 +465,23 @@ enum SplitSelector {
         }
     }
 
+    /// Patterns that are single-joint whichever implement performs them.
+    ///
+    /// Used to place a slot whose mechanic is deliberately left open. A `nil` mechanic means "either
+    /// a compound or an isolation will do" — it does **not** mean "this is multi-joint work", and
+    /// treating it as such put the second calf-raise slot in among the squats and the second curl
+    /// slot ahead of the rows.
+    private static func isSingleJointPattern(_ pattern: MovementPattern?) -> Bool {
+        switch pattern {
+        case .chestFly, .shoulderRaise, .shrug, .elbowFlexion, .elbowExtension,
+             .wristFlexion, .wristExtension, .kneeExtension, .kneeFlexion,
+             .calfRaise, .hipAbduction, .hipAdduction, .neckMovement:
+            true
+        default:
+            false
+        }
+    }
+
     /// Which part of the session a slot belongs in.
     ///
     /// Heavy compounds first while the user is fresh and their technique is best, then the
@@ -469,6 +492,8 @@ enum SplitSelector {
         if slot.group.isCore { return 3 }
         if slot.isPrimary { return 0 }
         if slot.mechanic == .isolation { return 2 }
+        // An open mechanic on a single-joint pattern is still single-joint work.
+        if slot.mechanic == nil, isSingleJointPattern(slot.preferredPattern) { return 2 }
         return 1
     }
 
@@ -523,7 +548,11 @@ enum SplitSelector {
             // while programming once is a plan the user cannot trust.
             var achieved: [MuscleGroup: Int] = [:]
             for blueprint in blueprints {
-                for group in Set(blueprint.slots.map(\.group)) { achieved[group, default: 0] += 1 }
+                // `.cardio` carries no weekly volume budget and is not a muscle group the frequency
+                // map is meant to describe — see `MuscleGroup.volumeTracked`.
+                for group in Set(blueprint.slots.map(\.group)) where group != .cardio {
+                    achieved[group, default: 0] += 1
+                }
             }
             let split = SelectedSplit(
                 key: structure.key,
@@ -858,6 +887,8 @@ enum SplitSelector {
             if plan.archetype == .activeRecovery && slots.isEmpty {
                 // A light day still needs something in it.
                 slots.append(contentsOf: makeSlots(for: .abs, credits: 3, isPriority: false))
+            } else if plan.archetype != .activeRecovery && slots.isEmpty {
+                slots.append(contentsOf: minimumSlots(for: plan))
             }
 
             if cardioDays.contains(index) {
@@ -903,23 +934,62 @@ enum SplitSelector {
     /// rounds to zero and the group silently vanishes from the program. Concentrating them on the
     /// lightest day that already covers the group turns the same volume into one real exercise. The
     /// lightest day is chosen so the extra movement lands where there is time for it.
+    ///
+    /// "Lightest" is re-measured after every decision. Scoring each group against the *original*
+    /// day loads makes every thin group pick whichever day started lightest — on a three-day
+    /// full-body week, where all three days start identical, that is day one every time, and the
+    /// user gets one overloaded session and two nearly empty ones.
     private static func concentratedDays(plans: [DayPlan]) -> [MuscleGroup: Int] {
         var result: [MuscleGroup: Int] = [:]
+        var load = plans.map { $0.credits.values.reduce(0, +) }
         for group in MuscleGroup.volumeTracked {
             let days = plans.indices.filter { plans[$0].credits[group] != nil }
             guard days.count > 1 else { continue }
             let retained = 1 - VolumeAllocator.indirectShare(group)
             let perDay = (plans[days[0]].credits[group] ?? 0) * retained
             guard Int(perDay.rounded()) < 2 else { continue }
-            let weekly = days.reduce(0.0) { $0 + (plans[$1].credits[group] ?? 0) } * retained
-            guard Int(weekly.rounded()) >= 2 else { continue }
+            let weeklyCredits = days.reduce(0.0) { $0 + (plans[$1].credits[group] ?? 0) }
+            guard Int((weeklyCredits * retained).rounded()) >= 2 else { continue }
             let chosen = days.min { lhs, rhs in
-                let left = plans[lhs].credits.values.reduce(0, +)
-                let right = plans[rhs].credits.values.reduce(0, +)
-                if abs(left - right) > 1e-9 { return left < right }
+                if abs(load[lhs] - load[rhs]) > 1e-9 { return load[lhs] < load[rhs] }
                 return lhs < rhs
             }
-            if let chosen { result[group] = chosen }
+            guard let chosen else { continue }
+            result[group] = chosen
+            // The chosen day takes the whole week's worth; the others hand theirs back.
+            for day in days { load[day] -= plans[day].credits[group] ?? 0 }
+            load[chosen] += weeklyCredits
+        }
+        return result
+    }
+
+    /// The floor under a training day, used only when nothing else earned a slot.
+    ///
+    /// `makeSlots` drops a group whose *direct* requirement rounds below two sets, which is right
+    /// for a stray weekly set of wrist curls. When the time budget is very small, though, every
+    /// group rounds below two at once and the day comes back empty — a user who asked for twenty
+    /// minutes was being handed a plan with no strength work in it at all, or with nothing but a
+    /// conditioning block. Here the day's biggest groups each get one two-set compound instead,
+    /// stopping once the sets would cost more credit than the day was allocated, so this can never
+    /// inflate a week that was already programmed properly.
+    private static func minimumSlots(for plan: DayPlan) -> [ExerciseSlot] {
+        let budget = plan.credits.values.reduce(0, +)
+        guard budget > 0 else { return [] }
+        let ranked = MuscleGroup.volumeTracked.filter { plan.credits[$0] != nil }.sorted { lhs, rhs in
+            let left = plan.credits[lhs] ?? 0
+            let right = plan.credits[rhs] ?? 0
+            if abs(left - right) > 1e-9 { return left > right }
+            return sizeRank(lhs) < sizeRank(rhs)
+        }
+        var result: [ExerciseSlot] = []
+        var spent = 0.0
+        for group in ranked {
+            guard spent < budget else { break }
+            // `isPriority` is what lifts a sub-two-set group to the two-set floor.
+            let slots = makeSlots(for: group, credits: plan.credits[group] ?? 0, isPriority: true)
+            guard !slots.isEmpty else { continue }
+            result.append(contentsOf: slots)
+            spent += Double(slots.reduce(0) { $0 + $1.sets }) * VolumeAllocator.averageVolumeCreditPerSet
         }
         return result
     }

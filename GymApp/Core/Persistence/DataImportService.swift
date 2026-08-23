@@ -176,7 +176,13 @@ struct DataImportService {
         }
         for export in document.personalRecords {
             let key = "\(export.exerciseID)|\(export.kind.rawValue)"
-            if let existing = bestByKey[key], existing.value >= export.value { continue }
+            // "Better" inverts for records where a lower number wins (assistance removed).
+            if let existing = bestByKey[key] {
+                let backupIsBetter = export.kind.lowerIsBetter
+                    ? export.value < existing.value
+                    : export.value > existing.value
+                if !backupIsBetter { continue }
+            }
             let record = PersonalRecord()
             record.exerciseID = export.exerciseID
             record.exerciseNameSnapshot = export.exerciseNameSnapshot

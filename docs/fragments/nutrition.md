@@ -72,16 +72,23 @@ weeks), the target weight steers instead.
   (male). `.unspecified` takes the **higher** floor: a floor set too high only slows progress, one
   set too low risks under-eating, so the asymmetry runs towards caution.
 * Ceiling on later increases: maintenance + 750 kcal.
+* Energy rounds to 10 kcal **away from** the floor, never through it. `.rounded()` on a target
+  sitting two kcal above a floor of 1,252.9 lands on 1,250, which quietly breaks the one number the
+  app promised never to go under, so the rounded value is raised back onto the grid.
 * `weeklyBodyMassChangeKg` is recomputed **after** clamping, so it always describes the number the
   user was actually given.
-* **When the floor lands above maintenance**, the explanation and the macro split both follow the
-  balance the user actually gets rather than the one they asked for. A small, older, sedentary
-  person can have an estimated maintenance below the 1,200/1,500 kcal absolute floor, so their
-  target is above maintenance however hard they asked to cut; the app says exactly that ("the
+* **When the floor lands above maintenance on a cut**, the explanation and the macro split both
+  follow the balance the user actually gets rather than the one they asked for. A small, older,
+  sedentary person can have an estimated maintenance below the 1,200/1,500 kcal absolute floor, so
+  their target is above maintenance however hard they asked to cut; the app says exactly that ("the
   lowest intake this app will recommend for you is already above your estimated maintenance —
   moving more is the better lever") instead of claiming a deficit that does not exist, and the
   macros drop the deficit protein bump. `EnergyTargets.direction` still records the *intent*, which
   is what the rest of the app reasons about.
+  A **surplus** is excluded from this rule. That user already asked to eat above maintenance, so the
+  floor removed nothing — it only made the surplus bigger than requested. They keep the surplus
+  sentence plus the "raised to the app's minimum" note; handing them the fat-loss "moving more is
+  the better lever" line would be advice against the goal they chose.
 * The final explanation on every target set states plainly that these are estimates, not medical
   advice.
 
@@ -121,7 +128,10 @@ week of real fat loss at any sane rate. Nothing downstream is allowed to see raw
 * Readings are bucketed per calendar day and **averaged** within the day (weighing before and after
   breakfast must not inject a step), implausible masses (outside 20–400 kg) and future dates are
   dropped. The `Calendar` doing the bucketing is a parameter rather than ambient state, since which
-  readings land on which day depends on the time zone.
+  readings land on which day depends on the time zone. Both windows below are stepped with that same
+  calendar rather than with a multiple of 86,400 seconds: a day is 23 or 25 hours across a
+  daylight-saving change, and a fixed-seconds cutoff silently shortens the 7-day average to six days
+  — and drops the oldest day of the 21-day regression — for the week after an autumn transition.
 * **Moving average**: trailing 7-day. Trailing rather than centred because a centred window cannot
   produce a value for today, which is the number the dashboard needs. Seven days so the window
   closes over exactly one of every weekday — weekend eating is the largest weekly cycle in most

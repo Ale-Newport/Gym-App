@@ -429,10 +429,14 @@ enum AutoregulationEngine {
         let trim = min(AutoregulationTuning.maximumTrimMinutes, overrunMinutes.rounded())
         guard trim >= 1 else { return [] }
 
+        // The sentence reports how far the session ran past the cap, which is *not* the trim: the
+        // trim is capped at `maximumTrimMinutes`, so quoting it would tell a user who ran 45 minutes
+        // over that they ran 15 minutes over. `durationSeconds` is an `Int`, so the conversion back
+        // to `Int` here cannot overflow.
         return [make(
             .shortenSession,
             magnitude: trim,
-            explanation: Explanation("autoreg.shortenSession", [String(Int(trim))])
+            explanation: Explanation("autoreg.shortenSession", [String(Int(overrunMinutes.rounded()))])
         )]
     }
 

@@ -165,6 +165,14 @@ enum NutritionRecommendationEngine {
             floorApplied = true
         }
         kilocalories = (kilocalories / 10).rounded() * 10
+        // Rounding onto the 10 kcal grid must not carry the target back under the floor. The floor
+        // is a promise about the lowest intake this app will recommend, and `.rounded()` on a value
+        // sitting a couple of kcal above it rounds straight down through it — a target of 1,250
+        // against a floor of 1,252.9. Rounding *up* onto the grid keeps both the promise and the
+        // round number.
+        if kilocalories < floor {
+            kilocalories = (floor / 10).rounded(.up) * 10
+        }
 
         // The rate the user will actually see, recomputed from the number they were given rather
         // than the number that was asked for.
@@ -177,9 +185,15 @@ enum NutritionRecommendationEngine {
         // prescribing the deficit protein bump. Both the sentence and the macro split therefore
         // follow the balance the user actually gets, not the one they asked for. `direction` on the
         // result stays the *intent*, which is what the rest of the app reasons about.
-        let floorRemovedTheDeficit = floorApplied && achievedOffset > 1
+        //
+        // A surplus is explicitly *not* this case. The same profile asking to gain already wanted to
+        // eat above maintenance, so the floor did not remove anything — it merely made the surplus
+        // larger than requested. Telling them "moving more is the better lever from here" would be
+        // the fat-loss sentence handed to somebody trying to build muscle, and it would swallow the
+        // surplus explanation that actually describes their target.
+        let floorRemovedTheDeficit = floorApplied && achievedOffset > 1 && direction != .surplus
         let effectiveDirection: EnergyBalanceDirection =
-            floorRemovedTheDeficit && direction != .surplus ? .maintenance : direction
+            floorRemovedTheDeficit ? .maintenance : direction
 
         if floorRemovedTheDeficit {
             explanations.append(Explanation("nutrition.energy.floorAboveMaintenance", [

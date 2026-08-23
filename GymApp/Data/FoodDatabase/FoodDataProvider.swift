@@ -409,7 +409,7 @@ struct CompositeFoodDataProvider: Sendable {
         var seenBarcodes = Set<String>()
         var seenNames: [(name: String, kcal: Double)] = []
         var output: [FoodSearchResult] = []
-        output.reserveCapacity(min(results.count, limit))
+        output.reserveCapacity(min(results.count, max(0, limit)))
 
         for result in results {
             if let barcode = result.barcode, !barcode.isEmpty {

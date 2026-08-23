@@ -684,7 +684,8 @@ enum LoadEstimator {
             let raw: Double
             if isAssisted {
                 // For an assisted movement a *lighter* set means *more* assistance, so the ramp runs
-                // the other way: from 1.6× the working assistance down to 1.15×.
+                // the other way: the fractions are mirrored about 1, which with the two rungs an
+                // assisted movement gets means 1.5× the working assistance and then 1.25×.
                 raw = workingWeightKg * (2 - fraction)
             } else {
                 raw = workingWeightKg * fraction
