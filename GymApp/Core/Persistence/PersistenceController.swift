@@ -54,12 +54,24 @@ enum PersistenceController {
     static let schema = Schema(versionedSchema: SchemaV1.self)
 
     /// The on-disk container used by the running app.
+    ///
+    /// `groupContainer` is pinned to `.none` rather than left at its `.automatic` default. The app
+    /// declares an App Group so the widget can read a snapshot file, and `.automatic` interprets
+    /// that entitlement as "put the database in the group container" — a directory the widget never
+    /// needs and whose `Application Support` folder does not exist until something creates it, so
+    /// the store fails to open and the app silently falls back to memory. Keeping the store in the
+    /// app's own container also means a widget refresh can never contend with it.
+    ///
+    /// `cloudKitDatabase` is `.none` for the same reason: the entitlement's presence must not
+    /// switch on sync that has not been designed or tested.
     static func makeContainer() throws -> ModelContainer {
         let configuration = ModelConfiguration(
             "GymApp",
             schema: schema,
             isStoredInMemoryOnly: false,
-            allowsSave: true
+            allowsSave: true,
+            groupContainer: .none,
+            cloudKitDatabase: .none
         )
         return try ModelContainer(
             for: schema,
@@ -74,7 +86,9 @@ enum PersistenceController {
             "GymAppPreview",
             schema: schema,
             isStoredInMemoryOnly: true,
-            allowsSave: true
+            allowsSave: true,
+            groupContainer: .none,
+            cloudKitDatabase: .none
         )
         return try ModelContainer(for: schema, configurations: configuration)
     }
