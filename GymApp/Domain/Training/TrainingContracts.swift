@@ -418,3 +418,106 @@ struct VolumeTargets: Hashable, Sendable {
     func target(for group: MuscleGroup) -> Double { target[group] ?? 0 }
     func frequency(for group: MuscleGroup) -> Int { frequency[group] ?? 0 }
 }
+
+// MARK: - Exercise selection and scoring
+
+/// What the selector is looking for right now.
+struct ExerciseSelectionRequest: Sendable {
+    /// The muscle group the slot exists to train.
+    var targetGroup: MuscleGroup
+    /// Preferred movement pattern for the slot, when the session plan calls for one.
+    var preferredPattern: MovementPattern?
+    /// Whether the slot wants a compound or an isolation. `nil` means either.
+    var preferredMechanic: Mechanic?
+    var profile: TrainingProfileSnapshot
+    var preferences: [String: ExercisePreferenceSnapshot] = [:]
+    var histories: [String: ExerciseHistorySnapshot] = [:]
+    /// Exercise ids already chosen for this session or programmed this week.
+    var alreadySelected: Set<String> = []
+    /// Ids used in recent sessions; repeats are penalised to keep variety.
+    var recentlyUsedIDs: Set<String> = []
+    /// Patterns already covered in this session, to spread stimulus.
+    var patternsUsed: Set<MovementPattern> = []
+    /// When true, prefer time-efficient, low-fatigue options because the session is nearly full.
+    var favorLowFatigue: Bool = false
+    /// Exclude exercises whose tracking mode is not `weightAndReps`-like.
+    var requiresLoadableMovement: Bool = false
+}
+
+/// The per-factor breakdown behind an exercise's score.
+///
+/// Kept as a struct rather than a single number so the UI can explain *why* an exercise was chosen
+/// and so weight tuning is inspectable in tests.
+struct ExerciseScoreBreakdown: Hashable, Sendable {
+    var targetMatch: Double = 0
+    var secondaryUtility: Double = 0
+    var goalSuitability: Double = 0
+    var equipmentAvailability: Double = 0
+    var userPreference: Double = 0
+    var historicalPerformance: Double = 0
+    var movementDiversity: Double = 0
+    var progressionSuitability: Double = 0
+    var fatigueEfficiency: Double = 0
+    var experienceSuitability: Double = 0
+    var recentRepetitionPenalty: Double = 0
+    var priorityBonus: Double = 0
+    var exclusionPenalty: Double = 0
+    var stapleBonus: Double = 0
+
+    /// Weighted total, 0…1 before the exclusion gate.
+    var total: Double = 0
+    /// True when a hard rule removed the exercise entirely.
+    var isDisqualified: Bool = false
+    var disqualificationReason: Explanation?
+}
+
+struct ScoredExercise: Hashable, Sendable, Identifiable {
+    var id: String { exercise.id }
+    var exercise: Exercise
+    var breakdown: ExerciseScoreBreakdown
+    var score: Double { breakdown.total }
+}
+
+/// Tunable weights for `ExerciseScoring`.
+///
+/// Exposed as a value type so the balance between, say, equipment fit and user preference can be
+/// changed and unit-tested without touching the scoring logic. Documented in `docs/ALGORITHMS.md`.
+struct ExerciseScoringWeights: Hashable, Sendable {
+    var targetMatch: Double = 0.24
+    var secondaryUtility: Double = 0.06
+    var goalSuitability: Double = 0.12
+    var equipmentAvailability: Double = 0.10
+    var userPreference: Double = 0.12
+    var historicalPerformance: Double = 0.05
+    var movementDiversity: Double = 0.07
+    var progressionSuitability: Double = 0.08
+    var fatigueEfficiency: Double = 0.05
+    var experienceSuitability: Double = 0.07
+    var stapleBonus: Double = 0.04
+    /// Subtracted, not added.
+    var recentRepetitionPenalty: Double = 0.10
+    var priorityBonus: Double = 0.06
+
+    static let `default` = ExerciseScoringWeights()
+
+    /// Sum of the additive weights. Kept at 1.0 so `total` stays on a 0…1 scale.
+    var additiveSum: Double {
+        targetMatch + secondaryUtility + goalSuitability + equipmentAvailability + userPreference
+            + historicalPerformance + movementDiversity + progressionSuitability + fatigueEfficiency
+            + experienceSuitability + stapleBonus
+    }
+}
+
+/// Weights for `ExerciseSubstitutionEngine`'s similarity measure.
+struct SubstitutionWeights: Hashable, Sendable {
+    var sameTarget: Double = 0.30
+    var samePattern: Double = 0.22
+    var secondaryOverlap: Double = 0.12
+    var samePushPull: Double = 0.06
+    var sameMechanic: Double = 0.08
+    var tagOverlap: Double = 0.10
+    var difficultyProximity: Double = 0.06
+    var equipmentFit: Double = 0.06
+
+    static let `default` = SubstitutionWeights()
+}

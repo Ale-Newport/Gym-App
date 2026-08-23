@@ -1,0 +1,18 @@
+{
+  "common.increase": "Increase",
+  "common.decrease": "Decrease",
+  "exercise.favorite": "Favourite",
+  "exercise.excluded": "Excluded",
+  "exercise.animationLabel": "Animation showing how to perform %@",
+  "exercise.stepLabel": "Step %lld. %@",
+  "exercise.noInstructions": "No instructions are available for this exercise.",
+  "exercise.fact.target": "Target muscle",
+  "exercise.fact.bodyPart": "Body part",
+  "exercise.fact.equipment": "Equipment",
+  "exercise.fact.mechanic": "Type",
+  "exercise.fact.pattern": "Movement",
+  "exercise.fact.difficulty": "Difficulty",
+  "exercise.fact.secondary": "Also works",
+  "exercise.fact.repRange": "Suggested reps",
+  "exercise.fact.rest": "Suggested rest"
+}

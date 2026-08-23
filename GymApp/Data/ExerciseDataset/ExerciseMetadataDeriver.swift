@@ -64,7 +64,7 @@ enum ExerciseMetadataDeriver {
         )
         let contribution = volumeContribution(
             target: target, synergist: synergist, secondaryMuscles: secondaryMuscles,
-            mechanic: mechanic, isStretch: isStretch, tracking: tracking
+            mechanic: mechanic, isStretch: isStretch, tracking: tracking, pattern: pattern
         )
         let staple = stapleScore(
             matcher, equipment: equipment, mechanic: mechanic,
@@ -128,10 +128,23 @@ enum ExerciseMetadataDeriver {
             return .carry
         }
 
-        // Hip-dominant.
-        if m.has("hip thrust", "glute bridge", "bridge", "frog pump") { return .hipThrust }
+        // A thruster is a squat driven straight into an overhead press; the press is what limits it.
+        if m.has("thruster") { return .verticalPush }
+
+        // Hip-dominant. "Bridge" is ambiguous — a glute bridge is hip extension, a side bridge is
+        // a plank — so it only counts as a hip movement when a hip muscle is the target.
+        if m.has("hip thrust", "glute bridge", "frog pump") { return .hipThrust }
+        if m.has("bridge") {
+            switch target {
+            case .glutes, .hamstrings: return .hipThrust
+            case .obliques: return .coreLateralFlexion
+            case .abs, .serratusAnterior, .hipFlexors: return .coreAntiExtension
+            default: break
+            }
+        }
         if m.has("deadlift", "good morning", "romanian", "rdl", "hip hinge", "back extension",
-                 "hyperextension", "pull through", "kettlebell swing", "swing", "clean", "snatch",
+                 "hyperextension", "hyper extension", "hip extension", "pull through",
+                 "kettlebell swing", "swing", "clean", "snatch",
                  "high pull", "rack pull", "stiff leg", "straight leg deadlift") {
             return .hinge
         }
@@ -154,6 +167,19 @@ enum ExerciseMetadataDeriver {
             return .hipAbduction
         }
         if m.has("hip adduction", "adduction", "adductor", "inner thigh") { return .hipAdduction }
+
+        // "Raise" is the most overloaded word in the catalogue: a lateral raise is a shoulder
+        // movement, a leg raise is core work, a calf raise is a calf movement. Calf raises are
+        // already handled above; resolve the rest on what is actually being raised, before the
+        // generic shoulder-raise rule can claim them.
+        if m.has("leg raise", "knee raise", "hip raise", "pelvic raise", "toes to bar") {
+            switch target {
+            case .glutes, .hamstrings: return .hipThrust
+            case .obliques: return .coreLateralFlexion
+            case .lowerBack: return .hinge
+            default: return .coreFlexion
+            }
+        }
 
         // Upper-body pulling.
         if m.has("pulldown", "pull down", "pull up", "pullup", "chin up", "chinup", "lat pull",
@@ -301,7 +327,7 @@ enum ExerciseMetadataDeriver {
                  .upperBodyErgometer, .leverageMachine, .sledMachine:
                 return .distanceAndDuration
             default:
-                return m.has("run", "walk", "walking", "jog", "sprint", "rope") ? .distanceAndDuration : .duration
+                return m.has("run", "walk", "walking", "jog", "sprint") ? .distanceAndDuration : .duration
             }
         }
 
@@ -359,9 +385,9 @@ enum ExerciseMetadataDeriver {
             score -= 1
         case .cable, .band, .resistanceBand, .medicineBall, .roller:
             score += 0
-        case .dumbbell, .ezBarbell, .weighted, .rope:
+        case .dumbbell, .ezBarbell, .weighted, .rope, .barbell, .trapBar:
             score += 1
-        case .barbell, .olympicBarbell, .trapBar, .kettlebell, .hammer, .tire:
+        case .olympicBarbell, .kettlebell, .hammer, .tire:
             score += 2
         case .stabilityBall, .bosuBall, .wheelRoller:
             score += 2
@@ -373,7 +399,9 @@ enum ExerciseMetadataDeriver {
         case .squat, .hinge, .verticalPush, .verticalPull, .carry: score += 1
         case .lunge: score += 1
         case .elbowFlexion, .elbowExtension, .calfRaise, .shoulderRaise,
-             .wristFlexion, .wristExtension, .neckMovement: score -= 1
+             .wristFlexion, .wristExtension, .neckMovement,
+             .kneeExtension, .kneeFlexion, .hipAbduction, .hipAdduction,
+             .chestFly, .shrug, .hipThrust: score -= 1
         default: break
         }
 
@@ -614,9 +642,13 @@ enum ExerciseMetadataDeriver {
         secondaryMuscles: [Muscle],
         mechanic: Mechanic,
         isStretch: Bool,
-        tracking: TrackingMode
+        tracking: TrackingMode,
+        pattern: MovementPattern
     ) -> [MuscleGroup: Double] {
-        guard !isStretch, tracking != .distanceAndDuration else { return [:] }
+        // Stretches and conditioning work do not produce the mechanical tension that weekly hard-set
+        // counting exists to measure. A skipping-rope round genuinely works the calves, but counting
+        // it as calf volume would corrupt every recovery and progression decision downstream.
+        guard !isStretch, tracking != .distanceAndDuration, pattern != .cardio else { return [:] }
 
         var contribution: [MuscleGroup: Double] = [target.group: 1.0]
         let indirectCredit = mechanic == .compound ? 0.5 : 0.33
@@ -727,12 +759,27 @@ enum ExerciseMetadataDeriver {
         }
 
         // Short names describe the canonical movement; long ones describe a variation of it.
+        // Kept modest: on its own a two-word name is weak evidence, and weighting it heavily ranked
+        // "cable deadlift" above "barbell bench press".
         switch m.wordCount {
-        case 0...2: score += 0.20
-        case 3: score += 0.12
-        case 4: score += 0.04
+        case 0...2: score += 0.12
+        case 3: score += 0.09
+        case 4: score += 0.03
         case 5: score -= 0.04
         default: score -= 0.12
+        }
+
+        // The canonical strength lifts: a primary compound pattern loaded with a bar or dumbbells.
+        if mechanic == .compound {
+            switch equipment {
+            case .barbell, .dumbbell, .bodyWeight:
+                switch pattern {
+                case .horizontalPush, .verticalPush, .horizontalPull, .verticalPull, .squat, .hinge:
+                    score += 0.10
+                default: break
+                }
+            default: break
+            }
         }
 
         // Explicit dataset variant markers.

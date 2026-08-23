@@ -1,0 +1,31 @@
+{
+  "repo.error.saveFailed": "That change could not be saved. Try again.",
+  "repo.error.fetchFailed": "Your data could not be read just now. Try again.",
+  "repo.error.notFound": "That item is no longer available.",
+  "repo.error.notEditable": "This item comes from the built-in database and cannot be edited. Duplicate it to make your own version.",
+  "repo.error.stillReferenced": "This food is used in %@ saved meals or recipes. Delete it anyway?",
+  "repo.error.snapshotCodingFailed": "The program history entry could not be stored.",
+
+  "validation.height.range": "Enter a height between %@ and %@ cm.",
+  "validation.bodyMass.range": "Enter a weight between %@ and %@ kg.",
+  "validation.age.range": "Enter an age between %@ and %@ years.",
+  "validation.energy.range": "Enter a daily energy target between %@ and %@ kcal.",
+  "validation.energyDensity.range": "Enter an energy value between %@ and %@ kcal per 100 g.",
+  "validation.load.range": "Enter a weight between %@ and %@ kg.",
+  "validation.portion.range": "Enter an amount between %@ and %@.",
+  "validation.servings.range": "Enter a serving count between %@ and %@.",
+  "validation.grams.range": "Enter a weight in grams between %@ and %@.",
+  "validation.name.empty": "Enter a name.",
+  "validation.name.tooLong": "Use %@ characters or fewer.",
+  "validation.collection.empty": "Add at least one item first.",
+  "validation.number.notFinite": "Enter a number.",
+  "validation.equipment.ladderEmpty": "Add at least one weight to this list.",
+  "validation.equipment.incrementRange": "Enter an increment between %@ and %@ kg.",
+
+  "program.version.superseded": "Replaced by a newer version of this program",
+  "program.version.createdManually": "Program created",
+  "program.version.clonedFrom": "Copied from %@",
+
+  "session.untitled": "Workout",
+  "split.custom": "Custom plan"
+}

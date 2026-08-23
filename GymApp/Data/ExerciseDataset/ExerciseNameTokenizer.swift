@@ -35,12 +35,19 @@ struct NameMatcher {
     }
 
     /// True when the name contains any of the given whole words or phrases.
+    ///
+    /// Matching is plural-tolerant: a phrase also matches its `-s` and `-es` forms, so a single
+    /// rule for "hip thrust" catches "hip thrusts" and one for "press" catches "presses". The
+    /// dataset spells the same movement both ways, and missing a plural silently mis-classifies
+    /// the exercise rather than failing loudly.
     func has(_ phrases: String...) -> Bool { has(phrases) }
 
     func has(_ phrases: [String]) -> Bool {
         for phrase in phrases {
-            let needle = " " + ExerciseNameTokenizer.normalize(phrase) + " "
-            if padded.contains(needle) { return true }
+            let stem = ExerciseNameTokenizer.normalize(phrase)
+            if padded.contains(" " + stem + " ") { return true }
+            if padded.contains(" " + stem + "s ") { return true }
+            if padded.contains(" " + stem + "es ") { return true }
         }
         return false
     }

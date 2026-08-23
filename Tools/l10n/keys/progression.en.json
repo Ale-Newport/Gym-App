@@ -1,0 +1,62 @@
+{
+  "progressionAction.increaseLoad": "Increase load",
+  "progressionAction.addReps": "Add reps",
+  "progressionAction.maintain": "Hold steady",
+  "progressionAction.reduceLoad": "Reduce load",
+  "progressionAction.calibrate": "Calibrate",
+  "progressionAction.deload": "Deload",
+
+  "oneRepMax.formula.epley": "Epley",
+  "oneRepMax.formula.brzycki": "Brzycki",
+  "oneRepMax.formula.lombardi": "Lombardi",
+  "oneRepMax.formula.average": "Blended",
+
+  "progression.explain.increasedLoad": "Increased %@ from %@ to %@ after %@ sessions of %@ sets at %@ reps or more, with at least %@ reps in reserve.",
+  "progression.explain.increasedLoadSingle": "Increased %@ from %@ to %@ because you completed all %@ sets at %@ reps or more, with at least %@ reps in reserve.",
+  "progression.explain.increasedLoadDuration": "Increased %@ from %@ to %@ because you held every set to %@ seconds. The clock restarts at the bottom of the range.",
+
+  "progression.explain.bankSession": "Keeping %@ at %@. You are %@ of %@ good sessions towards the next load increase.",
+  "progression.explain.bankBeforeBigJump": "Keeping %@ at %@ for one more session. The smallest step available is %@, which is %@ percent of the current load, so it is worth banking another solid session first.",
+
+  "progression.explain.addReps": "Keep %@ at %@ and work towards %@ reps on every set. Your lowest set was %@ reps last time.",
+  "progression.explain.addRepsUnloaded": "On %@, work towards %@ reps on every set. Your lowest set was %@ reps last time.",
+  "progression.explain.extendReps": "%@ moves up to %@ to %@ reps. You reached %@ reps on every set last session.",
+  "progression.explain.holdDuration": "Keep %@ at %@ to %@ seconds a set. You held %@ seconds last time, so there is still room inside the target.",
+  "progression.explain.extendDuration": "%@ moves up to %@ to %@ seconds a set. You held %@ seconds on every set last session.",
+
+  "progression.explain.addSet": "Keep %@ at %@ and add a set, for %@ working sets. This plan adds volume before it adds load.",
+  "progression.explain.addSetUnloaded": "Add a set on %@, for %@ sets of %@ to %@ reps. There is no load to add, so volume is the next step.",
+  "progression.explain.addSetDuration": "Add a set on %@, for %@ sets of %@ to %@ seconds.",
+
+  "progression.explain.maintain": "Repeat %@ at %@ for %@ to %@ reps. One session short of the target is not a trend, so nothing changes yet.",
+  "progression.explain.maintainUnloaded": "Repeat %@ at %@ to %@ reps. One session short of the target is not a trend, so nothing changes yet.",
+  "progression.explain.maintainDuration": "Repeat %@ at %@ to %@ seconds a set. One session short of the target is not a trend, so nothing changes yet.",
+  "progression.explain.lighterThanPlanned": "Repeat %@ at %@. Last session was logged at %@, below the planned load, so it does not tell us whether the plan is right.",
+  "progression.explain.atMinimumLoad": "Repeat %@ at %@. That is the lightest this movement goes, so build reps here or switch to an easier variation.",
+  "progression.explain.noData": "No completed sets recorded for %@ yet, so the prescription stays as it is.",
+
+  "progression.explain.reducedLoad": "Reduced %@ from %@ to %@ after two sessions short of %@ reps. Build back up from here.",
+  "progression.explain.reducedLoadStall": "Reduced %@ from %@ to %@ after %@ sessions without progress. A small step back gives you room for a clean run at it.",
+  "progression.explain.reducedLoadRIR": "Reduced %@ from %@ to %@. You finished with %@ reps in reserve against a target of %@, which is closer to failure than this plan intends.",
+  "progression.explain.reducedLoadDuration": "Reduced %@ from %@ to %@ after two sessions short of %@ seconds.",
+  "progression.explain.reducedReps": "%@ moves back to %@ to %@ reps. You managed %@ reps last session, so the target was too high.",
+  "progression.explain.reducedDuration": "%@ moves back to %@ to %@ seconds a set. You held %@ seconds last session, so the target was too long.",
+
+  "progression.explain.outgrown": "%@ is at %@ sets of %@ reps, the most this plan programs without load. Add weight or move to a harder variation.",
+  "progression.explain.outgrownDuration": "%@ is at %@ sets of %@ seconds, the most this plan programs. Add weight or move to a harder variation.",
+
+  "progression.explain.startReps": "Start %@ at %@ to %@ reps a set. We will adjust from what you log.",
+  "progression.explain.startDuration": "Start %@ at %@ to %@ seconds a set. We will adjust from what you log.",
+  "progression.explain.calibrate": "Run one set of %@ at a load you can control, then rate how it felt. We will set the working load from your answer.",
+
+  "progression.explain.deload": "Deload week: %@ drops from %@ to %@, and from %@ to %@ sets. A lighter week now protects the next block.",
+  "progression.explain.deloadLoadOnly": "Deload week: %@ drops from %@ to %@. A lighter week now protects the next block.",
+  "progression.explain.deloadUnloaded": "Deload week: %@ drops from %@ to %@ sets. A lighter week now protects the next block.",
+  "progression.explain.deloadEasy": "Deload week: keep %@ comfortable and finish every set well short of failure.",
+
+  "loadEstimate.explain.fromSeed": "Starting %@ at %@ for %@ reps, worked back from the %@ for %@ reps you told us about.",
+  "loadEstimate.explain.fromOwnHistory": "Starting %@ at %@ for %@ reps, based on your own best set here (estimated one-rep max %@).",
+  "loadEstimate.explain.fromRelated": "Starting %@ at %@ for %@ reps, carried across from your %@ (estimated one-rep max %@).",
+  "loadEstimate.explain.fromBodyWeight": "Starting %@ at %@ for %@ reps. That is a deliberately light first guess from your body weight of %@, so rate the first set and we will correct it.",
+  "loadEstimate.explain.minimum": "Starting %@ at %@, the lightest setting available. Rate your first set and we will find the right load from there."
+}

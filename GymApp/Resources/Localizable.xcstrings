@@ -155,6 +155,193 @@
         }
       }
     },
+    "autoreg.addSet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The session felt easy and this muscle group is below its weekly target, so one set is being added."
+          }
+        }
+      }
+    },
+    "autoreg.noChange": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything is on track. Your next session stays as planned."
+          }
+        }
+      }
+    },
+    "autoreg.reduceLoad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ came up short of its rep targets, so it starts a little lighter next time."
+          }
+        }
+      }
+    },
+    "autoreg.reduceLoad.severe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ missed its rep targets by a wide margin. Dropping the load to get the reps back."
+          }
+        }
+      }
+    },
+    "autoreg.removeSet.fatigue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This muscle group is still carrying a lot of fatigue, so one set is coming off."
+          }
+        }
+      }
+    },
+    "autoreg.restLonger": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reps dropped away sharply between sets on %@. A longer rest should hold performance."
+          }
+        }
+      }
+    },
+    "autoreg.shortenSession": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The session ran about %@ minutes past your time cap, so it is being trimmed."
+          }
+        }
+      }
+    },
+    "autoreg.swap.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ fell short on every set and there is no load to take off. A different exercise may fit better."
+          }
+        }
+      }
+    },
+    "autoreg.swap.substituted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You swapped %@ out during the session. A permanent replacement may suit you better."
+          }
+        }
+      }
+    },
+    "backup.count.bodyWeights": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weigh-ins"
+          }
+        }
+      }
+    },
+    "backup.count.foodLog": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Food entries"
+          }
+        }
+      }
+    },
+    "backup.count.foods": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom foods"
+          }
+        }
+      }
+    },
+    "backup.count.programs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programs"
+          }
+        }
+      }
+    },
+    "backup.count.recipes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recipes"
+          }
+        }
+      }
+    },
+    "backup.count.records": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personal records"
+          }
+        }
+      }
+    },
+    "backup.count.savedMeals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved meals"
+          }
+        }
+      }
+    },
+    "backup.count.sessions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workouts"
+          }
+        }
+      }
+    },
     "bodyPart.back": {
       "extractionState": "manual",
       "localizations": {
@@ -485,6 +672,17 @@
         }
       }
     },
+    "common.decrease": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decrease"
+          }
+        }
+      }
+    },
     "common.delete": {
       "extractionState": "manual",
       "localizations": {
@@ -602,6 +800,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "h"
+          }
+        }
+      }
+    },
+    "common.increase": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increase"
           }
         }
       }
@@ -965,6 +1174,116 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yesterday"
+          }
+        }
+      }
+    },
+    "deload.reason.blockLength": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have trained hard for %@ weeks without an easy one."
+          }
+        }
+      }
+    },
+    "deload.reason.effortInflation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The same loads are costing more effort on %@ exercises."
+          }
+        }
+      }
+    },
+    "deload.reason.effortInflationSession": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your sessions are feeling harder at the same workload."
+          }
+        }
+      }
+    },
+    "deload.reason.elevatedFatigue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ muscle groups are still carrying high fatigue."
+          }
+        }
+      }
+    },
+    "deload.reason.lowReadiness": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your overall readiness has been low."
+          }
+        }
+      }
+    },
+    "deload.reason.missedSets": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@%% of planned sets have gone unfinished recently."
+          }
+        }
+      }
+    },
+    "deload.reason.performanceRegression": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ exercises have gone backwards over the last few sessions."
+          }
+        }
+      }
+    },
+    "deload.reason.subjective": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your daily check-ins have been low for several days."
+          }
+        }
+      }
+    },
+    "deload.summary.recommended": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An easy week looks like the right next step: around %@%% less volume and around %@%% lighter loads."
+          }
+        }
+      }
+    },
+    "deload.summary.watch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing needs to change yet, but a couple of things are worth keeping an eye on."
           }
         }
       }
@@ -1453,6 +1772,160 @@
         }
       }
     },
+    "exercise.animationLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animation showing how to perform %@"
+          }
+        }
+      }
+    },
+    "exercise.excluded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluded"
+          }
+        }
+      }
+    },
+    "exercise.fact.bodyPart": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Body part"
+          }
+        }
+      }
+    },
+    "exercise.fact.difficulty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difficulty"
+          }
+        }
+      }
+    },
+    "exercise.fact.equipment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equipment"
+          }
+        }
+      }
+    },
+    "exercise.fact.mechanic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        }
+      }
+    },
+    "exercise.fact.pattern": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movement"
+          }
+        }
+      }
+    },
+    "exercise.fact.repRange": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggested reps"
+          }
+        }
+      }
+    },
+    "exercise.fact.rest": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggested rest"
+          }
+        }
+      }
+    },
+    "exercise.fact.secondary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Also works"
+          }
+        }
+      }
+    },
+    "exercise.fact.target": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Target muscle"
+          }
+        }
+      }
+    },
+    "exercise.favorite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favourite"
+          }
+        }
+      }
+    },
+    "exercise.noInstructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No instructions are available for this exercise."
+          }
+        }
+      }
+    },
+    "exercise.stepLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step %lld. %@"
+          }
+        }
+      }
+    },
     "exerciseFeedback.dislike": {
       "extractionState": "manual",
       "localizations": {
@@ -1596,6 +2069,270 @@
         }
       }
     },
+    "explain.deloadApplied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applied a deload week: less volume and slightly lighter loads."
+          }
+        }
+      }
+    },
+    "explain.equipmentChanged": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebuilt the program around the equipment you now have."
+          }
+        }
+      }
+    },
+    "explain.exerciseReplaced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replaced %@ with %@ because %@."
+          }
+        }
+      }
+    },
+    "explain.goalChanged": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebuilt the program for your new goal."
+          }
+        }
+      }
+    },
+    "explain.manualEdit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You edited this program by hand."
+          }
+        }
+      }
+    },
+    "explain.programCreated": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Program created from your goals, schedule and equipment."
+          }
+        }
+      }
+    },
+    "explain.scheduleChanged": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebuilt the week around your new training days."
+          }
+        }
+      }
+    },
+    "explain.volumeIncreased": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increased %@ volume based on your recovery and recent performance."
+          }
+        }
+      }
+    },
+    "explain.volumeReduced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduced %@ volume because recent sessions and recovery feedback suggested it was too much."
+          }
+        }
+      }
+    },
+    "export.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The export could not be created."
+          }
+        }
+      }
+    },
+    "export.fullBackup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full backup"
+          }
+        }
+      }
+    },
+    "export.fullBackup.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything: profile, programs, history, nutrition. Restorable."
+          }
+        }
+      }
+    },
+    "export.nutritionCSV": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition (CSV)"
+          }
+        }
+      }
+    },
+    "export.nutritionCSV.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every food entry with calories and macros."
+          }
+        }
+      }
+    },
+    "export.nutritionJSON": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition (JSON)"
+          }
+        }
+      }
+    },
+    "export.nutritionJSON.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Food log and targets with structure preserved."
+          }
+        }
+      }
+    },
+    "export.preparing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparing your file…"
+          }
+        }
+      }
+    },
+    "export.shareFile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share file"
+          }
+        }
+      }
+    },
+    "export.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your data belongs to you. Take a copy whenever you like."
+          }
+        }
+      }
+    },
+    "export.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export data"
+          }
+        }
+      }
+    },
+    "export.trainingCSV": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training (CSV)"
+          }
+        }
+      }
+    },
+    "export.trainingCSV.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every set you have logged, ready for a spreadsheet."
+          }
+        }
+      }
+    },
+    "export.trainingJSON": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training (JSON)"
+          }
+        }
+      }
+    },
+    "export.trainingJSON.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full training history with structure preserved."
+          }
+        }
+      }
+    },
     "focusRegion.arms": {
       "extractionState": "manual",
       "localizations": {
@@ -1658,6 +2395,3803 @@
           "stringUnit": {
             "state": "translated",
             "value": "Upper Body"
+          }
+        }
+      }
+    },
+    "food.almondMilk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almond drink, unsweetened"
+          }
+        }
+      }
+    },
+    "food.almonds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almonds"
+          }
+        }
+      }
+    },
+    "food.apple": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple, raw, with skin"
+          }
+        }
+      }
+    },
+    "food.appleJuice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple juice"
+          }
+        }
+      }
+    },
+    "food.apricot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apricot, raw"
+          }
+        }
+      }
+    },
+    "food.asparagus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asparagus, raw"
+          }
+        }
+      }
+    },
+    "food.avocado": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avocado, raw"
+          }
+        }
+      }
+    },
+    "food.baconCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bacon, streaky, grilled"
+          }
+        }
+      }
+    },
+    "food.baconRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bacon, streaky, raw"
+          }
+        }
+      }
+    },
+    "food.bagel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bagel, plain"
+          }
+        }
+      }
+    },
+    "food.bakedBeans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baked beans in tomato sauce"
+          }
+        }
+      }
+    },
+    "food.banana": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Banana, raw"
+          }
+        }
+      }
+    },
+    "food.barleyCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pearl barley, boiled"
+          }
+        }
+      }
+    },
+    "food.basmatiRiceCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basmati rice, boiled"
+          }
+        }
+      }
+    },
+    "food.beefMince10": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beef mince, 10% fat, raw"
+          }
+        }
+      }
+    },
+    "food.beefMince20": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beef mince, 20% fat, raw"
+          }
+        }
+      }
+    },
+    "food.beefMince5": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beef mince, 5% fat, raw"
+          }
+        }
+      }
+    },
+    "food.beefSirloinRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beef sirloin steak, lean, raw"
+          }
+        }
+      }
+    },
+    "food.beefSteakCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beef sirloin steak, lean, grilled"
+          }
+        }
+      }
+    },
+    "food.beerLager": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lager, 4% ABV"
+          }
+        }
+      }
+    },
+    "food.beetroot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beetroot, raw"
+          }
+        }
+      }
+    },
+    "food.biscuitDigestive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digestive biscuit"
+          }
+        }
+      }
+    },
+    "food.blackBeansCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Black beans, boiled"
+          }
+        }
+      }
+    },
+    "food.blackberries": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blackberries, raw"
+          }
+        }
+      }
+    },
+    "food.blueberries": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blueberries, raw"
+          }
+        }
+      }
+    },
+    "food.bologneseSauce": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolognese sauce"
+          }
+        }
+      }
+    },
+    "food.branFlakes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bran flakes"
+          }
+        }
+      }
+    },
+    "food.brazilNuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brazil nuts"
+          }
+        }
+      }
+    },
+    "food.breadRoll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bread roll, white"
+          }
+        }
+      }
+    },
+    "food.brie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brie"
+          }
+        }
+      }
+    },
+    "food.broccoliCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Broccoli, boiled"
+          }
+        }
+      }
+    },
+    "food.broccoliRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Broccoli, raw"
+          }
+        }
+      }
+    },
+    "food.brownRiceCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brown rice, boiled"
+          }
+        }
+      }
+    },
+    "food.brownRiceDry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brown rice, dry"
+          }
+        }
+      }
+    },
+    "food.brusselsSprouts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brussels sprouts, raw"
+          }
+        }
+      }
+    },
+    "food.bulgurCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgur wheat, cooked"
+          }
+        }
+      }
+    },
+    "food.butter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butter"
+          }
+        }
+      }
+    },
+    "food.butterBeansCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butter beans, boiled"
+          }
+        }
+      }
+    },
+    "food.butternutSquash": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butternut squash, raw"
+          }
+        }
+      }
+    },
+    "food.cabbageWhite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cabbage, white, raw"
+          }
+        }
+      }
+    },
+    "food.cantaloupe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melon, cantaloupe, raw"
+          }
+        }
+      }
+    },
+    "food.carrotRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carrot, raw"
+          }
+        }
+      }
+    },
+    "food.caseinProtein": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casein protein powder"
+          }
+        }
+      }
+    },
+    "food.cashews": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cashews"
+          }
+        }
+      }
+    },
+    "food.cauliflowerRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cauliflower, raw"
+          }
+        }
+      }
+    },
+    "food.celery": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Celery, raw"
+          }
+        }
+      }
+    },
+    "food.cerealBar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cereal bar"
+          }
+        }
+      }
+    },
+    "food.cheddar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cheddar cheese"
+          }
+        }
+      }
+    },
+    "food.cherries": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cherries, raw"
+          }
+        }
+      }
+    },
+    "food.chiaSeeds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia seeds"
+          }
+        }
+      }
+    },
+    "food.chickenBreastCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken breast, skinless, grilled"
+          }
+        }
+      }
+    },
+    "food.chickenBreastRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken breast, skinless, raw"
+          }
+        }
+      }
+    },
+    "food.chickenCurry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken curry"
+          }
+        }
+      }
+    },
+    "food.chickenDeli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken breast, sliced, cooked"
+          }
+        }
+      }
+    },
+    "food.chickenMince": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken mince, raw"
+          }
+        }
+      }
+    },
+    "food.chickenThighRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken thigh, skinless boneless, raw"
+          }
+        }
+      }
+    },
+    "food.chickpeasCanned": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chickpeas, tinned, drained"
+          }
+        }
+      }
+    },
+    "food.chickpeasCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chickpeas, boiled"
+          }
+        }
+      }
+    },
+    "food.chickpeasDry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chickpeas, dry"
+          }
+        }
+      }
+    },
+    "food.chocolateDark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark chocolate, 70% cocoa"
+          }
+        }
+      }
+    },
+    "food.chocolateMilk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milk chocolate"
+          }
+        }
+      }
+    },
+    "food.clementine": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clementine, raw"
+          }
+        }
+      }
+    },
+    "food.coconutOil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coconut oil"
+          }
+        }
+      }
+    },
+    "food.coconutWater": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coconut water"
+          }
+        }
+      }
+    },
+    "food.codRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cod, raw"
+          }
+        }
+      }
+    },
+    "food.coffeeBlack": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coffee, black"
+          }
+        }
+      }
+    },
+    "food.cola": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cola"
+          }
+        }
+      }
+    },
+    "food.colaDiet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cola, no sugar"
+          }
+        }
+      }
+    },
+    "food.collagenPeptides": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collagen peptides powder"
+          }
+        }
+      }
+    },
+    "food.cornflakes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cornflakes"
+          }
+        }
+      }
+    },
+    "food.cottageCheeseLow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cottage cheese, low fat"
+          }
+        }
+      }
+    },
+    "food.courgette": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Courgette (zucchini), raw"
+          }
+        }
+      }
+    },
+    "food.couscousCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couscous, cooked"
+          }
+        }
+      }
+    },
+    "food.crackersPlain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crackers, plain"
+          }
+        }
+      }
+    },
+    "food.creamCheese": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cream cheese"
+          }
+        }
+      }
+    },
+    "food.creatineMonohydrate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creatine monohydrate powder"
+          }
+        }
+      }
+    },
+    "food.crispbreadRye": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rye crispbread"
+          }
+        }
+      }
+    },
+    "food.croissant": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Croissant"
+          }
+        }
+      }
+    },
+    "food.cucumber": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cucumber, raw"
+          }
+        }
+      }
+    },
+    "food.database.adopted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld food was kept as your own"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld foods were kept as your own"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "food.database.attribution": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition data from USDA FoodData Central, a public-domain work of the US Government."
+          }
+        }
+      }
+    },
+    "food.database.foodCount": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld food"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld foods"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "food.database.rebuild": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebuild food database"
+          }
+        }
+      }
+    },
+    "food.database.rebuildDetail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reloads every built-in food. Your own foods, recipes and history are untouched."
+          }
+        }
+      }
+    },
+    "food.database.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Food database"
+          }
+        }
+      }
+    },
+    "food.database.updating": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updating the food database"
+          }
+        }
+      }
+    },
+    "food.database.version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        }
+      }
+    },
+    "food.datesMedjool": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dates, medjool"
+          }
+        }
+      }
+    },
+    "food.doubleCream": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double cream"
+          }
+        }
+      }
+    },
+    "food.driedApricots": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apricots, dried"
+          }
+        }
+      }
+    },
+    "food.edamame": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edamame, shelled, cooked"
+          }
+        }
+      }
+    },
+    "food.eggBoiled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egg, hard boiled"
+          }
+        }
+      }
+    },
+    "food.eggFried": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egg, fried"
+          }
+        }
+      }
+    },
+    "food.eggNoodlesCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egg noodles, boiled"
+          }
+        }
+      }
+    },
+    "food.eggScrambled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eggs, scrambled, with milk"
+          }
+        }
+      }
+    },
+    "food.eggWhiteRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egg white, raw"
+          }
+        }
+      }
+    },
+    "food.eggWholeRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egg, whole, raw"
+          }
+        }
+      }
+    },
+    "food.englishMuffin": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "English muffin"
+          }
+        }
+      }
+    },
+    "food.error.cancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lookup cancelled"
+          }
+        }
+      }
+    },
+    "food.error.decoding": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The food service sent something Forge could not read."
+          }
+        }
+      }
+    },
+    "food.error.network": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The food service could not be reached. Showing offline results."
+          }
+        }
+      }
+    },
+    "food.error.notFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No matching food found"
+          }
+        }
+      }
+    },
+    "food.error.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You are offline. Showing the built-in food database."
+          }
+        }
+      }
+    },
+    "food.error.rateLimited": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many lookups just now. Try again in a moment."
+          }
+        }
+      }
+    },
+    "food.falafel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falafel"
+          }
+        }
+      }
+    },
+    "food.feta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feta"
+          }
+        }
+      }
+    },
+    "food.flaxseed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flaxseed (linseed)"
+          }
+        }
+      }
+    },
+    "food.frenchFries": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chips (French fries), deep fried"
+          }
+        }
+      }
+    },
+    "food.garlic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garlic, raw"
+          }
+        }
+      }
+    },
+    "food.gnocchi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gnocchi, fresh"
+          }
+        }
+      }
+    },
+    "food.gouda": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gouda"
+          }
+        }
+      }
+    },
+    "food.granola": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Granola"
+          }
+        }
+      }
+    },
+    "food.grapes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grapes, raw"
+          }
+        }
+      }
+    },
+    "food.greekYogurt0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greek yogurt, 0% fat"
+          }
+        }
+      }
+    },
+    "food.greekYogurt2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greek yogurt, 2% fat"
+          }
+        }
+      }
+    },
+    "food.greenBeans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Green beans, raw"
+          }
+        }
+      }
+    },
+    "food.hamSliced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ham, sliced, lean"
+          }
+        }
+      }
+    },
+    "food.hazelnuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazelnuts"
+          }
+        }
+      }
+    },
+    "food.honey": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Honey"
+          }
+        }
+      }
+    },
+    "food.hotChocolate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hot chocolate, made with milk"
+          }
+        }
+      }
+    },
+    "food.hummus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hummus"
+          }
+        }
+      }
+    },
+    "food.iceCreamVanilla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ice cream, vanilla"
+          }
+        }
+      }
+    },
+    "food.import.phase.finished": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Food database ready"
+          }
+        }
+      }
+    },
+    "food.import.phase.matching": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking what has changed"
+          }
+        }
+      }
+    },
+    "food.import.phase.pruning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidying up"
+          }
+        }
+      }
+    },
+    "food.import.phase.reading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading the food database"
+          }
+        }
+      }
+    },
+    "food.import.phase.writing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updating foods"
+          }
+        }
+      }
+    },
+    "food.instantOats": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instant oat sachet, dry"
+          }
+        }
+      }
+    },
+    "food.jam": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jam, fruit"
+          }
+        }
+      }
+    },
+    "food.kaleRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kale, raw"
+          }
+        }
+      }
+    },
+    "food.ketchup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomato ketchup"
+          }
+        }
+      }
+    },
+    "food.kidneyBeansCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kidney beans, boiled"
+          }
+        }
+      }
+    },
+    "food.kiwi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiwi fruit, raw"
+          }
+        }
+      }
+    },
+    "food.lambLegRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lamb leg, lean, raw"
+          }
+        }
+      }
+    },
+    "food.lasagne": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lasagne, beef"
+          }
+        }
+      }
+    },
+    "food.latte": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latte, semi-skimmed milk"
+          }
+        }
+      }
+    },
+    "food.leek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leek, raw"
+          }
+        }
+      }
+    },
+    "food.lentilsCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lentils, boiled"
+          }
+        }
+      }
+    },
+    "food.lentilsDry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lentils, dry"
+          }
+        }
+      }
+    },
+    "food.lettuceIceberg": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lettuce, iceberg"
+          }
+        }
+      }
+    },
+    "food.mackerelRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mackerel, Atlantic, raw"
+          }
+        }
+      }
+    },
+    "food.mango": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mango, raw"
+          }
+        }
+      }
+    },
+    "food.mapleSyrup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maple syrup"
+          }
+        }
+      }
+    },
+    "food.margarine": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Margarine"
+          }
+        }
+      }
+    },
+    "food.mashedPotato": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mashed potato, with milk and butter"
+          }
+        }
+      }
+    },
+    "food.mayonnaise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mayonnaise"
+          }
+        }
+      }
+    },
+    "food.milkSemi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milk, semi-skimmed"
+          }
+        }
+      }
+    },
+    "food.milkSkimmed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milk, skimmed"
+          }
+        }
+      }
+    },
+    "food.milkWhole": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milk, whole"
+          }
+        }
+      }
+    },
+    "food.mixedVegFrozen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mixed vegetables, frozen"
+          }
+        }
+      }
+    },
+    "food.mozzarella": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mozzarella, part skim"
+          }
+        }
+      }
+    },
+    "food.mozzarellaFresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mozzarella, whole milk, fresh"
+          }
+        }
+      }
+    },
+    "food.muesli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muesli, no added sugar"
+          }
+        }
+      }
+    },
+    "food.mushroomsWhite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mushrooms, white, raw"
+          }
+        }
+      }
+    },
+    "food.naan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naan bread"
+          }
+        }
+      }
+    },
+    "food.naturalYogurt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Natural yogurt, whole milk"
+          }
+        }
+      }
+    },
+    "food.oatMilk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oat drink"
+          }
+        }
+      }
+    },
+    "food.oatsCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porridge oats, cooked with water"
+          }
+        }
+      }
+    },
+    "food.oatsRolled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oats, rolled, dry"
+          }
+        }
+      }
+    },
+    "food.oliveOil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olive oil, extra virgin"
+          }
+        }
+      }
+    },
+    "food.olivesGreen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olives, green, in brine"
+          }
+        }
+      }
+    },
+    "food.onionRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onion, raw"
+          }
+        }
+      }
+    },
+    "food.orange": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange, raw"
+          }
+        }
+      }
+    },
+    "food.orangeJuice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange juice"
+          }
+        }
+      }
+    },
+    "food.ovenChips": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oven chips"
+          }
+        }
+      }
+    },
+    "food.pancake": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pancake"
+          }
+        }
+      }
+    },
+    "food.papaya": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papaya, raw"
+          }
+        }
+      }
+    },
+    "food.parmesan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parmesan"
+          }
+        }
+      }
+    },
+    "food.parsnip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parsnip, raw"
+          }
+        }
+      }
+    },
+    "food.pastaCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasta, boiled"
+          }
+        }
+      }
+    },
+    "food.pastaDry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasta, dry"
+          }
+        }
+      }
+    },
+    "food.peaProtein": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pea protein isolate powder"
+          }
+        }
+      }
+    },
+    "food.peach": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peach, raw"
+          }
+        }
+      }
+    },
+    "food.peanutButter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peanut butter"
+          }
+        }
+      }
+    },
+    "food.peanuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peanuts"
+          }
+        }
+      }
+    },
+    "food.pear": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pear, raw"
+          }
+        }
+      }
+    },
+    "food.peasFrozen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garden peas, frozen"
+          }
+        }
+      }
+    },
+    "food.pecans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pecans"
+          }
+        }
+      }
+    },
+    "food.pepperRed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bell pepper, red, raw"
+          }
+        }
+      }
+    },
+    "food.pineapple": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pineapple, raw"
+          }
+        }
+      }
+    },
+    "food.pintoBeansCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pinto beans, boiled"
+          }
+        }
+      }
+    },
+    "food.pistachios": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistachios"
+          }
+        }
+      }
+    },
+    "food.pittaBread": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pitta bread, white"
+          }
+        }
+      }
+    },
+    "food.pizzaMargherita": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pizza, margherita"
+          }
+        }
+      }
+    },
+    "food.plainFlour": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plain white flour"
+          }
+        }
+      }
+    },
+    "food.plum": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plum, raw"
+          }
+        }
+      }
+    },
+    "food.popcornPlain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Popcorn, air popped"
+          }
+        }
+      }
+    },
+    "food.porkLoinRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pork loin, lean, raw"
+          }
+        }
+      }
+    },
+    "food.porkTenderloinRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pork tenderloin, raw"
+          }
+        }
+      }
+    },
+    "food.porridgeMilk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porridge, made with semi-skimmed milk"
+          }
+        }
+      }
+    },
+    "food.potatoBaked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jacket potato, baked with skin"
+          }
+        }
+      }
+    },
+    "food.potatoBoiled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Potato, boiled"
+          }
+        }
+      }
+    },
+    "food.potatoCrisps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Potato crisps (chips)"
+          }
+        }
+      }
+    },
+    "food.potatoRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Potato, raw"
+          }
+        }
+      }
+    },
+    "food.prawnsCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prawns, cooked"
+          }
+        }
+      }
+    },
+    "food.prawnsRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prawns, raw"
+          }
+        }
+      }
+    },
+    "food.proteinBar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein bar"
+          }
+        }
+      }
+    },
+    "food.proteinShakeRtd": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein shake, ready to drink"
+          }
+        }
+      }
+    },
+    "food.proteinYogurt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High-protein yogurt"
+          }
+        }
+      }
+    },
+    "food.provider.local": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Built-in database"
+          }
+        }
+      }
+    },
+    "food.provider.openFoodFacts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Food Facts"
+          }
+        }
+      }
+    },
+    "food.provider.openFoodFacts.attribution": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Product data from Open Food Facts, shared under the Open Database Licence."
+          }
+        }
+      }
+    },
+    "food.prunes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prunes (dried plums)"
+          }
+        }
+      }
+    },
+    "food.pumpkinSeeds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpkin seeds"
+          }
+        }
+      }
+    },
+    "food.quinoaCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quinoa, boiled"
+          }
+        }
+      }
+    },
+    "food.quinoaDry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quinoa, dry"
+          }
+        }
+      }
+    },
+    "food.raisins": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raisins"
+          }
+        }
+      }
+    },
+    "food.rapeseedOil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapeseed oil"
+          }
+        }
+      }
+    },
+    "food.raspberries": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raspberries, raw"
+          }
+        }
+      }
+    },
+    "food.result.energyMismatch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The calories and the macros on this product do not add up. Check the label before logging it."
+          }
+        }
+      }
+    },
+    "food.result.per100g": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per 100 g"
+          }
+        }
+      }
+    },
+    "food.result.per100ml": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per 100 ml"
+          }
+        }
+      }
+    },
+    "food.riceCakes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rice cakes, plain"
+          }
+        }
+      }
+    },
+    "food.riceNoodlesCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rice noodles, boiled"
+          }
+        }
+      }
+    },
+    "food.salmonCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salmon, farmed, baked"
+          }
+        }
+      }
+    },
+    "food.salmonRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salmon, farmed, raw"
+          }
+        }
+      }
+    },
+    "food.salmonSmoked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salmon, smoked"
+          }
+        }
+      }
+    },
+    "food.salt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salt"
+          }
+        }
+      }
+    },
+    "food.sardinesCanned": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sardines, tinned in oil, drained"
+          }
+        }
+      }
+    },
+    "food.sausagePork": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pork sausage, raw"
+          }
+        }
+      }
+    },
+    "food.scanner.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The camera could not be started. Enter the barcode instead."
+          }
+        }
+      }
+    },
+    "food.scanner.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold the packet about 15 cm from the camera."
+          }
+        }
+      }
+    },
+    "food.scanner.manualEntry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter barcode"
+          }
+        }
+      }
+    },
+    "food.scanner.noCamera": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No camera is available. Enter the barcode instead."
+          }
+        }
+      }
+    },
+    "food.scanner.notFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That barcode is not in the database yet."
+          }
+        }
+      }
+    },
+    "food.scanner.permissionDenied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera access is off. Turn it on in Settings to scan barcodes."
+          }
+        }
+      }
+    },
+    "food.scanner.permissionNeeded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge needs camera access to scan barcodes."
+          }
+        }
+      }
+    },
+    "food.scanner.permissionRestricted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera access is not available on this device."
+          }
+        }
+      }
+    },
+    "food.scanner.ready": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Point the camera at the barcode"
+          }
+        }
+      }
+    },
+    "food.scanner.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan a barcode"
+          }
+        }
+      }
+    },
+    "food.scanner.torch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        }
+      }
+    },
+    "food.serving.bagel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 bagel"
+          }
+        }
+      }
+    },
+    "food.serving.ball": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 ball"
+          }
+        }
+      }
+    },
+    "food.serving.bar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 bar"
+          }
+        }
+      }
+    },
+    "food.serving.biscuit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 biscuit"
+          }
+        }
+      }
+    },
+    "food.serving.block": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 block"
+          }
+        }
+      }
+    },
+    "food.serving.bottle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 bottle"
+          }
+        }
+      }
+    },
+    "food.serving.bowl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 bowl"
+          }
+        }
+      }
+    },
+    "food.serving.breast": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 breast"
+          }
+        }
+      }
+    },
+    "food.serving.burger": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 burger"
+          }
+        }
+      }
+    },
+    "food.serving.cake_slice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 slice of cake"
+          }
+        }
+      }
+    },
+    "food.serving.can": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 can"
+          }
+        }
+      }
+    },
+    "food.serving.can_drained": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 can, drained"
+          }
+        }
+      }
+    },
+    "food.serving.capsule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 capsule"
+          }
+        }
+      }
+    },
+    "food.serving.chop": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 chop"
+          }
+        }
+      }
+    },
+    "food.serving.clove": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 clove"
+          }
+        }
+      }
+    },
+    "food.serving.cookie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 cookie"
+          }
+        }
+      }
+    },
+    "food.serving.croissant": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 croissant"
+          }
+        }
+      }
+    },
+    "food.serving.cube": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 cube"
+          }
+        }
+      }
+    },
+    "food.serving.cup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 cup"
+          }
+        }
+      }
+    },
+    "food.serving.cup_cooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 cup, cooked"
+          }
+        }
+      }
+    },
+    "food.serving.doughnut": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 doughnut"
+          }
+        }
+      }
+    },
+    "food.serving.drumstick": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 drumstick"
+          }
+        }
+      }
+    },
+    "food.serving.ear": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 ear"
+          }
+        }
+      }
+    },
+    "food.serving.egg": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 egg"
+          }
+        }
+      }
+    },
+    "food.serving.fillet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 fillet"
+          }
+        }
+      }
+    },
+    "food.serving.floret": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 floret"
+          }
+        }
+      }
+    },
+    "food.serving.fruit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 fruit"
+          }
+        }
+      }
+    },
+    "food.serving.glass": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 glass"
+          }
+        }
+      }
+    },
+    "food.serving.half": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 half"
+          }
+        }
+      }
+    },
+    "food.serving.handful": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 handful"
+          }
+        }
+      }
+    },
+    "food.serving.medium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 medium"
+          }
+        }
+      }
+    },
+    "food.serving.muffin": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 muffin"
+          }
+        }
+      }
+    },
+    "food.serving.mug": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 mug"
+          }
+        }
+      }
+    },
+    "food.serving.nugget": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 nugget"
+          }
+        }
+      }
+    },
+    "food.serving.packet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 packet"
+          }
+        }
+      }
+    },
+    "food.serving.pancake": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 pancake"
+          }
+        }
+      }
+    },
+    "food.serving.piece": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 piece"
+          }
+        }
+      }
+    },
+    "food.serving.pinch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 pinch"
+          }
+        }
+      }
+    },
+    "food.serving.pint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 pint"
+          }
+        }
+      }
+    },
+    "food.serving.pitta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 pitta"
+          }
+        }
+      }
+    },
+    "food.serving.pizza_slice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 slice of pizza"
+          }
+        }
+      }
+    },
+    "food.serving.portion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 portion"
+          }
+        }
+      }
+    },
+    "food.serving.pot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 pot"
+          }
+        }
+      }
+    },
+    "food.serving.rasher": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 rasher"
+          }
+        }
+      }
+    },
+    "food.serving.roll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 roll"
+          }
+        }
+      }
+    },
+    "food.serving.sausage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 sausage"
+          }
+        }
+      }
+    },
+    "food.serving.scoop": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 scoop"
+          }
+        }
+      }
+    },
+    "food.serving.serving": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 serving"
+          }
+        }
+      }
+    },
+    "food.serving.sheet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 sheet"
+          }
+        }
+      }
+    },
+    "food.serving.shot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 shot"
+          }
+        }
+      }
+    },
+    "food.serving.slice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 slice"
+          }
+        }
+      }
+    },
+    "food.serving.spear": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 spear"
+          }
+        }
+      }
+    },
+    "food.serving.sprig": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 sprig"
+          }
+        }
+      }
+    },
+    "food.serving.square": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 square"
+          }
+        }
+      }
+    },
+    "food.serving.stalk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 stalk"
+          }
+        }
+      }
+    },
+    "food.serving.steak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 steak"
+          }
+        }
+      }
+    },
+    "food.serving.tbsp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 tbsp"
+          }
+        }
+      }
+    },
+    "food.serving.thigh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 thigh"
+          }
+        }
+      }
+    },
+    "food.serving.tortilla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 tortilla"
+          }
+        }
+      }
+    },
+    "food.serving.tsp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 tsp"
+          }
+        }
+      }
+    },
+    "food.serving.waffle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 waffle"
+          }
+        }
+      }
+    },
+    "food.serving.wedge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 wedge"
+          }
+        }
+      }
+    },
+    "food.serving.wing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 wing"
+          }
+        }
+      }
+    },
+    "food.sesameSeeds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sesame seeds"
+          }
+        }
+      }
+    },
+    "food.skyr": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skyr"
+          }
+        }
+      }
+    },
+    "food.smoothieFruit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fruit smoothie"
+          }
+        }
+      }
+    },
+    "food.soupLentil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lentil soup"
+          }
+        }
+      }
+    },
+    "food.soupVegetable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vegetable soup"
+          }
+        }
+      }
+    },
+    "food.sourCream": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sour cream"
+          }
+        }
+      }
+    },
+    "food.sourdoughBread": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sourdough bread"
+          }
+        }
+      }
+    },
+    "food.soyMilk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soy drink, unsweetened"
+          }
+        }
+      }
+    },
+    "food.soySauce": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soy sauce"
+          }
+        }
+      }
+    },
+    "food.spinachCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spinach, boiled"
+          }
+        }
+      }
+    },
+    "food.spinachRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spinach, raw"
+          }
+        }
+      }
+    },
+    "food.spirits40": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spirits, 40% ABV"
+          }
+        }
+      }
+    },
+    "food.sportsDrink": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sports drink, isotonic"
+          }
+        }
+      }
+    },
+    "food.strawberries": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strawberries, raw"
+          }
+        }
+      }
+    },
+    "food.sugarWhite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugar, white"
+          }
+        }
+      }
+    },
+    "food.sunflowerSeeds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunflower seeds"
+          }
+        }
+      }
+    },
+    "food.sushiRoll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sushi roll, salmon"
+          }
+        }
+      }
+    },
+    "food.sweetPotatoBaked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sweet potato, baked"
+          }
+        }
+      }
+    },
+    "food.sweetPotatoRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sweet potato, raw"
+          }
+        }
+      }
+    },
+    "food.sweetcorn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sweetcorn kernels, raw"
+          }
+        }
+      }
+    },
+    "food.tahini": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tahini"
+          }
+        }
+      }
+    },
+    "food.teaBlack": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tea, black, no milk"
+          }
+        }
+      }
+    },
+    "food.tempeh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempeh"
+          }
+        }
+      }
+    },
+    "food.tofuFirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tofu, firm"
+          }
+        }
+      }
+    },
+    "food.tofuSilken": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tofu, silken"
+          }
+        }
+      }
+    },
+    "food.tomato": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomato, raw"
+          }
+        }
+      }
+    },
+    "food.tomatoPastaSauce": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomato pasta sauce"
+          }
+        }
+      }
+    },
+    "food.tomatoesTinned": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomatoes, tinned, chopped"
+          }
+        }
+      }
+    },
+    "food.tortillaChips": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tortilla chips"
+          }
+        }
+      }
+    },
+    "food.tortillaWheat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tortilla wrap, wheat"
+          }
+        }
+      }
+    },
+    "food.tunaCannedWater": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuna, tinned in water, drained"
+          }
+        }
+      }
+    },
+    "food.tunaRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuna, yellowfin, raw"
+          }
+        }
+      }
+    },
+    "food.turkeyBreastCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turkey breast, skinless, roasted"
+          }
+        }
+      }
+    },
+    "food.turkeyBreastRaw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turkey breast, skinless, raw"
+          }
+        }
+      }
+    },
+    "food.turkeyMince": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turkey mince, raw"
+          }
+        }
+      }
+    },
+    "food.veganProteinBlend": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vegan protein blend powder"
+          }
+        }
+      }
+    },
+    "food.walnuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walnuts"
+          }
+        }
+      }
+    },
+    "food.water": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Water"
+          }
+        }
+      }
+    },
+    "food.watermelon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Watermelon, raw"
+          }
+        }
+      }
+    },
+    "food.wheyConcentrate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whey protein concentrate powder"
+          }
+        }
+      }
+    },
+    "food.wheyIsolate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whey protein isolate powder"
+          }
+        }
+      }
+    },
+    "food.whiteBread": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "White bread"
+          }
+        }
+      }
+    },
+    "food.whiteRiceCooked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "White rice, boiled"
+          }
+        }
+      }
+    },
+    "food.whiteRiceDry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "White rice, long grain, dry"
+          }
+        }
+      }
+    },
+    "food.wholemealBread": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wholemeal bread"
+          }
+        }
+      }
+    },
+    "food.wholemealFlour": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wholemeal flour"
+          }
+        }
+      }
+    },
+    "food.wholewheatBiscuits": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wholewheat breakfast biscuits"
+          }
+        }
+      }
+    },
+    "food.wholewheatPastaDry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wholewheat pasta, dry"
+          }
+        }
+      }
+    },
+    "food.wineRed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Red wine, 13% ABV"
           }
         }
       }
@@ -2025,6 +6559,248 @@
         }
       }
     },
+    "import.chooseFile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a backup file"
+          }
+        }
+      }
+    },
+    "import.confirmReplace.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything currently on this device will be deleted and replaced by the backup. This cannot be undone."
+          }
+        }
+      }
+    },
+    "import.confirmReplace.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replace all data?"
+          }
+        }
+      }
+    },
+    "import.done.nutrition": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld food entries added"
+          }
+        }
+      }
+    },
+    "import.done.other": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld programs, %lld records, %lld weigh-ins"
+          }
+        }
+      }
+    },
+    "import.done.sessions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld workouts added, %lld already present"
+          }
+        }
+      }
+    },
+    "import.done.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup restored"
+          }
+        }
+      }
+    },
+    "import.error.notABackup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That is not a Forge backup file."
+          }
+        }
+      }
+    },
+    "import.error.unreadable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That file could not be read."
+          }
+        }
+      }
+    },
+    "import.error.version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That backup was made by a newer version of Forge."
+          }
+        }
+      }
+    },
+    "import.error.write": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The backup could not be restored."
+          }
+        }
+      }
+    },
+    "import.preview.appVersion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge %@"
+          }
+        }
+      }
+    },
+    "import.preview.exportedAt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created %@"
+          }
+        }
+      }
+    },
+    "import.preview.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup contents"
+          }
+        }
+      }
+    },
+    "import.restore": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore"
+          }
+        }
+      }
+    },
+    "import.restoring": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restoring…"
+          }
+        }
+      }
+    },
+    "import.strategy.merge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Merge"
+          }
+        }
+      }
+    },
+    "import.strategy.merge.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep what is on this device and add anything missing."
+          }
+        }
+      }
+    },
+    "import.strategy.replace": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replace"
+          }
+        }
+      }
+    },
+    "import.strategy.replace.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete everything on this device first, then restore the backup exactly."
+          }
+        }
+      }
+    },
+    "import.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore a Forge backup file."
+          }
+        }
+      }
+    },
+    "import.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import backup"
+          }
+        }
+      }
+    },
     "laterality.alternating": {
       "extractionState": "manual",
       "localizations": {
@@ -2245,6 +7021,61 @@
         }
       }
     },
+    "loadEstimate.explain.fromBodyWeight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting %@ at %@ for %@ reps. That is a deliberately light first guess from your body weight of %@, so rate the first set and we will correct it."
+          }
+        }
+      }
+    },
+    "loadEstimate.explain.fromOwnHistory": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting %@ at %@ for %@ reps, based on your own best set here (estimated one-rep max %@)."
+          }
+        }
+      }
+    },
+    "loadEstimate.explain.fromRelated": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting %@ at %@ for %@ reps, carried across from your %@ (estimated one-rep max %@)."
+          }
+        }
+      }
+    },
+    "loadEstimate.explain.fromSeed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting %@ at %@ for %@ reps, worked back from the %@ for %@ reps you told us about."
+          }
+        }
+      }
+    },
+    "loadEstimate.explain.minimum": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting %@ at %@, the lightest setting available. Rate your first set and we will find the right load from there."
+          }
+        }
+      }
+    },
     "loadability.assistedBodyweight": {
       "extractionState": "manual",
       "localizations": {
@@ -2406,6 +7237,270 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lunch"
+          }
+        }
+      }
+    },
+    "meal.pattern.carbFat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carbs and a source of fat"
+          }
+        }
+      }
+    },
+    "meal.pattern.carbVegetable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carbs and vegetables"
+          }
+        }
+      }
+    },
+    "meal.pattern.mixed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A mix of foods"
+          }
+        }
+      }
+    },
+    "meal.pattern.proteinCarb": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein and carbs"
+          }
+        }
+      }
+    },
+    "meal.pattern.proteinCarbFat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein, carbs and a source of fat"
+          }
+        }
+      }
+    },
+    "meal.pattern.proteinCarbVegetable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein, carbs and vegetables"
+          }
+        }
+      }
+    },
+    "meal.pattern.proteinFat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein and a source of fat"
+          }
+        }
+      }
+    },
+    "meal.pattern.proteinVegetable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein and vegetables"
+          }
+        }
+      }
+    },
+    "meal.pattern.proteinVegetableFat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein, vegetables and a source of fat"
+          }
+        }
+      }
+    },
+    "meal.pattern.recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One of your recipes"
+          }
+        }
+      }
+    },
+    "meal.pattern.savedMeal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One of your saved meals"
+          }
+        }
+      }
+    },
+    "meal.pattern.single": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A single food"
+          }
+        }
+      }
+    },
+    "meal.pattern.vegetableFat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vegetables and a source of fat"
+          }
+        }
+      }
+    },
+    "meal.reason.budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fits inside the food budget you set."
+          }
+        }
+      }
+    },
+    "meal.reason.calories": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ kcal, against the %@ kcal left for this meal."
+          }
+        }
+      }
+    },
+    "meal.reason.favorite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses foods you have marked as favourites."
+          }
+        }
+      }
+    },
+    "meal.reason.frequentlyLogged": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses foods you log often, so it is quick to add."
+          }
+        }
+      }
+    },
+    "meal.reason.macros": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Covers about %@ g protein, %@ g carbs and %@ g fat."
+          }
+        }
+      }
+    },
+    "meal.reason.micronutrients": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brings some fibre and micronutrients to the day."
+          }
+        }
+      }
+    },
+    "meal.reason.protein": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fills most of the protein you have left, %@ g of it."
+          }
+        }
+      }
+    },
+    "meal.reason.recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From your recipes, about %@ minutes to make."
+          }
+        }
+      }
+    },
+    "meal.reason.recipeNoTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From your own recipes."
+          }
+        }
+      }
+    },
+    "meal.reason.savedMeal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have logged this saved meal %@ times."
+          }
+        }
+      }
+    },
+    "meal.reason.variety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None of these were logged in the last couple of days."
           }
         }
       }
@@ -3664,6 +8759,468 @@
         }
       }
     },
+    "nutrition.adjust.approval": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing changes until you accept it."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.ceilingReached": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calories are already at %@ kcal, well above maintenance, so the app will not add any more."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.decrease": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You are changing about %@ kg a week against a target of %@ kg, so taking off %@ kcal a day should bring you back on track."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.floorReached": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calories are already at %@ kcal, the lowest this app will recommend for you. Moving more is the better lever from here."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.increase": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You are changing about %@ kg a week against a target of %@ kg, so adding %@ kcal a day should bring you back on track."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.insufficientData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are not enough weigh-ins yet. About %@ readings across %@ days are needed before the app can tell a real trend from day-to-day noise."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.lowAdherence": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only about %@ of days were logged, so the trend cannot fairly be put down to your targets yet."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.lowConfidence": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The weigh-ins are still too scattered to read a trend from, so your targets stay as they are."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.macroSplit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein stays where it is. The change goes to carbohydrate and fat."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.onTrack": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You are changing about %@ kg a week against a target of %@ kg. That is close enough to leave alone."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.staleData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The most recent weigh-in is more than %@ days old, so the trend is out of date. Add a fresh one and the app will look again."
+          }
+        }
+      }
+    },
+    "nutrition.adjust.tooSoon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your targets changed %@ days ago. The app waits at least %@ days so the scale has time to show what that change did."
+          }
+        }
+      }
+    },
+    "nutrition.adjustAction.decrease": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eat a little less"
+          }
+        }
+      }
+    },
+    "nutrition.adjustAction.hold": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep going as you are"
+          }
+        }
+      }
+    },
+    "nutrition.adjustAction.increase": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eat a little more"
+          }
+        }
+      }
+    },
+    "nutrition.adjustAction.insufficientData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough data yet"
+          }
+        }
+      }
+    },
+    "nutrition.energy.bmr": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your body is estimated to burn about %@ kcal a day at rest, from your height, weight and age."
+          }
+        }
+      }
+    },
+    "nutrition.energy.bmrDefaultAge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No date of birth on file, so the estimate assumes %@ years old. Add yours to make it more accurate."
+          }
+        }
+      }
+    },
+    "nutrition.energy.bmrUnspecifiedSex": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Without a biological sex on file the estimate averages the two standard formulas, so it is less precise than it could be."
+          }
+        }
+      }
+    },
+    "nutrition.energy.deficit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Losing about %@ kg a week means eating around %@ kcal a day, roughly %@ kcal below maintenance."
+          }
+        }
+      }
+    },
+    "nutrition.energy.deficitCapped": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The deficit was capped at %@ kcal a day. Faster than that costs muscle and rarely lasts."
+          }
+        }
+      }
+    },
+    "nutrition.energy.estimateDisclaimer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These figures are estimates to start from, not medical advice. The app will adjust them as your own results come in."
+          }
+        }
+      }
+    },
+    "nutrition.energy.floorAboveMaintenance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The lowest daily intake this app will recommend for you is %@ kcal, which is already above your estimated maintenance of %@ kcal. Eating less than this is not something the app will suggest, so moving more is the better lever from here."
+          }
+        }
+      }
+    },
+    "nutrition.energy.floorApplied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The calculated target was below the level this app is willing to recommend, so it was raised to %@ kcal a day."
+          }
+        }
+      }
+    },
+    "nutrition.energy.maintenance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your target sits at maintenance, about %@ kcal a day."
+          }
+        }
+      }
+    },
+    "nutrition.energy.recomposition": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Building muscle while losing fat works best on a small deficit of about %@ kcal a day with plenty of protein, so your target is %@ kcal."
+          }
+        }
+      }
+    },
+    "nutrition.energy.surplus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gaining about %@ kg a week means eating around %@ kcal a day, roughly %@ kcal above maintenance."
+          }
+        }
+      }
+    },
+    "nutrition.energy.surplusCapped": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The surplus was capped at %@ kcal a day so more of what you gain is muscle rather than fat."
+          }
+        }
+      }
+    },
+    "nutrition.energy.tdee": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintenance works out at roughly %@ kcal a day, from your activity level and %@ training days a week."
+          }
+        }
+      }
+    },
+    "nutrition.macro.carbs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carbohydrate takes the remaining %@ g, which is what fuels your training."
+          }
+        }
+      }
+    },
+    "nutrition.macro.fat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fat is set at %@ g, about %@ of your calories."
+          }
+        }
+      }
+    },
+    "nutrition.macro.fatCompromise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fat was trimmed to %@ g so the macros fit inside your calorie target."
+          }
+        }
+      }
+    },
+    "nutrition.macro.fatFloor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fat was held at %@ g, the minimum this app will recommend for hormones and vitamin absorption."
+          }
+        }
+      }
+    },
+    "nutrition.macro.lowCalorieCompromise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "At this calorie level protein and fat alone fill the budget, so carbohydrate is set to zero. A slower pace would give you a more workable plan."
+          }
+        }
+      }
+    },
+    "nutrition.macro.protein": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein is set at %@ g, about %@ g per kg of body weight, which is the usual range for people who train."
+          }
+        }
+      }
+    },
+    "nutrition.macro.proteinAdjustedMass": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein is worked out from an adjusted body weight of %@ kg rather than your scale weight, which keeps the number realistic."
+          }
+        }
+      }
+    },
+    "nutrition.macro.proteinCompromise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein was trimmed to %@ g so that carbohydrate did not fall to nothing at this calorie level."
+          }
+        }
+      }
+    },
+    "nutrition.macro.proteinDeficit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein sits towards the top of that range because you are eating below maintenance, which helps protect muscle while you lose fat."
+          }
+        }
+      }
+    },
+    "oneRepMax.formula.average": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blended"
+          }
+        }
+      }
+    },
+    "oneRepMax.formula.brzycki": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brzycki"
+          }
+        }
+      }
+    },
+    "oneRepMax.formula.epley": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Epley"
+          }
+        }
+      }
+    },
+    "oneRepMax.formula.lombardi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lombardi"
+          }
+        }
+      }
+    },
     "pace.fast": {
       "extractionState": "manual",
       "localizations": {
@@ -3774,6 +9331,270 @@
         }
       }
     },
+    "program.version.clonedFrom": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied from %@"
+          }
+        }
+      }
+    },
+    "program.version.createdManually": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Program created"
+          }
+        }
+      }
+    },
+    "program.version.superseded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replaced by a newer version of this program"
+          }
+        }
+      }
+    },
+    "programming.balance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push and pull volume are balanced across the week."
+          }
+        }
+      }
+    },
+    "programming.cardio.afterLifting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld conditioning block(s) a week, placed after your lifting as you asked."
+          }
+        }
+      }
+    },
+    "programming.cardio.separate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld conditioning session(s) a week, kept separate from your lifting as you asked."
+          }
+        }
+      }
+    },
+    "programming.extended": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld set(s) were added because your sessions had time to spare."
+          }
+        }
+      }
+    },
+    "programming.fallback.bodyweight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some slots fall back to bodyweight exercises, because nothing else in your equipment fits them."
+          }
+        }
+      }
+    },
+    "programming.fallback.group": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some muscle groups are trained indirectly, because your equipment cannot reach them directly."
+          }
+        }
+      }
+    },
+    "programming.priority": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld muscle group(s) you prioritised get extra sets and an earlier slot in the session."
+          }
+        }
+      }
+    },
+    "programming.rationale.accessory": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accessory work to finish the muscle off once the heavy lifting is done."
+          }
+        }
+      }
+    },
+    "programming.rationale.cardio": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conditioning, placed after lifting so it does not blunt your strength work."
+          }
+        }
+      }
+    },
+    "programming.rationale.core": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Core work, kept to the end so it does not compromise your bracing on the big lifts."
+          }
+        }
+      }
+    },
+    "programming.rationale.locked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You locked this exercise, so it stays exactly where you put it."
+          }
+        }
+      }
+    },
+    "programming.rationale.primary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The main lift for this muscle, placed first while you are freshest."
+          }
+        }
+      }
+    },
+    "programming.rationale.priority": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extra work for a muscle group you asked to prioritise."
+          }
+        }
+      }
+    },
+    "programming.rationale.secondaryCompound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A second compound to add volume from a different angle."
+          }
+        }
+      }
+    },
+    "programming.rationale.substituteGroup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A stand-in for a muscle group your available equipment cannot train directly."
+          }
+        }
+      }
+    },
+    "programming.trimmed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld set(s) were removed so each session fits inside your %lld-minute limit."
+          }
+        }
+      }
+    },
+    "programming.volume": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Around %lld hard sets a week for each major muscle group."
+          }
+        }
+      }
+    },
+    "programming.volume.age": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volume is set a little more conservatively to leave more room for recovery."
+          }
+        }
+      }
+    },
+    "programming.volume.deload": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is a deload week, so volume is deliberately reduced."
+          }
+        }
+      }
+    },
+    "programming.volume.fatigue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volume is trimmed slightly because your recent sessions and check-ins suggest you are still recovering."
+          }
+        }
+      }
+    },
+    "programming.volume.timeCapped": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volume is capped by the time you have: %lld sessions of up to %lld minutes."
+          }
+        }
+      }
+    },
     "progression.doubleProgression": {
       "extractionState": "manual",
       "localizations": {
@@ -3792,6 +9613,380 @@
           "stringUnit": {
             "state": "translated",
             "value": "Add reps to the top of the range, then add weight"
+          }
+        }
+      }
+    },
+    "progression.explain.addReps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep %@ at %@ and work towards %@ reps on every set. Your lowest set was %@ reps last time."
+          }
+        }
+      }
+    },
+    "progression.explain.addRepsUnloaded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %@, work towards %@ reps on every set. Your lowest set was %@ reps last time."
+          }
+        }
+      }
+    },
+    "progression.explain.addSet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep %@ at %@ and add a set, for %@ working sets. This plan adds volume before it adds load."
+          }
+        }
+      }
+    },
+    "progression.explain.addSetDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a set on %@, for %@ sets of %@ to %@ seconds."
+          }
+        }
+      }
+    },
+    "progression.explain.addSetUnloaded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a set on %@, for %@ sets of %@ to %@ reps. There is no load to add, so volume is the next step."
+          }
+        }
+      }
+    },
+    "progression.explain.atMinimumLoad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat %@ at %@. That is the lightest this movement goes, so build reps here or switch to an easier variation."
+          }
+        }
+      }
+    },
+    "progression.explain.bankBeforeBigJump": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping %@ at %@ for one more session. The smallest step available is %@, which is %@ percent of the current load, so it is worth banking another solid session first."
+          }
+        }
+      }
+    },
+    "progression.explain.bankSession": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keeping %@ at %@. You are %@ of %@ good sessions towards the next load increase."
+          }
+        }
+      }
+    },
+    "progression.explain.calibrate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run one set of %@ at a load you can control, then rate how it felt. We will set the working load from your answer."
+          }
+        }
+      }
+    },
+    "progression.explain.deload": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deload week: %@ drops from %@ to %@, and from %@ to %@ sets. A lighter week now protects the next block."
+          }
+        }
+      }
+    },
+    "progression.explain.deloadEasy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deload week: keep %@ comfortable and finish every set well short of failure."
+          }
+        }
+      }
+    },
+    "progression.explain.deloadLoadOnly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deload week: %@ drops from %@ to %@. A lighter week now protects the next block."
+          }
+        }
+      }
+    },
+    "progression.explain.deloadUnloaded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deload week: %@ drops from %@ to %@ sets. A lighter week now protects the next block."
+          }
+        }
+      }
+    },
+    "progression.explain.extendDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ moves up to %@ to %@ seconds a set. You held %@ seconds on every set last session."
+          }
+        }
+      }
+    },
+    "progression.explain.extendReps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ moves up to %@ to %@ reps. You reached %@ reps on every set last session."
+          }
+        }
+      }
+    },
+    "progression.explain.holdDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep %@ at %@ to %@ seconds a set. You held %@ seconds last time, so there is still room inside the target."
+          }
+        }
+      }
+    },
+    "progression.explain.increasedLoad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increased %@ from %@ to %@ after %@ sessions of %@ sets at %@ reps or more, with at least %@ reps in reserve."
+          }
+        }
+      }
+    },
+    "progression.explain.increasedLoadDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increased %@ from %@ to %@ because you held every set to %@ seconds. The clock restarts at the bottom of the range."
+          }
+        }
+      }
+    },
+    "progression.explain.increasedLoadSingle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increased %@ from %@ to %@ because you completed all %@ sets at %@ reps or more, with at least %@ reps in reserve."
+          }
+        }
+      }
+    },
+    "progression.explain.lighterThanPlanned": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat %@ at %@. Last session was logged at %@, below the planned load, so it does not tell us whether the plan is right."
+          }
+        }
+      }
+    },
+    "progression.explain.maintain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat %@ at %@ for %@ to %@ reps. One session short of the target is not a trend, so nothing changes yet."
+          }
+        }
+      }
+    },
+    "progression.explain.maintainDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat %@ at %@ to %@ seconds a set. One session short of the target is not a trend, so nothing changes yet."
+          }
+        }
+      }
+    },
+    "progression.explain.maintainUnloaded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat %@ at %@ to %@ reps. One session short of the target is not a trend, so nothing changes yet."
+          }
+        }
+      }
+    },
+    "progression.explain.noData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No completed sets recorded for %@ yet, so the prescription stays as it is."
+          }
+        }
+      }
+    },
+    "progression.explain.outgrown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is at %@ sets of %@ reps, the most this plan programs without load. Add weight or move to a harder variation."
+          }
+        }
+      }
+    },
+    "progression.explain.outgrownDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is at %@ sets of %@ seconds, the most this plan programs. Add weight or move to a harder variation."
+          }
+        }
+      }
+    },
+    "progression.explain.reducedDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ moves back to %@ to %@ seconds a set. You held %@ seconds last session, so the target was too long."
+          }
+        }
+      }
+    },
+    "progression.explain.reducedLoad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduced %@ from %@ to %@ after two sessions short of %@ reps. Build back up from here."
+          }
+        }
+      }
+    },
+    "progression.explain.reducedLoadDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduced %@ from %@ to %@ after two sessions short of %@ seconds."
+          }
+        }
+      }
+    },
+    "progression.explain.reducedLoadRIR": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduced %@ from %@ to %@. You finished with %@ reps in reserve against a target of %@, which is closer to failure than this plan intends."
+          }
+        }
+      }
+    },
+    "progression.explain.reducedLoadStall": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduced %@ from %@ to %@ after %@ sessions without progress. A small step back gives you room for a clean run at it."
+          }
+        }
+      }
+    },
+    "progression.explain.reducedReps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ moves back to %@ to %@ reps. You managed %@ reps last session, so the target was too high."
+          }
+        }
+      }
+    },
+    "progression.explain.startDuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start %@ at %@ to %@ seconds a set. We will adjust from what you log."
+          }
+        }
+      }
+    },
+    "progression.explain.startReps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start %@ at %@ to %@ reps a set. We will adjust from what you log."
           }
         }
       }
@@ -3880,6 +10075,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "Add sets before adding load"
+          }
+        }
+      }
+    },
+    "progressionAction.addReps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add reps"
+          }
+        }
+      }
+    },
+    "progressionAction.calibrate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrate"
+          }
+        }
+      }
+    },
+    "progressionAction.deload": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deload"
+          }
+        }
+      }
+    },
+    "progressionAction.increaseLoad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increase load"
+          }
+        }
+      }
+    },
+    "progressionAction.maintain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold steady"
+          }
+        }
+      }
+    },
+    "progressionAction.reduceLoad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduce load"
           }
         }
       }
@@ -4016,6 +10277,270 @@
         }
       }
     },
+    "recovery.summary.fresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing is holding you back today. Train as planned."
+          }
+        }
+      }
+    },
+    "recovery.summary.low.groups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Several muscle groups are still carrying a lot of fatigue. An easier session is the sensible choice."
+          }
+        }
+      }
+    },
+    "recovery.summary.low.systemic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Readiness is low right now. Keeping today light is the sensible choice."
+          }
+        }
+      }
+    },
+    "recovery.summary.moderate.groups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partly recovered. Some muscle groups are still carrying fatigue from recent work."
+          }
+        }
+      }
+    },
+    "recovery.summary.moderate.systemic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partly recovered. Overall readiness is a little below your usual."
+          }
+        }
+      }
+    },
+    "recovery.summary.ready": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recovery looks good for a full session."
+          }
+        }
+      }
+    },
+    "repo.error.fetchFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your data could not be read just now. Try again."
+          }
+        }
+      }
+    },
+    "repo.error.notEditable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This item comes from the built-in database and cannot be edited. Duplicate it to make your own version."
+          }
+        }
+      }
+    },
+    "repo.error.notFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That item is no longer available."
+          }
+        }
+      }
+    },
+    "repo.error.saveFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That change could not be saved. Try again."
+          }
+        }
+      }
+    },
+    "repo.error.snapshotCodingFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The program history entry could not be stored."
+          }
+        }
+      }
+    },
+    "repo.error.stillReferenced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This food is used in %@ saved meals or recipes. Delete it anyway?"
+          }
+        }
+      }
+    },
+    "reset.confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete everything"
+          }
+        }
+      }
+    },
+    "reset.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All data has been deleted."
+          }
+        }
+      }
+    },
+    "reset.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This deletes your profile, programs, training history and nutrition log from this device. Export a backup first if you want to keep any of it."
+          }
+        }
+      }
+    },
+    "reset.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset all data"
+          }
+        }
+      }
+    },
+    "selection.blocked.alreadyInSession": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Already in this session"
+          }
+        }
+      }
+    },
+    "selection.blocked.avoidedPattern": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You chose to avoid this movement"
+          }
+        }
+      }
+    },
+    "selection.blocked.equipment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs equipment you do not have"
+          }
+        }
+      }
+    },
+    "selection.blocked.excluded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You removed this exercise"
+          }
+        }
+      }
+    },
+    "selection.blocked.limitation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Does not fit the movement limits you set"
+          }
+        }
+      }
+    },
+    "selection.blocked.neverRecommend": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You asked not to see this again"
+          }
+        }
+      }
+    },
+    "selection.blocked.notLoadable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This slot needs an exercise you can load with weight"
+          }
+        }
+      }
+    },
+    "selection.blocked.stretch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A stretch, not a working exercise"
+          }
+        }
+      }
+    },
     "servingUnit.g": {
       "extractionState": "manual",
       "localizations": {
@@ -4056,6 +10581,512 @@
           "stringUnit": {
             "state": "translated",
             "value": "Serving"
+          }
+        }
+      }
+    },
+    "session.title.activeRecovery": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active Recovery"
+          }
+        }
+      }
+    },
+    "session.title.activeRecovery.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active Recovery A"
+          }
+        }
+      }
+    },
+    "session.title.activeRecovery.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active Recovery B"
+          }
+        }
+      }
+    },
+    "session.title.fullBody": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body"
+          }
+        }
+      }
+    },
+    "session.title.fullBody.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body A"
+          }
+        }
+      }
+    },
+    "session.title.fullBody.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body B"
+          }
+        }
+      }
+    },
+    "session.title.fullBody.c": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body C"
+          }
+        }
+      }
+    },
+    "session.title.fullBody.d": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body D"
+          }
+        }
+      }
+    },
+    "session.title.fullBody.e": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body E"
+          }
+        }
+      }
+    },
+    "session.title.fullBody.f": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body F"
+          }
+        }
+      }
+    },
+    "session.title.legs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legs"
+          }
+        }
+      }
+    },
+    "session.title.legs.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legs A"
+          }
+        }
+      }
+    },
+    "session.title.legs.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legs B"
+          }
+        }
+      }
+    },
+    "session.title.legs.c": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legs C"
+          }
+        }
+      }
+    },
+    "session.title.lower": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower Body"
+          }
+        }
+      }
+    },
+    "session.title.lower.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower Body A"
+          }
+        }
+      }
+    },
+    "session.title.lower.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower Body B"
+          }
+        }
+      }
+    },
+    "session.title.lower.c": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower Body C"
+          }
+        }
+      }
+    },
+    "session.title.lower.d": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower Body D"
+          }
+        }
+      }
+    },
+    "session.title.posteriorChain": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posterior Chain"
+          }
+        }
+      }
+    },
+    "session.title.posteriorChain.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posterior Chain A"
+          }
+        }
+      }
+    },
+    "session.title.posteriorChain.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posterior Chain B"
+          }
+        }
+      }
+    },
+    "session.title.pull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull"
+          }
+        }
+      }
+    },
+    "session.title.pull.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull A"
+          }
+        }
+      }
+    },
+    "session.title.pull.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull B"
+          }
+        }
+      }
+    },
+    "session.title.pull.c": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull C"
+          }
+        }
+      }
+    },
+    "session.title.push": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push"
+          }
+        }
+      }
+    },
+    "session.title.push.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push A"
+          }
+        }
+      }
+    },
+    "session.title.push.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push B"
+          }
+        }
+      }
+    },
+    "session.title.push.c": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push C"
+          }
+        }
+      }
+    },
+    "session.title.rest": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rest Day"
+          }
+        }
+      }
+    },
+    "session.title.shouldersArms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulders & Arms"
+          }
+        }
+      }
+    },
+    "session.title.shouldersArms.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulders & Arms A"
+          }
+        }
+      }
+    },
+    "session.title.shouldersArms.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulders & Arms B"
+          }
+        }
+      }
+    },
+    "session.title.specialisation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Priority Focus"
+          }
+        }
+      }
+    },
+    "session.title.specialisation.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Priority Focus A"
+          }
+        }
+      }
+    },
+    "session.title.specialisation.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Priority Focus B"
+          }
+        }
+      }
+    },
+    "session.title.torso": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torso"
+          }
+        }
+      }
+    },
+    "session.title.torso.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torso A"
+          }
+        }
+      }
+    },
+    "session.title.torso.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torso B"
+          }
+        }
+      }
+    },
+    "session.title.upper": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper Body"
+          }
+        }
+      }
+    },
+    "session.title.upper.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper Body A"
+          }
+        }
+      }
+    },
+    "session.title.upper.b": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper Body B"
+          }
+        }
+      }
+    },
+    "session.title.upper.c": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper Body C"
+          }
+        }
+      }
+    },
+    "session.title.upper.d": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper Body D"
+          }
+        }
+      }
+    },
+    "session.untitled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout"
           }
         }
       }
@@ -4254,6 +11285,688 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prefer not to say"
+          }
+        }
+      }
+    },
+    "split.custom": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom plan"
+          }
+        }
+      }
+    },
+    "split.fourWay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Four-Way Split"
+          }
+        }
+      }
+    },
+    "split.fullBody": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body"
+          }
+        }
+      }
+    },
+    "split.posteriorEmphasis": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posterior Chain Emphasis"
+          }
+        }
+      }
+    },
+    "split.pplUpperLower": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push / Pull / Legs + Upper / Lower"
+          }
+        }
+      }
+    },
+    "split.pushPullLegs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push / Pull / Legs"
+          }
+        }
+      }
+    },
+    "split.reason.activeRecovery": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Six hard days is the practical ceiling, so the %lldth is light conditioning and core work."
+          }
+        }
+      }
+    },
+    "split.reason.fourWay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A four-way split across %lld days: enough sessions to separate the heavy work from the accessory work."
+          }
+        }
+      }
+    },
+    "split.reason.fullBody": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full-body sessions %lld times a week: with this many days, training every muscle each session gives each one the most frequency."
+          }
+        }
+      }
+    },
+    "split.reason.posteriorEmphasis": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A posterior-chain-led split across %lld days: your back, glutes and hamstrings get the first, freshest session of the cycle."
+          }
+        }
+      }
+    },
+    "split.reason.pplUpperLower": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push, pull and legs plus an upper/lower block across %lld days: it fits a second pass at every muscle into the week."
+          }
+        }
+      }
+    },
+    "split.reason.pushPullLegs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push, pull and legs across %lld days: grouping muscles that work together means less overlap between sessions and more recovery for each."
+          }
+        }
+      }
+    },
+    "split.reason.specialisation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A %lld-day split with a dedicated day for the muscles you want to prioritise."
+          }
+        }
+      }
+    },
+    "split.reason.torsoArmsLegs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torso, shoulders and arms, then legs across %lld days: it gives the smaller muscles their own session instead of tacking them onto a long one."
+          }
+        }
+      }
+    },
+    "split.reason.upperLower": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An upper/lower split across %lld days: it hits every muscle twice a week while keeping each session a sensible length."
+          }
+        }
+      }
+    },
+    "split.reason.upperLowerFull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper, lower and a full-body day across %lld days: the extra full-body session tops up frequency without adding a fourth training day."
+          }
+        }
+      }
+    },
+    "split.specialisation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Specialisation Split"
+          }
+        }
+      }
+    },
+    "split.torsoArmsLegs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torso / Shoulders & Arms / Legs"
+          }
+        }
+      }
+    },
+    "split.upperLower": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper / Lower"
+          }
+        }
+      }
+    },
+    "split.upperLowerFull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper / Lower / Full Body"
+          }
+        }
+      }
+    },
+    "substitution.bodyweightOnly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bodyweight only"
+          }
+        }
+      }
+    },
+    "substitution.dislike": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I do not enjoy this one"
+          }
+        }
+      }
+    },
+    "substitution.easier": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make it easier"
+          }
+        }
+      }
+    },
+    "substitution.harder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make it harder"
+          }
+        }
+      }
+    },
+    "substitution.jointDiscomfort": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This bothers a joint"
+          }
+        }
+      }
+    },
+    "substitution.machineOccupied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Someone else is using it"
+          }
+        }
+      }
+    },
+    "substitution.machineUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The machine is not available"
+          }
+        }
+      }
+    },
+    "substitution.preferBarbell": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I would rather use a barbell"
+          }
+        }
+      }
+    },
+    "substitution.preferCable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I would rather use a cable"
+          }
+        }
+      }
+    },
+    "substitution.preferDumbbell": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I would rather use dumbbells"
+          }
+        }
+      }
+    },
+    "substitution.reason.differentEquipment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses different equipment"
+          }
+        }
+      }
+    },
+    "substitution.reason.differentFeel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A different movement to try"
+          }
+        }
+      }
+    },
+    "substitution.reason.differentPattern": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moves along a different path"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.band": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs only a band"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.barbell": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses a barbell"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.bodyweight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No equipment needed"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.cable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses a cable stack"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.dumbbell": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs only dumbbells"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.kettlebell": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs only a kettlebell"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.machine": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Machine guided, quick to set up"
+          }
+        }
+      }
+    },
+    "substitution.reason.equipment.weighted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bodyweight movement with added load"
+          }
+        }
+      }
+    },
+    "substitution.reason.familiar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have trained this before"
+          }
+        }
+      }
+    },
+    "substitution.reason.favorite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One of your favourites"
+          }
+        }
+      }
+    },
+    "substitution.reason.freeWeight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free weight version"
+          }
+        }
+      }
+    },
+    "substitution.reason.higherDifficulty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A more demanding variation"
+          }
+        }
+      }
+    },
+    "substitution.reason.lowerDifficulty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A less demanding variation"
+          }
+        }
+      }
+    },
+    "substitution.reason.moreStable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Easier to stabilise"
+          }
+        }
+      }
+    },
+    "substitution.reason.noMachineNeeded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No machine needed"
+          }
+        }
+      }
+    },
+    "substitution.reason.progressing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have been progressing on this"
+          }
+        }
+      }
+    },
+    "substitution.reason.sameMuscleGroup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Works the same muscle group"
+          }
+        }
+      }
+    },
+    "substitution.reason.samePattern": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same movement pattern"
+          }
+        }
+      }
+    },
+    "substitution.reason.sameTarget": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trains the same muscle"
+          }
+        }
+      }
+    },
+    "substitution.reason.sameTargetAndPattern": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same target muscle and movement pattern"
+          }
+        }
+      }
+    },
+    "substitution.reason.sameTargetAndPattern.core": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same target muscle and core pattern"
+          }
+        }
+      }
+    },
+    "substitution.reason.sameTargetAndPattern.legs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same target muscle and leg pattern"
+          }
+        }
+      }
+    },
+    "substitution.reason.sameTargetAndPattern.pull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same target muscle and pull pattern"
+          }
+        }
+      }
+    },
+    "substitution.reason.sameTargetAndPattern.push": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same target muscle and push pattern"
+          }
+        }
+      }
+    },
+    "substitution.reason.similarMovement": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A similar movement"
+          }
+        }
+      }
+    },
+    "substitution.reason.staple": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A well-known staple movement"
+          }
+        }
+      }
+    },
+    "substitution.reason.supported": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supported position"
+          }
+        }
+      }
+    },
+    "substitution.reason.unilateral": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trains one side at a time"
+          }
+        }
+      }
+    },
+    "substitution.sameMuscleDifferentExercise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same muscle, different exercise"
           }
         }
       }
@@ -4529,6 +12242,171 @@
           "stringUnit": {
             "state": "translated",
             "value": "Metric"
+          }
+        }
+      }
+    },
+    "validation.age.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter an age between %@ and %@ years."
+          }
+        }
+      }
+    },
+    "validation.bodyMass.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a weight between %@ and %@ kg."
+          }
+        }
+      }
+    },
+    "validation.collection.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add at least one item first."
+          }
+        }
+      }
+    },
+    "validation.energy.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a daily energy target between %@ and %@ kcal."
+          }
+        }
+      }
+    },
+    "validation.energyDensity.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter an energy value between %@ and %@ kcal per 100 g."
+          }
+        }
+      }
+    },
+    "validation.equipment.incrementRange": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter an increment between %@ and %@ kg."
+          }
+        }
+      }
+    },
+    "validation.equipment.ladderEmpty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add at least one weight to this list."
+          }
+        }
+      }
+    },
+    "validation.grams.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a weight in grams between %@ and %@."
+          }
+        }
+      }
+    },
+    "validation.height.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a height between %@ and %@ cm."
+          }
+        }
+      }
+    },
+    "validation.load.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a weight between %@ and %@ kg."
+          }
+        }
+      }
+    },
+    "validation.name.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a name."
+          }
+        }
+      }
+    },
+    "validation.name.tooLong": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use %@ characters or fewer."
+          }
+        }
+      }
+    },
+    "validation.number.notFinite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a number."
+          }
+        }
+      }
+    },
+    "validation.portion.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter an amount between %@ and %@."
+          }
+        }
+      }
+    },
+    "validation.servings.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a serving count between %@ and %@."
           }
         }
       }
