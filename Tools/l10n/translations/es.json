@@ -142,7 +142,7 @@
   "exercises.row.hint": "Abre el ejercicio",
   "exercises.row.lastPerformed": "Última vez %@",
   "exercises.row.timesPerformed": {
-    "one": "Hecho una vez",
+    "one": "Hecho %lld vez",
     "many": "Hecho %lld veces",
     "other": "Hecho %lld veces"
   },
@@ -2311,7 +2311,7 @@
   "settings.profile.targetWeight": "Peso objetivo",
   "settings.profile.addTargetWeight": "Añadir un peso objetivo",
   "settings.profile.removeTargetWeight": "Quitar el peso objetivo",
-  "settings.profile.bodyExplainer": "El peso puede ir de %@ y la altura de %@. Ambos alimentan tu objetivo de energía y todas las estimaciones de carga.",
+  "settings.profile.bodyExplainer": "El peso puede ser %@ y la altura %@. Ambos alimentan tu objetivo de energía y todas las estimaciones de carga.",
   "settings.profile.section.activity": "Actividad diaria",
   "settings.profile.activity": "Nivel de actividad",
   "settings.profile.activityExplainer": "Describe tu día fuera del gimnasio. Forge suma encima el trabajo de tus sesiones.",
