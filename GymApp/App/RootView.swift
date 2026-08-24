@@ -54,6 +54,7 @@ struct RootView: View {
             #endif
             await environment.bootstrap()
             await AppBootstrap.ensureBaselineRecords(in: modelContext)
+            await AppBootstrap.importFoodDatabase(container: environment.modelContainer)
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {
@@ -132,6 +133,29 @@ enum AppBootstrap {
             if context.hasChanges { try context.save() }
         } catch {
             AppLog.persistence.error("Baseline bootstrap failed: \(String(describing: error), privacy: .public)")
+        }
+    }
+
+    /// Ingests the bundled food database if it has changed since the last launch.
+    ///
+    /// Runs on `FoodDatabaseImporter`'s own executor — it is a `@ModelActor` with a private context
+    /// — so ~600 rows are written off the main thread and the first frame is never delayed by it.
+    /// The importer is idempotent and version-checked, so this is a cheap no-op on every launch
+    /// after the first, and a failure is logged rather than surfaced: the app is entirely usable
+    /// with only the user's own foods.
+    static func importFoodDatabase(container: ModelContainer) async {
+        let importer = FoodDatabaseImporter(modelContainer: container)
+        do {
+            let summary = try await importer.importIfNeeded()
+            if summary.didRun {
+                AppLog.nutrition.info(
+                    "Food database imported: version \(summary.version, privacy: .public), \(summary.inserted) added, \(summary.updated) updated, \(summary.removed) removed"
+                )
+            }
+        } catch {
+            AppLog.nutrition.error(
+                "Food database import failed: \(String(describing: error), privacy: .public)"
+            )
         }
     }
 }

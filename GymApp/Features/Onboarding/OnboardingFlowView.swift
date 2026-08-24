@@ -86,6 +86,9 @@ struct OnboardingFlowView: View {
                             .minimumTapTarget()
                     }
                     .accessibilityLabel(Text(L("common.back")))
+                    // The goals step offers a muscle group called "Back", so the label alone is
+                    // ambiguous — to a test, and to anyone navigating by name.
+                    .accessibilityIdentifier(OnboardingAccessibility.back)
                 } else {
                     Color.clear.frame(width: Metrics.minimumTapTarget, height: Metrics.minimumTapTarget)
                 }
@@ -114,6 +117,7 @@ struct OnboardingFlowView: View {
                             .minimumTapTarget()
                     }
                     .accessibilityLabel(Text(L("onboarding.action.skipStep")))
+                    .accessibilityIdentifier(OnboardingAccessibility.skip)
                 } else {
                     Color.clear.frame(width: Metrics.minimumTapTarget, height: Metrics.minimumTapTarget)
                 }
@@ -199,6 +203,9 @@ struct OnboardingFlowView: View {
             .buttonStyle(PrimaryButtonStyle())
             .disabled(!isPrimaryEnabled)
             .accessibilityHint(Text(primaryAccessibilityHint))
+            // The footer action changes label from step to step ("Next", "Build my program",
+            // "Start training"); a stable identifier is what makes it addressable throughout.
+            .accessibilityIdentifier(OnboardingAccessibility.primary)
         }
         .padding(.horizontal, Metrics.screenPadding)
         .padding(.top, Metrics.spacing12)
@@ -236,6 +243,17 @@ struct OnboardingFlowView: View {
             model.advance(context: modelContext)
         }
     }
+}
+
+/// Stable accessibility identifiers for the onboarding chrome.
+///
+/// Labels are for people and change with the language; identifiers are for machines and do not.
+/// Everything here is a control whose label is either ambiguous against page content or varies by
+/// step.
+enum OnboardingAccessibility {
+    static let back = "onboarding.back"
+    static let skip = "onboarding.skip"
+    static let primary = "onboarding.primary"
 }
 
 // MARK: - Shared step chrome

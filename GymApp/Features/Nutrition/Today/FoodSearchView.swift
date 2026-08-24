@@ -189,6 +189,7 @@ struct FoodSearchView: View {
                 .foregroundStyle(Color.appTextTertiary)
                 .accessibilityHidden(true)
             TextField(L("nutritionLog.search.placeholder"), text: $model.query)
+                .accessibilityIdentifier("nutritionLog.searchField")
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .submitLabel(.search)
@@ -395,6 +396,9 @@ struct FoodPickerRow: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel(accessibilityLabel)
             .accessibilityHint(L("nutritionLog.a11y.pickHint"))
+            // The spoken label is the food and its macros; the identifier is what makes "a result
+            // row" addressable regardless of which food happens to be showing.
+            .accessibilityIdentifier("nutritionLog.foodRow")
 
             if let onShowDetails {
                 Button(action: onShowDetails) {

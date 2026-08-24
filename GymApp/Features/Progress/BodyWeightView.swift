@@ -48,6 +48,10 @@ struct BodyWeightView: View {
                     Image(systemName: "plus.circle")
                 }
                 .accessibilityLabel(Text(L("progress.weight.add")))
+                // The empty state offers the same action with the same words, so the label alone
+                // matches two controls. Both keep the label a VoiceOver user expects; the
+                // identifiers are what tell them apart.
+                .accessibilityIdentifier("progress.weight.add.toolbar")
             }
         }
         .sheet(isPresented: $router.isPresentingWeightEntry) {
@@ -75,6 +79,7 @@ struct BodyWeightView: View {
                 Button(L("progress.weight.add")) {
                     router.isPresentingWeightEntry = true
                 }
+                .accessibilityIdentifier("progress.weight.add.empty")
                 .buttonStyle(PrimaryButtonStyle())
                 if model.isHealthEnabled {
                     healthImportButton

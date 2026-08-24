@@ -12,6 +12,20 @@ import XCTest
 /// answers one question and taps through the rest.
 final class OnboardingUITests: ForgeUITestCase {
 
+    // MARK: - Chrome
+
+    /// The footer action. Its label changes from step to step — "Get started", "Next",
+    /// "Build my program", "Start training" — so it is addressed by identifier.
+    private var onboardingPrimary: XCUIElement {
+        app.buttons["onboarding.primary"]
+    }
+
+    /// The header back control. Addressed by identifier because the goals step offers a muscle
+    /// group called "Back", and the label alone matches both.
+    private var onboardingBack: XCUIElement {
+        app.buttons["onboarding.back"]
+    }
+
     // MARK: - The whole flow
 
     func testCompletingOnboardingEndsOnTheMainTabBar() {
@@ -21,7 +35,7 @@ final class OnboardingUITests: ForgeUITestCase {
         buildTheProgram()
 
         awaitExistence(app.staticTexts[EN.Onboarding.summaryTitle], "The review step")
-        tap(app.buttons[EN.Onboarding.finish], "The Start training button")
+        tap(onboardingPrimary, "The Start training button")
 
         awaitMainTabBar()
         for title in EN.Tab.all {
@@ -60,13 +74,13 @@ final class OnboardingUITests: ForgeUITestCase {
     func testTheGoalsStepWillNotAdvanceUntilAGoalIsChosen() {
         launch(.newUser)
 
-        tap(app.buttons[EN.Onboarding.start], "The Get started button")
+        tap(onboardingPrimary, "The Get started button")
         awaitExistence(app.staticTexts[EN.Onboarding.basicsTitle], "The basics step")
-        tap(app.buttons[EN.Common.next], "Next on the basics step")
+        tap(onboardingPrimary, "Next on the basics step")
 
         awaitExistence(app.staticTexts[EN.Onboarding.goalsTitle], "The goals step")
 
-        let next = app.buttons[EN.Common.next]
+        let next = onboardingPrimary
         awaitExistence(next, "The Next button on the goals step")
         XCTAssertFalse(
             next.isEnabled,
@@ -91,17 +105,17 @@ final class OnboardingUITests: ForgeUITestCase {
     func testBackReturnsToThePreviousQuestionWithTheAnswerStillOnIt() {
         launch(.newUser)
 
-        tap(app.buttons[EN.Onboarding.start], "The Get started button")
+        tap(onboardingPrimary, "The Get started button")
         awaitExistence(app.staticTexts[EN.Onboarding.basicsTitle], "The basics step")
-        tap(app.buttons[EN.Common.next], "Next on the basics step")
+        tap(onboardingPrimary, "Next on the basics step")
 
         awaitExistence(app.staticTexts[EN.Onboarding.goalsTitle], "The goals step")
         tap(button(labelBeginningWith: EN.Onboarding.goalBuildMuscle), "The Build muscle goal")
 
-        tap(app.buttons[EN.Common.back], "The back button")
+        tap(onboardingBack, "The back button")
         awaitExistence(app.staticTexts[EN.Onboarding.basicsTitle], "The basics step after going back")
 
-        tap(app.buttons[EN.Common.next], "Next on the basics step, second time")
+        tap(onboardingPrimary, "Next on the basics step, second time")
         awaitExistence(app.staticTexts[EN.Onboarding.goalsTitle], "The goals step, second time")
 
         let goal = button(labelBeginningWith: EN.Onboarding.goalBuildMuscle)
@@ -123,7 +137,7 @@ final class OnboardingUITests: ForgeUITestCase {
             timeout: Timeout.launch,
             file: file, line: line
         )
-        tap(app.buttons[EN.Onboarding.start], "The Get started button", file: file, line: line)
+        tap(onboardingPrimary, "The Get started button", file: file, line: line)
 
         advance(past: EN.Onboarding.basicsTitle, file: file, line: line)
 
@@ -147,7 +161,7 @@ final class OnboardingUITests: ForgeUITestCase {
     /// screen and for Next to be usable.
     private func advance(past title: String, file: StaticString = #filePath, line: UInt = #line) {
         awaitExistence(app.staticTexts[title], "The '\(title)' step", file: file, line: line)
-        let next = app.buttons[EN.Common.next]
+        let next = onboardingPrimary
         awaitEnabled(next, "Next on the '\(title)' step", file: file, line: line)
         next.tap()
         // The container reuses one button for every step, so waiting for the *previous* title to go
@@ -157,7 +171,7 @@ final class OnboardingUITests: ForgeUITestCase {
 
     /// Runs the programming engine and waits for it to hand back a plan.
     private func buildTheProgram(file: StaticString = #filePath, line: UInt = #line) {
-        tap(app.buttons[EN.Onboarding.build], "The Build my program button", file: file, line: line)
+        tap(onboardingPrimary, "The Build my program button", file: file, line: line)
 
         let proceed = app.buttons[EN.Common.continue]
         awaitEnabled(

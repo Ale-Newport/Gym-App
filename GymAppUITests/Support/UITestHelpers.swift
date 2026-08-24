@@ -161,6 +161,8 @@ enum EN {
         /// See `NutritionUITests` for the defect this names.
         static let placeholder = "NutritionHubView"
         static let addFood = "Add food"
+        /// The portion editor's commit action, reached after choosing a food.
+        static let logFood = "Add to meal"
         static let eaten = "Eaten"
     }
 
@@ -431,35 +433,23 @@ class ForgeUITestCase: XCTestCase {
     func startWorkoutFromHome(file: StaticString = #filePath, line: UInt = #line) -> String {
         openTab(EN.Tab.home, file: file, line: line)
 
-        let candidates = [
-            EN.Home.resume,
-            EN.Home.start,
-            EN.Home.startLight,
-            EN.Home.trainAgain
-        ]
-
-        var chosen: XCUIElement?
-        var chosenTitle = ""
-        let found = waitUntil("today's card offers a way into a workout", timeout: Timeout.standard) {
-            for title in candidates {
-                let element = self.button(labelBeginningWith: title)
-                if element.exists {
-                    chosen = element
-                    chosenTitle = title
-                    return true
-                }
-            }
-            return false
+        // Home's today action is addressed by identifier: its spoken label names the session
+        // ("Start Upper A. 7 exercises · 23 sets · 62 min.") rather than repeating a generic verb,
+        // which is right for VoiceOver and useless for matching.
+        let action = app.buttons["home.todayAction"]
+        let appeared = waitUntil("today's card offers a way into a workout") {
+            action.exists && action.isEnabled
         }
-
         XCTAssertTrue(
-            found,
+            appeared,
             "Today's card on Home offered no way to start or resume a workout.",
             file: file, line: line
         )
-        guard let chosen else { return "" }
-        tap(chosen, "Today's call to action (\(chosenTitle))", file: file, line: line)
-        return chosenTitle
+        guard appeared else { return "" }
+        let title = action.label
+        if !action.isHittable { scrollIntoView(action) }
+        action.tap()
+        return title
     }
 
     /// The first time a movement is trained the app asks how the set felt before it starts resting.

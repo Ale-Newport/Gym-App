@@ -556,17 +556,21 @@ struct OnboardingSummaryView: View {
                     tint: .appRecovery
                 )
 
+                // Deliberately NO confirm button here. `OnboardingFlowView` pins one to the
+                // footer of every step, so putting a second identical "Start training" on this
+                // card gave the screen two primary actions with the same label — confusing to
+                // look at, ambiguous to VoiceOver, and impossible to address unambiguously in a
+                // test. The card explains what confirming does; the footer does it.
                 if let error = model.errorMessage {
                     // A failed write is the one thing that can stop the flow here, so it is answered
                     // in place with the action that retries it rather than an alert the user
                     // dismisses and then wonders about.
                     ErrorStateView(message: error, retryTitle: L("common.retry")) { confirm() }
                 } else {
-                    Button { confirm() } label: {
-                        Text(L("onboarding.action.finish"))
-                    }
-                    .buttonStyle(PrimaryButtonStyle())
-                    .accessibilityHint(Text(L("onboarding.summary.confirm.hint")))
+                    Text(L("onboarding.summary.confirm.hint"))
+                        .font(.footnote)
+                        .foregroundStyle(Color.appTextTertiary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
         }

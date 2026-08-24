@@ -114,14 +114,37 @@ struct NutritionRepository: Repository {
         var descriptor = FetchDescriptor<FoodItem>(
             sortBy: [SortDescriptor(\.timesLogged, order: .reverse), SortDescriptor(\.name, order: .forward)]
         )
-        if !trimmed.isEmpty {
-            descriptor.predicate = #Predicate { food in
-                food.name.localizedStandardContains(trimmed)
-                    || (food.brand ?? "").localizedStandardContains(trimmed)
-            }
+        guard !trimmed.isEmpty else {
+            descriptor.fetchLimit = max(0, limit)
+            return try fetch(descriptor)
         }
+
+        // The name match runs in the store, where it is indexed. The brand match does not.
+        //
+        // `(food.brand ?? "").localizedStandardContains(trimmed)` compiles, but SwiftData cannot
+        // translate the nil-coalescing into SQL and the fetch throws at runtime with
+        // "unimplemented SQL generation for predicate: (TERNARY(brand != nil, brand, "") CONTAINS…)".
+        // Every food search in the app failed silently because of it. Brands are therefore matched
+        // in memory over a bounded second fetch of the rows that actually have one — a few hundred
+        // at most, and only for queries the name pass did not already satisfy.
+        descriptor.predicate = #Predicate { $0.name.localizedStandardContains(trimmed) }
         descriptor.fetchLimit = max(0, limit)
-        return try fetch(descriptor)
+        let byName = try fetch(descriptor)
+        if byName.count >= limit { return byName }
+
+        var brandDescriptor = FetchDescriptor<FoodItem>(
+            predicate: #Predicate { $0.brand != nil },
+            sortBy: [
+                SortDescriptor(\.timesLogged, order: .reverse),
+                SortDescriptor(\.name, order: .forward)
+            ]
+        )
+        brandDescriptor.fetchLimit = 400
+        let seen = Set(byName.map(\.id))
+        let byBrand = try fetch(brandDescriptor).filter { food in
+            !seen.contains(food.id) && (food.brand?.localizedStandardContains(trimmed) ?? false)
+        }
+        return Array((byName + byBrand).prefix(max(0, limit)))
     }
 
     /// Exact barcode lookup, for the scanner.

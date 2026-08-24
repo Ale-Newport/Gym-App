@@ -1,5 +1,17 @@
 import SwiftUI
 
+/// Stable accessibility identifiers for Home's primary controls.
+///
+/// Their spoken labels are deliberately contextual — "Start Upper A. 7 exercises · 23 sets" is far
+/// more useful to a VoiceOver user than "Start workout" — which is exactly why they need a handle
+/// that does not change with the content.
+enum HomeAccessibility {
+    /// Whichever action today's card currently offers: start, resume, train again, light session,
+    /// or create a program. One slot, one identifier.
+    static let todayAction = "home.todayAction"
+}
+
+
 /// The dashboard's centre of gravity: what the user is meant to do today, and one button to do it.
 ///
 /// Five states, one call to action each. The button is deliberately the widest, tallest thing on
@@ -75,6 +87,10 @@ struct TodaySessionCard: View {
             plan.title,
             metadataLine(exercises: plan.exerciseCount, sets: plan.setCount, minutes: plan.estimatedMinutes)
         )))
+        // The spoken label names the session ("Start Upper A. 7 exercises…"), which is what a
+        // VoiceOver user wants and what makes the control unaddressable by name. The identifier is
+        // the stable handle.
+        .accessibilityIdentifier(HomeAccessibility.todayAction)
 
         Button(L("home.today.viewProgram"), action: onViewProgram)
             .buttonStyle(SecondaryButtonStyle())
@@ -114,6 +130,7 @@ struct TodaySessionCard: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .accessibilityLabel(Text("\(L("home.today.resume")), \(session.title)"))
+        .accessibilityIdentifier(HomeAccessibility.todayAction)
     }
 
     // MARK: - Completed
@@ -156,6 +173,7 @@ struct TodaySessionCard: View {
             .buttonStyle(PrimaryButtonStyle(tint: .appAccent, isProminent: false))
 
         Button(L("home.today.trainAgain"), action: onStartLight)
+            .accessibilityIdentifier(HomeAccessibility.todayAction)
             .buttonStyle(SecondaryButtonStyle())
             .disabled(isBusy)
     }
@@ -192,6 +210,7 @@ struct TodaySessionCard: View {
         }
 
         Button(L("home.today.startLight"), action: onStartLight)
+            .accessibilityIdentifier(HomeAccessibility.todayAction)
             .buttonStyle(PrimaryButtonStyle(tint: .appRecovery, isProminent: false))
             .disabled(isBusy)
 
@@ -243,6 +262,7 @@ struct TodaySessionCard: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(isBusy)
+        .accessibilityIdentifier(HomeAccessibility.todayAction)
     }
 
     // MARK: - Pieces

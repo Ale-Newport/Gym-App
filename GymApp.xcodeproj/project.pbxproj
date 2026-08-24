@@ -102,6 +102,7 @@
 		62CF8C57EEA288EFEAD84D36 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E86BFAA1045266AF73233AE /* SettingsView.swift */; };
 		6406AF69B1A045FFB252BD2B /* ProgramEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449CCB5E5ABCB66F00EF190D /* ProgramEditorView.swift */; };
 		65376AC7FC983002EEE0B0CF /* StreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7401A4F74FA7AC7B8C1AF2AD /* StreakView.swift */; };
+		655C4572785D7F7EC0C08F7B /* FoodDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80AB040235075EE0D90BF8E /* FoodDatabaseTests.swift */; };
 		67CB9AF49EAED89444742A68 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF340E042BB3C4BE6D6DA47 /* Exercise.swift */; };
 		67D340F1A040D189F27F7A9D /* NutritionRecommendationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E155FE8AC74CEAB4FD18AE /* NutritionRecommendationTests.swift */; };
 		68A75F5F79290F6C2838A9A5 /* ExerciseRecommendationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1AA930F05E2933AB0E66CB /* ExerciseRecommendationTests.swift */; };
@@ -465,6 +466,7 @@
 		D51EE3AEE0ECA7E7D9135DB7 /* ExerciseInstructionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseInstructionStore.swift; sourceTree = "<group>"; };
 		D5889E993CECDCF6984BBF40 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		D5A30BF6C8C6C5AFDB972426 /* ProgramVersionHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramVersionHistoryView.swift; sourceTree = "<group>"; };
+		D80AB040235075EE0D90BF8E /* FoodDatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDatabaseTests.swift; sourceTree = "<group>"; };
 		D8E569FC9F3DB3176693D501 /* WorkoutHubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHubViewModel.swift; sourceTree = "<group>"; };
 		D9C89CEDE62FFCE370858441 /* ExerciseRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRecommendationEngine.swift; sourceTree = "<group>"; };
 		D9CEA3C6D9D8172C5CF8638B /* LocalFoodDatabaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFoodDatabaseProvider.swift; sourceTree = "<group>"; };
@@ -548,6 +550,7 @@
 				1F061BF0EAA102AA5FC29608 /* ExerciseSearchIndexTests.swift */,
 				FEB5BBEA10936F05D3EB4E3C /* ExerciseSubstitutionTests.swift */,
 				4C5CDA9F080FE9B69501EC99 /* ExportImportTests.swift */,
+				D80AB040235075EE0D90BF8E /* FoodDatabaseTests.swift */,
 				3013D06A9DA72068B0EF7F59 /* LoadEstimatorTests.swift */,
 				AE3200A86E5DBE29782ECB04 /* MealRecommendationTests.swift */,
 				92BEA4B8AFBBADD423EE1BF6 /* NutritionAdjustmentTests.swift */,
@@ -1262,6 +1265,7 @@
 				A879A15E6C7C05F5FD3A2F99 /* ExerciseSearchIndexTests.swift in Sources */,
 				2EBAC532768BBEE423BA5276 /* ExerciseSubstitutionTests.swift in Sources */,
 				FD2AEF603D128C3528607108 /* ExportImportTests.swift in Sources */,
+				655C4572785D7F7EC0C08F7B /* FoodDatabaseTests.swift in Sources */,
 				3272BA991ECBA4B0EDB397BB /* LoadEstimatorTests.swift in Sources */,
 				47F97467C6412F59CD24379A /* MealRecommendationTests.swift in Sources */,
 				A16F13A59C21F4FC3822EC8D /* NutritionAdjustmentTests.swift in Sources */,

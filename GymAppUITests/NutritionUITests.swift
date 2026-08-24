@@ -28,42 +28,52 @@ final class NutritionUITests: ForgeUITestCase {
         XCTAssertFalse(
             app.staticTexts[EN.Nutrition.placeholder].exists,
             """
-            The Nutrition tab is showing the raw placeholder "\(EN.Nutrition.placeholder)". \
-            GymApp/Features/Nutrition/NutritionHubView.swift returns Text("NutritionHubView") \
-            instead of the day log, so none of the nutrition screens that exist \
-            (MacroRingsHeader, MealSectionView, WaterTrackerView, AddFoodFlowView) is reachable.
+            The Nutrition tab is showing the raw placeholder "\(EN.Nutrition.placeholder)", \
+            which means NutritionHubView has regressed to the development shell and none of the \
+            day log is reachable.
             """
         )
     }
 
-    /// PRODUCTION DEFECT — expected to fail.
-    ///
-    /// Flow: log a food item, watch the day totals move. There is no affordance to log a food item
-    /// anywhere in the app, because the screen that would carry it is not built.
+    /// The whole logging flow: open a meal, search the bundled database, pick a portion, and watch
+    /// the day's energy total move. This is the path a user walks several times a day, so it is the
+    /// one worth asserting end to end.
     func testLoggingAFoodItemChangesTodaysTotals() {
         launch(.emptyNutritionDay)
         openTab(EN.Tab.nutrition)
 
-        let addFood = button(labelBeginningWith: EN.Nutrition.addFood)
-        XCTAssertTrue(
-            addFood.waitForExistence(timeout: Timeout.standard),
-            """
-            The Nutrition tab offers no "Add food" control, so a food item cannot be logged and \
-            the day totals cannot be observed changing. AddFoodFlowView, FoodSearchView and \
-            PortionEditorView all exist but are only referenced from their own #Preview blocks.
-            """
-        )
-
-        // Everything past this point is unreachable today; it is written out so the test becomes a
-        // real assertion of the flow the moment the screen is wired up.
         let eaten = anyElement(labelBeginningWith: EN.Nutrition.eaten)
         awaitExistence(eaten, "Today's energy total")
         let before = eaten.label
 
+        let addFood = button(labelBeginningWith: EN.Nutrition.addFood)
+        awaitExistence(addFood, "An add-food control on one of the meal sections")
         tap(addFood, "The add food control")
-        tap(app.buttons.element(boundBy: 0), "The first food in the search results")
 
-        let changed = waitUntil("the day total changes") {
+        // The sheet opens on a source picker — Search, Recent, Favourites, Saved meals, Recipes,
+        // My foods — so the search source has to be chosen before there is a field to type in.
+        let searchSource = app.buttons["Search"]
+        awaitExistence(searchSource, "The Search source on the add-food sheet")
+        tap(searchSource, "The Search source")
+
+        // The bundled database answers offline, so a plain search is enough to reach a real food.
+        let search = app.textFields["nutritionLog.searchField"]
+        awaitExistence(search, "The food search field")
+        search.tap()
+        search.typeText("banana")
+
+        // Addressed by identifier: a row's spoken label is the food and its macros, which is right
+        // for VoiceOver and no use for matching "whatever came back first".
+        let result = app.buttons.matching(identifier: "nutritionLog.foodRow").firstMatch
+        awaitExistence(result, "A search result for banana", timeout: Timeout.engine)
+        tap(result, "The first food in the search results")
+
+        // The portion editor opens on a sensible default, so committing it is the common path.
+        let log = button(labelBeginningWith: EN.Nutrition.logFood)
+        awaitExistence(log, "The portion editor's log button", timeout: Timeout.engine)
+        tap(log, "The log button on the portion editor")
+
+        let changed = waitUntil("the day total changes", timeout: Timeout.engine) {
             let current = self.anyElement(labelBeginningWith: EN.Nutrition.eaten)
             return current.exists && current.label != before
         }
@@ -122,7 +132,9 @@ final class NutritionUITests: ForgeUITestCase {
             "The body weight screen's empty state"
         )
 
-        tap(app.buttons[EN.Progress.logBodyWeight], "The log body weight button")
+        // Two controls carry this label — the toolbar plus and the empty state's button — so the
+        // identifier is what picks one.
+        tap(app.buttons["progress.weight.add.empty"], "The log body weight button")
         awaitExistence(app.navigationBars[EN.Progress.logBodyWeight], "The weigh-in sheet")
 
         let save = app.navigationBars[EN.Progress.logBodyWeight].buttons[EN.Common.save]
