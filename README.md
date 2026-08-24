@@ -433,3 +433,18 @@ Scenarios: `newUser`, `freshProgram`, `seasonedUser`, `activeWorkout`, `emptyNut
    camera and notification usage strings are already in `project.yml`.
 7. `ITSAppUsesNonExemptEncryption` is already declared `false`.
 8. Note in review comments that the app gives fitness and nutrition *estimates*, not medical advice.
+
+### A note on download size
+
+The exercise animations are ~137 MB, which puts the built app around 234 MB. That is well inside
+the App Store's limits, but it is past the threshold where iOS asks before downloading over
+cellular. Three ways to bring it down, in order of effort:
+
+- **On-Demand Resources.** Tag the animations and download them on first use. The catalogue,
+  thumbnails and every screen already work without them — `AnimatedExerciseImage` falls back to the
+  thumbnail, and `EmptyExerciseMediaProvider` shows the app is usable with no artwork at all.
+- **Re-encode.** The GIFs are as the rights holder supplies them. HEIC sequences or short H.265
+  clips at the same 180×180 would cut this substantially, but check the licence terms first — the
+  media must stay at 180×180 and keep its attribution.
+- **Ship fewer.** Most of the 1,324 are variations. A curated subset with the rest fetched on demand
+  is a product decision the media layer already supports.
