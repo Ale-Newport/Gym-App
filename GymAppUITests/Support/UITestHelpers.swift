@@ -41,6 +41,21 @@ enum Timeout {
 ///
 /// Where a view offers an accessibility identifier these tests would use it instead. None of the
 /// production views set one today; see the suite summary for the list worth adding.
+/// The handful of Spanish strings the language test needs.
+///
+/// Only the language switch requires them: once the interface is in Spanish, matching by English
+/// label is exactly the thing that must stop working. Everything else in the suite runs in English.
+enum ES {
+    enum Tab {
+        static let home = "Inicio"
+    }
+
+    enum Settings {
+        static let title = "Ajustes"
+        static let language = "Idioma"
+    }
+}
+
 enum EN {
 
     enum Tab {

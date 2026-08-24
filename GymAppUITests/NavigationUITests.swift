@@ -134,17 +134,36 @@ final class NavigationUITests: ForgeUITestCase {
             "English stayed selected after Español was chosen, so two languages are marked at once."
         )
 
-        goBack(from: EN.Settings.language)
-        awaitExistence(app.navigationBars[EN.Settings.title], "Settings, after choosing a language")
-
-        let updatedRow = row(labelBeginningWith: EN.Settings.language)
-        awaitExistence(updatedRow, "The Language row after the change")
-        let changed = waitUntil("the Language row shows the new language") {
-            self.row(labelBeginningWith: EN.Settings.language).label.contains(EN.Settings.languageSpanish)
+        // From here the interface is genuinely in Spanish, so nothing may be matched by its English
+        // label any more — including the navigation bar this screen was pushed from. That is the
+        // whole point of the test, and it is why the assertions below are Spanish.
+        let spanishScreenTitle = waitUntil("the screen title switches to Spanish") {
+            self.app.navigationBars[ES.Settings.language].exists
         }
         XCTAssertTrue(
-            changed,
-            "Settings still reports the old language. The row reads: \(updatedRow.label)"
+            spanishScreenTitle,
+            "The language screen kept its English title after Español was chosen."
+        )
+
+        // Back out by the chevron rather than by a title, which has just changed underneath us.
+        let back = app.navigationBars.firstMatch.buttons.firstMatch
+        awaitExistence(back, "The back button on the language screen")
+        back.tap()
+
+        awaitExistence(
+            app.navigationBars[ES.Settings.title],
+            "Ajustes — Settings, in Spanish, after choosing a language"
+        )
+
+        let changed = waitUntil("the Language row shows the new language") {
+            self.row(labelBeginningWith: ES.Settings.language).exists
+        }
+        XCTAssertTrue(changed, "Settings still reports the old language.")
+
+        // And the change reaches the whole app, not just the screen that made it.
+        XCTAssertTrue(
+            tabButton(ES.Tab.home).waitForExistence(timeout: Timeout.standard),
+            "The tab bar kept its English titles after the language changed."
         )
     }
 
