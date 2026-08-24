@@ -17036,6 +17036,62 @@
         }
       }
     },
+    "nutritionLog.copyDay.emptyMessage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Once you have logged a few days, you can copy one across in a single tap."
+          }
+        }
+      }
+    },
+    "nutritionLog.copyDay.emptyTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing to copy yet"
+          }
+        }
+      }
+    },
+    "nutritionLog.copyDay.itemCount": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "nutritionLog.copyDay.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy a day"
+          }
+        }
+      }
+    },
     "nutritionLog.custom.barcode": {
       "extractionState": "manual",
       "localizations": {
@@ -17190,6 +17246,127 @@
         }
       }
     },
+    "nutritionLog.day.jumpToToday": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jump to today"
+          }
+        }
+      }
+    },
+    "nutritionLog.day.next": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next day"
+          }
+        }
+      }
+    },
+    "nutritionLog.day.previous": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous day"
+          }
+        }
+      }
+    },
+    "nutritionLog.disabled.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition settings"
+          }
+        }
+      }
+    },
+    "nutritionLog.disabled.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn it on to track calories, macros and micronutrients alongside your training."
+          }
+        }
+      }
+    },
+    "nutritionLog.disabled.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition is switched off"
+          }
+        }
+      }
+    },
+    "nutritionLog.empty.copyAnotherDay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy another day"
+          }
+        }
+      }
+    },
+    "nutritionLog.empty.copyYesterday": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy yesterday"
+          }
+        }
+      }
+    },
+    "nutritionLog.empty.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If today looks like a day you have already logged, copy it rather than typing it again."
+          }
+        }
+      }
+    },
+    "nutritionLog.empty.savedMeals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log a saved meal"
+          }
+        }
+      }
+    },
+    "nutritionLog.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing logged yet"
+          }
+        }
+      }
+    },
     "nutritionLog.energy.eaten": {
       "extractionState": "manual",
       "localizations": {
@@ -17333,6 +17510,17 @@
         }
       }
     },
+    "nutritionLog.loading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading your day…"
+          }
+        }
+      }
+    },
     "nutritionLog.macro.carbs": {
       "extractionState": "manual",
       "localizations": {
@@ -17432,6 +17620,61 @@
         }
       }
     },
+    "nutritionLog.menu.copyDay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy a day"
+          }
+        }
+      }
+    },
+    "nutritionLog.menu.micronutrients": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Micronutrients"
+          }
+        }
+      }
+    },
+    "nutritionLog.menu.recipes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recipes"
+          }
+        }
+      }
+    },
+    "nutritionLog.menu.savedMeals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved meals"
+          }
+        }
+      }
+    },
+    "nutritionLog.menu.targets": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calories and macros"
+          }
+        }
+      }
+    },
     "nutritionLog.micro.minerals": {
       "extractionState": "manual",
       "localizations": {
@@ -17483,6 +17726,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vitamins"
+          }
+        }
+      }
+    },
+    "nutritionLog.noTarget.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set targets"
+          }
+        }
+      }
+    },
+    "nutritionLog.noTarget.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calories and macros are estimated from your height, weight, age, activity and goal. You can change any of them afterwards."
+          }
+        }
+      }
+    },
+    "nutritionLog.noTarget.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set your daily targets"
           }
         }
       }
@@ -17715,6 +17991,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Makes %@ servings"
+          }
+        }
+      }
+    },
+    "nutritionLog.saveMeal.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Give it a name and you can log the whole thing again in one tap."
+          }
+        }
+      }
+    },
+    "nutritionLog.saveMeal.namePlaceholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meal name"
+          }
+        }
+      }
+    },
+    "nutritionLog.saveMeal.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save as a meal"
           }
         }
       }
@@ -18068,6 +18377,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Your foods"
+          }
+        }
+      }
+    },
+    "nutritionLog.suggestions.noTarget": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set your targets to get suggestions that fit your day."
+          }
+        }
+      }
+    },
+    "nutritionLog.suggestions.remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ and %@ of protein left today."
+          }
+        }
+      }
+    },
+    "nutritionLog.suggestions.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What to eat next"
           }
         }
       }

@@ -77,6 +77,27 @@ struct Micronutrients: Codable, Hashable, Sendable {
 
     static let unknown = Micronutrients()
 
+    // MARK: - Persistence
+
+    /// JSON encoding used by the SwiftData models that store a profile.
+    ///
+    /// Storing this type as a SwiftData *composite attribute* does not work: every field is
+    /// optional — which is the entire point, since a missing value is not zero — and a value whose
+    /// fields are all nil round-trips as `nil`, which then crashes on read with
+    /// "Could not cast value of type 'Swift.Optional<Any>' to 'Micronutrients'". Encoding to `Data`
+    /// keeps the unknown-versus-zero distinction intact and cannot degenerate.
+    var encodedForStorage: Data? {
+        guard self != .unknown else { return nil }
+        return try? JSONEncoder().encode(self)
+    }
+
+    /// Inverse of `encodedForStorage`. Absent or unreadable storage means "nothing is known",
+    /// which is the correct reading — never a profile full of zeroes.
+    static func decodeFromStorage(_ data: Data?) -> Micronutrients {
+        guard let data else { return .unknown }
+        return (try? JSONDecoder().decode(Micronutrients.self, from: data)) ?? .unknown
+    }
+
     /// Scales every *known* value; unknown values stay unknown.
     func scaled(by factor: Double) -> Micronutrients {
         var copy = self
@@ -264,7 +285,9 @@ final class FoodItem {
     var proteinGPer100: Double = 0
     var carbsGPer100: Double = 0
     var fatGPer100: Double = 0
-    var micronutrientsPer100: Micronutrients = Micronutrients.unknown
+    /// Backing storage. See `Micronutrients.encodedForStorage` for why this is `Data` and not a
+    /// composite attribute.
+    var micronutrientsPer100Storage: Data?
 
     /// Whether the basis is mass (g) or volume (ml).
     var basisUnit: ServingUnit = ServingUnit.grams
@@ -295,6 +318,12 @@ final class FoodItem {
     var source: FoodSource {
         get { FoodSource(rawValue: sourceRaw) ?? .custom }
         set { sourceRaw = newValue.rawValue }
+    }
+
+    /// Micronutrients per 100 g or 100 ml. Unknown nutrients stay unknown.
+    var micronutrientsPer100: Micronutrients {
+        get { Micronutrients.decodeFromStorage(micronutrientsPer100Storage) }
+        set { micronutrientsPer100Storage = newValue.encodedForStorage }
     }
 
     var macrosPer100: MacroNutrients {
@@ -367,12 +396,18 @@ final class FoodLogEntry {
     var servingIndex: Int?
     /// Nutrition captured at log time. History is immutable by design.
     var macrosSnapshot: MacroNutrients = MacroNutrients.zero
-    var micronutrientsSnapshot: Micronutrients = Micronutrients.unknown
+    var micronutrientsSnapshotStorage: Data?
     /// Set when the entry came from a saved meal or recipe, for grouping in the UI.
     var savedMealID: UUID?
     var recipeID: UUID?
 
     init() {}
+
+    /// Micronutrients captured at log time. Unknown nutrients stay unknown.
+    var micronutrientsSnapshot: Micronutrients {
+        get { Micronutrients.decodeFromStorage(micronutrientsSnapshotStorage) }
+        set { micronutrientsSnapshotStorage = newValue.encodedForStorage }
+    }
 }
 
 /// A remembered combination of foods, e.g. "usual breakfast".
@@ -458,9 +493,15 @@ final class DailyNutritionTarget {
     var rationaleArguments: [String] = []
     var isActive: Bool = true
     /// Optional per-micronutrient goals the user has set explicitly.
-    var micronutrientGoals: Micronutrients = Micronutrients.unknown
+    var micronutrientGoalsStorage: Data?
 
     init() {}
+
+    /// Per-micronutrient goals the user set explicitly. Absent means "no goal set".
+    var micronutrientGoals: Micronutrients {
+        get { Micronutrients.decodeFromStorage(micronutrientGoalsStorage) }
+        set { micronutrientGoalsStorage = newValue.encodedForStorage }
+    }
 
     var macros: MacroNutrients {
         MacroNutrients(kilocalories: kilocalories, proteinG: proteinG, carbsG: carbsG, fatG: fatG)

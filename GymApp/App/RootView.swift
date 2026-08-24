@@ -38,6 +38,11 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.25), value: environment.catalog.state)
         .animation(.easeInOut(duration: 0.25), value: isOnboarded)
         .preferredColorScheme(colorScheme)
+        // Routes incoming forge:// URLs from widgets and Shortcuts, drains anything an App Intent
+        // queued while the app was not running, and lends the live ModelContainer to the logging
+        // intents. Applied here because this is the highest view that has both the router and a
+        // model context.
+        .forgeExternalEntryPoints(router: router)
         .task {
             guard !didBootstrap else { return }
             didBootstrap = true
@@ -45,6 +50,7 @@ struct RootView: View {
             // Seeds a UI-test fixture before anything reads the store. No-op unless the launch
             // arguments ask for it, and compiled out of Release entirely.
             UITestLaunchSupport.prepareIfNeeded(context: modelContext)
+            if let tab = UITestLaunchSupport.initialTab { router.selectedTab = tab }
             #endif
             await environment.bootstrap()
             await AppBootstrap.ensureBaselineRecords(in: modelContext)

@@ -115,6 +115,11 @@ targets:
           - LogWaterIntent
           - OpenTodayWorkoutIntent
         ITSAppUsesNonExemptEncryption: false
+        CFBundleURLTypes:
+          - CFBundleURLName: com.gymapp.forge.deeplink
+            CFBundleTypeRole: Editor
+            CFBundleURLSchemes:
+              - forge
         CFBundleLocalizations:
           - en
           - es

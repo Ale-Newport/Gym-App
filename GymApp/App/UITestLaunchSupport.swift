@@ -36,6 +36,15 @@ enum UITestLaunchSupport {
         return PreviewSupport.Scenario(rawValue: arguments[arguments.index(after: index)])
     }
 
+    /// The tab the app should open on, when the tests want to start somewhere specific.
+    /// Saves every test that exercises a deep screen from tapping its way there first.
+    static var initialTab: AppTab? {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let index = arguments.firstIndex(of: "-uiTestInitialTab"),
+              arguments.index(after: index) < arguments.endIndex else { return nil }
+        return AppTab(rawValue: arguments[arguments.index(after: index)])
+    }
+
     /// Applies the launch arguments. Called once from `RootView` before anything else loads.
     static func prepareIfNeeded(context: ModelContext) {
         guard isRunningUITests else { return }
