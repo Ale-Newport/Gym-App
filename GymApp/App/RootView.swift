@@ -66,6 +66,10 @@ struct RootView: View {
             await environment.bootstrap()
             await AppBootstrap.ensureBaselineRecords(in: modelContext)
             await AppBootstrap.importFoodDatabase(container: environment.modelContainer)
+            // Seed the widget once the store is ready. Every meaningful change refreshes it
+            // afterwards, but without this a user who installs the app, adds the widget and has not
+            // yet finished a workout would keep seeing the placeholder.
+            environment.snapshotWriter.refresh(context: modelContext, catalog: environment.catalog)
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {
