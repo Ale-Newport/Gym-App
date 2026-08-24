@@ -683,12 +683,10 @@ struct ExerciseMetadataTotalityTests {
             let shouldBeEmpty = metadata.isStretch
                 || metadata.movementPattern == .cardio
                 || metadata.trackingMode == .distanceAndDuration
-            #expect(
-                metadata.volumeContribution.isEmpty == shouldBeEmpty,
-                "\(exercise.id) '\(exercise.name)' contributes \(metadata.volumeContribution) "
-                    + "(stretch: \(metadata.isStretch), pattern: \(metadata.movementPattern), "
-                    + "tracking: \(metadata.trackingMode))"
-            )
+            let detail = "\(exercise.id) '\(exercise.name)' contributes \(metadata.volumeContribution) "
+                + "(stretch: \(metadata.isStretch), pattern: \(metadata.movementPattern), "
+                + "tracking: \(metadata.trackingMode))"
+            #expect(metadata.volumeContribution.isEmpty == shouldBeEmpty, "\(detail)")
         }
     }
 

@@ -56,17 +56,33 @@ struct OneRepMaxCalculatorTests {
         #expect(abs(average - (epley + brzycki) / 2) < tolerance)
     }
 
-    @Test("Epley drifts high and Brzycki drifts low as reps climb")
+    @Test("The two formulas straddle each other either side of ten reps, which is why their mean is used")
     func theTwoFormulasErrInOppositeDirections() throws {
-        // The whole reason `.average` exists. At ten reps they coincide; either side of that they
-        // straddle the mean.
-        let epley = try #require(OneRepMaxCalculator.estimate(weightKg: 100, reps: 12, formula: .epley))
-        let brzycki = try #require(OneRepMaxCalculator.estimate(weightKg: 100, reps: 12, formula: .brzycki))
-        #expect(epley > brzycki)
+        // The whole reason `.average` exists: they cross at ten reps and disagree in opposite
+        // directions either side of it, so the mean is more stable than either alone.
+        for reps in 2...9 {
+            let epley = try #require(
+                OneRepMaxCalculator.estimate(weightKg: 100, reps: reps, formula: .epley)
+            )
+            let brzycki = try #require(
+                OneRepMaxCalculator.estimate(weightKg: 100, reps: reps, formula: .brzycki)
+            )
+            let average = try #require(OneRepMaxCalculator.estimate(weightKg: 100, reps: reps))
+            #expect(epley > brzycki, "the formulas did not straddle below ten reps, at \(reps)")
+            #expect(average < epley && average > brzycki)
+        }
 
-        let lowEpley = try #require(OneRepMaxCalculator.estimate(weightKg: 100, reps: 3, formula: .epley))
-        let lowBrzycki = try #require(OneRepMaxCalculator.estimate(weightKg: 100, reps: 3, formula: .brzycki))
-        #expect(lowEpley < lowBrzycki)
+        for reps in 11...12 {
+            let epley = try #require(
+                OneRepMaxCalculator.estimate(weightKg: 100, reps: reps, formula: .epley)
+            )
+            let brzycki = try #require(
+                OneRepMaxCalculator.estimate(weightKg: 100, reps: reps, formula: .brzycki)
+            )
+            let average = try #require(OneRepMaxCalculator.estimate(weightKg: 100, reps: reps))
+            #expect(epley < brzycki, "the formulas did not straddle above ten reps, at \(reps)")
+            #expect(average > epley && average < brzycki)
+        }
     }
 
     // MARK: - Bounds

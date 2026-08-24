@@ -172,7 +172,7 @@ struct NutritionRecommendationTests {
 
     @Test("A neutral goal is steered by a target weight more than 2 kg away")
     func targetWeightSteersANeutralGoal() {
-        let neutral = Self.profile(goals: [.generalFitness], targetWeightKg: nil)
+        let neutral = Self.profile(targetWeightKg: nil, goals: [.generalFitness])
         #expect(NutritionRecommendationEngine.resolvedDirection(for: neutral) == .maintenance)
 
         var wantsToLose = Self.profile(goals: [.generalFitness])

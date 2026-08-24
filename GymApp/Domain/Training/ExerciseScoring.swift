@@ -528,7 +528,12 @@ enum ExerciseScoring {
         _ difficulty: Difficulty,
         profile: TrainingProfileSnapshot
     ) -> Int {
-        let ceiling = max(0, min(2, profile.experience.maximumDifficulty.rank + techniqueShift(profile)))
+        // The floor is −1, not 0. Clamping at 0 made `.unfamiliar` a no-op for exactly the users it
+        // exists to protect: a beginner already has a ceiling of 0, so the −1 shift vanished and
+        // someone who told us they are unsure of their form was scored identically to someone
+        // confident. A ceiling of −1 reads as "even beginner movements are a stretch for you",
+        // which is what they said.
+        let ceiling = min(2, max(-1, profile.experience.maximumDifficulty.rank + techniqueShift(profile)))
         return max(0, difficulty.rank - ceiling)
     }
 

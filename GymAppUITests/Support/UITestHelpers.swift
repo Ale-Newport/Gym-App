@@ -161,12 +161,14 @@ enum EN {
         /// See `NutritionUITests` for the defect this names.
         static let placeholder = "NutritionHubView"
         static let addFood = "Add food"
+        static let eaten = "Eaten"
     }
 
     enum Exercises {
         static let title = "Exercises"
-        static let benchPress = "Barbell Bench Press"
         static let benchPressQuery = "barbell bench press"
+        static let addToToday = "Add to today's workout"
+        static let favourite = "Add to favourites"
     }
 }
 
@@ -295,28 +297,20 @@ class ForgeUITestCase: XCTestCase {
         XCTAssertTrue(enabled, "\(what) never became enabled.", file: file, line: line)
     }
 
-    /// Swipes the frontmost scrollable region until `element` can be tapped.
+    /// Scrolls the frontmost content up until `element` can be tapped.
+    ///
+    /// The swipe is sent to the application element rather than to a named scroll view: whatever is
+    /// under the middle of the screen receives it, which is the frontmost sheet when one is open and
+    /// the screen's own list otherwise. Naming a container instead would pick the paged workout
+    /// carousel out from behind a modal.
+    ///
+    /// Only upward swipes are performed. An element above the current scroll position is already
+    /// hittable on a freshly opened screen, and a downward drag near the top of a sheet dismisses it
+    /// rather than scrolling it.
     func scrollIntoView(_ element: XCUIElement, maxSwipes: Int = 10) {
-        let scroller: XCUIElement = {
-            let tables = app.tables.firstMatch
-            if tables.exists { return tables }
-            let collections = app.collectionViews.firstMatch
-            if collections.exists { return collections }
-            let scrollViews = app.scrollViews.firstMatch
-            if scrollViews.exists { return scrollViews }
-            return app
-        }()
-
         var swipes = 0
         while swipes < maxSwipes, element.exists, !element.isHittable {
-            scroller.swipeUp()
-            swipes += 1
-        }
-        guard !element.isHittable else { return }
-        // It may have been above the fold rather than below it.
-        swipes = 0
-        while swipes < maxSwipes, element.exists, !element.isHittable {
-            scroller.swipeDown()
+            app.swipeUp()
             swipes += 1
         }
     }
@@ -330,26 +324,26 @@ class ForgeUITestCase: XCTestCase {
     /// cards addressable without depending on the rest of the sentence.
     func anyElement(labelBeginningWith prefix: String) -> XCUIElement {
         app.descendants(matching: .any)
-            .matching(NSPredicate(format: "label BEGINSWITH %@", prefix))
+            .matching(NSPredicate(format: "label BEGINSWITH[c] %@", prefix))
             .firstMatch
     }
 
     func anyElement(labelContaining fragment: String) -> XCUIElement {
         app.descendants(matching: .any)
-            .matching(NSPredicate(format: "label CONTAINS %@", fragment))
+            .matching(NSPredicate(format: "label CONTAINS[c] %@", fragment))
             .firstMatch
     }
 
     func button(labelBeginningWith prefix: String) -> XCUIElement {
         app.buttons
-            .matching(NSPredicate(format: "label BEGINSWITH %@", prefix))
+            .matching(NSPredicate(format: "label BEGINSWITH[c] %@", prefix))
             .firstMatch
     }
 
     /// A row in a `List`. SwiftUI exposes those as buttons; a few land as cells instead, so both are
     /// tried before falling back to anything with the right label.
     func row(labelBeginningWith prefix: String) -> XCUIElement {
-        let predicate = NSPredicate(format: "label BEGINSWITH %@", prefix)
+        let predicate = NSPredicate(format: "label BEGINSWITH[c] %@", prefix)
         let asButton = app.buttons.matching(predicate).firstMatch
         if asButton.exists { return asButton }
         let asCell = app.cells.matching(predicate).firstMatch
@@ -357,15 +351,25 @@ class ForgeUITestCase: XCTestCase {
         return anyElement(labelBeginningWith: prefix)
     }
 
-    /// The first `staticText` whose value matches `pattern`, or `nil`.
+    /// The label of the first element matching `pattern`, or `nil`.
     ///
-    /// Used to read a count out of the interface — "92 readings" — so a test can assert the number
-    /// moved rather than asserting a literal that depends on the fixture's size.
+    /// Used to read a value out of the interface — "6 exercises · 22 sets" — so a test can assert
+    /// the shape of what a screen produced rather than a literal that depends on what the engine
+    /// happened to choose.
     func firstMatchingText(_ pattern: String) -> String? {
         let query = app.descendants(matching: .any)
-            .matching(NSPredicate(format: "label MATCHES %@", pattern))
+            .matching(NSPredicate(format: "label MATCHES[c] %@", pattern))
         guard query.count > 0 else { return nil }
         return query.element(boundBy: 0).label
+    }
+
+    /// Taps the leading item of the named navigation bar, which is its back button.
+    func goBack(from title: String, file: StaticString = #filePath, line: UInt = #line) {
+        let bar = app.navigationBars[title]
+        awaitExistence(bar, "The '\(title)' navigation bar", file: file, line: line)
+        let back = bar.buttons.element(boundBy: 0)
+        tap(back, "The back button on '\(title)'", file: file, line: line)
+        awaitDisappearance(bar, "The '\(title)' screen", file: file, line: line)
     }
 
     // MARK: Navigation

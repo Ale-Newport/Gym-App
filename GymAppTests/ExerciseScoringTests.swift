@@ -918,7 +918,8 @@ struct ExerciseScoreFactorTests {
 
         // The floor of 0.05 on fatigue cost is what stops the division by zero.
         let free = efficiency(stimulus: 0.5, fatigue: 0)
-        #expect(abs(free - (10.0 / 11.0)) < 1e-9)
+        let expectedFree: Double = 10.0 / 11.0
+        #expect(abs(free - expectedFree) < 1e-9)
 
         let nothing = efficiency(stimulus: 0, fatigue: 0)
         #expect(nothing == 0)
@@ -929,7 +930,8 @@ struct ExerciseScoreFactorTests {
 
         // A nearly-full session blends in the absolute cost.
         let blended = efficiency(stimulus: 0.5, fatigue: 0.5, favorLowFatigue: true)
-        #expect(abs(blended - (0.55 * 0.5 + 0.45 * 0.5)) < 1e-9)
+        let expectedBlend: Double = 0.55 * 0.5 + 0.45 * 0.5
+        #expect(abs(blended - expectedBlend) < 1e-9)
         let cheap = efficiency(stimulus: 0.5, fatigue: 0.1, favorLowFatigue: true)
         #expect(cheap > blended)
     }
@@ -1070,7 +1072,8 @@ struct ExerciseScoreFactorTests {
             isolation, request: SelectionFixture.request(mechanic: .compound)
         ).goalSuitability
 
-        #expect(abs(mismatched - open * 0.6) < 1e-9)
+        let expectedMismatch: Double = open * 0.6
+        #expect(abs(mismatched - expectedMismatch) < 1e-9)
         #expect(mismatched > 0)
     }
 
@@ -1164,8 +1167,9 @@ struct ExerciseScoreFactorTests {
         let plain = ExerciseScoring.score(servesNothingElse, request: request).secondaryUtility
 
         // The slot's own group drops out of the priority list, so biceps is the head of it and
-        // keeps the full rank of 1.0.
-        #expect(abs(helpful - (0.65 * 1.0 + 0.35 * min(1, 1.0 / 2))) < 1e-9)
+        // keeps the full rank of 1.0: 0.65 · best + 0.35 · min(1, Σ/2).
+        let expected: Double = 0.65 * 1.0 + 0.35 * 0.5
+        #expect(abs(helpful - expected) < 1e-9)
         #expect(plain == 0)
         #expect(helpful > plain)
     }
@@ -1182,7 +1186,9 @@ struct ExerciseScoreFactorTests {
         )
         let request = SelectionFixture.request(target: .chest)
 
-        #expect(abs(ExerciseScoring.score(compound, request: request).secondaryUtility - (1.0 / 1.5)) < 1e-9)
+        let expectedCoverage: Double = 1.0 / 1.5
+        let compoundUtility = ExerciseScoring.score(compound, request: request).secondaryUtility
+        #expect(abs(compoundUtility - expectedCoverage) < 1e-9)
         #expect(ExerciseScoring.score(isolation, request: request).secondaryUtility == 0)
     }
 

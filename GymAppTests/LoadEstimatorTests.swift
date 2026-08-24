@@ -55,7 +55,7 @@ struct LoadEstimatorTests {
         )
     }
 
-    private func estimate(
+    private func startingLoad(
         for exercise: Exercise,
         profile: TrainingProfileSnapshot = Fixtures.profile(),
         relatedHistories: [String: ExerciseHistorySnapshot] = [:],
@@ -115,7 +115,7 @@ struct LoadEstimatorTests {
             )],
             totalSessions: 8
         )
-        let estimate = try #require(estimate(
+        let estimate = try #require(startingLoad(
             for: barbellBench,
             relatedHistories: [barbellBench.id: history],
             catalog: [barbellBench],
@@ -132,7 +132,7 @@ struct LoadEstimatorTests {
     @Test("A seed the user's own numbers cannot support is clamped at four times body mass")
     func absurdSeedIsClampedBySanityCeiling() throws {
         let profile = Fixtures.profile(bodyWeightKg: 80)
-        let estimate = try #require(estimate(
+        let estimate = try #require(startingLoad(
             for: barbellBench,
             profile: profile,
             seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 1_000, reps: 1)]
@@ -143,7 +143,7 @@ struct LoadEstimatorTests {
 
     @Test("A seed with an impossible rep count is ignored rather than trusted")
     func unusableSeedFallsThroughToTheNextTier() throws {
-        let estimate = try #require(estimate(
+        let estimate = try #require(startingLoad(
             for: barbellBench,
             seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 100, reps: 0)]
         ))
@@ -163,7 +163,7 @@ struct LoadEstimatorTests {
             )],
             totalSessions: 4
         )
-        let estimate = try #require(estimate(
+        let estimate = try #require(startingLoad(
             for: dumbbellBench,
             relatedHistories: [barbellBench.id: history],
             catalog: [barbellBench, dumbbellBench]
@@ -189,7 +189,7 @@ struct LoadEstimatorTests {
             )],
             totalSessions: 4
         )
-        let estimate = try #require(estimate(
+        let estimate = try #require(startingLoad(
             for: barbellBench,
             relatedHistories: [barbellBench.id: history],
             catalog: [barbellBench]
@@ -211,7 +211,7 @@ struct LoadEstimatorTests {
                 )],
                 totalSessions: sessions
             )
-            return try #require(estimate(
+            return try #require(startingLoad(
                 for: barbellBench,
                 relatedHistories: [barbellBench.id: history],
                 catalog: [barbellBench]
@@ -237,7 +237,7 @@ struct LoadEstimatorTests {
             )],
             totalSessions: 40
         )
-        let estimate = try #require(estimate(
+        let estimate = try #require(startingLoad(
             for: barbellBench,
             relatedHistories: [barbellSquat.id: squatHistory],
             catalog: [barbellSquat, barbellBench]
@@ -259,9 +259,9 @@ struct LoadEstimatorTests {
                 totalSessions: 4
             )
         }
-        let first = estimate(for: dumbbellBench, relatedHistories: histories, catalog: catalog)
+        let first = startingLoad(for: dumbbellBench, relatedHistories: histories, catalog: catalog)
         for _ in 0..<20 {
-            #expect(estimate(for: dumbbellBench, relatedHistories: histories, catalog: catalog) == first)
+            #expect(startingLoad(for: dumbbellBench, relatedHistories: histories, catalog: catalog) == first)
         }
     }
 
@@ -271,7 +271,7 @@ struct LoadEstimatorTests {
     func nothingToGoOnDemandsCalibration() throws {
         // The worked example from the spec: 80 kg beginner male, barbell bench, 8 reps.
         // 0.55 × 80 = 44 kg 1RM → × 0.7975 = 35.1 → × 0.90 = 31.6 → 32.5 kg on the bar.
-        let estimate = try #require(estimate(
+        let estimate = try #require(startingLoad(
             for: barbellBench,
             profile: Fixtures.profile(experience: .beginner, biologicalSex: .male, bodyWeightKg: 80)
         ))
@@ -283,10 +283,10 @@ struct LoadEstimatorTests {
 
     @Test("Population data fits a novice better than an advanced lifter, and says so")
     func ratioTableConfidenceDropsPastBeginner() throws {
-        let novice = try #require(estimate(
+        let novice = try #require(startingLoad(
             for: barbellBench, profile: Fixtures.profile(experience: .never)
         ))
-        let advanced = try #require(estimate(
+        let advanced = try #require(startingLoad(
             for: barbellBench, profile: Fixtures.profile(experience: .advanced)
         ))
         #expect(novice.confidence == 0.45)
@@ -300,7 +300,7 @@ struct LoadEstimatorTests {
     @Test("Declining to state a sex lands between the two sex-specific constants")
     func unspecifiedSexTakesTheMidpoint() throws {
         func load(_ sex: BiologicalSex) throws -> Double {
-            try #require(estimate(
+            try #require(startingLoad(
                 for: barbellSquat,
                 profile: Fixtures.profile(experience: .beginner, biologicalSex: sex, bodyWeightKg: 80)
             )).weightKg
@@ -315,7 +315,7 @@ struct LoadEstimatorTests {
     @Test("A body weight outside 30–250 kg is a typo and is clamped")
     func absurdBodyWeightIsClamped() throws {
         func load(_ bodyWeightKg: Double) throws -> Double {
-            try #require(estimate(
+            try #require(startingLoad(
                 for: barbellBench, profile: Fixtures.profile(bodyWeightKg: bodyWeightKg)
             )).weightKg
         }
@@ -334,7 +334,7 @@ struct LoadEstimatorTests {
         let exercise = Fixtures.exercise(
             metadata: Fixtures.metadata(loadability: loadability, trackingMode: .repsOnly)
         )
-        #expect(estimate(for: exercise) == nil)
+        #expect(startingLoad(for: exercise) == nil)
     }
 
     // MARK: - Conservatism and rounding
@@ -342,11 +342,11 @@ struct LoadEstimatorTests {
     @Test("The estimate is always lighter than the evidence it came from")
     func estimatesErrLight() throws {
         let seed = StrengthSeed(exerciseID: barbellBench.id, weightKg: 100, reps: 5)
-        let eightRep = try #require(estimate(for: barbellBench, targetReps: 8, seeds: [seed]))
+        let eightRep = try #require(startingLoad(for: barbellBench, targetReps: 8, seeds: [seed]))
         #expect(eightRep.weightKg < seed.weightKg)
 
-        let single = try #require(estimate(for: barbellBench, targetReps: 1, seeds: [seed]))
-        let twelve = try #require(estimate(for: barbellBench, targetReps: 12, seeds: [seed]))
+        let single = try #require(startingLoad(for: barbellBench, targetReps: 1, seeds: [seed]))
+        let twelve = try #require(startingLoad(for: barbellBench, targetReps: 12, seeds: [seed]))
         #expect(single.weightKg > eightRep.weightKg)
         #expect(eightRep.weightKg > twelve.weightKg)
         // Even a single is shaved below the estimated maximum.
@@ -363,7 +363,7 @@ struct LoadEstimatorTests {
             metadata: Fixtures.metadata(loadability: loadability, trackingMode: .weightAndReps)
         )
         for reps in [1, 5, 8, 12, 20, 30] {
-            let estimate = try #require(estimate(for: exercise, targetReps: reps))
+            let estimate = try #require(startingLoad(for: exercise, targetReps: reps))
             #expect(
                 isSelectable(estimate.weightKg, on: loadability),
                 "\(estimate.weightKg) kg is not selectable on \(loadability) at \(reps) reps"
@@ -374,10 +374,10 @@ struct LoadEstimatorTests {
     @Test("A nonsensical rep target is clamped rather than refused")
     func repTargetIsClamped() throws {
         let seed = [StrengthSeed(exerciseID: barbellBench.id, weightKg: 100, reps: 5)]
-        let zero = try #require(estimate(for: barbellBench, targetReps: 0, seeds: seed))
-        let one = try #require(estimate(for: barbellBench, targetReps: 1, seeds: seed))
-        let huge = try #require(estimate(for: barbellBench, targetReps: 500, seeds: seed))
-        let thirty = try #require(estimate(for: barbellBench, targetReps: 30, seeds: seed))
+        let zero = try #require(startingLoad(for: barbellBench, targetReps: 0, seeds: seed))
+        let one = try #require(startingLoad(for: barbellBench, targetReps: 1, seeds: seed))
+        let huge = try #require(startingLoad(for: barbellBench, targetReps: 500, seeds: seed))
+        let thirty = try #require(startingLoad(for: barbellBench, targetReps: 30, seeds: seed))
         #expect(zero.weightKg == one.weightKg)
         #expect(huge.weightKg == thirty.weightKg)
     }

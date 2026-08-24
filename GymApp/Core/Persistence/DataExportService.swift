@@ -80,9 +80,13 @@ struct DataExportService {
     /// Escapes a CSV field. Quotes are doubled and any field containing a delimiter, quote or
     /// newline is quoted — the rules from RFC 4180, which is what spreadsheets actually expect.
     static func csvField(_ value: String) -> String {
-        guard value.contains(where: { $0 == "," || $0 == "\"" || $0 == "\n" || $0 == "\r" }) else {
-            return value
+        // Scalars, not Characters. Swift treats CR-LF as a *single* grapheme cluster, so a field
+        // containing a Windows line break matches neither "\n" nor "\r" as a Character and would
+        // slip through unquoted — splitting one row into two in any spreadsheet that opened it.
+        let needsQuoting = value.unicodeScalars.contains {
+            $0 == "," || $0 == "\"" || $0 == "\n" || $0 == "\r"
         }
+        guard needsQuoting else { return value }
         return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
     }
 

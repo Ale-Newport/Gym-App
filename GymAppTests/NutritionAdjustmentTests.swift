@@ -407,13 +407,12 @@ struct NutritionAdjustmentTests {
         )
         #expect(decision.action == .decrease)
 
-        withKnownIssue("The adjustment engine rounds to 10 kcal after clamping to the floor") {
-            let proposed = decision.newTargets?.kilocalories ?? 0
-            #expect(
-                proposed >= floor,
-                "proposed \(proposed) kcal against a floor of \(floor) kcal"
-            )
-        }
+                let proposed = decision.newTargets?.kilocalories ?? 0
+        #expect(
+            proposed >= floor,
+            "proposed \(proposed) kcal against a floor of \(floor) kcal"
+        )
+    
     }
 
     // MARK: - Approval

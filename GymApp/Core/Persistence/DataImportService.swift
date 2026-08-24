@@ -357,11 +357,19 @@ struct DataImportService {
         }
 
         // Exactly one target stays active, whatever the backup claimed.
+        //
+        // Targets carry no id in the backup, so identity is `effectiveFrom` — there is only ever one
+        // target in force at a moment. Without this, re-importing the same file stacks duplicates
+        // and the history screen shows the same change several times.
         if !document.nutritionTargets.isEmpty {
+            var seenEffectiveFrom = Set(
+                try context.fetch(FetchDescriptor<DailyNutritionTarget>()).map(\.effectiveFrom)
+            )
             for existing in try context.fetch(FetchDescriptor<DailyNutritionTarget>()) {
                 existing.isActive = false
             }
             for export in document.nutritionTargets {
+                guard seenEffectiveFrom.insert(export.effectiveFrom).inserted else { continue }
                 let target = DailyNutritionTarget()
                 target.effectiveFrom = export.effectiveFrom
                 target.kilocalories = export.kilocalories
@@ -379,7 +387,18 @@ struct DataImportService {
             all.max { $0.effectiveFrom < $1.effectiveFrom }?.isActive = true
         }
 
+        // Water entries carry no id either, so identity is the day, the timestamp and the amount.
+        // Two genuinely distinct 250 ml entries never share a timestamp; the same entry imported
+        // twice always does.
+        var seenWater = Set(
+            try context.fetch(FetchDescriptor<WaterLogEntry>())
+                .map { WaterKey(dayKey: $0.dayKey, loggedAt: $0.loggedAt, milliliters: $0.milliliters) }
+        )
         for export in document.waterLog {
+            let key = WaterKey(
+                dayKey: export.dayKey, loggedAt: export.loggedAt, milliliters: export.milliliters
+            )
+            guard seenWater.insert(key).inserted else { continue }
             let entry = WaterLogEntry()
             entry.dayKey = export.dayKey
             entry.loggedAt = export.loggedAt
@@ -403,6 +422,13 @@ struct DataImportService {
             throw ImportError.writeFailed(String(describing: error))
         }
         return report
+    }
+
+    /// Identity for a water entry, which the backup format does not give an id.
+    private struct WaterKey: Hashable {
+        let dayKey: String
+        let loggedAt: Date
+        let milliliters: Double
     }
 
     // MARK: - Reset

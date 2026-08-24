@@ -689,8 +689,10 @@ struct MealRecommendationTests {
             macros: MacroNutrients(kilocalories: 169, proteinG: 24, carbsG: 18, fatG: 2),
             items: items, timesUsed: 12, slot: .breakfast
         )
+        // No loose candidates, so the saved meal is judged on its own rather than having to
+        // out-score every plate the combination generator can build from a full larder.
         let suggestions = Self.engine.suggestions(
-            for: Self.request(slot: .breakfast, savedMeals: [meal], limit: 8)
+            for: Self.request(slot: .breakfast, candidates: [], savedMeals: [meal], limit: 8)
         )
         let offered = try #require(suggestions.first { $0.savedMealID == meal.id })
         #expect(offered.titleKey == "meal.pattern.savedMeal")
@@ -720,8 +722,11 @@ struct MealRecommendationTests {
             preparationMinutes: 50, tags: ["lunch"], timesUsed: 2
         )
         let remaining = MacroNutrients(kilocalories: 700, proteinG: 50, carbsG: 70, fatG: 20)
+        // No larder: this test is about the serving-count rule, and a 200 kcal recipe against a
+        // 700 kcal meal is a mediocre fit that a full larder of combinations rightly outranks.
+        // Letting those compete would test the ranking, not the rule.
         let suggestions = Self.engine.suggestions(
-            for: Self.request(remaining: remaining, recipes: [small, large], limit: 10)
+            for: Self.request(remaining: remaining, candidates: [], recipes: [small, large], limit: 10)
         )
 
         let smallSuggestion = try #require(suggestions.first { $0.recipeID == small.id })

@@ -122,7 +122,10 @@ struct UnitFormattingTests {
 
         let offenders = stride(from: 120.0, through: 220.0, by: 0.1)
             .filter { Units.formatHeight(centimeters: $0, unit: .feetInches, locale: posix).contains("12″") }
-        #expect(offenders.isEmpty, "heights printing 12 inches: \(offenders.prefix(5))")
+        #expect(
+            offenders.count == 0,
+            "heights between 120 cm and 220 cm printing twelve inches, first five: \(Array(offenders.prefix(5)))"
+        )
     }
 
     @Test("Energy converts to kilojoules before formatting")

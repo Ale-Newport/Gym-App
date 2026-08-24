@@ -58,8 +58,16 @@ enum Units {
         case .centimeters:
             return "\(Int(centimeters.rounded())) cm"
         case .feetInches:
-            let parts = feetAndInches(fromCentimeters: centimeters)
-            return "\(parts.feet)′ \(Int(parts.inches.rounded()))″"
+            var (feet, inches) = feetAndInches(fromCentimeters: centimeters)
+            var wholeInches = Int(inches.rounded())
+            // Rounding 11.6″ gives 12″, which is a foot. Without the carry, 182.5 cm displays as
+            // 5′ 12″ — a number no one has ever used to describe their height.
+            if wholeInches >= 12 {
+                feet += wholeInches / 12
+                wholeInches %= 12
+            }
+            inches = Double(wholeInches)
+            return "\(feet)′ \(wholeInches)″"
         }
     }
 
