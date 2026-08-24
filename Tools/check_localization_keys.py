@@ -61,7 +61,10 @@ def catalogue_keys() -> set[str]:
 def referenced_keys() -> dict[str, list[str]]:
     """Returns key -> the files that reference it."""
     found: dict[str, list[str]] = {}
-    roots = ["GymApp", "GymAppWidgets", "GymAppTests", "GymAppUITests"]
+    # App targets only. Tests pass arbitrary strings where a key is expected — an Explanation
+    # built with the key "test" is a fixture, not a missing translation — so scanning them would
+    # report noise that can never be fixed.
+    roots = ["GymApp", "GymAppWidgets"]
     for root in roots:
         for dirpath, _, filenames in os.walk(os.path.join(REPO_ROOT, root)):
             for filename in filenames:

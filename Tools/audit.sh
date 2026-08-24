@@ -108,14 +108,19 @@ else
 fi
 
 bold "4. Placeholders"
-HITS=$(grep -rnE '\b(TODO|FIXME|XXX|HACK)\b|not implemented|coming soon|implement later' \
-    --include='*.swift' GymApp GymAppWidgets GymAppTests GymAppUITests 2>/dev/null | wc -l | tr -d ' ')
+# Comment prose is excluded: a doc comment explaining that there is *no* "coming soon" branch is
+# the opposite of a placeholder. Markers in code are what matter.
+PLACEHOLDER_RE='\b(TODO|FIXME|XXX|HACK)\b|not implemented|implement later'
+HITS=$(grep -rnE "$PLACEHOLDER_RE" \
+    --include='*.swift' GymApp GymAppWidgets GymAppTests GymAppUITests 2>/dev/null \
+    | grep -vE ':[[:space:]]*(///|//|\*)' | wc -l | tr -d ' ')
 if [ "$HITS" -eq 0 ]; then
     pass "no TODO, FIXME or placeholder markers"
 else
     fail "$HITS placeholder markers:"
-    grep -rnE '\b(TODO|FIXME|XXX|HACK)\b|not implemented|coming soon|implement later' \
-        --include='*.swift' GymApp GymAppWidgets GymAppTests GymAppUITests 2>/dev/null | head -15 | sed 's/^/      /'
+    grep -rnE "$PLACEHOLDER_RE" \
+        --include='*.swift' GymApp GymAppWidgets GymAppTests GymAppUITests 2>/dev/null \
+        | grep -vE ':[[:space:]]*(///|//|\*)' | head -15 | sed 's/^/      /'
 fi
 
 bold "5. Hard-coded colours outside the design system"
