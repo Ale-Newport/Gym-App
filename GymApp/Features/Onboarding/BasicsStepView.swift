@@ -177,8 +177,11 @@ struct BasicsStepView: View {
     }
 
     private var weightDisplayRange: ClosedRange<Double> {
-        Units.display(kilograms: InputValidation.bodyMassKg.lowerBound, unit: model.weightUnit)
-            ...Units.display(kilograms: InputValidation.bodyMassKg.upperBound, unit: model.weightUnit)
+        // Bound to locals first: a leading `...` on a continuation line parses as a prefix
+        // operator, which turns this into two statements and no return.
+        let lower = Units.display(kilograms: InputValidation.bodyMassKg.lowerBound, unit: model.weightUnit)
+        let upper = Units.display(kilograms: InputValidation.bodyMassKg.upperBound, unit: model.weightUnit)
+        return lower...upper
     }
 
     // MARK: - Target weight

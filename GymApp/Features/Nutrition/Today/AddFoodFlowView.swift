@@ -317,27 +317,11 @@ final class AddFoodViewModel {
         (try? repository.nutrition(of: recipe).perServing.macros) ?? .zero
     }
 
-    /// Creates a food the user typed in by hand and returns it, ready to be portioned.
-    func createCustomFood(_ draft: CustomFoodDraft) -> FoodItem? {
-        do {
-            let food = try repository.createCustomFood(
-                name: draft.name,
-                brand: draft.brand,
-                barcode: draft.barcode,
-                kilocaloriesPer100: draft.kilocalories ?? 0,
-                proteinGPer100: draft.protein ?? 0,
-                carbsGPer100: draft.carbs ?? 0,
-                fatGPer100: draft.fat ?? 0,
-                basisUnit: draft.basisUnit,
-                servings: draft.servings,
-                gramsPerPiece: nil
-            )
-            load()
-            return food
-        } catch {
-            report(error)
-            return nil
-        }
+    /// Reloads after a food was created elsewhere, so the newly created row is present in the lists
+    /// this flow shows. Creation itself belongs to `CustomFoodEditorView`, which owns validation,
+    /// micronutrients and named servings.
+    func reloadAfterCustomFoodCreated() {
+        load()
     }
 
     private func finish() {
@@ -671,9 +655,12 @@ struct AddFoodFlowView: View {
                     missingFood
                 }
             case .customFood(let barcode):
-                CustomFoodEditorView(prefilledBarcode: barcode) { draft in
-                    guard let created = model.createCustomFood(draft) else { return }
-                    path.append(AddFoodRoute.portion(.stored(created.id)))
+                // The full editor in Nutrition/Library is the single custom-food screen: it also
+                // handles micronutrients, named servings and editing later, so the barcode-not-found
+                // path lands the user somewhere they can finish the job properly.
+                CustomFoodEditorView(prefilledBarcode: barcode) { createdID in
+                    model.reloadAfterCustomFoodCreated()
+                    path.append(AddFoodRoute.portion(.stored(createdID)))
                 }
             }
         } else {
@@ -809,186 +796,6 @@ struct SavedMealRow: View {
 
 // MARK: - Custom food
 
-/// What the user typed into the custom-food form.
-struct CustomFoodDraft {
-    var name: String = ""
-    var brand: String?
-    var barcode: String?
-    var basisUnit: ServingUnit = .grams
-    var kilocalories: Double?
-    var protein: Double?
-    var carbs: Double?
-    var fat: Double?
-    var servings: [FoodServing] = []
-}
-
-/// Creating a food by hand, from a label.
-///
-/// Everything is entered per 100 g or 100 ml, which is both the app's canonical basis and the way
-/// every packaged food in Europe is already labelled — asking for "per serving" would mean asking
-/// how big the serving is as well, which is one more thing to get wrong. Energy may be left blank:
-/// the repository derives it from the macros, which is a better answer than zero.
-struct CustomFoodEditorView: View {
-    var prefilledBarcode: String?
-    let onCreate: (CustomFoodDraft) -> Void
-
-    @State private var draft = CustomFoodDraft()
-    @State private var servingName: String = ""
-    @State private var servingGrams: Double?
-    @FocusState private var isNameFocused: Bool
-    @Environment(\.displayFormatter) private var formatter
-
-    private var isValid: Bool {
-        !draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Metrics.spacing16) {
-                identityCard
-                nutritionCard
-                servingCard
-                Button {
-                    commit()
-                } label: {
-                    Text(L("nutritionLog.custom.save"))
-                }
-                .buttonStyle(PrimaryButtonStyle(tint: .appNutrition))
-                .disabled(!isValid)
-            }
-            .screenPadding()
-            .padding(.vertical, Metrics.spacing20)
-            .readableWidth()
-        }
-        .background(Color.appBackground)
-        .navigationTitle(L("nutritionLog.custom.title"))
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            if draft.barcode == nil { draft.barcode = prefilledBarcode }
-            isNameFocused = true
-        }
-    }
-
-    private var identityCard: some View {
-        Card {
-            VStack(alignment: .leading, spacing: Metrics.spacing12) {
-                labelledField(L("nutritionLog.custom.name"), text: Binding(
-                    get: { draft.name }, set: { draft.name = $0 }
-                ), focused: true)
-                labelledField(L("nutritionLog.custom.brand"), text: Binding(
-                    get: { draft.brand ?? "" }, set: { draft.brand = $0.isEmpty ? nil : $0 }
-                ), focused: false)
-                if let barcode = draft.barcode, !barcode.isEmpty {
-                    HStack(spacing: Metrics.spacing8) {
-                        Image(systemName: "barcode")
-                            .foregroundStyle(Color.appTextTertiary)
-                            .accessibilityHidden(true)
-                        Text(barcode)
-                            .font(.footnote.monospacedDigit())
-                            .foregroundStyle(Color.appTextSecondary)
-                    }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(L("nutritionLog.custom.barcode", barcode))
-                }
-                SegmentedValuePicker(
-                    title: L("nutritionLog.custom.basis"),
-                    values: [ServingUnit.grams, ServingUnit.milliliters],
-                    label: { $0 == .grams ? L("food.result.per100g") : L("food.result.per100ml") },
-                    selection: Binding(get: { draft.basisUnit }, set: { draft.basisUnit = $0 })
-                )
-            }
-        }
-    }
-
-    private var nutritionCard: some View {
-        Card {
-            VStack(alignment: .leading, spacing: Metrics.spacing12) {
-                Text(draft.basisUnit == .milliliters ? L("food.result.per100ml") : L("food.result.per100g"))
-                    .font(.appOverline)
-                    .foregroundStyle(Color.appTextSecondary)
-                NumberEntryField(
-                    title: L("nutritionLog.food.energy"),
-                    value: Binding(get: { draft.kilocalories }, set: { draft.kilocalories = $0 }),
-                    unit: formatter.energyUnitLabel,
-                    range: InputValidation.energyDensityPer100,
-                    showsStepper: false
-                )
-                NumberEntryField(
-                    title: L("nutritionLog.macro.protein"),
-                    value: Binding(get: { draft.protein }, set: { draft.protein = $0 }),
-                    unit: "g",
-                    range: InputValidation.macroDensityPer100,
-                    showsStepper: false
-                )
-                NumberEntryField(
-                    title: L("nutritionLog.macro.carbs"),
-                    value: Binding(get: { draft.carbs }, set: { draft.carbs = $0 }),
-                    unit: "g",
-                    range: InputValidation.macroDensityPer100,
-                    showsStepper: false
-                )
-                NumberEntryField(
-                    title: L("nutritionLog.macro.fat"),
-                    value: Binding(get: { draft.fat }, set: { draft.fat = $0 }),
-                    unit: "g",
-                    range: InputValidation.macroDensityPer100,
-                    showsStepper: false
-                )
-                Text(L("nutritionLog.custom.energyNote"))
-                    .font(.caption)
-                    .foregroundStyle(Color.appTextTertiary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-    }
-
-    private var servingCard: some View {
-        Card {
-            VStack(alignment: .leading, spacing: Metrics.spacing12) {
-                Text(L("nutritionLog.custom.serving"))
-                    .font(.appOverline)
-                    .foregroundStyle(Color.appTextSecondary)
-                labelledField(L("nutritionLog.custom.servingName"), text: $servingName, focused: false)
-                NumberEntryField(
-                    title: L("nutritionLog.custom.servingWeight"),
-                    value: $servingGrams,
-                    unit: draft.basisUnit == .milliliters ? "ml" : "g",
-                    range: InputValidation.servingGrams,
-                    step: 10
-                )
-                Text(L("nutritionLog.custom.servingNote"))
-                    .font(.caption)
-                    .foregroundStyle(Color.appTextTertiary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-    }
-
-    private func labelledField(_ title: String, text: Binding<String>, focused: Bool) -> some View {
-        VStack(alignment: .leading, spacing: Metrics.spacing4) {
-            Text(title)
-                .font(.appOverline)
-                .foregroundStyle(Color.appTextSecondary)
-            TextField(title, text: text)
-                .textInputAutocapitalization(.words)
-                .padding(.horizontal, Metrics.spacing12)
-                .frame(minHeight: Metrics.minimumTapTarget)
-                .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
-                .focused($isNameFocused, equals: focused ? true : false)
-                .accessibilityLabel(title)
-        }
-    }
-
-    private func commit() {
-        var outgoing = draft
-        let trimmedServing = servingName.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !trimmedServing.isEmpty, let grams = servingGrams, grams > 0 {
-            outgoing.servings = [FoodServing(name: trimmedServing, gramsPerServing: grams)]
-        }
-        Haptics.tap()
-        onCreate(outgoing)
-    }
-}
 
 #Preview("Add food") {
     PreviewHost(scenario: .seasonedUser) {

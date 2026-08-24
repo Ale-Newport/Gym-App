@@ -29,6 +29,10 @@ struct GeneratingProgramView: View {
         "onboarding.generate.stage.nutrition"
     ]
 
+    /// Adaptive rather than fixed: at the largest Dynamic Type sizes three tiles side by side would
+    /// clip, and a stat nobody can read is worse than a wrap.
+    private static let tileColumns = [GridItem(.adaptive(minimum: 96), spacing: Metrics.spacing12)]
+
     var body: some View {
         Group {
             switch model.generation {

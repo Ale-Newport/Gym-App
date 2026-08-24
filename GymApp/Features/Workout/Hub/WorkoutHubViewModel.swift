@@ -160,6 +160,9 @@ struct HubCalendarDay: Identifiable, Hashable {
 /// When the week genuinely has no room left the overflow sessions are *not* forced anywhere; they
 /// keep their day and are reported as landing next week. Saying so is honest; inventing a Sunday
 /// double session is not.
+/// Main-actor bound because the moves it produces carry already-localised weekday names, and the
+/// localisation lookup follows the in-app language override rather than the system one.
+@MainActor
 enum SessionRescheduler {
 
     /// One session still owed this week.
@@ -384,7 +387,7 @@ final class WorkoutHubViewModel {
                 inProgressTitle = nil
             }
 
-            lastSession = try workouts.recentSessions(limit: 1).first.map(Self.summary(of:))
+            lastSession = try workouts.recentSessions(limit: 1).first.map { Self.summary(of: $0) }
 
             guard let active = try programs.activeProgram() else {
                 program = nil

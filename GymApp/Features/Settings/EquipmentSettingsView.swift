@@ -277,8 +277,11 @@ struct EquipmentSettingsView: View {
     private var displayMaxLoad: Double { formatter.weightValue(InputValidation.loadKg.upperBound) }
 
     private var displayIncrementRange: ClosedRange<Double> {
-        formatter.weightValue(InputValidation.loadIncrementKg.lowerBound)
-            ...formatter.weightValue(InputValidation.loadIncrementKg.upperBound)
+        // Kept on one expression: a leading `...` on a continuation line parses as a prefix
+        // operator, which silently turns this into two statements and no return.
+        let lower = formatter.weightValue(InputValidation.loadIncrementKg.lowerBound)
+        let upper = formatter.weightValue(InputValidation.loadIncrementKg.upperBound)
+        return lower...upper
     }
 
     private var incrementStep: Double { model.settings?.weightUnit == .pounds ? 1 : 0.5 }

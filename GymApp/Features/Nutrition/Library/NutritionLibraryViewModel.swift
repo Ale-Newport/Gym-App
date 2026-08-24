@@ -227,6 +227,9 @@ final class CustomFoodEditorViewModel {
 
     var name: String = ""
     var brand: String = ""
+    /// Set when the food came from a barcode the scanner could not find. Storing it means the next
+    /// scan of the same packet resolves instantly instead of asking the user to type it all again.
+    var barcode: String?
     var basisUnit: ServingUnit = .grams
     var kilocalories: Double?
     var protein: Double?
@@ -287,6 +290,7 @@ final class CustomFoodEditorViewModel {
             isExistingFood = true
             name = food.name
             brand = food.brand ?? ""
+            barcode = food.barcode
             basisUnit = food.basisUnit
             kilocalories = food.kilocaloriesPer100
             protein = food.proteinGPer100
@@ -365,6 +369,7 @@ final class CustomFoodEditorViewModel {
             let created = try repository.createCustomFood(
                 name: name,
                 brand: brand,
+                barcode: barcode,
                 kilocaloriesPer100: kilocalories ?? 0,
                 proteinGPer100: protein ?? 0,
                 carbsGPer100: carbs ?? 0,

@@ -71,6 +71,7 @@ struct PortionBasis: Hashable, Sendable {
     /// quantity that produced it. For pieces and servings that means treating one piece (or one
     /// serving) as weighing 100 units, which keeps the arithmetic linear and correct for the only
     /// operation still permitted on such an entry: changing the number.
+    @MainActor
     static func fromSnapshot(of entry: FoodLogEntry) -> PortionBasis {
         let quantity = max(entry.quantity, 0.0001)
         let perUnitFactor: Double
@@ -140,12 +141,19 @@ struct PortionBasis: Hashable, Sendable {
         return PortionValue(quantity: 100, unit: basisUnit == .milliliters ? .milliliters : .grams)
     }
 
+    @MainActor
     func servingName(at index: Int?) -> String? {
-        guard let index, servings.indices.contains(index) else { return servings.first.map(Self.name(of:)) }
+        guard let index, servings.indices.contains(index) else {
+            return servings.first.map { Self.name(of: $0) }
+        }
         return Self.name(of: servings[index])
     }
 
     /// Built-in servings ship a localisation key; user-created ones carry their own text.
+    ///
+    /// Main-actor bound because the lookup follows the in-app language override, which lives on
+    /// the main actor; every caller is a view or a view model, so this costs nothing.
+    @MainActor
     static func name(of serving: FoodServing) -> String {
         guard let key = serving.nameKey, !key.isEmpty else { return serving.name }
         return L(key)

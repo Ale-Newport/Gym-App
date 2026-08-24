@@ -29,6 +29,9 @@ struct SetFieldPlan {
     /// A weighted dip or pull-up adds load to the body rather than lifting a total.
     var isAddedLoad: Bool { mode == .weightedBodyweight }
 
+    /// Main-actor isolated because the label resolves through `LocalizationManager`. Every caller is
+    /// a view, so this costs nothing and keeps the plan itself a plain value type.
+    @MainActor
     var weightLabel: String {
         if isAssistance { return L("active.set.assistance") }
         if isAddedLoad { return L("active.set.addedLoad") }

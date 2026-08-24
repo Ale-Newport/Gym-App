@@ -454,6 +454,10 @@ final class ExerciseDetailViewModel {
 
     /// The repositories one action needs, built once per action rather than held, so the view model
     /// never outlives a model context.
+    ///
+    /// Explicitly `@MainActor`: a nested type does not inherit the enclosing type's isolation, and
+    /// every repository is main-actor bound because `ModelContext` is.
+    @MainActor
     private struct Repositories {
         let preferences: ExercisePreferenceRepository
         let profile: ProfileRepository

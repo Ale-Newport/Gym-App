@@ -9,6 +9,9 @@ import SwiftData
 /// once here is what makes every later log a single tap.
 struct CustomFoodEditorView: View {
     let foodID: UUID?
+    /// Carried in from the barcode scanner when a scan found nothing. The food is created with the
+    /// code attached, so scanning the same packet again resolves straight to it.
+    let prefilledBarcode: String?
     var onSaved: ((UUID) -> Void)?
 
     @Environment(\.modelContext) private var modelContext
@@ -20,8 +23,9 @@ struct CustomFoodEditorView: View {
     @State private var isConfirmingDelete = false
     @State private var blockedReferenceCount: Int?
 
-    init(foodID: UUID? = nil, onSaved: ((UUID) -> Void)? = nil) {
+    init(foodID: UUID? = nil, prefilledBarcode: String? = nil, onSaved: ((UUID) -> Void)? = nil) {
         self.foodID = foodID
+        self.prefilledBarcode = prefilledBarcode
         self.onSaved = onSaved
     }
 
@@ -39,7 +43,11 @@ struct CustomFoodEditorView: View {
                         .disabled(!model.canSave)
                 }
             }
-            .task { await model.load(context: modelContext, foodID: foodID) }
+            .task {
+                await model.load(context: modelContext, foodID: foodID)
+                // Only seed a scanned code onto a *new* food; an existing one already has its own.
+                if foodID == nil, model.barcode == nil { model.barcode = prefilledBarcode }
+            }
             .alert(
                 L("nutritionLibrary.food.deleteTitle"),
                 isPresented: $isConfirmingDelete,

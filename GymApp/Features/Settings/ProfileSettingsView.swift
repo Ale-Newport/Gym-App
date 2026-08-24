@@ -285,8 +285,11 @@ struct ProfileSettingsView: View {
     }
 
     private var displayWeightRange: ClosedRange<Double> {
-        formatter.weightValue(InputValidation.bodyMassKg.lowerBound)
-            ...formatter.weightValue(InputValidation.bodyMassKg.upperBound)
+        // Bound to locals first: a leading `...` on a continuation line parses as a prefix
+        // operator, which turns this into two statements and no return.
+        let lower = formatter.weightValue(InputValidation.bodyMassKg.lowerBound)
+        let upper = formatter.weightValue(InputValidation.bodyMassKg.upperBound)
+        return lower...upper
     }
 
     private var weightStep: Double { model.settings?.weightUnit == .pounds ? 1 : 0.5 }
