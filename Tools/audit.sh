@@ -164,7 +164,11 @@ fi
 bold "9. Unit tests"
 if xcodebuild test -project "$PROJ" -scheme "$SCHEME" -destination "$SIM" \
     -only-testing:GymAppTests > /tmp/audit_tests.txt 2>&1; then
-    pass "$(grep -oE 'Executed [0-9]+ tests' /tmp/audit_tests.txt | tail -1 || echo 'unit tests passed')"
+    # Swift Testing reports "Test run with N tests ... passed"; XCTest reports "Executed N tests".
+    # The suites here are Swift Testing, so look for that first.
+    SUMMARY=$(grep -oE 'Test run with [0-9]+ tests in [0-9]+ suites' /tmp/audit_tests.txt | tail -1)
+    [ -z "$SUMMARY" ] && SUMMARY=$(grep -oE 'Executed [0-9]+ tests' /tmp/audit_tests.txt | tail -1)
+    pass "${SUMMARY:-unit tests passed}"
 else
     fail "unit tests"
     grep -E 'error:|failed|XCTAssert' /tmp/audit_tests.txt | head -15 | sed 's/^/      /'
@@ -174,7 +178,7 @@ if [ "$QUICK" -eq 0 ]; then
     bold "10. UI tests"
     if xcodebuild test -project "$PROJ" -scheme "$SCHEME" -destination "$SIM" \
         -only-testing:GymAppUITests > /tmp/audit_uitests.txt 2>&1; then
-        pass "UI tests passed"
+        pass "$(grep -oE 'Executed [0-9]+ tests' /tmp/audit_uitests.txt | tail -1 || echo 'UI tests passed')"
     else
         fail "UI tests"
         grep -E 'error:|failed' /tmp/audit_uitests.txt | head -10 | sed 's/^/      /'
