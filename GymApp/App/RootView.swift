@@ -17,6 +17,17 @@ struct RootView: View {
     private var isOnboarded: Bool { profile?.isOnboarded == true }
 
     var body: some View {
+        // Every screen formats loads, distances, energy and dates through the environment's
+        // DisplayFormatter. It is injected once here, from the user's stored units and the active
+        // language, so changing either updates the whole app at once — and so no screen silently
+        // falls back to kilograms and the device locale.
+        DisplayFormatterProvider {
+            content
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         Group {
             switch environment.catalog.state {
             case .idle, .loading:

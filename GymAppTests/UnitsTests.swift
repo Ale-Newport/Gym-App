@@ -501,3 +501,88 @@ struct DayKeyTests {
         #expect(keys.last == "2025-01-06")
     }
 }
+
+// MARK: - Display formatter
+
+/// `DisplayFormatter` is what every screen formats through, so its unit handling is the difference
+/// between the Settings units picker working and being decorative. It was, briefly, decorative: the
+/// provider that injects it existed but was never placed in the view tree, so every screen used the
+/// default — kilograms, kilometres, kilocalories and the device locale — no matter what the user
+/// had chosen.
+@Suite("Display formatter")
+struct DisplayFormatterTests {
+
+    private static let posix = Locale(identifier: "en_US_POSIX")
+
+    private static func formatter(
+        weight: WeightUnit = .kilograms,
+        height: HeightUnit = .centimeters,
+        distance: DistanceUnit = .kilometers,
+        energy: EnergyUnit = .kilocalories
+    ) -> DisplayFormatter {
+        var formatter = DisplayFormatter()
+        formatter.weightUnit = weight
+        formatter.heightUnit = height
+        formatter.distanceUnit = distance
+        formatter.energyUnit = energy
+        formatter.locale = posix
+        return formatter
+    }
+
+    @Test("A stored kilogram is shown in whichever unit the user chose")
+    func weightFollowsTheChosenUnit() {
+        #expect(Self.formatter(weight: .kilograms).weight(100) == "100 kg")
+        #expect(Self.formatter(weight: .pounds).weight(100).hasSuffix("lb"))
+        // 100 kg is 220.46 lb; the formatter shows one decimal at most.
+        #expect(Self.formatter(weight: .pounds).weight(100).hasPrefix("220"))
+    }
+
+    @Test("Editing a displayed value round-trips back to the same stored kilograms")
+    func displayedWeightRoundTrips() {
+        for unit in WeightUnit.allCases {
+            let formatter = Self.formatter(weight: unit)
+            for kilograms in [2.5, 20.0, 60.0, 102.5, 227.5] {
+                let displayed = formatter.weightValue(kilograms)
+                let back = formatter.kilograms(fromDisplayed: displayed)
+                #expect(abs(back - kilograms) < 0.0001, "\(unit.rawValue) round trip failed for \(kilograms)")
+            }
+        }
+    }
+
+    @Test("Height, distance and energy each follow their own setting")
+    func otherUnitsFollowTheirSettings() {
+        #expect(Self.formatter(height: .centimeters).height(180) == "180 cm")
+        #expect(Self.formatter(height: .feetInches).height(182.5) == "6′ 0″")
+
+        #expect(Self.formatter(distance: .kilometers).distance(5_000).hasSuffix("km"))
+        #expect(Self.formatter(distance: .miles).distance(5_000).hasSuffix("mi"))
+
+        // en_US_POSIX does not group thousands; a real locale does, which is why the numbers are
+        // compared without separators here and the grouping is left to the user's own locale.
+        #expect(Self.formatter(energy: .kilocalories).energy(2_000) == "2000 kcal")
+        // 2,000 kcal is 8,368 kJ.
+        #expect(Self.formatter(energy: .kilojoules).energy(2_000).hasPrefix("8368"))
+    }
+
+    @Test("Tonnage abbreviates once it passes a tonne, in the user's unit")
+    func volumeAbbreviates() {
+        #expect(Self.formatter(weight: .kilograms).volume(9_438) == "9438 kg")
+        #expect(Self.formatter(weight: .kilograms).volume(24_000).hasSuffix(" t"))
+    }
+
+    @MainActor
+    @Test("A formatter built from stored settings reflects every one of them")
+    func builtFromSettings() {
+        let settings = UserSettings()
+        settings.weightUnit = .pounds
+        settings.heightUnit = .feetInches
+        settings.distanceUnit = .miles
+        settings.energyUnit = .kilojoules
+
+        let formatter = DisplayFormatter(settings: settings, locale: Self.posix)
+        #expect(formatter.weightUnit == .pounds)
+        #expect(formatter.heightUnit == .feetInches)
+        #expect(formatter.distanceUnit == .miles)
+        #expect(formatter.energyUnit == .kilojoules)
+    }
+}
