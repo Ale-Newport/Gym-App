@@ -357,11 +357,19 @@ struct DataImportService {
         }
 
         // Exactly one target stays active, whatever the backup claimed.
+        //
+        // Targets carry no id in the backup, so identity is `effectiveFrom` — there is only ever one
+        // target in force at a moment. Without this, re-importing the same file stacks duplicates
+        // and the history screen shows the same change several times.
         if !document.nutritionTargets.isEmpty {
+            var seenEffectiveFrom = Set(
+                try context.fetch(FetchDescriptor<DailyNutritionTarget>()).map(\.effectiveFrom)
+            )
             for existing in try context.fetch(FetchDescriptor<DailyNutritionTarget>()) {
                 existing.isActive = false
             }
             for export in document.nutritionTargets {
+                guard seenEffectiveFrom.insert(export.effectiveFrom).inserted else { continue }
                 let target = DailyNutritionTarget()
                 target.effectiveFrom = export.effectiveFrom
                 target.kilocalories = export.kilocalories
@@ -379,7 +387,18 @@ struct DataImportService {
             all.max { $0.effectiveFrom < $1.effectiveFrom }?.isActive = true
         }
 
+        // Water entries carry no id either, so identity is the day, the timestamp and the amount.
+        // Two genuinely distinct 250 ml entries never share a timestamp; the same entry imported
+        // twice always does.
+        var seenWater = Set(
+            try context.fetch(FetchDescriptor<WaterLogEntry>())
+                .map { WaterKey(dayKey: $0.dayKey, loggedAt: $0.loggedAt, milliliters: $0.milliliters) }
+        )
         for export in document.waterLog {
+            let key = WaterKey(
+                dayKey: export.dayKey, loggedAt: export.loggedAt, milliliters: export.milliliters
+            )
+            guard seenWater.insert(key).inserted else { continue }
             let entry = WaterLogEntry()
             entry.dayKey = export.dayKey
             entry.loggedAt = export.loggedAt
@@ -405,45 +424,74 @@ struct DataImportService {
         return report
     }
 
+    /// Identity for a water entry, which the backup format does not give an id.
+    private struct WaterKey: Hashable {
+        let dayKey: String
+        let loggedAt: Date
+        let milliliters: Double
+    }
+
     // MARK: - Reset
 
     /// Deletes every user record. Used by `.replace` imports and by Settings → Reset.
+    ///
+    /// Deliberately **not** `context.delete(model:)`. That runs a batch delete straight against the
+    /// store, which bypasses the object graph and trips
+    /// "Constraint trigger violation: Batch delete failed due to mandatory OTO nullify inverse"
+    /// the moment it reaches a child that a parent still points at — `SetRecord.exerciseSession`
+    /// being the first. Deleting the aggregate roots and letting the declared `.cascade` rules run
+    /// is both correct and cheap: a reset is a handful of thousand objects at most, and it happens
+    /// once.
     func deleteEverything() throws {
-        try context.delete(model: SetRecord.self)
-        try context.delete(model: ExerciseSession.self)
-        try context.delete(model: WorkoutSession.self)
-        try context.delete(model: PlannedExercise.self)
-        try context.delete(model: WorkoutTemplate.self)
-        try context.delete(model: ProgramVersion.self)
-        try context.delete(model: TrainingProgram.self)
-        try context.delete(model: PersonalRecord.self)
-        try context.delete(model: BodyWeightEntry.self)
-        try context.delete(model: RecoveryEntry.self)
-        try context.delete(model: ProgressionState.self)
-        try context.delete(model: DeloadRecommendation.self)
-        try context.delete(model: ExercisePreference.self)
-        try context.delete(model: FoodLogEntry.self)
-        try context.delete(model: SavedMealItem.self)
-        try context.delete(model: SavedMeal.self)
-        try context.delete(model: RecipeIngredient.self)
-        try context.delete(model: Recipe.self)
-        try context.delete(model: NutritionTargetHistory.self)
-        try context.delete(model: DailyNutritionTarget.self)
-        try context.delete(model: WaterLogEntry.self)
-        try context.delete(model: Achievement.self)
+        // Roots first; their cascade rules take the children with them.
+        try deleteAll(WorkoutSession.self)
+        try deleteAll(TrainingProgram.self)
+        try deleteAll(SavedMeal.self)
+        try deleteAll(Recipe.self)
+
+        // Anything the cascades did not reach — orphans from an interrupted earlier delete
+        // included, which is why these run unconditionally rather than only when a root existed.
+        try deleteAll(SetRecord.self)
+        try deleteAll(ExerciseSession.self)
+        try deleteAll(PlannedExercise.self)
+        try deleteAll(WorkoutTemplate.self)
+        try deleteAll(ProgramVersion.self)
+        try deleteAll(SavedMealItem.self)
+        try deleteAll(RecipeIngredient.self)
+
+        // Standalone records.
+        try deleteAll(PersonalRecord.self)
+        try deleteAll(BodyWeightEntry.self)
+        try deleteAll(RecoveryEntry.self)
+        try deleteAll(ProgressionState.self)
+        try deleteAll(DeloadRecommendation.self)
+        try deleteAll(ExercisePreference.self)
+        try deleteAll(FoodLogEntry.self)
+        try deleteAll(NutritionTargetHistory.self)
+        try deleteAll(DailyNutritionTarget.self)
+        try deleteAll(WaterLogEntry.self)
+        try deleteAll(Achievement.self)
         // Built-in foods are re-imported from the bundle, so removing them all is safe and keeps a
         // reset from leaving orphaned custom entries behind.
-        try context.delete(model: FoodItem.self)
+        try deleteAll(FoodItem.self)
+
         UserDefaults.standard.removeObject(forKey: "foodDatabaseVersion")
         try context.save()
+    }
+
+    /// Fetches and deletes every instance of one model through the object graph.
+    private func deleteAll<T: PersistentModel>(_ type: T.Type) throws {
+        for object in try context.fetch(FetchDescriptor<T>()) {
+            context.delete(object)
+        }
     }
 
     /// Wipes everything including the profile. Settings → Reset uses this.
     func resetAllData() throws {
         try deleteEverything()
-        try context.delete(model: UserProfile.self)
-        try context.delete(model: UserSettings.self)
-        try context.delete(model: EquipmentProfile.self)
+        try deleteAll(UserProfile.self)
+        try deleteAll(UserSettings.self)
+        try deleteAll(EquipmentProfile.self)
         try context.save()
     }
 

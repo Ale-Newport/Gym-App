@@ -38,6 +38,12 @@ extension Color {
     static let appTextSecondary = dynamic(light: 0x5C5F63, dark: 0xA1A5AA)
     static let appTextTertiary = dynamic(light: 0x8E9296, dark: 0x71767B)
 
+    /// Foreground for content sitting on a filled accent surface — a primary button, a selected
+    /// segment, a coloured banner. A literal `Color.white` happens to be right today because every
+    /// accent is dark enough in both themes, but it hard-codes that assumption into forty call
+    /// sites. Changing the accent should not mean auditing all of them.
+    static let appOnAccent = dynamic(light: 0xFFFFFF, dark: 0xFFFFFF)
+
     static let appSuccess = dynamic(light: 0x1B8F4D, dark: 0x35C77F)
     static let appWarning = dynamic(light: 0xB8730B, dark: 0xE8A33D)
     static let appDanger = dynamic(light: 0xC42D2D, dark: 0xF06060)

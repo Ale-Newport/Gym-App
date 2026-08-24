@@ -5,7 +5,6 @@ import SwiftData
 struct GymAppApp: App {
     @State private var environment: AppEnvironment
     @State private var router = AppRouter()
-    @StateObject private var localization = LocalizationManager.shared
     private let modelContainer: ModelContainer
 
     init() {
@@ -24,10 +23,8 @@ struct GymAppApp: App {
             RootView()
                 .environment(environment)
                 .environment(router)
-                .environmentObject(localization)
+                .environment(LocalizationManager.shared)
                 .environment(\.appEnvironment, environment)
-                // Re-render the whole tree when the in-app language override changes.
-                .id(localization.current)
                 .tint(Color.appAccent)
         }
         .modelContainer(modelContainer)

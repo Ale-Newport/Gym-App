@@ -29,7 +29,12 @@ final class NotificationService {
     @discardableResult
     func requestAuthorization() async -> Bool {
         do {
-            let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge, .timeSensitive])
+            // `.timeSensitive` as an *authorisation option* was deprecated in iOS 15: the
+            // capability now comes from the Time Sensitive Notifications entitlement, which this
+            // app does not request. The rest-timer notification still sets
+            // `interruptionLevel = .timeSensitive` on its content, which is the supported route and
+            // degrades to a normal alert without the entitlement.
+            let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge])
             await refreshAuthorizationStatus()
             return granted
         } catch {

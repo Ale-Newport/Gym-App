@@ -75,6 +75,10 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge
         PRODUCT_NAME: Forge
+        # The app ships as "Forge" but the Swift module keeps the target's name, so the test
+        # targets can `@testable import GymApp`. Without this the module would be called Forge
+        # and every test file in GymAppTests would fail to resolve its import.
+        PRODUCT_MODULE_NAME: GymApp
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
@@ -115,6 +119,11 @@ targets:
           - LogWaterIntent
           - OpenTodayWorkoutIntent
         ITSAppUsesNonExemptEncryption: false
+        CFBundleURLTypes:
+          - CFBundleURLName: com.gymapp.forge.deeplink
+            CFBundleTypeRole: Editor
+            CFBundleURLSchemes:
+              - forge
         CFBundleLocalizations:
           - en
           - es

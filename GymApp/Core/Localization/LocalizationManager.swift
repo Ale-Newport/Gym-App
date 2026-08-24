@@ -1,20 +1,28 @@
 import Foundation
-import Combine
+import Observation
 
 /// Central string lookup.
 ///
 /// Every user-visible string in the app resolves through here rather than through SwiftUI's
 /// implicit `Text("key")` lookup. The reason is the in-app language override in Settings: SwiftUI's
 /// implicit lookup always follows the *system* language, so honouring a manual override requires
-/// pointing lookups at a specific `.lproj` bundle. `LocalizationManager` owns that bundle and
-/// publishes changes, which re-renders the whole UI when the user switches language.
+/// pointing lookups at a specific `.lproj` bundle.
+///
+/// It is `@Observable` rather than an `ObservableObject`, and that choice does real work. Because
+/// `localized(_:)` reads observable state, every view that calls `L(_:)` inside its `body`
+/// registers a dependency on the language automatically — no `@EnvironmentObject` to remember, and
+/// no `.id()` on the root view. The `.id()` approach did re-render everything, but by *replacing*
+/// the whole tree: switching language threw the user out of whatever screen they were on, which is
+/// a strange thing for a settings toggle to do.
 @MainActor
-final class LocalizationManager: ObservableObject {
+@Observable
+final class LocalizationManager {
+    @ObservationIgnored
     static let shared = LocalizationManager()
 
     /// `nil` means "follow the device language".
-    @Published private(set) var override: AppLanguage?
-    @Published private(set) var current: AppLanguage
+    private(set) var override: AppLanguage?
+    private(set) var current: AppLanguage
 
     private var bundle: Bundle
     private static let defaultsKey = "settings.languageOverride"
@@ -44,9 +52,13 @@ final class LocalizationManager: ObservableObject {
     /// Looks up `key`. Falls back to the English table and then to the key itself, so a missing
     /// translation shows English text rather than a raw identifier.
     func localized(_ key: String) -> String {
+        // Reading `current` here is what registers the observation dependency: a view that calls
+        // `L(_:)` in its body is now re-evaluated when the language changes, and nothing else is.
+        // Do not "optimise" this line away.
+        let language = current
         let value = bundle.localizedString(forKey: key, value: Self.missing, table: nil)
         if value != Self.missing { return value }
-        if current != .english, let english = Self.bundle(for: .english) {
+        if language != .english, let english = Self.bundle(for: .english) {
             let fallback = english.localizedString(forKey: key, value: Self.missing, table: nil)
             if fallback != Self.missing { return fallback }
         }

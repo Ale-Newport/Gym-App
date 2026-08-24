@@ -74,7 +74,7 @@ struct PreviewHost<Content: View>: View {
         content
             .environment(environment)
             .environment(router)
-            .environmentObject(LocalizationManager.shared)
+            .environment(LocalizationManager.shared)
             .environment(\.appEnvironment, environment)
             .modelContainer(container)
             .tint(Color.appAccent)

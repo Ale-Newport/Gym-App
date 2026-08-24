@@ -532,7 +532,10 @@ enum ExerciseMetadataDeriver {
         isStretch: Bool,
         tracking: TrackingMode
     ) -> Double {
-        if isStretch { return 0.02 }
+        // Both shortcuts return through the same floor the computed path is clamped to. A stretch
+        // produces essentially no hypertrophy stimulus, but "essentially none" still has to sit
+        // inside the 0.05…1 range the contract documents and every consumer assumes.
+        if isStretch { return stimulusFloor }
         if tracking == .distanceAndDuration { return 0.25 }
 
         // A good hypertrophy set needs load that can be progressed and enough stability that the
@@ -541,8 +544,12 @@ enum ExerciseMetadataDeriver {
         value += mechanic == .compound ? 0.18 : 0.12
         value += progression * 0.28
         value -= max(0, stability - 0.55) * 0.35
-        return min(max(value, 0.05), 1.0)
+        return min(max(value, stimulusFloor), 1.0)
     }
+
+    /// Lower bound of `stimulusScore`. Documented in `docs/ALGORITHMS.md`; anything at the floor
+    /// means "do not program this for hypertrophy".
+    static let stimulusFloor = 0.05
 
     static func repRange(
         pattern: MovementPattern,

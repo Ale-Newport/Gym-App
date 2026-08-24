@@ -204,8 +204,21 @@ enum NutritionAdjustmentEngine {
             ]))
         }
 
+        // Round to a number a person would actually aim for, then re-apply the bounds. Rounding
+        // last was letting a proposal that had just been clamped up to a non-round floor
+        // (1,452 kcal) round back *down* through it to 1,450 — a target below the lowest intake the
+        // app is willing to recommend. The floor is a safety bound, so it wins over tidiness.
         proposed = (proposed / 10).rounded() * 10
+        proposed = min(max(proposed, floor), ceiling)
         delta = proposed - current.kilocalories
+
+        // Re-applying the bounds can shrink the change to nothing.
+        if abs(delta) < Constants.negligibleCorrectionKilocalories {
+            return hold(.hold, Explanation("nutrition.adjust.onTrack", [
+                NutritionFormat.signedOneDecimal(observedWeekly),
+                NutritionFormat.signedOneDecimal(targetWeekly)
+            ]))
+        }
 
         let action: CalorieAdjustmentAction = delta > 0 ? .increase : .decrease
         let headline = Explanation(

@@ -293,7 +293,17 @@ and adding a language touches one file — neither ever collides with the other.
 
 Lookups go through `L("key")` rather than SwiftUI's implicit `Text("key")`, because the in-app
 language override in Settings needs to point at a specific `.lproj` bundle. The default follows the
-device; the override persists and re-renders the whole interface immediately.
+device; the override persists and re-renders immediately without disturbing navigation
+(`LocalizationManager` is `@Observable`, so calling `L(_:)` in a `body` registers the dependency).
+
+**What is and is not translated.** The interface, every explanation the engines produce, the muscle,
+equipment and body-part vocabulary, and the exercise instructions are all translated into all ten
+languages. **Exercise names are not** — the upstream dataset carries names in English only, and 1,324
+compound names ("barbell incline reverse-grip press") machine-translated into nine languages would
+read worse than leaving them in the English every gym already uses. Search matches the English name
+alongside the translated muscle and equipment terms, so looking for "pecho" or "mancuerna" still
+finds the right exercises. Adding a name table later is a data change, not a code change: the
+catalogue already resolves names through one accessor.
 
 ### Adding a language
 
@@ -312,13 +322,28 @@ xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-Unit tests use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they
-build value types, call an engine, and check the result.
+**904 unit tests** across 78 suites, plus **20 UI tests** covering the flows that matter. Unit tests
+use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they build value
+types, call an engine, and check the result, so the whole unit suite finishes in about 15 seconds.
+
+There is also a one-command pre-release checklist:
+
+```bash
+Tools/audit.sh            # dataset, food data, localisation, placeholders, both builds, both suites
+Tools/audit.sh --quick    # skips the Release build and the UI tests
+```
 
 Coverage is concentrated where correctness matters most — progression decisions, substitution
 ranking, volume and split selection, recovery and deload, nutrition maths, dataset integrity
-(including that every one of the 1,324 records has media that actually exists in the bundle), the
-repository history-snapshot guarantee, and a full export → wipe → import round trip.
+(including that every one of the 1,324 records has media that actually exists in the bundle), food
+data (including that every animal product carries the tag the vegan filter reads), the repository
+history-snapshot guarantee, and a full export → wipe → import round trip.
+
+The tests earn their keep. Writing them surfaced, among others: a CSV field containing a Windows
+line break escaping unquoted (Swift treats CR-LF as one grapheme cluster, so it matched neither
+`"\n"` nor `"\r"` as a `Character`); `182.5 cm` rendering as `5′ 12″`; a food-search predicate that
+compiled but could not be translated to SQL, so every search in the app threw; and the bundled food
+database never being imported at all.
 
 `PreviewSupport` and `SampleDataBuilder` provide fixtures — new user, fresh program, three months of
 history, an active workout, an empty and a full nutrition day — for previews and UI tests. They are
@@ -370,6 +395,20 @@ Everything reaches media through `ExerciseMediaProviding`. To swap it out:
 No view, engine or model changes. `EmptyExerciseMediaProvider` demonstrates that the app remains
 fully usable with no artwork at all.
 
+### Verifying by running it
+
+The unit suite does not prove the app works — several of the bugs above were only visible with the
+app on screen. `UITestLaunchSupport` (DEBUG only) seeds a named fixture from launch arguments, which
+is how both the UI tests and a manual check start from a known state:
+
+```bash
+xcrun simctl launch booted com.gymapp.forge \
+  -uiTestResetStore -uiTestScenario seasonedUser -uiTestInitialTab nutrition
+```
+
+Scenarios: `newUser`, `freshProgram`, `seasonedUser`, `activeWorkout`, `emptyNutritionDay`,
+`fullNutritionDay`.
+
 ## How to change things
 
 | I want to… | Do this |
@@ -394,3 +433,18 @@ fully usable with no artwork at all.
    camera and notification usage strings are already in `project.yml`.
 7. `ITSAppUsesNonExemptEncryption` is already declared `false`.
 8. Note in review comments that the app gives fitness and nutrition *estimates*, not medical advice.
+
+### A note on download size
+
+The exercise animations are ~137 MB, which puts the built app around 234 MB. That is well inside
+the App Store's limits, but it is past the threshold where iOS asks before downloading over
+cellular. Three ways to bring it down, in order of effort:
+
+- **On-Demand Resources.** Tag the animations and download them on first use. The catalogue,
+  thumbnails and every screen already work without them — `AnimatedExerciseImage` falls back to the
+  thumbnail, and `EmptyExerciseMediaProvider` shows the app is usable with no artwork at all.
+- **Re-encode.** The GIFs are as the rights holder supplies them. HEIC sequences or short H.265
+  clips at the same 180×180 would cut this substantially, but check the licence terms first — the
+  media must stay at 180×180 and keep its attribution.
+- **Ship fewer.** Most of the 1,324 are variations. A curated subset with the rest fetched on demand
+  is a product decision the media layer already supports.

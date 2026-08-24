@@ -1,0 +1,98 @@
+{
+  "widget.nextWorkout.displayName": "Next Workout",
+  "widget.nextWorkout.description": "Today's session at a glance, with a shortcut straight into it.",
+  "widget.nutrition.displayName": "Nutrition",
+  "widget.nutrition.description": "Calories and macros for today.",
+  "widget.lockScreen.displayName": "Forge Summary",
+  "widget.lockScreen.description": "Your training and nutrition on the Lock Screen.",
+
+  "widget.unavailable.title": "Nothing to show yet",
+  "widget.unavailable.message": "Open Forge once and this widget will fill in.",
+  "widget.restDay.title": "Rest day",
+  "widget.restDay.message": "Recovery is part of the programme.",
+  "widget.noProgram.title": "No session planned",
+  "widget.noProgram.message": "Open Forge to build your programme.",
+  "widget.workout.generic": "Workout",
+  "widget.inProgress.label": "In progress",
+  "widget.nextUp": "Next up",
+
+  "widget.start": "Start",
+  "widget.resume": "Resume",
+  "widget.open": "Open",
+
+  "widget.exercises": {
+    "one": "%lld exercise",
+    "other": "%lld exercises"
+  },
+  "widget.minutes": "%lld min",
+  "widget.focus.more": "+%lld",
+  "widget.week.label": "This week",
+  "widget.week.progress": "%1$lld/%2$lld",
+  "widget.percent": "%lld%%",
+
+  "widget.nutrition.today": "Today",
+  "widget.nutrition.disabled.title": "Nutrition is off",
+  "widget.nutrition.disabled.message": "Turn food tracking on in Forge to use this widget.",
+  "widget.nutrition.noTarget.title": "No calorie target",
+  "widget.nutrition.noTarget.message": "Open Forge to set your daily calories and macros.",
+  "widget.nutrition.stale.title": "Today is not logged yet",
+  "widget.nutrition.stale.message": "Open Forge to bring today's numbers up to date.",
+  "widget.calories.ofTarget": "of %@ kcal",
+  "widget.calories.remaining": "%@ kcal left",
+  "widget.calories.over": "%@ kcal over",
+  "widget.calories.consumedOfTarget": "%1$@ of %2$@ kcal",
+
+  "widget.macro.protein": "Protein",
+  "widget.macro.carbs": "Carbs",
+  "widget.macro.fat": "Fat",
+  "widget.macro.value": "%1$@/%2$@ g",
+  "widget.macro.valueOnly": "%@ g",
+
+  "widget.inline.active": "Training now",
+  "widget.inline.next": "Next: %@",
+
+  "widget.live.set": "Set",
+  "widget.live.sets": "Sets",
+  "widget.live.setValue": "%1$lld/%2$lld",
+  "widget.live.setOfTotal": "Set %1$lld of %2$lld",
+  "widget.live.rest": "Rest",
+  "widget.live.elapsed": "Elapsed",
+
+  "widget.accessibility.startWorkout": "Start %@",
+  "widget.accessibility.resumeWorkout": "Resume %@",
+  "widget.accessibility.inProgress": "%@ in progress",
+  "widget.accessibility.openApp": "Open Forge",
+  "widget.accessibility.plannedSession": "%1$@, %2$@, about %3$@",
+  "widget.accessibility.weekProgress": "%1$lld of %2$lld workouts done this week",
+  "widget.accessibility.weekCompleted": "%lld workouts done this week",
+  "widget.accessibility.calories": "%1$@ of %2$@ kilocalories eaten today",
+  "widget.accessibility.setsCompleted": "%1$lld of %2$lld sets completed",
+
+  "intents.startWorkout.title": "Start Workout",
+  "intents.startWorkout.shortTitle": "Start Workout",
+  "intents.startWorkout.description": "Opens Forge and starts today's session, or picks up the one already running.",
+  "intents.openToday.title": "Show Today's Workout",
+  "intents.openToday.shortTitle": "Today's Workout",
+  "intents.openToday.description": "Opens Forge on today's planned session without starting it.",
+
+  "intents.logBodyWeight.title": "Log Body Weight",
+  "intents.logBodyWeight.shortTitle": "Log Weight",
+  "intents.logBodyWeight.description": "Records a weigh-in without opening Forge.",
+  "intents.logBodyWeight.parameter": "Weight",
+  "intents.logBodyWeight.logged": "Logged %@.",
+
+  "intents.logWater.title": "Log Water",
+  "intents.logWater.shortTitle": "Log Water",
+  "intents.logWater.description": "Adds a drink to today's water log without opening Forge.",
+  "intents.logWater.parameter": "Amount",
+  "intents.logWater.logged": "Logged %1$@. That is %2$@ today.",
+
+  "intents.addMeal.title": "Add Food",
+  "intents.addMeal.shortTitle": "Add Food",
+  "intents.addMeal.description": "Opens Forge on the food picker for the meal you choose.",
+  "intents.addMeal.parameter": "Meal",
+  "intents.mealSlot.type": "Meal",
+
+  "intents.error.storeUnavailable": "Forge could not open its data. Open the app once and try again.",
+  "intents.error.valueOutOfRange": "That value is outside the range Forge will record."
+}
