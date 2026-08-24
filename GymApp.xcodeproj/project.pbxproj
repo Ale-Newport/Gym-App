@@ -107,6 +107,7 @@
 		7A8B1E4C3F8FAFF3DD4EECBC /* NextWorkoutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0C415EE81C5D9AA545F10B /* NextWorkoutWidget.swift */; };
 		7D8B23CDA591752001184BDD /* SavedMealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78556A2C7FC5C322822FBF93 /* SavedMealsView.swift */; };
 		7F23FDFBBA200B2F3FEE08E2 /* TemplateLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E75216B770D50FAA2238C17 /* TemplateLibraryView.swift */; };
+		7F5EFBA399AFF2D154DD41A9 /* UITestLaunchSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47E53CF30DA5FD8497D486 /* UITestLaunchSupport.swift */; };
 		829970CC9AA730B4D806D37B /* ProgressHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB1A7D53FF89F7CB1C0CC /* ProgressHubView.swift */; };
 		82E40A0334B59F8423BCAD5C /* OpenFoodFactsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC3CA0F35D6F426A378A96E /* OpenFoodFactsProvider.swift */; };
 		85C2D261E4F731F0E421B572 /* LoggingIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C119B97A8A92AB2DBE9AB755 /* LoggingIntents.swift */; };
@@ -440,6 +441,7 @@
 		F67C8A106E4A72A86C25D364 /* ExerciseLibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLibraryViewModel.swift; sourceTree = "<group>"; };
 		FB23CC88A5D7F056C3A22714 /* StrengthProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrengthProgressView.swift; sourceTree = "<group>"; };
 		FC09145814FB2DA2419A4FC2 /* WorkoutSessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionDetailView.swift; sourceTree = "<group>"; };
+		FD47E53CF30DA5FD8497D486 /* UITestLaunchSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestLaunchSupport.swift; sourceTree = "<group>"; };
 		FF54910771036A3CF0F65FFC /* LegalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -632,6 +634,7 @@
 				22EA3C888BC98DEAFFF68CFF /* MainTabView.swift */,
 				14C69A6D0AB869B2AA3821ED /* PrivacyInfo.xcprivacy */,
 				D5889E993CECDCF6984BBF40 /* RootView.swift */,
+				FD47E53CF30DA5FD8497D486 /* UITestLaunchSupport.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1305,6 +1308,7 @@
 				D7FA5109F981CF7FAA1AD647 /* TrainingCalendarView.swift in Sources */,
 				04EA53C297BE487B66335A74 /* TrainingContracts.swift in Sources */,
 				C0CB854253261E154EF6DDB3 /* TrainingSettingsView.swift in Sources */,
+				7F5EFBA399AFF2D154DD41A9 /* UITestLaunchSupport.swift in Sources */,
 				3C4A56309B9F93FD699D8763 /* Units.swift in Sources */,
 				4CD49CE1211ADA5E95FE183C /* UnitsSettingsView.swift in Sources */,
 				9E06B8C03B7F983C64D8C5BC /* UserEnums.swift in Sources */,

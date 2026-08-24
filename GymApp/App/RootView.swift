@@ -41,6 +41,11 @@ struct RootView: View {
         .task {
             guard !didBootstrap else { return }
             didBootstrap = true
+            #if DEBUG
+            // Seeds a UI-test fixture before anything reads the store. No-op unless the launch
+            // arguments ask for it, and compiled out of Release entirely.
+            UITestLaunchSupport.prepareIfNeeded(context: modelContext)
+            #endif
             await environment.bootstrap()
             await AppBootstrap.ensureBaselineRecords(in: modelContext)
         }
