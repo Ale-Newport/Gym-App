@@ -12,7 +12,7 @@ import SwiftUI
 struct LanguageSettingsView: View {
     @State private var model = SettingsViewModel()
 
-    @EnvironmentObject private var localization: LocalizationManager
+    @Environment(LocalizationManager.self) private var localization
 
     init() {}
 

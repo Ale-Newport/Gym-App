@@ -42,9 +42,12 @@ final class NutritionUITests: ForgeUITestCase {
         launch(.emptyNutritionDay)
         openTab(EN.Tab.nutrition)
 
-        let eaten = anyElement(labelBeginningWith: EN.Nutrition.eaten)
-        awaitExistence(eaten, "Today's energy total")
-        let before = eaten.label
+        // The whole energy picture is one accessibility element, addressed by identifier: its label
+        // is a sentence ("Eaten 1,240 kcal of 2,760…"), which is what makes a change observable.
+        let energy = app.descendants(matching: .any)
+            .matching(identifier: "nutritionLog.energySummary").firstMatch
+        awaitExistence(energy, "Today's energy total")
+        let before = energy.label
 
         let addFood = button(labelBeginningWith: EN.Nutrition.addFood)
         awaitExistence(addFood, "An add-food control on one of the meal sections")
@@ -74,7 +77,8 @@ final class NutritionUITests: ForgeUITestCase {
         tap(log, "The log button on the portion editor")
 
         let changed = waitUntil("the day total changes", timeout: Timeout.engine) {
-            let current = self.anyElement(labelBeginningWith: EN.Nutrition.eaten)
+            let current = self.app.descendants(matching: .any)
+                .matching(identifier: "nutritionLog.energySummary").firstMatch
             return current.exists && current.label != before
         }
         XCTAssertTrue(changed, "Logging a food item left today's energy total unchanged.")

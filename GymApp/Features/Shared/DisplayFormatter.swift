@@ -121,7 +121,7 @@ extension EnvironmentValues {
 /// Placed once, high in the tree, so a unit change updates every screen at once.
 struct DisplayFormatterProvider<Content: View>: View {
     @Query private var settings: [UserSettings]
-    @EnvironmentObject private var localization: LocalizationManager
+    @Environment(LocalizationManager.self) private var localization
     @ViewBuilder var content: Content
 
     var body: some View {

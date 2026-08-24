@@ -346,7 +346,7 @@ struct SettingsScreen<Content: View>: View {
     @ViewBuilder var content: Content
 
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject private var localization: LocalizationManager
+    @Environment(LocalizationManager.self) private var localization
 
     var body: some View {
         Group {

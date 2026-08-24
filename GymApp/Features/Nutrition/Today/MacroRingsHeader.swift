@@ -107,6 +107,9 @@ struct MacroRingsHeader: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(energyAccessibilityLabel)
+        // One element carrying the whole energy picture — eaten, target and remaining — so
+        // VoiceOver reads it as a sentence and anything watching it sees the numbers move.
+        .accessibilityIdentifier("nutritionLog.energySummary")
     }
 
     private func figure(label: String, value: String, tint: Color = .appTextPrimary) -> some View {
