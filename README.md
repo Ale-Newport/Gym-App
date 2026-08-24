@@ -312,13 +312,28 @@ xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-Unit tests use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they
-build value types, call an engine, and check the result.
+**904 unit tests** across 78 suites, plus **20 UI tests** covering the flows that matter. Unit tests
+use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they build value
+types, call an engine, and check the result, so the whole unit suite finishes in about 15 seconds.
+
+There is also a one-command pre-release checklist:
+
+```bash
+Tools/audit.sh            # dataset, food data, localisation, placeholders, both builds, both suites
+Tools/audit.sh --quick    # skips the Release build and the UI tests
+```
 
 Coverage is concentrated where correctness matters most — progression decisions, substitution
 ranking, volume and split selection, recovery and deload, nutrition maths, dataset integrity
-(including that every one of the 1,324 records has media that actually exists in the bundle), the
-repository history-snapshot guarantee, and a full export → wipe → import round trip.
+(including that every one of the 1,324 records has media that actually exists in the bundle), food
+data (including that every animal product carries the tag the vegan filter reads), the repository
+history-snapshot guarantee, and a full export → wipe → import round trip.
+
+The tests earn their keep. Writing them surfaced, among others: a CSV field containing a Windows
+line break escaping unquoted (Swift treats CR-LF as one grapheme cluster, so it matched neither
+`"\n"` nor `"\r"` as a `Character`); `182.5 cm` rendering as `5′ 12″`; a food-search predicate that
+compiled but could not be translated to SQL, so every search in the app threw; and the bundled food
+database never being imported at all.
 
 `PreviewSupport` and `SampleDataBuilder` provide fixtures — new user, fresh program, three months of
 history, an active workout, an empty and a full nutrition day — for previews and UI tests. They are
@@ -369,6 +384,20 @@ Everything reaches media through `ExerciseMediaProviding`. To swap it out:
 
 No view, engine or model changes. `EmptyExerciseMediaProvider` demonstrates that the app remains
 fully usable with no artwork at all.
+
+### Verifying by running it
+
+The unit suite does not prove the app works — several of the bugs above were only visible with the
+app on screen. `UITestLaunchSupport` (DEBUG only) seeds a named fixture from launch arguments, which
+is how both the UI tests and a manual check start from a known state:
+
+```bash
+xcrun simctl launch booted com.gymapp.forge \
+  -uiTestResetStore -uiTestScenario seasonedUser -uiTestInitialTab nutrition
+```
+
+Scenarios: `newUser`, `freshProgram`, `seasonedUser`, `activeWorkout`, `emptyNutritionDay`,
+`fullNutritionDay`.
 
 ## How to change things
 
