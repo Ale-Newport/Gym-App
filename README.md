@@ -293,7 +293,17 @@ and adding a language touches one file — neither ever collides with the other.
 
 Lookups go through `L("key")` rather than SwiftUI's implicit `Text("key")`, because the in-app
 language override in Settings needs to point at a specific `.lproj` bundle. The default follows the
-device; the override persists and re-renders the whole interface immediately.
+device; the override persists and re-renders immediately without disturbing navigation
+(`LocalizationManager` is `@Observable`, so calling `L(_:)` in a `body` registers the dependency).
+
+**What is and is not translated.** The interface, every explanation the engines produce, the muscle,
+equipment and body-part vocabulary, and the exercise instructions are all translated into all ten
+languages. **Exercise names are not** — the upstream dataset carries names in English only, and 1,324
+compound names ("barbell incline reverse-grip press") machine-translated into nine languages would
+read worse than leaving them in the English every gym already uses. Search matches the English name
+alongside the translated muscle and equipment terms, so looking for "pecho" or "mancuerna" still
+finds the right exercises. Adding a name table later is a data change, not a code change: the
+catalogue already resolves names through one accessor.
 
 ### Adding a language
 
