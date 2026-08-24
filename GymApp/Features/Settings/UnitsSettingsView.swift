@@ -41,7 +41,7 @@ struct UnitsSettingsView: View {
                             .font(.subheadline.weight(currentSystem == system ? .semibold : .regular))
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: Metrics.minimumTapTarget)
-                            .foregroundStyle(currentSystem == system ? Color.white : Color.appTextSecondary)
+                            .foregroundStyle(currentSystem == system ? Color.appOnAccent : Color.appTextSecondary)
                             .background(
                                 RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
                                     .fill(currentSystem == system ? Color.appAccent : Color.appFill)

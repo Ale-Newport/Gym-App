@@ -257,7 +257,7 @@ private struct ImportPreviewSheet: View {
                     } label: {
                         if data.isRestoring {
                             HStack(spacing: Metrics.spacing8) {
-                                ProgressView().tint(Color.white)
+                                ProgressView().tint(Color.appOnAccent)
                                 Text(L("import.restoring"))
                             }
                         } else {

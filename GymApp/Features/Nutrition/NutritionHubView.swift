@@ -392,7 +392,7 @@ struct NutritionHubView: View {
             let isError = model.actionError != nil
             Text(message)
                 .font(.subheadline)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(Color.appOnAccent)
                 .padding(.horizontal, Metrics.spacing16)
                 .padding(.vertical, Metrics.spacing12)
                 .frame(maxWidth: .infinity, alignment: .leading)

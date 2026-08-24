@@ -77,7 +77,7 @@ struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
-            .foregroundStyle(isProminent ? Color.white : tint)
+            .foregroundStyle(isProminent ? Color.appOnAccent : tint)
             .frame(maxWidth: .infinity)
             .frame(minHeight: Metrics.gymTapTarget)
             .background(

@@ -137,7 +137,9 @@ struct ExerciseLibraryView: View {
     // MARK: - Pieces
 
     private func row(for item: ExerciseRowItem) -> some View {
-        NavigationLink(value: ExerciseRoute.detail(item.id)) {
+        // `item.id` is section-scoped so the list can show the same exercise in several sections;
+        // the route needs the exercise itself.
+        NavigationLink(value: ExerciseRoute.detail(item.exerciseID)) {
             ExerciseLibraryRow(
                 item: item,
                 thumbnailURL: environment.mediaProvider.thumbnailURL(for: item.exercise)

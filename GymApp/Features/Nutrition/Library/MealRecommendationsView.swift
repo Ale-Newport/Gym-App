@@ -291,7 +291,7 @@ struct MealRecommendationsView: View {
             } label: {
                 Text(L("nutritionLibrary.targets.title"))
                     .font(.headline)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color.appOnAccent)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: Metrics.gymTapTarget)
                     .background(

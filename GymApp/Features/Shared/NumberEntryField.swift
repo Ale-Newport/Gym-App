@@ -174,7 +174,7 @@ struct SegmentedValuePicker<Value: Hashable>: View {
                             .font(.subheadline.weight(selection == value ? .semibold : .regular))
                             .frame(maxWidth: .infinity)
                             .frame(height: Metrics.minimumTapTarget)
-                            .foregroundStyle(selection == value ? Color.white : Color.appTextSecondary)
+                            .foregroundStyle(selection == value ? Color.appOnAccent : Color.appTextSecondary)
                             .background(
                                 RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
                                     .fill(selection == value ? Color.appAccent : Color.appFill)

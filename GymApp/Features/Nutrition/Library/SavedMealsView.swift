@@ -190,7 +190,7 @@ struct SavedMealsView: View {
             } label: {
                 Label(L("nutritionLibrary.meals.log"), systemImage: "plus.circle.fill")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color.appOnAccent)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: Metrics.minimumTapTarget)
                     .background(

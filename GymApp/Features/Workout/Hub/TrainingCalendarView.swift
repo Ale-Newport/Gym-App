@@ -388,7 +388,7 @@ struct TrainingCalendarView: View {
         } label: {
             Label(L("workoutHub.calendar.scheduleHere"), systemImage: "plus.circle")
                 .font(.headline)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(Color.appOnAccent)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: Metrics.gymTapTarget)
                 .background(

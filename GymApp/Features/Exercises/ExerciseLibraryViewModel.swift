@@ -87,8 +87,18 @@ struct ExerciseRowItem: Identifiable, Hashable, Sendable {
     let isExcluded: Bool
     let timesPerformed: Int
     let lastPerformedAt: Date?
+    /// The section this row belongs to. Part of the identity, not decoration — see `id`.
+    let sectionID: String
 
-    var id: String { exercise.id }
+    /// Unique **within the whole list**, not just within its section.
+    ///
+    /// A favourite that was trained yesterday legitimately appears three times: under Recently
+    /// performed, under Favourites, and under its letter. All three sections live in one
+    /// `LazyVStack`, and SwiftUI requires identities to be unique across the entire hierarchy — with
+    /// a bare `exercise.id` the duplicates collapsed and whole sections rendered as blank space
+    /// while still reserving their height.
+    var id: String { "\(sectionID)#\(exercise.id)" }
+    var exerciseID: String { exercise.id }
 }
 
 /// One section of the library list.
@@ -327,7 +337,7 @@ final class ExerciseLibraryViewModel {
                 titleKey: "exercises.section.recent",
                 literalTitle: nil,
                 indexTitle: nil,
-                items: recent.map(makeItem)
+                items: recent.map { makeItem($0, in: "recent") }
             ))
         }
 
@@ -338,7 +348,7 @@ final class ExerciseLibraryViewModel {
                 titleKey: "exercises.section.favorites",
                 literalTitle: nil,
                 indexTitle: nil,
-                items: favorites.map(makeItem)
+                items: favorites.map { makeItem($0, in: "favorites") }
             ))
         }
 
@@ -364,7 +374,7 @@ final class ExerciseLibraryViewModel {
                 titleKey: nil,
                 literalTitle: letter,
                 indexTitle: letter,
-                items: bucket.map(makeItem)
+                items: bucket.map { makeItem($0, in: "letter-\(letter)") }
             ))
         }
         return result
@@ -376,7 +386,7 @@ final class ExerciseLibraryViewModel {
             titleKey: mode == .picker ? nil : "exercises.section.results",
             literalTitle: nil,
             indexTitle: nil,
-            items: sorted(matched).map(makeItem)
+            items: sorted(matched).map { makeItem($0, in: "results") }
         )
     }
 
@@ -413,14 +423,17 @@ final class ExerciseLibraryViewModel {
         }
     }
 
-    private func makeItem(_ exercise: Exercise) -> ExerciseRowItem {
+    /// Builds one row. `sectionID` is threaded through because it forms part of the row's identity:
+    /// the same exercise legitimately appears in several sections at once.
+    private func makeItem(_ exercise: Exercise, in sectionID: String) -> ExerciseRowItem {
         let preference = preferences[exercise.id]
         return ExerciseRowItem(
             exercise: exercise,
             isFavorite: preference?.isFavorite ?? false,
             isExcluded: preference?.isExcluded ?? false,
             timesPerformed: preference?.timesPerformed ?? 0,
-            lastPerformedAt: preference?.lastPerformedAt
+            lastPerformedAt: preference?.lastPerformedAt,
+            sectionID: sectionID
         )
     }
 
