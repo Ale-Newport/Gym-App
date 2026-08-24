@@ -1,0 +1,141 @@
+{
+  "exercises.title": "Exercises",
+  "exercises.loading": "Loading the exercise library…",
+  "exercises.searchPrompt": "Search %lld exercises",
+
+  "exercises.section.recent": "Recently performed",
+  "exercises.section.favorites": "Favourites",
+  "exercises.section.results": "Results",
+  "exercises.resultCount": {
+    "one": "%lld exercise",
+    "other": "%lld exercises"
+  },
+
+  "exercises.empty.title": "Nothing matches",
+  "exercises.empty.message": "No exercise fits this search and these filters together.",
+  "exercises.empty.action": "Clear search and filters",
+
+  "exercises.row.hint": "Opens the exercise",
+  "exercises.row.lastPerformed": "Last done %@",
+  "exercises.row.timesPerformed": {
+    "one": "Performed once",
+    "other": "Performed %lld times"
+  },
+  "exercises.index.label": "Alphabet index",
+
+  "exercises.sort.label": "Sort",
+  "exercises.sort.name": "Name",
+  "exercises.sort.relevance": "Relevance",
+  "exercises.sort.mostUsed": "Most used",
+  "exercises.sort.favoritesFirst": "Favourites first",
+
+  "exercises.filters.label": "Filters",
+  "exercises.filters.title": "Filters",
+  "exercises.filters.quick": "Quick filters",
+  "exercises.filters.favoritesOnly": "Favourites",
+  "exercises.filters.recentlyPerformed": "Recently performed",
+  "exercises.filters.bodyweightOnly": "Bodyweight only",
+  "exercises.filters.mechanic": "Compound or isolation",
+  "exercises.filters.difficulty": "Difficulty",
+  "exercises.filters.bodyPart": "Body part",
+  "exercises.filters.muscleGroup": "Muscle group",
+  "exercises.filters.equipment": "Equipment",
+  "exercises.filters.activeCount": {
+    "one": "%lld filter active",
+    "other": "%lld filters active"
+  },
+  "exercises.filters.chipCount": {
+    "one": "%lld exercise",
+    "other": "%lld exercises"
+  },
+  "exercises.filters.showCount": {
+    "one": "Show %lld exercise",
+    "other": "Show %lld exercises"
+  },
+
+  "exercises.detail.title": "Exercise",
+  "exercises.detail.missing.title": "This exercise is no longer available",
+  "exercises.detail.missing.message": "It is not part of the exercise library that ships with this version of the app.",
+
+  "exercises.action.favorite": "Add to favourites",
+  "exercises.action.unfavorite": "Remove from favourites",
+  "exercises.action.favorited": "Added to your favourites.",
+  "exercises.action.unfavorited": "Removed from your favourites.",
+  "exercises.action.feedbackSaved": "Saved: %@. Future plans will take it into account.",
+  "exercises.action.exclude": "Never program this",
+  "exercises.action.include": "Allow in plans again",
+  "exercises.action.exclude.hint": "The app stops choosing this exercise for you. You can still add it yourself.",
+  "exercises.action.excluded": "The app will stop choosing this exercise for you.",
+  "exercises.action.included": "This exercise can be programmed again.",
+  "exercises.action.addToToday": "Add to today's workout",
+  "exercises.action.addToTemplate": "Add to a session",
+  "exercises.action.findAlternatives": "Find alternatives",
+  "exercises.action.addedToSession": "%@ added to the workout you are doing now.",
+  "exercises.action.addedToTemplate": "%@ added to %@.",
+  "exercises.action.noPlan": "There is no workout running and no training plan to add this to yet.",
+  "exercises.action.templateGone": "That session no longer exists.",
+  "exercises.action.goToWorkouts": "Go to workouts",
+  "exercises.action.openWorkout": "Open the workout",
+
+  "exercises.feedback.title": "How do you feel about this?",
+  "exercises.feedback.subtitle": "Your answer changes how often it is programmed for you.",
+
+  "exercises.facts.title": "Details",
+  "exercises.instructions.title": "How to do it",
+
+  "exercises.history.title": "Your history",
+  "exercises.history.viewAll": "View full history",
+  "exercises.history.records": "Personal records",
+  "exercises.history.lastPerformed": "Last performed",
+  "exercises.history.lastLoad": "Last load",
+  "exercises.history.bestSet": "Best set",
+  "exercises.history.oneRepMax": "Estimated 1RM",
+  "exercises.history.oneRepMax.caption": "Estimated from your sets — never a maximal attempt.",
+  "exercises.history.oneRepMaxShort": "1RM %@",
+  "exercises.history.totalVolume": "Total volume",
+  "exercises.history.sessions": "Sessions",
+  "exercises.history.logged": {
+    "one": "%lld time logged in total",
+    "other": "%lld times logged in total"
+  },
+  "exercises.history.reps": {
+    "one": "%lld rep",
+    "other": "%lld reps"
+  },
+  "exercises.history.repsShort": "%lld reps",
+  "exercises.history.setFormat": "%@ × %lld",
+  "exercises.history.setNumber": "Set %lld",
+  "exercises.history.rir": "%lld RIR",
+  "exercises.history.notLogged": "Not logged",
+  "exercises.history.substitutedFor": "Done instead of %@",
+  "exercises.history.noChart": "One session so far — a chart needs at least two.",
+  "exercises.history.empty.title": "You haven't done this one yet",
+  "exercises.history.empty.message": "Log a set and your loads, best sets and estimated 1RM will show up here.",
+
+  "exercises.trend.label": "Metric",
+  "exercises.trend.date": "Date",
+  "exercises.trend.oneRepMax": "Estimated 1RM",
+  "exercises.trend.topSet": "Top set",
+  "exercises.trend.volume": "Volume",
+  "exercises.trend.chartLabel": "%@ over time",
+  "exercises.trend.summary": "%lld sessions, from %@ on %@ to %@ on %@.",
+
+  "exercises.alternatives.title": "Alternatives",
+  "exercises.alternatives.loading": "Looking for alternatives…",
+  "exercises.alternatives.empty.title": "No alternatives found",
+  "exercises.alternatives.empty.message": "Nothing in your available equipment trains this the same way.",
+  "exercises.alternatives.similarity": "%lld%% similar",
+
+  "exercises.templates.title": "Choose a session",
+  "exercises.templates.activeProgram": "%@ · current plan",
+  "exercises.templates.empty.title": "No sessions yet",
+  "exercises.templates.empty.message": "Create a training plan and its sessions will show up here.",
+  "exercises.templates.exerciseCount": {
+    "one": "%lld exercise",
+    "other": "%lld exercises"
+  },
+
+  "exercises.picker.title": "Choose an exercise",
+  "exercises.picker.hint": "Chooses this exercise",
+  "exercises.picker.noneChosen": "Nothing chosen yet"
+}
