@@ -211,8 +211,8 @@ rather than nothing. Weights are catalogue-dependent but deterministic for a
 given catalogue.
 
 Reference values on the shipping dataset, using the dataset's own record names:
-`barbell bench press` ↔ `dumbbell bench press` 0.94, ↔ `lever chest press` 0.86,
-↔ `barbell full squat` 0.22.
+`barbell bench press` ↔ `dumbbell bench press` 0.94, ↔ `cable decline press` 0.85,
+↔ `barbell high bar squat` 0.23.
 
 ### Candidate score
 
@@ -274,7 +274,8 @@ the progression area's key file rather than in `taxonomy.en.json`.
 
 ### Performance
 
-Measured on the shipping 1,324-record catalogue, `-O` build, Apple silicon, with
+Measured on the earlier 1,324-record catalogue (the shipping one has 500 records, so these are
+upper bounds), `-O` build, Apple silicon, with
 a full preference and history dictionary loaded — which is the expensive case,
 since every candidate then costs two dictionary lookups and a trend computation:
 

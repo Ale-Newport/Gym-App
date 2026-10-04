@@ -229,9 +229,9 @@ struct ExerciseSearchCatalogueTests {
     @Test("Typing an exercise's full name puts it first")
     func exactNameRanksFirst() {
         #expect(results("barbell bench press").first?.id == "0025")
-        #expect(results("barbell full squat").first?.id == "0043")
+        #expect(results("barbell high bar squat").first?.id == "1436")
         #expect(results("hanging leg raise").first?.id == "0472")
-        #expect(results("jump rope").first?.id == "2612")
+        #expect(results("floor crunch").first?.id == "9002")
     }
 
     @Test("Case and diacritics make no difference to the bundled catalogue either")
@@ -255,24 +255,22 @@ struct ExerciseSearchCatalogueTests {
 
     @Test("Searching a piece of equipment returns exercises that use it")
     func equipmentSearchReturnsRelevantResults() {
-        let kettlebell = results("kettlebell")
-        #expect(!kettlebell.isEmpty)
-        let irrelevant = kettlebell.filter {
-            $0.equipment != .kettlebell && !ExerciseNameTokenizer.normalize($0.name).contains("kettlebell")
+        let cable = results("cable")
+        #expect(!cable.isEmpty)
+        let irrelevant = cable.filter {
+            $0.equipment != .cable && !ExerciseNameTokenizer.normalize($0.name).contains("cable")
         }
-        #expect(irrelevant.isEmpty, "\(irrelevant.count) kettlebell results use no kettlebell")
+        #expect(irrelevant.isEmpty, "\(irrelevant.count) cable results use no cable")
     }
 
     @Test("Searching a body part returns exercises filed under it")
     func bodyPartSearchReturnsRelevantResults() {
-        let cardio = results("cardio")
-        #expect(!cardio.isEmpty)
-        let irrelevant = cardio.filter {
-            $0.bodyPart != .cardio
-                && $0.target != .cardiovascularSystem
-                && !ExerciseNameTokenizer.normalize($0.name).contains("cardio")
+        let waist = results("waist")
+        #expect(!waist.isEmpty)
+        let irrelevant = waist.filter {
+            $0.bodyPart != .waist && !ExerciseNameTokenizer.normalize($0.name).contains("waist")
         }
-        #expect(irrelevant.isEmpty, "\(irrelevant.count) cardio results are not cardio")
+        #expect(irrelevant.isEmpty, "\(irrelevant.count) waist results are not filed under the waist")
 
         #expect(!results("shoulders").isEmpty)
         #expect(!results("waist").isEmpty)

@@ -1,30 +1,42 @@
 #!/usr/bin/env python3
 """
-prepare_dataset.py — Ingests the upstream `exercises-dataset` repository and emits the
-resources bundled inside GymApp.
+prepare_dataset.py — Builds the exercise catalogue bundled inside GymApp from the Gym avatar project
+(Fitness Athlete Generator, `../Gym avatar/fitness-athlete-generator`).
 
-Why this exists
----------------
-The upstream `data/exercises.json` is a single 17 MB document that carries instructions for
-ten languages inside every record. Parsing it at launch would cost hundreds of milliseconds
-and tens of megabytes of resident memory for text the user will never read (nine languages
-out of ten). This tool splits it into:
+What ships
+----------
+Only the exercises the avatar project has signed off: `output/qa/priority-500.json`, the 500
+distinct exercises with image-bound visual review evidence (its own `verify_priority_500.py` checks
+the same file). Nothing unreviewed is ever used to fill the list.
 
-    Resources/ExerciseDataset/exercises.core.json          ~0.6 MB, always loaded
+Where each part comes from
+--------------------------
+* Records (name, body part, equipment, muscles) and the ten-language instructions: the upstream
+  `hasaneyldrm/exercises-dataset` (MIT), read from the avatar project's pinned copy at
+  `data/external/exercises.json`. Every avatar exercise carries the upstream id as a suffix
+  (`push_up_0662`) or through an explicit alias (`barbell_bench_press` → `barbell_bench_press_0025`),
+  so the app keeps the same stable ids it has always used and no saved workout changes meaning.
+* English and Spanish steps: the avatar project's, when it has them. They were written against the
+  rendered motion, so they describe what the animation shows.
+* Exercises with no upstream record: `Tools/exercise_additions.json`, ids from 9001.
+* Media: rendered by the avatar project from its own athlete. Each animation is re-encoded from the
+  reviewed GIF to an animated WebP (a twentieth of the GIF's size), each thumbnail is a JPEG of the
+  middle rendered frame cropped to the area the movement covers.
+
+Outputs
+-------
+    Resources/ExerciseDataset/exercises.core.json                     always loaded
     Resources/ExerciseDataset/instructions/instructions.<lang>.json   loaded lazily, per language
-    Resources/ExerciseDataset/dataset-manifest.json        version + integrity metadata
-
-and copies the media into a dedicated, replaceable media root:
-
-    Resources/ExerciseMedia/thumbnails/<id>-<mediaId>.jpg
-    Resources/ExerciseMedia/animations/<id>-<mediaId>.gif
-
-The media is NOT MIT-licensed (see NOTICE.md / docs/LICENSES.md). It lives in its own
-directory so it can be swapped wholesale for self-owned assets without touching any code.
+    Resources/ExerciseDataset/dataset-manifest.json                   version + integrity metadata
+    Resources/ExerciseMedia/thumbnails/<id>.jpg
+    Resources/ExerciseMedia/animations/<id>.webp
+    docs/DATASET_AUDIT.md
 
 Usage
 -----
-    python3 Tools/prepare_dataset.py --source /path/to/exercises-dataset [--skip-media]
+    python3 Tools/prepare_dataset.py [--avatar /path/to/fitness-athlete-generator] [--skip-media]
+
+Needs Pillow built with WebP support (`python3 -c "from PIL import features; print(features.check('webp'))"`).
 """
 
 from __future__ import annotations
@@ -33,24 +45,38 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
+import re
 import sys
 from collections import Counter, defaultdict
+from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timezone
 
 LANGUAGES = ["en", "es", "it", "tr", "ru", "zh", "hi", "pl", "ko", "fr"]
-
-REQUIRED_FIELDS = [
-    "id", "name", "category", "body_part", "equipment", "instructions",
-    "instruction_steps", "muscle_group", "secondary_muscles", "target",
-    "media_id", "image", "gif_url", "attribution", "created_at",
-]
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESOURCES = os.path.join(REPO_ROOT, "GymApp", "Resources")
 DATASET_OUT = os.path.join(RESOURCES, "ExerciseDataset")
 MEDIA_OUT = os.path.join(RESOURCES, "ExerciseMedia")
 DOCS_OUT = os.path.join(REPO_ROOT, "docs")
+ADDITIONS = os.path.join(REPO_ROOT, "Tools", "exercise_additions.json")
+DEFAULT_AVATAR = os.path.join(os.path.dirname(REPO_ROOT), "Gym avatar", "fitness-athlete-generator")
+
+SELECTION_SIZE = 500
+UPSTREAM_REPOSITORY = "https://github.com/hasaneyldrm/exercises-dataset"
+MEDIA_ATTRIBUTION = "Original 3D illustrations rendered by Gym avatar"
+MEDIA_LICENSE = "Owned by the app's author. Rendered from an original athlete by the Gym avatar project."
+
+# Media encoding. The source GIFs are 512–768 px with up to 145 frames; the app shows them at most
+# screen-width and decodes every frame into memory, so they are scaled and their frame count capped.
+ANIMATION_SIZE = 400
+ANIMATION_QUALITY = 80
+ANIMATION_MAX_FRAMES = 36
+THUMBNAIL_SIZE = 240
+THUMBNAIL_QUALITY = 82
+# A pixel belongs to the athlete or his equipment when it differs from the backdrop by more than
+# this; the soft floor shadow stays below it, so thumbnails crop to the figure, not the shadow.
+CONTENT_THRESHOLD = 28
+THUMBNAIL_MARGIN = 0.08
 
 
 def sha256_of_file(path: str) -> str:
@@ -61,108 +87,9 @@ def sha256_of_file(path: str) -> str:
     return h.hexdigest()
 
 
-def audit(records: list[dict], source: str) -> tuple[list[str], list[str], dict]:
-    """Returns (errors, warnings, stats). Errors are records the app must reject."""
-    errors: list[str] = []
-    warnings: list[str] = []
-
-    seen_ids: set[str] = set()
-    seen_media: set[str] = set()
-    name_index: dict[str, list[str]] = defaultdict(list)
-
-    for idx, rec in enumerate(records):
-        rid = rec.get("id", f"<index {idx}>")
-
-        for field in REQUIRED_FIELDS:
-            if field not in rec:
-                errors.append(f"{rid}: missing required field '{field}'")
-
-        if not isinstance(rec.get("id"), str) or not rec.get("id", "").isdigit():
-            errors.append(f"{rid}: id is not a numeric string")
-        elif rec["id"] in seen_ids:
-            errors.append(f"{rid}: duplicate id")
-        else:
-            seen_ids.add(rec["id"])
-
-        media_id = rec.get("media_id")
-        if media_id in seen_media:
-            errors.append(f"{rid}: duplicate media_id '{media_id}'")
-        elif media_id:
-            seen_media.add(media_id)
-
-        if not rec.get("name", "").strip():
-            errors.append(f"{rid}: empty name")
-        else:
-            name_index[rec["name"].strip().lower()].append(rid)
-
-        for path_field, expected_dir, expected_ext in (
-            ("image", "images", (".jpg", ".jpeg", ".png")),
-            ("gif_url", "videos", (".gif",)),
-        ):
-            rel = rec.get(path_field, "")
-            if not rel.startswith(expected_dir + "/"):
-                errors.append(f"{rid}: {path_field} '{rel}' is outside '{expected_dir}/'")
-                continue
-            if not rel.lower().endswith(expected_ext):
-                errors.append(f"{rid}: {path_field} '{rel}' has an unexpected extension")
-                continue
-            absolute = os.path.join(source, rel)
-            if not os.path.isfile(absolute):
-                errors.append(f"{rid}: {path_field} '{rel}' does not exist on disk")
-            elif os.path.getsize(absolute) == 0:
-                errors.append(f"{rid}: {path_field} '{rel}' is a zero-byte file")
-
-        instructions = rec.get("instructions", {}) or {}
-        steps = rec.get("instruction_steps", {}) or {}
-        for lang in LANGUAGES:
-            if not str(instructions.get(lang, "")).strip():
-                errors.append(f"{rid}: instructions.{lang} is empty")
-            if not steps.get(lang):
-                errors.append(f"{rid}: instruction_steps.{lang} is empty")
-        step_counts = {len(v) for v in steps.values() if isinstance(v, list)}
-        if len(step_counts) > 1:
-            warnings.append(f"{rid}: step counts differ across languages {sorted(step_counts)}")
-
-        extra_langs = (set(instructions) | set(steps)) - set(LANGUAGES)
-        if extra_langs:
-            warnings.append(f"{rid}: unknown language codes {sorted(extra_langs)}")
-
-        if not rec.get("secondary_muscles"):
-            warnings.append(f"{rid}: no secondary muscles listed")
-        if not str(rec.get("attribution", "")).strip():
-            errors.append(f"{rid}: empty attribution — media attribution is mandatory")
-        if rec.get("category") != rec.get("body_part"):
-            warnings.append(
-                f"{rid}: category '{rec.get('category')}' != body_part '{rec.get('body_part')}'"
-            )
-
-    for name, ids in sorted(name_index.items()):
-        if len(ids) > 1:
-            warnings.append(f"duplicate name '{name}' shared by ids {', '.join(ids)}")
-
-    # Orphan media (present on disk, referenced by nobody).
-    for folder, field in (("images", "image"), ("videos", "gif_url")):
-        folder_path = os.path.join(source, folder)
-        if not os.path.isdir(folder_path):
-            errors.append(f"source folder '{folder}' is missing")
-            continue
-        on_disk = {f for f in os.listdir(folder_path) if not f.startswith(".")}
-        referenced = {os.path.basename(r.get(field, "")) for r in records}
-        for orphan in sorted(on_disk - referenced):
-            warnings.append(f"orphan file {folder}/{orphan} is referenced by no record")
-
-    stats = {
-        "total": len(records),
-        "bodyParts": dict(Counter(r.get("body_part") for r in records).most_common()),
-        "equipment": dict(Counter(r.get("equipment") for r in records).most_common()),
-        "targets": dict(Counter(r.get("target") for r in records).most_common()),
-        "muscleGroups": dict(Counter(r.get("muscle_group") for r in records).most_common()),
-        "secondaryMuscles": dict(
-            Counter(m for r in records for m in r.get("secondary_muscles", [])).most_common()
-        ),
-        "languages": LANGUAGES,
-    }
-    return errors, warnings, stats
+def read_json(path: str):
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def write_json(path: str, payload) -> int:
@@ -172,106 +99,309 @@ def write_json(path: str, payload) -> int:
     return os.path.getsize(path)
 
 
-def copy_media(records: list[dict], source: str) -> dict:
+# MARK: - Selection
+
+def load_selection(avatar: str) -> tuple[list[dict], dict]:
+    """The reviewed 500, refusing anything that is not fully reviewed."""
+    selection = read_json(os.path.join(avatar, "output", "qa", "priority-500.json"))
+    rows = selection["exercises"]
+    unreviewed = [r["id"] for r in rows if not r.get("reviewed")]
+    if len(rows) != SELECTION_SIZE or selection.get("remaining") != 0 or unreviewed:
+        raise SystemExit(
+            f"error: priority-500.json lists {len(rows)} exercises, {len(unreviewed)} unreviewed "
+            f"(remaining={selection.get('remaining')}). Run the avatar project's "
+            "`scripts/build_priority_500.py --reviewed-only` first."
+        )
+    catalog = {e["id"]: e for e in read_json(os.path.join(avatar, "ui", "catalog.json"))["exercises"]}
+    missing = [r["id"] for r in rows if r["id"] not in catalog]
+    if missing:
+        raise SystemExit(f"error: selected exercises missing from ui/catalog.json: {missing}")
+    return rows, catalog
+
+
+def upstream_ids(row: dict, upstream: dict) -> list[str]:
+    """Upstream ids an avatar exercise stands for: its own suffix first, then its aliases'."""
+    ids = []
+    for ident in [row["id"]] + list(row.get("aliases", [])):
+        match = re.search(r"_(\d{4})$", ident)
+        if match and match.group(1) in upstream and match.group(1) not in ids:
+            ids.append(match.group(1))
+    return ids
+
+
+# MARK: - Records
+
+def audit(core: list[dict], instructions: dict[str, dict[str, list[str]]]) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    seen: set[str] = set()
+    names: dict[str, list[str]] = defaultdict(list)
+    for rec in core:
+        rid = rec["id"]
+        if not rid.isdigit():
+            errors.append(f"{rid}: id is not a numeric string")
+        if rid in seen:
+            errors.append(f"{rid}: duplicate id")
+        seen.add(rid)
+        if not rec["name"].strip():
+            errors.append(f"{rid}: empty name")
+        names[rec["name"].strip().lower()].append(rid)
+        for lang in LANGUAGES:
+            if not instructions[lang].get(rid):
+                errors.append(f"{rid}: no {lang} instructions")
+        if not rec["secondaryMuscles"]:
+            warnings.append(f"{rid}: no secondary muscles listed")
+    for name, ids in sorted(names.items()):
+        if len(ids) > 1:
+            warnings.append(f"duplicate name '{name}' shared by ids {', '.join(ids)}")
+    return errors, warnings
+
+
+def build_records(rows: list[dict], catalog: dict, upstream: dict, additions: dict):
+    core: list[dict] = []
+    instructions: dict[str, dict[str, list[str]]] = {lang: {} for lang in LANGUAGES}
+    aliases: dict[str, str] = {}
+    sources: dict[str, dict] = {}
+    avatar_steps = 0
+
+    for row in rows:
+        avatar_id = row["id"]
+        item = catalog[avatar_id]
+        ids = upstream_ids(row, upstream)
+        if ids:
+            rid = ids[0]
+            rec = upstream[rid]
+            record = {
+                "id": rid,
+                "name": rec["name"],
+                "bodyPart": rec["body_part"],
+                "equipment": rec["equipment"],
+                "target": rec["target"],
+                "muscleGroup": rec["muscle_group"],
+                "secondaryMuscles": rec["secondary_muscles"],
+                "createdAt": rec["created_at"],
+            }
+            steps = {lang: rec["instruction_steps"][lang] for lang in LANGUAGES}
+            # Other upstream records the avatar project merged into this one. Recorded in the audit;
+            # they do not ship as separate exercises.
+            for alias in ids[1:]:
+                aliases[alias] = rid
+        elif avatar_id in additions:
+            addition = additions[avatar_id]
+            rid = addition["id"]
+            record = {k: addition[k] for k in
+                      ("id", "name", "bodyPart", "equipment", "target", "muscleGroup", "secondaryMuscles", "createdAt")}
+            steps = dict(addition["steps"])
+        else:
+            raise SystemExit(
+                f"error: {avatar_id} has no upstream record and no entry in {os.path.relpath(ADDITIONS, REPO_ROOT)}"
+            )
+
+        rewritten = False
+        for lang in ("en", "es"):
+            own = (item.get("steps") or {}).get(lang)
+            if own:
+                rewritten |= own != steps.get(lang)
+                steps[lang] = own
+        avatar_steps += rewritten
+
+        record.update({
+            "mediaId": avatar_id,
+            "thumbnail": f"{rid}.jpg",
+            "animation": f"{rid}.webp",
+            "attribution": MEDIA_ATTRIBUTION,
+        })
+        core.append(record)
+        for lang in LANGUAGES:
+            instructions[lang][rid] = steps[lang]
+        sources[rid] = {"avatarId": avatar_id, "gif": item["gif"], "frames": item["render"]["frames"]}
+
+    # An alias must never shadow a real record.
+    for alias in [a for a in aliases if a in sources]:
+        del aliases[alias]
+
+    core.sort(key=lambda r: int(r["id"]))
+    return core, instructions, dict(sorted(aliases.items())), sources, avatar_steps
+
+
+# MARK: - Media
+
+def _decode_gif(path: str):
+    from PIL import Image
+    frames, delays = [], []
+    with Image.open(path) as gif:
+        for index in range(gif.n_frames):
+            gif.seek(index)
+            frames.append(gif.convert("RGB"))
+            delays.append(max(20, int(gif.info.get("duration", 100))))
+    return frames, delays
+
+
+def _whiten(image, background):
+    """Stretches levels so the render's off-white backdrop becomes pure white and the artwork sits
+    on the app's white cards without a visible square. The athlete brightens by the same ~1%."""
+    level = min(background) if isinstance(background, tuple) else background
+    if level >= 255 or level < 200:
+        return image
+    return image.point(lambda v: min(255, round(v * 255 / level)))
+
+
+def _content_box(frames, background):
+    """Union bounding box of everything that is not backdrop, across every frame."""
+    from PIL import Image, ImageChops
+    box = None
+    for frame in frames:
+        diff = ImageChops.difference(frame, Image.new("RGB", frame.size, background)).convert("L")
+        b = diff.point(lambda v: 255 if v > CONTENT_THRESHOLD else 0).getbbox()
+        if b:
+            box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]), max(box[2], b[2]), max(box[3], b[3]))
+    return box
+
+
+def _square(box, size, margin):
+    left, top, right, bottom = box
+    side = max(right - left, bottom - top) * (1 + 2 * margin)
+    side = min(size[0], size[1], max(side, 1))
+    cx, cy = (left + right) / 2, (top + bottom) / 2
+    x = min(max(cx - side / 2, 0), size[0] - side)
+    y = min(max(cy - side / 2, 0), size[1] - side)
+    return tuple(int(round(v)) for v in (x, y, x + side, y + side))
+
+
+def encode_media(job: tuple[str, str, str, str, str]) -> tuple[str, int, int, int]:
+    """Writes one exercise's animation and thumbnail. Returns (id, frames, animation bytes, thumb bytes)."""
+    from PIL import Image
+    rid, gif_path, still_path, animation_out, thumbnail_out = job
+
+    frames, delays = _decode_gif(gif_path)
+    background = frames[0].getpixel((1, 1))
+    stride = max(1, -(-len(frames) // ANIMATION_MAX_FRAMES))
+    kept, kept_delays = [], []
+    for index in range(0, len(frames), stride):
+        kept.append(_whiten(frames[index], background).resize((ANIMATION_SIZE, ANIMATION_SIZE), Image.LANCZOS))
+        # The skipped frames' time is folded into the kept one, so a rep keeps its tempo.
+        kept_delays.append(sum(delays[index:index + stride]))
+    kept[0].save(animation_out, format="WEBP", save_all=True, append_images=kept[1:],
+                 duration=kept_delays, loop=0, quality=ANIMATION_QUALITY, method=6)
+
+    with Image.open(still_path) as raw:
+        still = raw.convert("RGBA")
+    flat = Image.new("RGBA", still.size, (255, 255, 255, 255))
+    flat.alpha_composite(still)
+    still = flat.convert("RGB")
+    still = _whiten(still, still.getpixel((1, 1)))
+    # The GIF and the still can differ in resolution; measure the movement in GIF space and scale.
+    box = _content_box(frames, background)
+    if box:
+        scale = still.size[0] / frames[0].size[0]
+        box = tuple(v * scale for v in box)
+        still = still.crop(_square(box, still.size, THUMBNAIL_MARGIN))
+    still.resize((THUMBNAIL_SIZE, THUMBNAIL_SIZE), Image.LANCZOS).save(
+        thumbnail_out, format="JPEG", quality=THUMBNAIL_QUALITY, optimize=True, progressive=True)
+    return rid, len(kept), os.path.getsize(animation_out), os.path.getsize(thumbnail_out)
+
+
+def build_media(avatar: str, sources: dict[str, dict], jobs: int) -> dict:
     thumbs = os.path.join(MEDIA_OUT, "thumbnails")
     anims = os.path.join(MEDIA_OUT, "animations")
     for folder in (thumbs, anims):
         os.makedirs(folder, exist_ok=True)
 
-    copied = {"thumbnails": 0, "animations": 0, "thumbnailsBytes": 0, "animationsBytes": 0}
-    keep_thumbs, keep_anims = set(), set()
+    work = []
+    for rid, src in sources.items():
+        gif = os.path.join(avatar, src["gif"])
+        frames = [os.path.join(avatar, f.split("?")[0]) for f in src["frames"]]
+        missing = [p for p in [gif] + frames if not os.path.isfile(p)]
+        if missing:
+            raise SystemExit(f"error: {src['avatarId']}: missing rendered media {missing[:2]}")
+        still = frames[len(frames) // 2]
+        animation_out = os.path.join(anims, f"{rid}.webp")
+        thumbnail_out = os.path.join(thumbs, f"{rid}.jpg")
+        newest_source = max(os.path.getmtime(gif), os.path.getmtime(still), os.path.getmtime(__file__))
+        if all(os.path.isfile(p) and os.path.getmtime(p) >= newest_source for p in (animation_out, thumbnail_out)):
+            continue
+        work.append((rid, gif, still, animation_out, thumbnail_out))
 
-    for rec in records:
-        for rel, dest_dir, key, keep in (
-            (rec["image"], thumbs, "thumbnails", keep_thumbs),
-            (rec["gif_url"], anims, "animations", keep_anims),
-        ):
-            filename = os.path.basename(rel)
-            keep.add(filename)
-            src = os.path.join(source, rel)
-            dst = os.path.join(dest_dir, filename)
-            if not (os.path.exists(dst) and os.path.getsize(dst) == os.path.getsize(src)):
-                shutil.copy2(src, dst)
-            copied[key] += 1
-            copied[key + "Bytes"] += os.path.getsize(dst)
+    print(f"encoding media for {len(work)} of {len(sources)} exercises…")
+    with ProcessPoolExecutor(max_workers=jobs) as pool:
+        for done, (rid, _, _, _) in enumerate(pool.map(encode_media, work, chunksize=4), 1):
+            if done % 50 == 0 or done == len(work):
+                print(f"  {done}/{len(work)}")
 
-    # Prune stale media so a shrinking dataset does not leave dead weight in the bundle.
+    # Prune everything else, including any previous provider's files, so nothing unreviewed or
+    # third-party is left in the bundle.
+    keep_thumbs = {f"{rid}.jpg" for rid in sources}
+    keep_anims = {f"{rid}.webp" for rid in sources}
     for folder, keep in ((thumbs, keep_thumbs), (anims, keep_anims)):
         for existing in os.listdir(folder):
-            if existing.startswith("."):
-                continue
-            if existing not in keep:
+            if not existing.startswith(".") and existing not in keep:
                 os.remove(os.path.join(folder, existing))
-    return copied
 
+    return {
+        "thumbnails": len(keep_thumbs),
+        "animations": len(keep_anims),
+        "thumbnailsBytes": sum(os.path.getsize(os.path.join(thumbs, f)) for f in keep_thumbs),
+        "animationsBytes": sum(os.path.getsize(os.path.join(anims, f)) for f in keep_anims),
+    }
+
+
+# MARK: - Main
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", required=True, help="Path to a checkout of exercises-dataset")
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--avatar", default=DEFAULT_AVATAR, help="Path to the fitness-athlete-generator project")
     parser.add_argument("--skip-media", action="store_true", help="Only regenerate the JSON payloads")
     parser.add_argument("--strict", action="store_true", help="Fail the run when warnings are present")
+    parser.add_argument("--jobs", type=int, default=os.cpu_count() or 4, help="Parallel media encoders")
     args = parser.parse_args()
 
-    source = os.path.abspath(args.source)
-    dataset_path = os.path.join(source, "data", "exercises.json")
-    if not os.path.isfile(dataset_path):
-        print(f"error: {dataset_path} not found", file=sys.stderr)
+    avatar = os.path.abspath(args.avatar)
+    upstream_path = os.path.join(avatar, "data", "external", "exercises.json")
+    if not os.path.isfile(upstream_path):
+        print(f"error: {upstream_path} not found — is --avatar the fitness-athlete-generator folder?", file=sys.stderr)
         return 2
 
-    with open(dataset_path, encoding="utf-8") as fh:
-        records = json.load(fh)
-    records.sort(key=lambda r: int(r["id"]))
+    upstream = {r["id"]: r for r in read_json(upstream_path)}
+    rows, catalog = load_selection(avatar)
+    additions = {a["avatarId"]: a for a in read_json(ADDITIONS)["exercises"]}
+    colliding = [a["id"] for a in additions.values() if a["id"] in upstream]
+    if colliding:
+        raise SystemExit(f"error: additions reuse upstream ids {colliding}")
 
-    errors, warnings, stats = audit(records, source)
-
-    # A defective record must never reach the app. Drop it here, loudly, rather than letting the
-    # importer discover the problem on a user's device.
-    bad_ids = {e.split(":")[0] for e in errors}
-    clean = [r for r in records if r.get("id") not in bad_ids]
-
-    core = []
-    instructions: dict[str, dict[str, list[str]]] = {lang: {} for lang in LANGUAGES}
-    for rec in clean:
-        core.append({
-            "id": rec["id"],
-            "name": rec["name"],
-            "bodyPart": rec["body_part"],
-            "equipment": rec["equipment"],
-            "target": rec["target"],
-            "muscleGroup": rec["muscle_group"],
-            "secondaryMuscles": rec["secondary_muscles"],
-            "mediaId": rec["media_id"],
-            "thumbnail": os.path.basename(rec["image"]),
-            "animation": os.path.basename(rec["gif_url"]),
-            "attribution": rec["attribution"],
-            "createdAt": rec["created_at"],
-        })
-        for lang in LANGUAGES:
-            instructions[lang][rec["id"]] = rec["instruction_steps"][lang]
+    core, instructions, aliases, sources, avatar_steps = build_records(rows, catalog, upstream, additions)
+    errors, warnings = audit(core, instructions)
+    if errors:
+        print("\n".join(errors), file=sys.stderr)
+        return 1
 
     core_bytes = write_json(os.path.join(DATASET_OUT, "exercises.core.json"), core)
     lang_bytes = {
-        lang: write_json(
-            os.path.join(DATASET_OUT, "instructions", f"instructions.{lang}.json"),
-            instructions[lang],
-        )
+        lang: write_json(os.path.join(DATASET_OUT, "instructions", f"instructions.{lang}.json"), instructions[lang])
         for lang in LANGUAGES
     }
 
-    media_stats = {} if args.skip_media else copy_media(clean, source)
+    media_stats = {} if args.skip_media else build_media(avatar, sources, args.jobs)
+    if not media_stats:
+        previous = os.path.join(DATASET_OUT, "dataset-manifest.json")
+        media_stats = read_json(previous).get("media", {}) if os.path.isfile(previous) else {}
 
-    source_sha = sha256_of_file(dataset_path)
+    upstream_sha = sha256_of_file(upstream_path)
+    selection_sha = sha256_of_file(os.path.join(avatar, "output", "qa", "priority-500.json"))
+    version = hashlib.sha256(
+        (upstream_sha + selection_sha + sha256_of_file(os.path.join(DATASET_OUT, "exercises.core.json"))).encode()
+    ).hexdigest()[:12]
     manifest = {
         "schemaVersion": 1,
-        "datasetVersion": source_sha[:12],
+        "datasetVersion": version,
         "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "sourceRepository": "https://github.com/hasaneyldrm/exercises-dataset",
-        "sourceChecksum": source_sha,
+        "sourceRepository": UPSTREAM_REPOSITORY,
+        "sourceChecksum": upstream_sha,
+        "selectionChecksum": selection_sha,
         "exerciseCount": len(core),
         "languages": LANGUAGES,
-        "mediaAttribution": "© Gym visual — https://gymvisual.com/",
-        "mediaLicense": "Proprietary — see docs/LICENSES.md and NOTICE.md. Not covered by MIT.",
-        "mediaResolution": "180x180",
+        "mediaAttribution": MEDIA_ATTRIBUTION,
+        "mediaLicense": MEDIA_LICENSE,
+        "mediaResolution": f"{ANIMATION_SIZE}x{ANIMATION_SIZE}",
         "files": {
             "core": {"path": "exercises.core.json", "bytes": core_bytes},
             "instructions": {
@@ -280,87 +410,77 @@ def main() -> int:
             },
         },
         "media": media_stats,
-        "audit": {"errors": len(errors), "warnings": len(warnings), "rejectedRecords": sorted(bad_ids)},
+        "audit": {"errors": len(errors), "warnings": len(warnings), "rejectedRecords": []},
     }
     write_json(os.path.join(DATASET_OUT, "dataset-manifest.json"), manifest)
 
-    os.makedirs(DOCS_OUT, exist_ok=True)
+    write_report(manifest, core, aliases, warnings, avatar_steps, len(additions))
+
+    print(f"{len(core)} exercises · {len(aliases)} merged upstream ids · {len(warnings)} warnings")
+    print(f"core={core_bytes:,}B  instructions={sum(lang_bytes.values()):,}B")
+    if media_stats:
+        print(f"media: {media_stats['animations']} animations {media_stats['animationsBytes']:,}B, "
+              f"{media_stats['thumbnails']} thumbnails {media_stats['thumbnailsBytes']:,}B")
+    print("report -> docs/DATASET_AUDIT.md")
+    return 1 if warnings and args.strict else 0
+
+
+def write_report(manifest: dict, core: list[dict], aliases: dict, warnings: list[str],
+                 avatar_steps: int, additions: int) -> None:
+    media = manifest["media"]
     report = [
         "# Exercise Dataset Audit",
         "",
-        "> Generated by `Tools/prepare_dataset.py`. Re-run it after every dataset upgrade.",
+        "> Generated by `Tools/prepare_dataset.py`. Re-run it whenever the Gym avatar selection changes.",
         "",
-        f"- Source: `{manifest['sourceRepository']}`",
-        f"- Source checksum (SHA-256): `{source_sha}`",
+        "The catalogue is the Gym avatar project's reviewed selection (`output/qa/priority-500.json`),",
+        "illustrated with its own rendered athlete. Records and translations come from the upstream",
+        f"dataset ({manifest['sourceRepository']}, MIT).",
+        "",
+        f"- Upstream checksum (SHA-256): `{manifest['sourceChecksum']}`",
+        f"- Selection checksum (SHA-256): `{manifest['selectionChecksum']}`",
         f"- Dataset version: `{manifest['datasetVersion']}`",
         f"- Generated: {manifest['generatedAt']}",
         "",
         "## Result",
         "",
-        f"| Records in source | {len(records)} |",
+        f"| Exercises | {len(core)} |",
         "|---|---|",
-        f"| Records accepted | {len(clean)} |",
-        f"| Records rejected | {len(records) - len(clean)} |",
-        f"| Blocking errors | {len(errors)} |",
+        f"| From upstream records | {len(core) - additions} |",
+        f"| Added (`Tools/exercise_additions.json`) | {additions} |",
+        f"| English/Spanish steps rewritten by Gym avatar for the rendered motion | {avatar_steps} |",
+        f"| Upstream ids merged into another exercise | {len(aliases)} |",
         f"| Warnings | {len(warnings)} |",
-        f"| Languages | {len(LANGUAGES)} |",
         "",
-        "## Payload sizes",
-        "",
-        "| File | Bytes |",
-        "|---|---|",
-        f"| `exercises.core.json` | {core_bytes:,} |",
     ]
-    for lang, size in lang_bytes.items():
-        report.append(f"| `instructions/instructions.{lang}.json` | {size:,} |")
-    if media_stats:
+    if media:
         report += [
-            "",
             "## Media",
             "",
             "| Asset | Count | Bytes |",
             "|---|---|---|",
-            f"| Thumbnails (JPEG 180x180) | {media_stats['thumbnails']} | {media_stats['thumbnailsBytes']:,} |",
-            f"| Animations (GIF 180x180) | {media_stats['animations']} | {media_stats['animationsBytes']:,} |",
+            f"| Thumbnails (JPEG {THUMBNAIL_SIZE}×{THUMBNAIL_SIZE}) | {media['thumbnails']} | {media['thumbnailsBytes']:,} |",
+            f"| Animations (animated WebP {ANIMATION_SIZE}×{ANIMATION_SIZE}, ≤{ANIMATION_MAX_FRAMES} frames) "
+            f"| {media['animations']} | {media['animationsBytes']:,} |",
             "",
-            "Media is © Gym visual — https://gymvisual.com/ and is **not** covered by the dataset's",
-            "MIT license. See `docs/LICENSES.md`.",
         ]
-
-    report += ["", "## Distributions", ""]
-    for title, key in (
-        ("Body part", "bodyParts"), ("Equipment", "equipment"),
-        ("Target muscle", "targets"), ("Muscle group", "muscleGroups"),
-        ("Secondary muscles", "secondaryMuscles"),
-    ):
-        report += [f"### {title}", "", "| Value | Count |", "|---|---|"]
-        report += [f"| `{k}` | {v} |" for k, v in stats[key].items()]
+    for title, key in (("Body part", "bodyPart"), ("Equipment", "equipment"), ("Target muscle", "target")):
+        report += [f"## {title}", "", "| Value | Count |", "|---|---|"]
+        report += [f"| `{k}` | {v} |" for k, v in Counter(r[key] for r in core).most_common()]
         report.append("")
-
-    if errors:
-        report += ["## Blocking errors", ""] + [f"- {e}" for e in errors] + [""]
+    if aliases:
+        report += ["## Merged upstream ids", "",
+                   "The avatar project treats these upstream records as the same exercise as another one,",
+                   "so they are not shipped separately.", "",
+                   "| Upstream id | Now |", "|---|---|"]
+        report += [f"| `{old}` | `{new}` |" for old, new in aliases.items()]
+        report.append("")
     if warnings:
-        report += [
-            "## Warnings",
-            "",
-            "Warnings are informational: the app ingests these records normally.",
-            "",
-        ] + [f"- {w}" for w in warnings] + [""]
-
+        report += ["## Warnings", "", "Informational: the app ingests these records normally.", ""]
+        report += [f"- {w}" for w in warnings] + [""]
+    os.makedirs(DOCS_OUT, exist_ok=True)
     with open(os.path.join(DOCS_OUT, "DATASET_AUDIT.md"), "w", encoding="utf-8") as fh:
         fh.write("\n".join(report))
-
-    print(f"accepted {len(clean)}/{len(records)} records · {len(errors)} errors · {len(warnings)} warnings")
-    print(f"core={core_bytes:,}B  instructions={sum(lang_bytes.values()):,}B")
-    if media_stats:
-        print(f"media: {media_stats['thumbnails']} thumbnails, {media_stats['animations']} animations")
-    print("report -> docs/DATASET_AUDIT.md")
-
-    if errors:
-        return 1
-    if warnings and args.strict:
-        return 1
-    return 0
 
 
 if __name__ == "__main__":

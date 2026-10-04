@@ -127,14 +127,17 @@ swap rather than merely another exercise for the same muscle.
 
 ## Verified output over the full catalogue
 
-Running the deriver across all 1,324 records produces:
+Running the deriver across all 500 shipping records (the Gym avatar selection) produces:
 
 | Dimension | Distribution |
 |---|---|
-| Mechanic | 663 compound / 661 isolation |
-| Tracking | 820 weight×reps, 297 bodyweight+load, 95 reps-only, 89 duration, 14 distance, 7 assisted, 2 weight+time |
-| Difficulty | 636 beginner / 559 intermediate / 129 advanced |
-| Laterality | 1,083 bilateral / 203 unilateral / 38 alternating |
-| Push/pull | 431 pull, 353 push, 273 legs, 171 core, 67 neutral, 29 cardio |
-| Empty volume contribution | 87 (56 stretches + 29 cardio + 2 non-loading) |
+| Mechanic | 244 compound / 256 isolation |
+| Tracking | 298 weight×reps, 177 bodyweight+load, 15 reps-only, 6 duration, 2 assisted, 2 weight+time |
+| Difficulty | 205 beginner / 250 intermediate / 45 advanced |
+| Laterality | 423 bilateral / 76 unilateral / 1 alternating |
+| Push/pull | 168 pull, 120 push, 135 legs, 70 core, 7 neutral |
+| Empty volume contribution | 0 — the selection has no stretches and no cardio |
 | Unresolved muscle strings | 0 |
+
+The cardio, stretch and distance rules are still exercised by the unit tests, against the upstream
+records' fields (`Upstream` in `ExerciseMetadataDeriverTests.swift`).

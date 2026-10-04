@@ -1,39 +1,25 @@
-# Media Attribution & License
+# Exercise Media Notice
 
-The exercise **media** (thumbnail images and animation GIFs) in this repository
-is the property of **Gym visual** and is redistributed here **with permission**.
+The exercise **media** in this app — one thumbnail image and one looping animation per exercise —
+is original work made for this app.
 
-> **© Gym visual — https://gymvisual.com/**
+Every image is a 3D render of a single original athlete, posed and rendered by the author's own
+Gym avatar project (Fitness Athlete Generator). The athlete, his rig, clothing, equipment, poses,
+lighting and camera framing were all produced for that project. No image is copied, traced or
+derived from Gym visual or any other commercial exercise library.
 
-## Terms
+Only exercises whose renders passed the project's visual review are included: 500 exercises,
+covering every major muscle group.
 
-Per the rights holder's permission, the media is included under the following terms:
+## Rights
 
-- **Resolution:** distributed at **180×180** only.
-- **Attribution:** every use must carry the copyright indication
-  **© Gym visual — https://gymvisual.com/**. Each record in
-  [`data/exercises.json`](data/exercises.json) also carries an `attribution`
-  field with this notice.
-
-If you use this media, keep the attribution intact and respect the 180×180
-resolution limit.
-
-## Reuse & licensing
-
-The media is included here with the rights holder's **separate written
-permission** (the mechanism Gym visual's terms require for redistribution). It
-remains the property of Gym visual, and its use and reuse are governed by
-**Gym visual's Terms & Conditions of Use**:
-
-> **https://gymvisual.com/content/3-terms-and-conditions-of-use**
-
-If you want to use this media in your own project, review those terms and, where
-required, obtain your own license directly from Gym visual. **This repository
-does not grant you any rights to the media beyond what Gym visual's terms
-allow** — cloning this repo is not a license.
+All rights to the media are reserved by the app's author. It is **not** covered by the MIT licence
+of the exercise dataset, and it may not be extracted from the app or reused elsewhere without
+permission.
 
 ## Dataset (non-media)
 
-The exercise **data** (names, categories, body parts, equipment, targets,
-muscle groups, and multilingual instructions) is separate from the media and
-is released under the MIT License — see [`LICENSE`](LICENSE).
+The exercise **data** — names, categories, body parts, equipment, target muscles and the
+multilingual instructions — comes from an open dataset by Hasan Emir Yıldırım and is released under
+the MIT licence, reproduced in full in the dataset licence. Some English and Spanish instructions
+were rewritten by the Gym avatar project to describe exactly the movement its animation shows.

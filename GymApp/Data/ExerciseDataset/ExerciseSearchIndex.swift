@@ -3,7 +3,7 @@ import Foundation
 /// A precomputed, diacritic- and case-insensitive index over the catalogue.
 ///
 /// Building it costs a single pass at launch; querying is then a linear scan over compact
-/// pre-normalised strings, which keeps typing responsive across 1,324 records without any
+/// pre-normalised strings, which keeps typing responsive across 500 records without any
 /// per-keystroke allocation of normalised forms.
 struct ExerciseSearchIndex: Sendable {
 

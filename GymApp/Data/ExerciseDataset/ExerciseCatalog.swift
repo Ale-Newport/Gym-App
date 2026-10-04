@@ -4,7 +4,7 @@ import Observation
 /// The in-memory, read-only exercise catalogue.
 ///
 /// Deliberately not a SwiftData store. The catalogue is static reference data shipped with the app:
-/// modelling it as 1,324 persistent rows would add migration risk, launch cost and query overhead
+/// modelling it as hundreds of persistent rows would add migration risk, launch cost and query overhead
 /// while buying nothing, because nothing about it ever changes on device. Everything the user
 /// creates references an exercise by its stable dataset id instead.
 ///
@@ -40,11 +40,6 @@ final class ExerciseCatalog {
 
     var isLoaded: Bool { state == .loaded }
     var count: Int { exercises.count }
-
-    /// Copyright notice that must accompany every rendering of the bundled media.
-    var mediaAttribution: String {
-        manifest?.mediaAttribution ?? "© Gym visual — https://gymvisual.com/"
-    }
 
     var datasetVersion: String { manifest?.datasetVersion ?? "unknown" }
 

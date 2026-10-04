@@ -2,25 +2,27 @@ import Foundation
 
 /// Supplies the artwork for an exercise.
 ///
-/// The media that ships with the app is © Gym visual and is **not** covered by the dataset's MIT
-/// licence (see `docs/LICENSES.md`). This protocol is the seam that keeps that dependency
-/// replaceable: swapping in self-produced artwork means writing one new conformance and changing
-/// one line in `AppEnvironment`, with no change to any view, engine or model.
+/// The media that ships with the app is its own: 3D renders of one original athlete, produced by the
+/// Gym avatar project and imported by `Tools/prepare_dataset.py`. It is **not** covered by the
+/// dataset's MIT licence (see `docs/LICENSES.md`). This protocol keeps the source replaceable:
+/// another set of artwork means one new conformance and one line in `AppEnvironment`, with no
+/// change to any view, engine or model.
 protocol ExerciseMediaProviding: Sendable {
     /// Still image used in lists and grids. Cheap to load.
     func thumbnailURL(for exercise: Exercise) -> URL?
     /// Looping animation used on detail and workout screens.
     func animationURL(for exercise: Exercise) -> URL?
-    /// Copyright line that must be displayed wherever this provider's media appears.
+    /// Copyright line that must be displayed wherever this provider's media appears, if its terms
+    /// require one. Every media credit in the interface hides itself when this is `nil`.
     var attribution: String? { get }
     /// Link shown next to the attribution, when the rights holder requires one.
     var attributionURL: URL? { get }
 }
 
-/// Serves the 180×180 media bundled under `Resources/ExerciseMedia`.
+/// Serves the media bundled under `Resources/ExerciseMedia`: a 240×240 JPEG thumbnail and a
+/// 400×400 animated WebP per exercise, named after the exercise id.
 ///
-/// The files keep their original names and resolution, and the attribution travels with them, as
-/// the rights holder's terms require.
+/// The artwork is the app's own, so by default it carries no credit line.
 struct BundledExerciseMediaProvider: ExerciseMediaProviding {
     private let thumbnailRoot: URL?
     private let animationRoot: URL?
@@ -30,8 +32,8 @@ struct BundledExerciseMediaProvider: ExerciseMediaProviding {
 
     init(
         bundle: Bundle = .main,
-        attribution: String? = "© Gym visual — https://gymvisual.com/",
-        attributionURL: URL? = URL(string: "https://gymvisual.com/")
+        attribution: String? = nil,
+        attributionURL: URL? = nil
     ) {
         let mediaRoot = bundle.url(forResource: "ExerciseMedia", withExtension: nil)
         self.thumbnailRoot = mediaRoot?.appendingPathComponent("thumbnails", isDirectory: true)

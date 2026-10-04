@@ -1112,8 +1112,8 @@ final class TrainingCalendarViewModel {
             var request = ProgrammingRequest(profile: profile)
             request.preferences = try preferences.snapshots()
             // Only the movements the engine will actually reason about: everything already
-            // planned across the week, plus what the user has done lately. Asking for all 1,324
-            // catalogue entries built a history snapshot for ~1,300 exercises never performed.
+            // planned across the week, plus what the user has done lately. Asking for all 500
+            // catalogue entries built a history snapshot for hundreds of exercises never performed.
             let recentIDs = try preferences.recentlyPerformedIDs(limit: 40)
             let plannedIDs = program.orderedTemplates.flatMap { $0.orderedExercises.map(\.exerciseID) }
             request.histories = try workouts.histories(

@@ -1,8 +1,7 @@
 # Licences and attribution
 
-Forge combines code written for this repository with a third-party exercise dataset and
-third-party exercise media. Those three things are licensed **differently**, and the difference
-matters. This file is the authoritative summary; the app surfaces the same information under
+Forge combines code written for this repository with a third-party exercise dataset and its own
+exercise media. Those three things are licensed **differently**, and the difference matters. This file is the authoritative summary; the app surfaces the same information under
 **Settings → Legal**.
 
 ---
@@ -30,48 +29,41 @@ Anything this project derives from the dataset — the normalised taxonomies in 
 every field produced by `ExerciseMetadataDeriver` — is this project's own work, computed from the
 MIT-licensed fields.
 
-## 3. Exercise media (thumbnails and animations) — NOT MIT
+## 3. Exercise media (thumbnails and animations) — the author's own, NOT MIT
 
-> **© Gym visual — <https://gymvisual.com/>**
+The 500 thumbnails and 500 animations under `GymApp/Resources/ExerciseMedia/` are original 3D
+renders produced by the author's Gym avatar project (`../Gym avatar/fitness-athlete-generator`): one
+original athlete, rigged once and posed from data, with the project's own clothing, equipment,
+lighting and framing. No image comes from Gym visual or any other commercial library. The in-app
+notice is `GymApp/Resources/Legal/EXERCISE_MEDIA_NOTICE.md`.
 
-The 1,324 thumbnails and 1,324 animations under `GymApp/Resources/ExerciseMedia/` are the property
-of Gym visual. They are **explicitly excluded** from the dataset's MIT licence by that repository's
-own `LICENSE` and `NOTICE.md`, both of which are bundled in the app at
-`GymApp/Resources/Legal/`.
-
-The terms this project honours:
-
-| Requirement | How it is met |
+| Point | How it is handled |
 |---|---|
-| Attribution "© Gym visual — https://gymvisual.com/" on every use | Every record carries an `attribution` field; `MediaAttributionLabel` renders it under every animation and on every exercise detail screen; Settings → Legal repeats it with a link. |
-| Distributed at 180×180 only | `Tools/prepare_dataset.py` copies the files byte-for-byte at their original 180×180 resolution and never upscales or re-encodes them. The app renders them with aspect-fit, never claiming a higher resolution. |
+| Only reviewed artwork ships | `Tools/prepare_dataset.py` reads the avatar project's `output/qa/priority-500.json` and refuses to run unless all 500 entries carry image-bound review evidence. |
+| No credit line required | `BundledExerciseMediaProvider` passes `nil` attribution, so every `MediaAttributionLabel` hides itself. |
 | Not treated as MIT | The media lives in its own directory, under its own notice, and this file plus the in-app Legal screen state the distinction explicitly. |
-| Governed by Gym visual's Terms & Conditions | <https://gymvisual.com/content/3-terms-and-conditions-of-use> |
 
-### ⚠️ Before you ship this app
+### Before you ship this app
 
-The upstream `NOTICE.md` is unambiguous: *"This repository does not grant you any rights to the
-media beyond what Gym visual's terms allow — cloning this repo is not a licence."* The media was
-included there under a **separate written permission granted to that repository's author**, not a
-transferable licence.
-
-**Distributing Forge on the App Store with this media therefore requires your own licence from
-Gym visual.** Review <https://gymvisual.com/content/3-terms-and-conditions-of-use> and contact them
-before submitting. This is a licensing step you must complete yourself; no amount of correct
-attribution in the code substitutes for it.
+The athlete (`assets/characters/gym_athlete_v1.glb` in the avatar project) was built with
+MakeHuman/MPFB. MakeHuman's base mesh and exported models are CC0, but individual community assets
+(skins, hair, eyebrows, clothes) carry their own licences, some of which require attribution. Check
+the assets used on that model before submitting, and add any credit they require to the Legal
+screen.
 
 ### Replacing the media
 
-The architecture assumes you may need to. Media is reached only through the
-`ExerciseMediaProviding` protocol (`GymApp/Core/Media/ExerciseMediaProvider.swift`); no view, engine
-or model touches a file path. To swap in your own artwork:
+Media is reached only through the `ExerciseMediaProviding` protocol
+(`GymApp/Core/Media/ExerciseMediaProvider.swift`); no view, engine or model touches a file path. To
+refresh the artwork after the avatar project re-renders or reviews more exercises, re-run
+`python3 Tools/prepare_dataset.py`. To use a different source entirely:
 
 1. Put your files in `GymApp/Resources/ExerciseMedia/thumbnails/` and `.../animations/`, named after
    each exercise's `thumbnail` / `animation` field in `exercises.core.json` — **or** write a new
    type conforming to `ExerciseMediaProviding` that maps exercise ids to your own URLs.
 2. Change the one line in `AppEnvironment.init` that constructs `BundledExerciseMediaProvider`.
-3. Update the `attribution` and `attributionURL` you pass it — or pass `nil` for both if your
-   artwork needs no credit.
+3. Pass an `attribution` and `attributionURL` if the new artwork's terms require a credit; the app
+   then shows it under every animation and in Settings → Legal.
 
 Nothing else in the app changes. `EmptyExerciseMediaProvider` shows that the app stays fully
 functional with no artwork at all.

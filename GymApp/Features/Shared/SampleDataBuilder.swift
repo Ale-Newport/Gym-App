@@ -14,12 +14,12 @@ enum SampleDataBuilder {
     // Verified ids from `exercises.core.json`.
     enum Sample {
         static let benchPress = ("0025", "barbell bench press")
-        static let squat = ("0043", "barbell full squat")
+        static let squat = ("1436", "barbell high bar squat")
         static let deadlift = ("0032", "barbell deadlift")
         static let pullUp = ("0652", "pull-up")
         static let bentOverRow = ("0027", "barbell bent over row")
         static let seatedRow = ("0861", "cable seated row")
-        static let latPulldown = ("0673", "reverse grip machine lat pulldown")
+        static let latPulldown = ("0579", "lever front pulldown")
         static let inclineDumbbellPress = ("0314", "dumbbell incline bench press")
         static let lateralRaise = ("0334", "dumbbell lateral raise")
         static let bicepsCurl = ("0294", "dumbbell biceps curl")

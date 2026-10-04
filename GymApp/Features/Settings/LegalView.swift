@@ -2,12 +2,11 @@ import SwiftUI
 
 /// Licences, attribution and privacy.
 ///
-/// This screen is a licence obligation rather than a courtesy. The exercise media ships under Gym
-/// visual's terms, which require the copyright indication to accompany every use, and the exercise
-/// dataset ships under the MIT licence, which requires its notice to travel with the data. So the
-/// credit is given prominently, the two licences are kept visibly apart — the data is MIT, the
-/// artwork is not — and both notices are read from the files bundled in `Resources/Legal` rather
-/// than retyped here, where they could drift out of step with what actually shipped.
+/// This screen is a licence obligation rather than a courtesy. The exercise dataset ships under the
+/// MIT licence, which requires its notice to travel with the data, while the exercise artwork is
+/// the app's own and is not MIT. So the two are kept visibly apart, and both notices are read from
+/// the files bundled in `Resources/Legal` rather than retyped here, where they could drift out of
+/// step with what actually shipped.
 ///
 /// The privacy half restates `docs/PRIVACY.md` in the app, because a promise the user has to find
 /// on a website is not a promise they can check.
@@ -30,10 +29,13 @@ struct LegalView: View {
 
     // MARK: - Media
 
-    /// The copyright indication the media terms require, given first and given weight.
+    /// Where the artwork comes from, given first. A provider whose media carries a credit gets it
+    /// shown here as a banner; the bundled artwork is the app's own and carries none.
     private var mediaSection: some View {
         Section {
-            attributionBanner
+            if let attribution {
+                attributionBanner(attribution)
+            }
 
             VStack(alignment: .leading, spacing: Metrics.spacing8) {
                 Text(L("settings.legal.media.body"))
@@ -54,8 +56,6 @@ struct LegalView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(minHeight: Metrics.minimumTapTarget)
             }
-
-            ExternalLinkRow(title: L("settings.legal.media.terms"), url: Self.gymVisualTermsURL)
         } header: {
             Text(L("settings.legal.section.media"))
         }
@@ -63,19 +63,19 @@ struct LegalView: View {
     }
 
     /// The notice itself, verbatim and linked. It is never localised: it is a copyright indication,
-    /// not interface copy, and the rights holder's terms ask for those exact characters.
+    /// not interface copy, and rights holders ask for those exact characters.
     @ViewBuilder
-    private var attributionBanner: some View {
+    private func attributionBanner(_ attribution: String) -> some View {
         if let url = attributionURL {
             // No accessibility hint: "Opens in your browser" is already on screen inside the
             // banner, and the combined element speaks it.
-            Link(destination: url) { attributionLabel }
+            Link(destination: url) { attributionLabel(attribution) }
         } else {
-            attributionLabel
+            attributionLabel(attribution)
         }
     }
 
-    private var attributionLabel: some View {
+    private func attributionLabel(_ attribution: String) -> some View {
         HStack(alignment: .top, spacing: Metrics.spacing12) {
             Image(systemName: "photo.on.rectangle.angled")
                 .font(.title3)
@@ -103,15 +103,14 @@ struct LegalView: View {
     }
 
     /// The provider is the source of truth, because swapping the artwork swaps the credit with it.
-    /// The dataset manifest is the fallback, so the notice survives a provider that carries none.
-    private var attribution: String {
+    private var attribution: String? {
         let provided = environment.mediaProvider.attribution?.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let provided, !provided.isEmpty { return provided }
-        return environment.catalog.mediaAttribution
+        guard let provided, !provided.isEmpty else { return nil }
+        return provided
     }
 
     private var attributionURL: URL? {
-        environment.mediaProvider.attributionURL ?? Self.gymVisualURL
+        environment.mediaProvider.attributionURL
     }
 
     // MARK: - Dataset
@@ -214,8 +213,6 @@ struct LegalView: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    private static let gymVisualURL = URL(string: "https://gymvisual.com/")
-    private static let gymVisualTermsURL = URL(string: "https://gymvisual.com/content/3-terms-and-conditions-of-use")
     private static let datasetSourceURL = URL(string: "https://github.com/hasaneyldrm/exercises-dataset")
     private static let openFoodFactsURL = URL(string: "https://world.openfoodfacts.org")
     private static let odblURL = URL(string: "https://opendatacommons.org/licenses/odbl/1-0/")

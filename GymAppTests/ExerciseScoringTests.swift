@@ -238,8 +238,8 @@ enum SelectionCatalogue {
     /// are not unique, so nothing here looks an exercise up by name.
     static let barbellBenchPressID = "0025"
     static let dumbbellBenchPressID = "0289"
-    static let leverChestPressID = "0576"
-    static let barbellFullSquatID = "0043"
+    static let cableDeclinePressID = "1261"
+    static let barbellHighBarSquatID = "1436"
     static let leverLyingLegCurlID = "0586"
 
     static func exercise(_ id: String) -> Exercise? { byID[id] }

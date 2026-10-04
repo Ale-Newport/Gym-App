@@ -5,7 +5,7 @@ import Foundation
 /// One exercise from the bundled catalogue.
 ///
 /// The catalogue is immutable, read-only reference data: it is loaded once from the app bundle and
-/// held in memory as a value type. It deliberately is **not** a SwiftData model — 1,324 static
+/// held in memory as a value type. It deliberately is **not** a SwiftData model — 500 static
 /// records would add nothing but migration risk and query cost. Everything the user creates
 /// references an exercise by its `id`, which is stable across dataset upgrades.
 struct Exercise: Identifiable, Hashable, Sendable {
@@ -21,13 +21,13 @@ struct Exercise: Identifiable, Hashable, Sendable {
     let synergist: Muscle?
     /// Additional muscles involved, de-duplicated and excluding `target`.
     let secondaryMuscles: [Muscle]
-    /// Original media reference id from the rights holder.
+    /// Id of the exercise in the Gym avatar project that rendered its media.
     let mediaID: String
-    /// File name of the 180×180 thumbnail inside the media root.
+    /// File name of the 240×240 JPEG thumbnail inside the media root.
     let thumbnailFileName: String
-    /// File name of the 180×180 animation inside the media root.
+    /// File name of the 400×400 animated WebP inside the media root.
     let animationFileName: String
-    /// Mandatory media copyright notice. Displayed wherever the media is shown.
+    /// Credit line for the media, as recorded in the dataset.
     let attribution: String
     let createdAt: Date
     /// Deterministically derived training properties. See `ExerciseMetadataDeriver`.
