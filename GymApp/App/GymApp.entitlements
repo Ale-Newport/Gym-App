@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.gymapp.forge</string>
+		<string>group.com.alejandronewport.forge</string>
 	</array>
 	<key>com.apple.developer.healthkit</key>
 	<true/>

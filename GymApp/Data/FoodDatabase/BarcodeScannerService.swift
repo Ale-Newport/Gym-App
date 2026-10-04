@@ -121,8 +121,8 @@ final class BarcodeScannerService: NSObject, @unchecked Sendable {
     private let configuration: Configuration
     private let clock: @Sendable () -> Date
 
-    private let sessionQueue = DispatchQueue(label: "com.gymapp.forge.barcode.session")
-    private let metadataQueue = DispatchQueue(label: "com.gymapp.forge.barcode.metadata")
+    private let sessionQueue = DispatchQueue(label: "com.alejandronewport.forge.barcode.session")
+    private let metadataQueue = DispatchQueue(label: "com.alejandronewport.forge.barcode.metadata")
 
     private let lock = NSLock()
     private var isConfigured = false

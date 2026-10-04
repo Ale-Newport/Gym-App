@@ -1,6 +1,6 @@
 name: GymApp
 options:
-  bundleIdPrefix: com.gymapp.forge
+  bundleIdPrefix: com.alejandronewport.forge
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
@@ -18,7 +18,7 @@ settings:
     CLANG_ENABLE_MODULES: YES
     SWIFT_EMIT_LOC_STRINGS: YES
     LOCALIZATION_PREFERS_STRING_CATALOGS: YES
-    DEVELOPMENT_TEAM: ""
+    DEVELOPMENT_TEAM: SM3MGV3PY8
     CODE_SIGN_STYLE: Automatic
     "CODE_SIGN_IDENTITY[sdk=iphonesimulator*]": "-"
     GCC_WARN_UNDECLARED_SELECTOR: YES
@@ -73,7 +73,7 @@ targets:
         embed: true
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge
+        PRODUCT_BUNDLE_IDENTIFIER: com.alejandronewport.forge
         PRODUCT_NAME: Forge
         # The app ships as "Forge" but the Swift module keeps the target's name, so the test
         # targets can `@testable import GymApp`. Without this the module would be called Forge
@@ -118,7 +118,7 @@ targets:
           - OpenTodayWorkoutIntent
         ITSAppUsesNonExemptEncryption: false
         CFBundleURLTypes:
-          - CFBundleURLName: com.gymapp.forge.deeplink
+          - CFBundleURLName: com.alejandronewport.forge.deeplink
             CFBundleTypeRole: Editor
             CFBundleURLSchemes:
               - forge
@@ -147,7 +147,7 @@ targets:
         buildPhase: resources
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge.widgets
+        PRODUCT_BUNDLE_IDENTIFIER: com.alejandronewport.forge.widgets
         PRODUCT_NAME: ForgeWidgets
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
@@ -172,7 +172,7 @@ targets:
       - target: GymApp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.alejandronewport.forge.tests
         GENERATE_INFOPLIST_FILE: YES
         BUNDLE_LOADER: "$(TEST_HOST)"
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Forge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Forge"
@@ -186,7 +186,7 @@ targets:
       - target: GymApp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.gymapp.forge.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: com.alejandronewport.forge.uitests
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: GymApp
 

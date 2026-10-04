@@ -61,6 +61,61 @@ test_method_for() {
   esac
 }
 
+# Language code -> the region the simulator is put in for that language. SpringBoard formats the
+# status-bar clock (and, on iPad, the date beside it) in the simulator's own locale, not the app's,
+# so without this an English iPad screenshot carries a Spanish date.
+locale_for() {
+  case "$1" in
+    en) echo en_US ;;
+    es) echo es_ES ;;
+    it) echo it_IT ;;
+    tr) echo tr_TR ;;
+    ru) echo ru_RU ;;
+    zh-Hans) echo zh_CN ;;
+    hi) echo hi_IN ;;
+    pl) echo pl_PL ;;
+    ko) echo ko_KR ;;
+    fr) echo fr_FR ;;
+    *) echo en_US ;;
+  esac
+}
+
+# Apple's own marketing status bar: 9:41, full signal, full battery, no carrier name.
+override_status_bar() {
+  xcrun simctl status_bar "$1" override \
+    --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
+    --cellularMode active --cellularBars 4 --operatorName "" \
+    --batteryState discharging --batteryLevel 100
+}
+
+# Sets the simulator's system language and region, then reboots it so SpringBoard picks them up.
+set_simulator_locale() {
+  local device="$1" locale="$2"
+  shift 2
+  xcrun simctl spawn "$device" defaults write -g AppleLanguages -array "$@"
+  xcrun simctl spawn "$device" defaults write -g AppleLocale -string "$locale"
+  xcrun simctl shutdown "$device" 2>/dev/null || true
+  xcrun simctl boot "$device"
+  xcrun simctl bootstatus "$device" -b >/dev/null
+}
+
+# The simulator's own language, region and status bar are put back however the run ends, so the
+# screenshot run never leaves a developer's simulator in Korean at 9:41.
+RESTORE_DEVICE=""
+RESTORE_LOCALE=""
+RESTORE_LANGUAGES=()
+restore_simulator() {
+  [[ -n "$RESTORE_DEVICE" ]] || return 0
+  xcrun simctl status_bar "$RESTORE_DEVICE" clear 2>/dev/null || true
+  if [[ -n "$RESTORE_LOCALE" && ${#RESTORE_LANGUAGES[@]} -gt 0 ]]; then
+    xcrun simctl spawn "$RESTORE_DEVICE" defaults write -g AppleLanguages -array "${RESTORE_LANGUAGES[@]}" 2>/dev/null || true
+    xcrun simctl spawn "$RESTORE_DEVICE" defaults write -g AppleLocale -string "$RESTORE_LOCALE" 2>/dev/null || true
+    xcrun simctl shutdown "$RESTORE_DEVICE" 2>/dev/null || true
+  fi
+  RESTORE_DEVICE=""
+}
+trap restore_simulator EXIT
+
 if [[ "${1:-}" == "--all-languages" ]]; then
   LANGUAGES=("${ALL_LANGUAGES[@]}")
 elif [[ $# -gt 0 ]]; then
@@ -91,6 +146,15 @@ for entry in "${DEVICES[@]}"; do
     exit 1
   fi
 
+  xcrun simctl boot "$device" 2>/dev/null || true
+  xcrun simctl bootstatus "$device" -b >/dev/null
+  RESTORE_DEVICE="$device"
+  RESTORE_LOCALE="$(xcrun simctl spawn "$device" defaults read -g AppleLocale 2>/dev/null || true)"
+  RESTORE_LANGUAGES=()
+  while IFS= read -r code; do
+    [[ -n "$code" ]] && RESTORE_LANGUAGES+=("$code")
+  done < <(xcrun simctl spawn "$device" defaults read -g AppleLanguages 2>/dev/null | tr -d '()", ' | grep -v '^$')
+
   for language in "${LANGUAGES[@]}"; do
     method="$(test_method_for "$language")"
     if [[ -z "$method" ]]; then
@@ -99,23 +163,39 @@ for entry in "${DEVICES[@]}"; do
     fi
     echo "==> $device · $language ($method)"
 
+    set_simulator_locale "$device" "$(locale_for "$language")" "$language"
+    override_status_bar "$device"
+
     result="$DERIVED/$slug-$language.xcresult"
     rm -rf "$result"
 
     # `-only-testing` keeps the behavioural suites out of the run: they pin English and would
     # roughly quadruple the wall clock for no captures.
-    xcodebuild test \
+    #
+    # Back-to-back runs on one simulator sometimes fail before a single test starts, with
+    # SpringBoard refusing to launch the runner ("Busy", "Application failed preflight checks")
+    # while the previous install settles. That is not a test failure, so it is retried; anything
+    # else fails the run at once.
+    attempt=1
+    until xcodebuild test \
       -project GymApp.xcodeproj \
       -scheme GymApp \
       -destination "platform=iOS Simulator,name=$device" \
       -derivedDataPath "$DERIVED" \
       -resultBundlePath "$result" \
       -only-testing:"GymAppUITests/AppStoreScreenshotTests/$method" \
-      > "$DERIVED/$slug-$language.log" 2>&1 || {
+      > "$DERIVED/$slug-$language.log" 2>&1; do
+        if (( attempt < 3 )) && grep -q "failed preflight checks" "$DERIVED/$slug-$language.log"; then
+          echo "    simulator was busy; retrying ($attempt/2)"
+          attempt=$((attempt + 1))
+          rm -rf "$result"
+          sleep 10
+          continue
+        fi
         echo "!! Run failed. Last 40 lines of $DERIVED/$slug-$language.log:"
         tail -40 "$DERIVED/$slug-$language.log"
         exit 1
-      }
+    done
 
     staging="$DERIVED/$slug-$language-attachments"
     rm -rf "$staging"
@@ -163,6 +243,7 @@ if count == 0:
     sys.exit("the run produced no screenshots")
 PYTHON
   done
+  restore_simulator
 done
 
 echo

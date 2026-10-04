@@ -37,7 +37,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.gymapp.forge.deeplink</string>
+			<string>com.alejandronewport.forge.deeplink</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>forge</string>
