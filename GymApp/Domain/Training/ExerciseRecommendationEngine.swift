@@ -5,7 +5,7 @@ import Foundation
 /// The engine is a value type built once from the immutable catalogue and then queried many times —
 /// the programming engine asks it for every slot of every session in a mesocycle, and the exercise
 /// browser asks it whenever a filter changes. That access pattern is why the indexes below are
-/// built in `init`: a full scan of 1,324 records per slot would be wasted work, since only the few
+/// built in `init`: a full scan of 500 records per slot would be wasted work, since only the few
 /// hundred exercises that touch the target group can possibly score above zero.
 ///
 /// Ordering is fully deterministic. Ties are broken by staple score and then by id, so the same

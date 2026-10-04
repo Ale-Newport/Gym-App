@@ -1,0 +1,151 @@
+{
+  "_comment": "Exercises from the Gym avatar selection that have no record in the upstream dataset. Ids start at 9001 so they can never collide with an upstream id (the highest upstream id is 5201). Fields follow the upstream vocabulary so ExerciseMetadataDeriver treats them like any other record. Read by Tools/prepare_dataset.py.",
+  "exercises": [
+    {
+      "avatarId": "barbell_overhead_press",
+      "id": "9001",
+      "name": "barbell overhead press",
+      "bodyPart": "shoulders",
+      "equipment": "barbell",
+      "target": "delts",
+      "muscleGroup": "triceps",
+      "secondaryMuscles": ["triceps", "upper back"],
+      "createdAt": "2026-09-23T00:00:00+00:00",
+      "steps": {
+        "en": [
+          "Stand with your feet hip-width apart and hold the barbell at the front of your shoulders with an overhand grip slightly wider than shoulder width.",
+          "Brace your abs and glutes, keep your chest up and stack your wrists over your elbows.",
+          "Press the bar straight overhead until your arms are extended, moving your head slightly back to let the bar pass and then forward under it.",
+          "Lower the bar under control to the front of your shoulders and repeat for the desired number of repetitions."
+        ],
+        "es": [
+          "De pie, con los pies separados a la anchura de las caderas, sujeta la barra delante de los hombros con agarre prono, algo más ancho que los hombros.",
+          "Aprieta el abdomen y los glúteos, mantén el pecho alto y las muñecas alineadas sobre los codos.",
+          "Empuja la barra en vertical por encima de la cabeza hasta extender los brazos, apartando ligeramente la cabeza hacia atrás para dejarla pasar y volviendo a colocarla debajo de la barra.",
+          "Baja la barra de forma controlada hasta la parte delantera de los hombros y repite el número de repeticiones deseado."
+        ],
+        "fr": [
+          "Debout, pieds écartés à la largeur des hanches, tenez la barre devant les épaules en prise pronation, un peu plus large que les épaules.",
+          "Gainez les abdominaux et les fessiers, gardez la poitrine haute et les poignets alignés au-dessus des coudes.",
+          "Poussez la barre verticalement au-dessus de la tête jusqu'à l'extension des bras, en reculant légèrement la tête pour laisser passer la barre puis en la ramenant dessous.",
+          "Redescendez la barre de façon contrôlée devant les épaules et répétez le nombre de répétitions souhaité."
+        ],
+        "it": [
+          "In piedi, con i piedi alla larghezza delle anche, tieni il bilanciere davanti alle spalle con presa prona, poco più larga delle spalle.",
+          "Contrai addominali e glutei, tieni il petto alto e i polsi allineati sopra i gomiti.",
+          "Spingi il bilanciere in verticale sopra la testa fino a distendere le braccia, arretrando leggermente la testa per far passare la barra e riportandola poi sotto di essa.",
+          "Abbassa il bilanciere in modo controllato davanti alle spalle e ripeti per il numero di ripetizioni desiderato."
+        ],
+        "tr": [
+          "Ayaklarınız kalça genişliğinde açık şekilde ayakta durun ve barı omuz genişliğinden biraz geniş, avuçlar önde tutuşla omuzlarınızın önünde tutun.",
+          "Karın ve kalça kaslarınızı sıkın, göğsünüzü yukarıda tutun ve bileklerinizi dirseklerinizin üzerinde hizalayın.",
+          "Kollarınız uzanana kadar barı dümdüz başınızın üzerine itin; barın geçmesi için başınızı hafifçe geriye alın, ardından barın altına geri getirin.",
+          "Barı kontrollü şekilde omuzlarınızın önüne indirin ve istediğiniz tekrar sayısı kadar tekrarlayın."
+        ],
+        "ru": [
+          "Встаньте, ноги на ширине бёдер, и держите штангу перед плечами прямым хватом чуть шире плеч.",
+          "Напрягите пресс и ягодицы, держите грудь поднятой, а запястья — над локтями.",
+          "Выжмите штангу вертикально над головой до выпрямления рук, слегка отводя голову назад, чтобы пропустить гриф, а затем возвращая её под штангу.",
+          "Подконтрольно опустите штангу к передней части плеч и повторите нужное количество раз."
+        ],
+        "zh": [
+          "双脚与髋同宽站立，双手正握杠铃，握距略宽于肩，将杠铃置于肩部前方。",
+          "收紧腹部和臀部，挺胸，保持手腕位于肘部正上方。",
+          "将杠铃垂直推过头顶直至手臂伸展，头部略微后移让杠铃通过，然后再回到杠铃下方。",
+          "有控制地将杠铃放回肩部前方，重复所需次数。"
+        ],
+        "hi": [
+          "पैरों को कूल्हों की चौड़ाई पर रखकर खड़े हों और बारबेल को कंधों के सामने ओवरहैंड ग्रिप से पकड़ें, पकड़ कंधों से थोड़ी चौड़ी हो।",
+          "पेट और नितंबों की मांसपेशियों को कसें, छाती ऊपर रखें और कलाइयों को कोहनियों के ठीक ऊपर रखें।",
+          "बार को सीधे सिर के ऊपर तब तक धकेलें जब तक बाहें सीधी न हो जाएं; बार को निकलने देने के लिए सिर को थोड़ा पीछे करें और फिर बार के नीचे वापस लाएं।",
+          "बार को नियंत्रण के साथ कंधों के सामने तक नीचे लाएं और मनचाही पुनरावृत्तियों तक दोहराएं।"
+        ],
+        "pl": [
+          "Stań ze stopami na szerokość bioder i trzymaj sztangę przed barkami nachwytem nieco szerszym niż barki.",
+          "Napnij brzuch i pośladki, utrzymuj klatkę piersiową wysoko, a nadgarstki nad łokciami.",
+          "Wypchnij sztangę pionowo nad głowę do wyprostu ramion, lekko cofając głowę, aby przepuścić gryf, a następnie wracając nią pod sztangę.",
+          "Opuść sztangę w kontrolowany sposób przed barki i powtórz wybraną liczbę powtórzeń."
+        ],
+        "ko": [
+          "발을 엉덩이 너비로 벌리고 서서, 어깨너비보다 약간 넓은 오버핸드 그립으로 바벨을 어깨 앞에 잡습니다.",
+          "복부와 둔근에 힘을 주고 가슴을 들며 손목을 팔꿈치 바로 위에 둡니다.",
+          "팔이 펴질 때까지 바벨을 머리 위로 똑바로 밀어 올리며, 바가 지나가도록 머리를 살짝 뒤로 뺐다가 다시 바 아래로 가져옵니다.",
+          "바벨을 통제하며 어깨 앞까지 내리고 원하는 반복 횟수만큼 반복합니다."
+        ]
+      }
+    },
+    {
+      "avatarId": "floor_crunch",
+      "id": "9002",
+      "name": "floor crunch",
+      "bodyPart": "waist",
+      "equipment": "body weight",
+      "target": "abs",
+      "muscleGroup": "obliques",
+      "secondaryMuscles": ["obliques"],
+      "createdAt": "2026-09-23T00:00:00+00:00",
+      "steps": {
+        "en": [
+          "Lie on your back on a mat with your knees bent and your feet flat on the floor, hip-width apart.",
+          "Place your hands lightly behind your head with your elbows pointing out to the sides.",
+          "Brace your abs and curl your head, shoulders and upper back off the floor, keeping your lower back on the mat.",
+          "Pause briefly at the top, then lower back down under control and repeat for the desired number of repetitions."
+        ],
+        "es": [
+          "Túmbate boca arriba sobre una esterilla con las rodillas flexionadas y los pies apoyados en el suelo, separados a la anchura de las caderas.",
+          "Coloca las manos suavemente detrás de la cabeza con los codos abiertos hacia los lados.",
+          "Contrae el abdomen y despega del suelo la cabeza, los hombros y la parte alta de la espalda, manteniendo la zona lumbar apoyada en la esterilla.",
+          "Haz una breve pausa arriba, baja de forma controlada y repite el número de repeticiones deseado."
+        ],
+        "fr": [
+          "Allongez-vous sur le dos sur un tapis, genoux fléchis et pieds à plat au sol, écartés à la largeur des hanches.",
+          "Placez légèrement les mains derrière la tête, coudes ouverts sur les côtés.",
+          "Contractez les abdominaux et enroulez la tête, les épaules et le haut du dos pour les décoller du sol, en gardant le bas du dos sur le tapis.",
+          "Marquez une courte pause en haut, puis redescendez de façon contrôlée et répétez le nombre de répétitions souhaité."
+        ],
+        "it": [
+          "Sdraiati sulla schiena su un tappetino con le ginocchia piegate e i piedi appoggiati a terra, alla larghezza delle anche.",
+          "Appoggia leggermente le mani dietro la testa con i gomiti aperti ai lati.",
+          "Contrai gli addominali e solleva da terra testa, spalle e parte alta della schiena, mantenendo la zona lombare a contatto con il tappetino.",
+          "Fai una breve pausa in alto, poi torna giù in modo controllato e ripeti per il numero di ripetizioni desiderato."
+        ],
+        "tr": [
+          "Bir matın üzerinde sırtüstü uzanın; dizleriniz bükülü, ayaklarınız kalça genişliğinde ve yere düz basıyor olsun.",
+          "Ellerinizi hafifçe başınızın arkasına koyun, dirsekleriniz yanlara açık olsun.",
+          "Karın kaslarınızı sıkın ve bel bölgenizi matta tutarak başınızı, omuzlarınızı ve üst sırtınızı yerden kaldırın.",
+          "Üstte kısa bir süre bekleyin, ardından kontrollü şekilde inin ve istediğiniz tekrar sayısı kadar tekrarlayın."
+        ],
+        "ru": [
+          "Лягте на спину на коврик, согните колени и поставьте стопы на пол на ширине бёдер.",
+          "Слегка положите руки за голову, локти разведены в стороны.",
+          "Напрягите пресс и поднимите голову, плечи и верх спины от пола, удерживая поясницу прижатой к коврику.",
+          "Задержитесь на мгновение вверху, затем подконтрольно опуститесь и повторите нужное количество раз."
+        ],
+        "zh": [
+          "仰卧在垫子上，屈膝，双脚平放地面，与髋同宽。",
+          "双手轻放在脑后，手肘向两侧打开。",
+          "收紧腹部，将头部、肩部和上背部卷离地面，同时保持下背部贴住垫子。",
+          "在顶部稍作停顿，然后有控制地回到起始位置，重复所需次数。"
+        ],
+        "hi": [
+          "मैट पर पीठ के बल लेटें, घुटने मोड़ें और पैरों को कूल्हों की चौड़ाई पर ज़मीन पर सपाट रखें।",
+          "हाथों को हल्के से सिर के पीछे रखें और कोहनियों को बगल की ओर खुला रखें।",
+          "पेट की मांसपेशियों को कसें और कमर के निचले हिस्से को मैट पर टिकाए रखते हुए सिर, कंधों और ऊपरी पीठ को ज़मीन से ऊपर उठाएं।",
+          "ऊपर थोड़ी देर रुकें, फिर नियंत्रण के साथ नीचे आएं और मनचाही पुनरावृत्तियों तक दोहराएं।"
+        ],
+        "pl": [
+          "Połóż się na plecach na macie, ugnij kolana i postaw stopy płasko na podłodze na szerokość bioder.",
+          "Delikatnie połóż dłonie za głową, łokcie skieruj na boki.",
+          "Napnij mięśnie brzucha i unieś głowę, barki i górną część pleców od podłogi, utrzymując odcinek lędźwiowy na macie.",
+          "Zatrzymaj się na chwilę w górze, następnie opuść się w kontrolowany sposób i powtórz wybraną liczbę powtórzeń."
+        ],
+        "ko": [
+          "매트 위에 등을 대고 누워 무릎을 구부리고, 발은 엉덩이 너비로 바닥에 평평하게 둡니다.",
+          "손을 머리 뒤에 가볍게 대고 팔꿈치는 양옆으로 벌립니다.",
+          "복부에 힘을 주고 허리는 매트에 붙인 채 머리, 어깨, 등 윗부분을 바닥에서 말아 올립니다.",
+          "위에서 잠시 멈춘 뒤 통제하며 내려오고 원하는 반복 횟수만큼 반복합니다."
+        ]
+      }
+    }
+  ]
+}

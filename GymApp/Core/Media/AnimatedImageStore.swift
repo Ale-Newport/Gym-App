@@ -12,24 +12,25 @@ struct DecodedAnimation: Sendable {
 
 /// Decodes and caches exercise animations.
 ///
-/// There are 1,324 animations in the bundle. A single 180×180 GIF expands to roughly 4 MB once its
-/// frames are decoded to bitmaps, so decoding them eagerly — or caching them without a ceiling —
-/// would exhaust memory almost immediately. This store therefore:
+/// There are 500 animations in the bundle, 400×400 animated WebP of up to 36 frames. One expands to
+/// about 8 MB on average (23 MB at most) once its frames are decoded to bitmaps, so decoding them
+/// eagerly — or caching them without a ceiling — would exhaust memory almost immediately. This
+/// store therefore:
 ///
 /// * decodes lazily, off the main thread, and only for the animation actually on screen;
 /// * caches a small number of recent animations under a hard byte ceiling (`NSCache` evicts by
 ///   cost, and also evicts automatically when the system reports memory pressure);
-/// * coalesces concurrent requests for the same file so a fast scroll decodes each GIF once;
+/// * coalesces concurrent requests for the same file so a fast scroll decodes each animation once;
 /// * caps decoded frames per animation, so a pathological file cannot blow the budget.
 ///
-/// Lists never touch this store — they use the 6 KB JPEG thumbnails through `ThumbnailStore`.
+/// Lists never touch this store — they use the 5 KB JPEG thumbnails through `ThumbnailStore`.
 actor AnimatedImageStore {
     static let shared = AnimatedImageStore()
 
     private let cache = NSCache<NSString, CacheBox>()
     private var inFlight: [String: Task<DecodedAnimation?, Never>] = [:]
 
-    /// Hard ceiling on decoded animation bytes. Roughly ten average animations.
+    /// Hard ceiling on decoded animation bytes. Roughly six average animations.
     private static let byteLimit = 48 * 1024 * 1024
     /// Beyond this many frames the animation is sub-sampled; real files sit far below it.
     private static let maximumFrames = 60
@@ -121,23 +122,31 @@ actor AnimatedImageStore {
         return DecodedAnimation(frames: frames, duration: duration, byteCost: max(byteCost, 1))
     }
 
-    /// GIF frame delay, honouring the browser convention that delays below 20 ms mean 100 ms.
+    /// Frame delay of an animated WebP or GIF, honouring the browser convention that delays below
+    /// 20 ms mean 100 ms.
     private nonisolated static func frameDelay(source: CGImageSource, index: Int) -> TimeInterval {
-        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, index, nil) as? [CFString: Any],
-              let gif = properties[kCGImagePropertyGIFDictionary] as? [CFString: Any] else {
+        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, index, nil) as? [CFString: Any] else {
             return 0.1
         }
-        let unclamped = gif[kCGImagePropertyGIFUnclampedDelayTime] as? Double
-        let clamped = gif[kCGImagePropertyGIFDelayTime] as? Double
-        let delay = unclamped ?? clamped ?? 0.1
-        return delay < 0.02 ? 0.1 : delay
+        let delay: Double?
+        if let webP = properties[kCGImagePropertyWebPDictionary] as? [CFString: Any] {
+            delay = webP[kCGImagePropertyWebPUnclampedDelayTime] as? Double
+                ?? webP[kCGImagePropertyWebPDelayTime] as? Double
+        } else if let gif = properties[kCGImagePropertyGIFDictionary] as? [CFString: Any] {
+            delay = gif[kCGImagePropertyGIFUnclampedDelayTime] as? Double
+                ?? gif[kCGImagePropertyGIFDelayTime] as? Double
+        } else {
+            delay = nil
+        }
+        guard let delay, delay >= 0.02 else { return 0.1 }
+        return delay
     }
 }
 
 /// Caches the small still thumbnails used in lists.
 ///
-/// These are 180×180 JPEGs averaging 6 KB, so a generous cache is still tiny; the win is avoiding
-/// repeated file I/O and JPEG decode while scrolling 1,324 rows.
+/// These are 240×240 JPEGs averaging 5 KB, so a generous cache is still tiny; the win is avoiding
+/// repeated file I/O and JPEG decode while scrolling 500 rows.
 actor ThumbnailStore {
     static let shared = ThumbnailStore()
 

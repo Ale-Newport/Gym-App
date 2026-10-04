@@ -26,7 +26,6 @@ struct ExerciseCatalogLoadingTests {
         #expect(catalog.availableTargets.isEmpty)
         #expect(catalog.availableMuscleGroups.isEmpty)
         #expect(catalog.datasetVersion == "unknown")
-        #expect(!catalog.mediaAttribution.isEmpty, "the attribution must survive even without a manifest")
     }
 
     @Test("Loading from the app bundle produces the whole catalogue")
@@ -38,9 +37,8 @@ struct ExerciseCatalogLoadingTests {
         #expect(catalog.isLoaded)
         let manifest = try #require(catalog.manifest)
         #expect(catalog.count == manifest.exerciseCount)
-        #expect(catalog.count == 1324)
+        #expect(catalog.count == 500)
         #expect(catalog.datasetVersion == manifest.datasetVersion)
-        #expect(catalog.mediaAttribution == manifest.mediaAttribution)
     }
 
     @Test("Loading twice does not duplicate the catalogue")
@@ -121,8 +119,8 @@ struct ExerciseCatalogLookupTests {
 
     @Test("Looking up a list of ids skips the ones that do not exist")
     func lookupByIDsSkipsUnknownIdentifiers() {
-        let found = catalog.exercises(ids: ["0025", "not-an-id", "0043"])
-        #expect(found.map(\.id) == ["0025", "0043"])
+        let found = catalog.exercises(ids: ["0025", "not-an-id", "1436"])
+        #expect(found.map(\.id) == ["0025", "1436"])
         #expect(catalog.exercises(ids: []).isEmpty)
         #expect(catalog.exercises(ids: ["nope"]).isEmpty)
     }
@@ -299,12 +297,12 @@ struct ExerciseCatalogSearchTests {
     @Test("Searching an exact name through the catalogue returns that exercise first")
     func exactNameSearchReturnsTheExercise() {
         #expect(catalog.search("barbell bench press").first?.id == "0025")
-        #expect(catalog.search("barbell full squat").first?.id == "0043")
+        #expect(catalog.search("barbell high bar squat").first?.id == "1436")
     }
 
     @Test("Search returns whole records, all of which are in the catalogue")
     func searchReturnsRealRecords() {
-        let results = catalog.search("kettlebell swing")
+        let results = catalog.search("dumbbell lateral raise")
         #expect(!results.isEmpty)
         for exercise in results {
             #expect(catalog.exercise(id: exercise.id) != nil)

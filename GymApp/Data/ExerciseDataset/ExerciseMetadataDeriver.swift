@@ -731,7 +731,7 @@ enum ExerciseMetadataDeriver {
         // cannot press overhead would otherwise be programmed a power clean and press, which is the
         // one failure mode this filter exists to prevent — so the keyword list is the authority
         // here, and it errs towards over-tagging: a wrongly excluded exercise costs the user one
-        // option out of 1,324, while a wrongly included one costs them a shoulder.
+        // option out of 500, while a wrongly included one costs them a shoulder.
         if pattern == .verticalPush || m.has("overhead") { tags.insert("overhead") }
         if m.has("clean and press", "clean and jerk", "jerk", "snatch", "thruster", "push press",
                  "turkish get up", "get up", "muscle up", "handstand", "overhead squat",

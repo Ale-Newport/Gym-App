@@ -116,7 +116,7 @@ struct ExerciseListSection: Identifiable, Hashable, Sendable {
 
 /// Drives the exercise library and the reusable picker.
 ///
-/// The whole catalogue — 1,324 records — is held in memory by `ExerciseCatalog`, so filtering is a
+/// The whole catalogue — 500 records — is held in memory by `ExerciseCatalog`, so filtering is a
 /// single pass over value types with set lookups and no allocation per rejected record. That is
 /// what makes per-keystroke search viable without a debounce: `refresh()` costs well under a
 /// millisecond, and the alternative (waiting 250 ms before showing results) is perceptibly worse.

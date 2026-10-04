@@ -187,17 +187,20 @@ swap rather than merely another exercise for the same muscle.
 
 ### Verified output over the full catalogue
 
-Running the deriver across all 1,324 records produces:
+Running the deriver across all 500 shipping records (the Gym avatar selection) produces:
 
 | Dimension | Distribution |
 |---|---|
-| Mechanic | 663 compound / 661 isolation |
-| Tracking | 820 weight×reps, 297 bodyweight+load, 95 reps-only, 89 duration, 14 distance, 7 assisted, 2 weight+time |
-| Difficulty | 636 beginner / 559 intermediate / 129 advanced |
-| Laterality | 1,083 bilateral / 203 unilateral / 38 alternating |
-| Push/pull | 431 pull, 353 push, 273 legs, 171 core, 67 neutral, 29 cardio |
-| Empty volume contribution | 87 (56 stretches + 29 cardio + 2 non-loading) |
+| Mechanic | 244 compound / 256 isolation |
+| Tracking | 298 weight×reps, 177 bodyweight+load, 15 reps-only, 6 duration, 2 assisted, 2 weight+time |
+| Difficulty | 205 beginner / 250 intermediate / 45 advanced |
+| Laterality | 423 bilateral / 76 unilateral / 1 alternating |
+| Push/pull | 168 pull, 120 push, 135 legs, 70 core, 7 neutral |
+| Empty volume contribution | 0 — the selection has no stretches and no cardio |
 | Unresolved muscle strings | 0 |
+
+The cardio, stretch and distance rules are still exercised by the unit tests, against the upstream
+records' fields (`Upstream` in `ExerciseMetadataDeriverTests.swift`).
 
 ---
 
@@ -414,8 +417,8 @@ rather than nothing. Weights are catalogue-dependent but deterministic for a
 given catalogue.
 
 Reference values on the shipping dataset, using the dataset's own record names:
-`barbell bench press` ↔ `dumbbell bench press` 0.94, ↔ `lever chest press` 0.86,
-↔ `barbell full squat` 0.22.
+`barbell bench press` ↔ `dumbbell bench press` 0.94, ↔ `cable decline press` 0.85,
+↔ `barbell high bar squat` 0.23.
 
 #### Candidate score
 
@@ -477,7 +480,8 @@ the progression area's key file rather than in `taxonomy.en.json`.
 
 #### Performance
 
-Measured on the shipping 1,324-record catalogue, `-O` build, Apple silicon, with
+Measured on the earlier 1,324-record catalogue (the shipping one has 500 records, so these are
+upper bounds), `-O` build, Apple silicon, with
 a full preference and history dictionary loaded — which is the expensive case,
 since every candidate then costs two dictionary lookups and a trend computation:
 
@@ -1252,7 +1256,7 @@ correctly stays silent when the delivered split exceeds 20 %.
 `timeBudget`, `capacityFit` and `capSeconds(for:)` all floor at 15. The reported `estimatedMinutes`
 is the honest figure, so a 10-minute user sees a 13–15 minute session rather than a 10-minute one.
 
-**Performance**, on the shipping 1,324-record catalogue, `-O` build, Apple silicon:
+**Performance**, measured on the earlier 1,324-record catalogue (the shipping one has 500 records, so these are upper bounds), `-O` build, Apple silicon:
 
 | Call | Cost |
 |---|---|

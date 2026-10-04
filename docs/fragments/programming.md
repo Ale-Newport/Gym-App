@@ -750,7 +750,7 @@ correctly stays silent when the delivered split exceeds 20 %.
 `timeBudget`, `capacityFit` and `capSeconds(for:)` all floor at 15. The reported `estimatedMinutes`
 is the honest figure, so a 10-minute user sees a 13–15 minute session rather than a 10-minute one.
 
-**Performance**, on the shipping 1,324-record catalogue, `-O` build, Apple silicon:
+**Performance**, measured on the earlier 1,324-record catalogue (the shipping one has 500 records, so these are upper bounds), `-O` build, Apple silicon:
 
 | Call | Cost |
 |---|---|

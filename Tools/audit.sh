@@ -56,8 +56,11 @@ for language in manifest["languages"]:
         absent = [i for i in ids if not table.get(i)]
         if absent:
             problems.append(f"{len(absent)} exercises without {language} instructions")
-if not any(r.get("attribution") for r in core):
-    problems.append("attribution missing from records")
+for folder, key in (("thumbnails", "thumbnail"), ("animations", "animation")):
+    shipped = {f for f in os.listdir(f"{root}/ExerciseMedia/{folder}") if not f.startswith(".")}
+    orphans = shipped - {r[key] for r in core}
+    if orphans:
+        problems.append(f"{len(orphans)} {folder} referenced by no exercise, e.g. {sorted(orphans)[0]}")
 print("\n".join(problems) if problems else "OK")
 sys.exit(1 if problems else 0)
 PY

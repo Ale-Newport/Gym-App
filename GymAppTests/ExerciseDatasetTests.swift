@@ -1,4 +1,5 @@
 import Foundation
+import ImageIO
 import Testing
 @testable import GymApp
 
@@ -108,13 +109,13 @@ struct ExerciseDatasetManifestTests {
         #expect(!manifest.sourceRepository.isEmpty)
         #expect(!manifest.mediaAttribution.isEmpty)
         #expect(!manifest.mediaLicense.isEmpty)
-        #expect(manifest.mediaResolution == "180x180")
+        #expect(manifest.mediaResolution == "400x400")
     }
 
-    @Test("The manifest declares 1,324 exercises")
+    @Test("The manifest declares the 500 reviewed Gym avatar exercises")
     func manifestDeclaresTheShippedRecordCount() throws {
         let manifest = try #require(ExerciseDatasetFixture.manifest)
-        #expect(manifest.exerciseCount == 1324)
+        #expect(manifest.exerciseCount == 500)
     }
 
     @Test("The manifest declares exactly the ten languages the app ships in")
@@ -266,16 +267,15 @@ struct ExerciseMediaIntegrityTests {
         #expect(blank.isEmpty, "\(blank.count) exercises have a blank media reference: \(blank.prefix(10))")
     }
 
-    @Test("Media file names follow the id-mediaID convention")
+    @Test("Media file names follow the id convention")
     func mediaFileNamesFollowTheConvention() {
         let wrong = ExerciseDatasetFixture.exercises.filter {
-            $0.thumbnailFileName != "\($0.id)-\($0.mediaID).jpg"
-                || $0.animationFileName != "\($0.id)-\($0.mediaID).gif"
+            $0.thumbnailFileName != "\($0.id).jpg" || $0.animationFileName != "\($0.id).webp"
         }.map(\.id)
         #expect(wrong.isEmpty, "\(wrong.count) exercises break the media naming convention: \(wrong.prefix(10))")
     }
 
-    @Test("Every one of the 1,324 thumbnails exists in the bundle")
+    @Test("Every one of the 500 thumbnails exists in the bundle")
     func everyThumbnailFileExists() {
         let provider = ExerciseDatasetFixture.mediaProvider
         let missing = ExerciseDatasetFixture.exercises
@@ -284,7 +284,7 @@ struct ExerciseMediaIntegrityTests {
         #expect(missing.isEmpty, "\(missing.count) thumbnails are missing from the bundle: \(missing.prefix(10))")
     }
 
-    @Test("Every one of the 1,324 animations exists in the bundle")
+    @Test("Every one of the 500 animations exists in the bundle")
     func everyAnimationFileExists() {
         let provider = ExerciseDatasetFixture.mediaProvider
         let missing = ExerciseDatasetFixture.exercises
@@ -301,12 +301,34 @@ struct ExerciseMediaIntegrityTests {
         #expect(animations.count == ExerciseDatasetFixture.exercises.count)
     }
 
-    @Test("The bundled media provider surfaces the mandatory copyright line")
-    func providerCarriesAttribution() throws {
+    @Test("The bundled media is the app's own and carries no credit line")
+    func providerCarriesNoAttribution() {
         let provider = ExerciseDatasetFixture.mediaProvider
-        let attribution = try #require(provider.attribution)
-        #expect(!attribution.isEmpty)
-        #expect(provider.attributionURL != nil)
+        #expect(provider.attribution == nil)
+        #expect(provider.attributionURL == nil)
+    }
+
+    @Test("Every animation is an animated WebP with several frames")
+    func everyAnimationIsAnAnimatedWebP() {
+        let provider = ExerciseDatasetFixture.mediaProvider
+        let broken = ExerciseDatasetFixture.exercises.filter { exercise in
+            guard let url = provider.animationURL(for: exercise),
+                  let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+                  let type = CGImageSourceGetType(source) as String? else { return true }
+            return type != "org.webmproject.webp" || CGImageSourceGetCount(source) < 2
+        }.map(\.id)
+        #expect(broken.isEmpty, "\(broken.count) animations are not multi-frame WebP: \(broken.prefix(10))")
+    }
+
+    @Test("A bundled animation decodes with its own frame timing")
+    func animationDecodesWithItsTiming() async throws {
+        let exercise = try ExerciseDatasetFixture.exercise(id: "1436")
+        let url = try #require(ExerciseDatasetFixture.mediaProvider.animationURL(for: exercise))
+        let animation = try #require(await AnimatedImageStore().animation(at: url))
+        #expect(animation.frames.count == 32)
+        // 4.27 s as encoded. Reading no WebP delays would fall back to 0.1 s a frame, 3.2 s.
+        #expect(abs(animation.duration - 4.27) < 0.05)
+        #expect(animation.frames.first?.size == CGSize(width: 400, height: 400))
     }
 
     @Test("A provider pointed at a bundle with no media returns no URLs instead of failing")
@@ -333,8 +355,9 @@ struct ExerciseMediaIntegrityTests {
 @Suite("Bundled exercise instructions")
 struct ExerciseInstructionStoreTests {
 
-    /// A spread across the id space plus the exercises the other suites assert by name.
-    private static let sampleIDs = ["0001", "0025", "0043", "0294", "0472", "0685", "2612", "3236"]
+    /// A spread across the id space plus the exercises the other suites assert by name, and the two
+    /// exercises added from `Tools/exercise_additions.json`.
+    private static let sampleIDs = ["0001", "0025", "0294", "0472", "1436", "2368", "9001", "9002"]
 
     private func store() -> ExerciseInstructionStore {
         ExerciseInstructionStore(bundle: ExerciseDatasetFixture.appBundle)

@@ -221,10 +221,10 @@ enum OnboardingOptions {
     /// is regenerated from an upstream source, and an id that disappears would silently drop the
     /// question. A name match that finds nothing simply offers one fewer lift.
     static let strengthSeedQueries: [(labelKey: String, terms: [String])] = [
-        ("onboarding.seed.squat", ["barbell full squat", "barbell squat"]),
+        ("onboarding.seed.squat", ["barbell high bar squat", "barbell full squat", "barbell squat"]),
         ("onboarding.seed.bench", ["barbell bench press"]),
         ("onboarding.seed.deadlift", ["barbell deadlift"]),
-        ("onboarding.seed.overheadPress", ["barbell standing military press", "barbell shoulder press"]),
+        ("onboarding.seed.overheadPress", ["barbell overhead press", "barbell standing military press", "barbell shoulder press"]),
         ("onboarding.seed.row", ["barbell bent over row", "barbell row"]),
         ("onboarding.seed.pulldown", ["cable pulldown", "lever front pulldown"])
     ]

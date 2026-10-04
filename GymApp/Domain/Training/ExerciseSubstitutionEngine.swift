@@ -4,7 +4,7 @@ import Foundation
 ///
 /// This runs while somebody is standing in a gym between sets, so two things matter equally:
 ///
-/// * **Speed.** The catalogue holds 1,324 records and the sheet must open instantly. The engine
+/// * **Speed.** The catalogue holds 500 records and the sheet must open instantly. The engine
 ///   indexes the catalogue once in `init`, then each call touches only the few hundred exercises
 ///   that train the same muscle group, gates them with set lookups before any scoring happens, and
 ///   computes the expensive similarity only for what survives. There is no string parsing, no

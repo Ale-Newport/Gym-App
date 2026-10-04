@@ -183,7 +183,7 @@ struct SubstitutionSimilarityTests {
         let engine = SelectionCatalogue.substitution
 
         // A fixed, spread-out sample: deterministic, and wide enough to hit every equipment family.
-        let sample = stride(from: 0, to: catalogue.count, by: 53).map { catalogue[$0] }
+        let sample = stride(from: 0, to: catalogue.count, by: 23).map { catalogue[$0] }
         #expect(sample.count > 10)
         for left in sample {
             for right in sample {
@@ -218,23 +218,23 @@ struct SubstitutionSimilarityTests {
         let engine = SelectionCatalogue.substitution
         let bench = try #require(SelectionCatalogue.exercise(SelectionCatalogue.barbellBenchPressID))
         let dumbbell = try #require(SelectionCatalogue.exercise(SelectionCatalogue.dumbbellBenchPressID))
-        let machine = try #require(SelectionCatalogue.exercise(SelectionCatalogue.leverChestPressID))
-        let squat = try #require(SelectionCatalogue.exercise(SelectionCatalogue.barbellFullSquatID))
+        let cable = try #require(SelectionCatalogue.exercise(SelectionCatalogue.cableDeclinePressID))
+        let squat = try #require(SelectionCatalogue.exercise(SelectionCatalogue.barbellHighBarSquatID))
         let legCurl = try #require(SelectionCatalogue.exercise(SelectionCatalogue.leverLyingLegCurlID))
 
         let toDumbbell = engine.similarity(bench, dumbbell)
-        let toMachine = engine.similarity(bench, machine)
+        let toCable = engine.similarity(bench, cable)
         let toSquat = engine.similarity(bench, squat)
         let toLegCurl = engine.similarity(bench, legCurl)
 
-        #expect(toDumbbell > toMachine, "dumbbell \(toDumbbell) should beat machine \(toMachine)")
-        #expect(toMachine > toSquat, "machine \(toMachine) should beat squat \(toSquat)")
+        #expect(toDumbbell > toCable, "dumbbell \(toDumbbell) should beat cable \(toCable)")
+        #expect(toCable > toSquat, "cable \(toCable) should beat squat \(toSquat)")
         #expect(toSquat > toLegCurl, "squat \(toSquat) should beat leg curl \(toLegCurl)")
 
         // The values documented in docs/fragments/selection.md for the shipping dataset.
         #expect(abs(toDumbbell - 0.94) < 0.05, "documented 0.94, measured \(toDumbbell)")
-        #expect(abs(toMachine - 0.86) < 0.05, "documented 0.86, measured \(toMachine)")
-        #expect(abs(toSquat - 0.22) < 0.05, "documented 0.22, measured \(toSquat)")
+        #expect(abs(toCable - 0.85) < 0.05, "documented 0.85, measured \(toCable)")
+        #expect(abs(toSquat - 0.23) < 0.05, "documented 0.23, measured \(toSquat)")
     }
 
     @Test("Similarity always lands in 0…1, whatever the pair")

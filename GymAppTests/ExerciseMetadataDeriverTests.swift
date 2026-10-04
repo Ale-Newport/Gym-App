@@ -29,6 +29,64 @@ private func bundledMetadata(_ id: String) throws -> ExerciseMetadata {
     try ExerciseDatasetFixture.exercise(id: id).metadata
 }
 
+/// Metadata for an upstream record that the app no longer bundles — only the Gym avatar selection
+/// ships — built from that record's fields verbatim, mapped the way `ExerciseDatasetImporter` maps
+/// them. Keeps the classification rules for cardio, holds and the like covered.
+private func upstreamMetadata(
+    _ name: String,
+    bodyPart: String,
+    equipment: String,
+    target: String,
+    synergist: String,
+    secondary: [String]
+) throws -> ExerciseMetadata {
+    let target = try #require(Muscle(datasetValue: target))
+    let synergist = Muscle(datasetValue: synergist)
+    var seen: Set<Muscle> = [target]
+    if let synergist { seen.insert(synergist) }
+    return ExerciseMetadataDeriver.derive(
+        name: name,
+        bodyPart: BodyPart(datasetValue: bodyPart),
+        equipment: Equipment(datasetValue: equipment),
+        target: target,
+        synergist: synergist,
+        secondaryMuscles: secondary.compactMap { Muscle(datasetValue: $0) }.filter { seen.insert($0).inserted }
+    )
+}
+
+/// Upstream records the tests below classify, with the fields the dataset gives them.
+private enum Upstream {
+    static func barbellFullSquat() throws -> ExerciseMetadata {  // 0043
+        try upstreamMetadata("barbell full squat", bodyPart: "upper legs", equipment: "barbell", target: "glutes",
+                             synergist: "quadriceps", secondary: ["quadriceps", "hamstrings", "calves", "core"])
+    }
+    static func weightedFrontPlank() throws -> ExerciseMetadata {  // 2135
+        try upstreamMetadata("weighted front plank", bodyPart: "waist", equipment: "weighted", target: "abs",
+                             synergist: "shoulders", secondary: ["shoulders", "lower back"])
+    }
+    static func run() throws -> ExerciseMetadata {  // 0685
+        try upstreamMetadata("run", bodyPart: "cardio", equipment: "body weight", target: "cardiovascular system",
+                             synergist: "quadriceps", secondary: ["quadriceps", "hamstrings", "calves"])
+    }
+    static func jumpRope() throws -> ExerciseMetadata {  // 2612
+        try upstreamMetadata("jump rope", bodyPart: "cardio", equipment: "rope", target: "cardiovascular system",
+                             synergist: "calves", secondary: ["calves", "quadriceps", "hamstrings", "glutes"])
+    }
+    static func bandHipThrustsOnKnees() throws -> ExerciseMetadata {  // 3236
+        try upstreamMetadata("resistance band hip thrusts on knees (female)", bodyPart: "upper legs",
+                             equipment: "resistance band", target: "glutes",
+                             synergist: "hamstrings", secondary: ["hamstrings", "quadriceps"])
+    }
+    static func handsBike() throws -> ExerciseMetadata {  // 2139
+        try upstreamMetadata("hands bike", bodyPart: "chest", equipment: "upper body ergometer", target: "pectorals",
+                             synergist: "triceps", secondary: ["triceps", "shoulders"])
+    }
+    static func skiErgometer() throws -> ExerciseMetadata {  // 2142
+        try upstreamMetadata("ski ergometer", bodyPart: "upper arms", equipment: "skierg machine", target: "triceps",
+                             synergist: "shoulders", secondary: ["shoulders", "forearms"])
+    }
+}
+
 // MARK: - Named classifications
 
 @Suite("Metadata derivation of well-known exercises")
@@ -50,7 +108,7 @@ struct ExerciseMetadataNamedClassificationTests {
 
     @Test("Barbell full squat is a squat compound on the heavy 5–8 range with a long rest")
     func barbellFullSquat() throws {
-        let metadata = try bundledMetadata("0043")
+        let metadata = try Upstream.barbellFullSquat()
         #expect(metadata.movementPattern == .squat)
         #expect(metadata.mechanic == .compound)
         #expect(metadata.pushPull == .legs)
@@ -71,14 +129,14 @@ struct ExerciseMetadataNamedClassificationTests {
 
     @Test("A weighted front plank stays duration-tracked despite carrying added load")
     func weightedPlankIsStillDurationTracked() throws {
-        let metadata = try bundledMetadata("2135")
+        let metadata = try Upstream.weightedFrontPlank()
         #expect(metadata.movementPattern == .coreAntiExtension)
         #expect(metadata.trackingMode == .duration)
     }
 
     @Test("Run is cardio, tracked as distance and duration, and earns no lifting volume")
     func runIsCardio() throws {
-        let metadata = try bundledMetadata("0685")
+        let metadata = try Upstream.run()
         #expect(metadata.movementPattern == .cardio)
         #expect(metadata.pushPull == .cardio)
         #expect(metadata.trackingMode == .distanceAndDuration)
@@ -104,7 +162,7 @@ struct ExerciseMetadataNamedClassificationTests {
 
     @Test("Jump rope is duration work, not a distance-tracked run")
     func jumpRopeIsDurationNotDistance() throws {
-        let metadata = try bundledMetadata("2612")
+        let metadata = try Upstream.jumpRope()
         #expect(metadata.movementPattern == .cardio)
         #expect(metadata.trackingMode == .duration)
         #expect(metadata.trackingMode.usesDistance == false)
@@ -126,9 +184,9 @@ struct ExerciseMetadataPluralTests {
         #expect(plural.movementPattern == .hipThrust)
     }
 
-    @Test("The bundled plural record 'resistance band hip thrusts on knees' is a hip thrust")
+    @Test("The upstream plural record 'resistance band hip thrusts on knees' is a hip thrust")
     func bundledHipThrustPlural() throws {
-        let metadata = try bundledMetadata("3236")
+        let metadata = try Upstream.bandHipThrustsOnKnees()
         #expect(metadata.movementPattern == .hipThrust)
         #expect(metadata.pushPull == .legs)
     }
@@ -266,8 +324,8 @@ struct ExerciseTrackingModeTests {
     @Test("An ergometer records distance even when the dataset files it under a body part")
     func ergometerIsDistanceRegardlessOfBodyPart() throws {
         // 2139 'hands bike' and 2142 'ski ergometer' are filed under chest and upper arms.
-        let handsBike = try bundledMetadata("2139")
-        let skiErgometer = try bundledMetadata("2142")
+        let handsBike = try Upstream.handsBike()
+        let skiErgometer = try Upstream.skiErgometer()
         #expect(handsBike.trackingMode == .distanceAndDuration)
         #expect(skiErgometer.trackingMode == .distanceAndDuration)
     }
@@ -533,8 +591,8 @@ struct ExerciseVolumeContributionTests {
     @Test("Stretches and cardio earn no volume at all")
     func stretchesAndCardioEarnNothing() throws {
         let stretch = derive("standing hamstring stretch", bodyPart: .upperLegs, equipment: .bodyWeight, target: .hamstrings)
-        let run = try bundledMetadata("0685")
-        let jumpRope = try bundledMetadata("2612")
+        let run = try Upstream.run()
+        let jumpRope = try Upstream.jumpRope()
         #expect(stretch.volumeContribution.isEmpty)
         #expect(run.volumeContribution.isEmpty)
         #expect(jumpRope.volumeContribution.isEmpty)
@@ -609,7 +667,7 @@ struct ExerciseMetadataTotalityTests {
 
     @Test("The catalogue actually loaded, so the totality checks mean something")
     func catalogueIsPopulated() {
-        #expect(exercises.count == 1324)
+        #expect(exercises.count == 500)
     }
 
     @Test("Stability demand stays within its documented 0.05…1 range for every exercise")
@@ -724,33 +782,33 @@ struct ExerciseMetadataTotalityTests {
     func derivedDistributionMatchesTheDocumentedTable() {
         func count(_ predicate: (Exercise) -> Bool) -> Int { exercises.filter(predicate).count }
 
-        #expect(count { $0.metadata.mechanic == .compound } == 663)
-        #expect(count { $0.metadata.mechanic == .isolation } == 661)
+        #expect(count { $0.metadata.mechanic == .compound } == 244)
+        #expect(count { $0.metadata.mechanic == .isolation } == 256)
 
-        #expect(count { $0.metadata.trackingMode == .weightAndReps } == 820)
-        #expect(count { $0.metadata.trackingMode == .weightedBodyweight } == 297)
-        #expect(count { $0.metadata.trackingMode == .repsOnly } == 95)
-        #expect(count { $0.metadata.trackingMode == .duration } == 89)
-        #expect(count { $0.metadata.trackingMode == .distanceAndDuration } == 14)
-        #expect(count { $0.metadata.trackingMode == .assistedBodyweight } == 7)
+        #expect(count { $0.metadata.trackingMode == .weightAndReps } == 298)
+        #expect(count { $0.metadata.trackingMode == .weightedBodyweight } == 177)
+        #expect(count { $0.metadata.trackingMode == .repsOnly } == 15)
+        #expect(count { $0.metadata.trackingMode == .duration } == 6)
+        #expect(count { $0.metadata.trackingMode == .distanceAndDuration } == 0)
+        #expect(count { $0.metadata.trackingMode == .assistedBodyweight } == 2)
         #expect(count { $0.metadata.trackingMode == .weightAndDuration } == 2)
 
-        #expect(count { $0.metadata.difficulty == .beginner } == 636)
-        #expect(count { $0.metadata.difficulty == .intermediate } == 559)
-        #expect(count { $0.metadata.difficulty == .advanced } == 129)
+        #expect(count { $0.metadata.difficulty == .beginner } == 205)
+        #expect(count { $0.metadata.difficulty == .intermediate } == 250)
+        #expect(count { $0.metadata.difficulty == .advanced } == 45)
 
-        #expect(count { $0.metadata.laterality == .bilateral } == 1083)
-        #expect(count { $0.metadata.laterality == .unilateral } == 203)
-        #expect(count { $0.metadata.laterality == .alternating } == 38)
+        #expect(count { $0.metadata.laterality == .bilateral } == 423)
+        #expect(count { $0.metadata.laterality == .unilateral } == 76)
+        #expect(count { $0.metadata.laterality == .alternating } == 1)
 
-        #expect(count { $0.metadata.pushPull == .pull } == 431)
-        #expect(count { $0.metadata.pushPull == .push } == 353)
-        #expect(count { $0.metadata.pushPull == .legs } == 273)
-        #expect(count { $0.metadata.pushPull == .core } == 171)
-        #expect(count { $0.metadata.pushPull == .neutral } == 67)
-        #expect(count { $0.metadata.pushPull == .cardio } == 29)
+        #expect(count { $0.metadata.pushPull == .pull } == 168)
+        #expect(count { $0.metadata.pushPull == .push } == 120)
+        #expect(count { $0.metadata.pushPull == .legs } == 135)
+        #expect(count { $0.metadata.pushPull == .core } == 70)
+        #expect(count { $0.metadata.pushPull == .neutral } == 7)
+        #expect(count { $0.metadata.pushPull == .cardio } == 0)
 
-        #expect(count { $0.metadata.volumeContribution.isEmpty } == 87)
-        #expect(count { $0.metadata.isStretch } == 56)
+        #expect(count { $0.metadata.volumeContribution.isEmpty } == 0)
+        #expect(count { $0.metadata.isStretch } == 0)
     }
 }

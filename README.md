@@ -6,7 +6,7 @@
 
 Forge decides what you should train today, which exercises, in which order, for how many sets and
 reps, at what load, with how much rest — then watches what you actually did and adjusts. It ships
-with 1,324 exercises, each with an animation, and instructions in ten languages. Everything runs on
+with 500 exercises, each animated by its own original 3D athlete, and instructions in ten languages. Everything runs on
 device: no account, no server, no model call.
 
 </div>
@@ -145,7 +145,7 @@ and returns a `ProgressionDecision`. It cannot read the database, cannot read th
 render anything. That is what makes the training logic — the part that has to be *right* — testable
 without a simulator, and reproducible run to run.
 
-**2. The exercise catalogue is not in the database.** All 1,324 records are static reference data
+**2. The exercise catalogue is not in the database.** All 500 records are static reference data
 that never change on device. Modelling them as SwiftData rows would add migration risk, launch cost
 and query overhead and buy nothing. `ExerciseCatalog` loads them once into memory; everything the
 user creates references an exercise by its stable dataset id.
@@ -203,30 +203,38 @@ docs/                       ALGORITHMS · DATASET_AUDIT · LICENSES · PRIVACY
 
 ## The exercise dataset
 
-Source: **<https://github.com/hasaneyldrm/exercises-dataset>** — 1,324 exercises with a 180×180
-thumbnail and animation each, and instructions in English, Spanish, Italian, Turkish, Russian,
-Chinese, Hindi, Polish, Korean and French.
+The catalogue is the **Gym avatar** project's reviewed selection
+(`../Gym avatar/fitness-athlete-generator`): the 500 exercises whose renders passed its visual
+review (`output/qa/priority-500.json`), balanced across every major muscle group. Every image is
+rendered there from one original athlete; nothing comes from a third-party image library.
 
-The upstream `data/exercises.json` is a single 17 MB document carrying all ten languages inside
-every record. Parsing that at launch would cost hundreds of milliseconds and tens of megabytes for
-text nobody will read. `Tools/prepare_dataset.py` therefore audits it and splits it:
+The records themselves — names, body part, equipment, muscles and instructions in English, Spanish,
+Italian, Turkish, Russian, Chinese, Hindi, Polish, Korean and French — come from
+**<https://github.com/hasaneyldrm/exercises-dataset>** (MIT), read from the avatar project's pinned
+copy. Each avatar exercise carries its upstream id, so ids stay the stable dataset ids the app has
+always used. Where the avatar project rewrote the English and Spanish steps to describe exactly the
+rendered movement, those are used. Two exercises it created with no upstream record live in
+`Tools/exercise_additions.json` (ids 9001 and 9002).
 
 ```bash
-git clone https://github.com/hasaneyldrm/exercises-dataset /tmp/exercises-dataset
-python3 Tools/prepare_dataset.py --source /tmp/exercises-dataset
+python3 Tools/prepare_dataset.py        # defaults to ../Gym avatar/fitness-athlete-generator
 ```
 
 | Output | Size | Loaded |
 |---|---|---|
-| `Resources/ExerciseDataset/exercises.core.json` | ~0.5 MB | Once at launch, off the main actor |
-| `Resources/ExerciseDataset/instructions/instructions.<lang>.json` | ~0.8 MB each | Lazily, only the active language |
-| `Resources/ExerciseDataset/dataset-manifest.json` | <1 KB | Version, checksum and counts |
-| `Resources/ExerciseMedia/thumbnails/` | ~11 MB | Per row, cached |
-| `Resources/ExerciseMedia/animations/` | ~125 MB | Per exercise on screen, cached under a hard ceiling |
+| `Resources/ExerciseDataset/exercises.core.json` | ~0.2 MB | Once at launch, off the main actor |
+| `Resources/ExerciseDataset/instructions/instructions.<lang>.json` | ~0.3 MB each | Lazily, only the active language |
+| `Resources/ExerciseDataset/dataset-manifest.json` | <1 KB | Version, checksums and counts |
+| `Resources/ExerciseMedia/thumbnails/` | ~2.6 MB | 240×240 JPEG, per row, cached |
+| `Resources/ExerciseMedia/animations/` | ~18 MB | 400×400 animated WebP, per exercise on screen, cached under a hard ceiling |
 
-The tool also writes **`docs/DATASET_AUDIT.md`**: record count, duplicate ids, missing or zero-byte
-media, missing translations, orphaned files and the full field distributions. A defective record is
-rejected there rather than shipped — one bad row in a future revision cannot brick the app.
+The tool refuses to run unless all 500 carry review evidence, re-encodes each reviewed GIF to an
+animated WebP (at most 36 frames, the tempo kept), crops each thumbnail to the area the movement
+covers, removes any media file no exercise references, and writes **`docs/DATASET_AUDIT.md`**:
+counts, distributions, and the upstream ids the avatar project merged into another exercise.
+
+The selection has **no cardio and no stretches**, so the engine's cardio slots and the rest-day
+stretch suggestion find nothing to offer and are skipped quietly.
 
 At runtime `ExerciseDatasetImporter` decodes, normalises the three overlapping muscle vocabularies
 into one canonical taxonomy, and runs `ExerciseMetadataDeriver` to add the training properties the
@@ -305,7 +313,7 @@ device; the override persists and re-renders immediately without disturbing navi
 
 **What is and is not translated.** The interface, every explanation the engines produce, the muscle,
 equipment and body-part vocabulary, and the exercise instructions are all translated into all ten
-languages. **Exercise names are not** — the upstream dataset carries names in English only, and 1,324
+languages. **Exercise names are not** — the upstream dataset carries names in English only, and 500
 compound names ("barbell incline reverse-grip press") machine-translated into nine languages would
 read worse than leaving them in the English every gym already uses. Search matches the English name
 alongside the translated muscle and equipment terms, so looking for "pecho" or "mancuerna" still
@@ -329,7 +337,7 @@ xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-**909 unit tests** across 79 suites, plus the UI tests covering the flows that matter. Unit tests
+**911 unit tests** across 79 suites, plus the UI tests covering the flows that matter. Unit tests
 use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they build value
 types, call an engine, and check the result, so the whole unit suite finishes in about 15 seconds.
 
@@ -342,7 +350,7 @@ Tools/audit.sh --quick    # skips the Release build and the UI tests
 
 Coverage is concentrated where correctness matters most — progression decisions, substitution
 ranking, volume and split selection, recovery and deload, nutrition maths, dataset integrity
-(including that every one of the 1,324 records has media that actually exists in the bundle), food
+(including that every one of the 500 records has media that actually exists in the bundle), food
 data (including that every animal product carries the tag the vegan filter reads), the repository
 history-snapshot guarantee, and a full export → wipe → import round trip.
 
@@ -379,25 +387,26 @@ Three different licences apply to three different things. **Read
 |---|---|
 | This app's source | Yours to choose — none is asserted here |
 | Exercise **data** and instructions | **MIT** © 2026 Hasan Emir Yıldırım |
-| Exercise **media** (thumbnails, animations) | **Proprietary** © [Gym visual](https://gymvisual.com/) — *not* MIT |
+| Exercise **media** (thumbnails, animations) | **The author's own** — original renders from the Gym avatar project, *not* MIT |
 | Food database | USDA FoodData Central — public domain |
 | Open Food Facts (runtime, optional) | ODbL |
 
-> ⚠️ **The artwork is not yours by cloning.** The upstream `NOTICE.md` states plainly that the media
-> is included there under a separate written permission granted to that repository's author, and
-> that cloning grants you no rights to it. Shipping this app with that artwork requires **your own
-> licence from Gym visual**. The app honours every attribution and resolution term already — that is
-> necessary, not sufficient. See [`docs/LICENSES.md`](docs/LICENSES.md).
+> The artwork carries no credit line: `BundledExerciseMediaProvider` passes `nil` attribution, so
+> every `MediaAttributionLabel` hides itself. The athlete was built with MakeHuman/MPFB — check the
+> licences of any community assets on it before shipping. See [`docs/LICENSES.md`](docs/LICENSES.md).
 
 ### Replacing the artwork
 
 Everything reaches media through `ExerciseMediaProviding`. To swap it out:
 
+To refresh it after the avatar project renders or reviews more exercises, re-run
+`python3 Tools/prepare_dataset.py`. To use a different source:
+
 1. Drop your files into `Resources/ExerciseMedia/thumbnails/` and `.../animations/`, named after the
    `thumbnail` and `animation` fields in `exercises.core.json` — or write your own conformance to
    `ExerciseMediaProviding` that maps ids to your own URLs.
 2. Change the single line in `AppEnvironment.init` that constructs `BundledExerciseMediaProvider`,
-   passing your own `attribution` and `attributionURL` (or `nil` for both).
+   passing an `attribution` and `attributionURL` if the new artwork requires a credit.
 
 No view, engine or model changes. `EmptyExerciseMediaProvider` demonstrates that the app remains
 fully usable with no artwork at all.
@@ -432,9 +441,9 @@ Scenarios: `newUser`, `freshProgram`, `seasonedUser`, `activeWorkout`, `emptyNut
 
 Two things are left, and neither can be done from inside the repository:
 
-1. **Settle the media licence** with Gym visual, or replace the artwork. This is the blocking item —
-   see [Licences](#licences). Cloning this repository does not grant the right to ship the
-   animations; the app satisfies attribution and resolution, which is necessary and not sufficient.
+1. **Check the athlete's asset licences.** The artwork is original, but the athlete was built with
+   MakeHuman/MPFB; any community skin, hair or clothing on him may require a credit. See
+   [`docs/LICENSES.md`](docs/LICENSES.md).
 2. **Set `DEVELOPMENT_TEAM`** and change every bundle identifier — `com.gymapp.forge`,
    `com.gymapp.forge.widgets`, and the App Group `group.com.gymapp.forge` — to identifiers you own.
    They are placeholders. The App Group is shared by the app and the widget and must match in
@@ -472,15 +481,8 @@ a product decision, not a missing piece of wiring.
 
 ### A note on download size
 
-The exercise animations are ~137 MB, which puts the built app around 234 MB. That is well inside
-the App Store's limits, but it is past the threshold where iOS asks before downloading over
-cellular. Three ways to bring it down, in order of effort:
-
-- **On-Demand Resources.** Tag the animations and download them on first use. The catalogue,
-  thumbnails and every screen already work without them — `AnimatedExerciseImage` falls back to the
-  thumbnail, and `EmptyExerciseMediaProvider` shows the app is usable with no artwork at all.
-- **Re-encode.** The GIFs are as the rights holder supplies them. HEIC sequences or short H.265
-  clips at the same 180×180 would cut this substantially, but check the licence terms first — the
-  media must stay at 180×180 and keep its attribution.
-- **Ship fewer.** Most of the 1,324 are variations. A curated subset with the rest fetched on demand
-  is a product decision the media layer already supports.
+The exercise media is about 20 MB: 500 animated WebP animations (~18 MB, 400×400, at most 36
+frames each) and 500 JPEG thumbnails (~2.6 MB). Re-encoding the Gym avatar GIFs to WebP took them
+from ~500 MB to under a twentieth of that, and the earlier third-party GIFs were ~137 MB, so the
+media is no longer what decides the app's download size. `AnimatedImageStore` reads frame timing
+from WebP and GIF alike, so either format can ship.
