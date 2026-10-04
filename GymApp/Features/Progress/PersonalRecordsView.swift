@@ -31,14 +31,22 @@ enum PersonalRecordFormatting {
         switch record.kind {
         case .heaviestWeight, .estimatedOneRepMax, .lightestAssistance, .bestSetVolume, .sessionVolume:
             let displayed = formatter.weightValue(delta)
-            return Units.formatSignedDecimal(displayed, digits: 1, locale: formatter.locale)
-                + " " + formatter.weightUnitLabel
+            return Units.joinUnit(
+                Units.formatSignedDecimal(displayed, digits: 1, locale: formatter.locale),
+                formatter.weightUnitLabel
+            )
         case .mostReps:
             return Units.formatSignedDecimal(delta, digits: 0, locale: formatter.locale)
         case .longestDuration:
-            return Units.formatSignedDecimal(delta, digits: 0, locale: formatter.locale) + " " + L("common.sec")
+            return Units.joinUnit(
+                Units.formatSignedDecimal(delta, digits: 0, locale: formatter.locale),
+                L("common.sec")
+            )
         case .longestDistance:
-            return Units.formatSignedDecimal(delta, digits: 0, locale: formatter.locale) + " m"
+            return Units.joinUnit(
+                Units.formatSignedDecimal(delta, digits: 0, locale: formatter.locale),
+                "m"
+            )
         }
     }
 
@@ -140,7 +148,7 @@ struct PersonalRecordsView: View {
     @State private var model = PersonalRecordsViewModel()
 
     var body: some View {
-        ScrollView {
+        ProgressRangeScrollView(range: range) {
             VStack(alignment: .leading, spacing: Metrics.spacing16) {
                 content
             }
@@ -151,13 +159,6 @@ struct PersonalRecordsView: View {
         .background(Color.appBackground)
         .navigationTitle(L("progress.records.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TimeRangePicker(store: range)
-                Divider().overlay(Color.appSeparator)
-            }
-            .background(.bar)
-        }
         .task(id: range.range) { await model.load(context: modelContext, range: range) }
         .refreshable { await model.load(context: modelContext, range: range) }
     }

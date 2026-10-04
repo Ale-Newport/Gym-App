@@ -270,7 +270,9 @@ enum FoodSource: String, CaseIterable, Codable, Hashable, Sendable {
 /// Portion maths always goes through `nutrients(forQuantity:unit:)`, never through ad-hoc scaling.
 @Model
 final class FoodItem {
-    #Index<FoodItem>([\.name], [\.barcode], [\.sourceRaw])
+    // `\.id` is indexed because look-up by id is the hottest read in the app: every logged row,
+    // every saved-meal total and every recipe ingredient resolves its food that way.
+    #Index<FoodItem>([\.id], [\.name], [\.barcode], [\.sourceRaw])
 
     var id: UUID = UUID()
     /// Stable identifier for built-in foods so a database refresh updates rather than duplicates.

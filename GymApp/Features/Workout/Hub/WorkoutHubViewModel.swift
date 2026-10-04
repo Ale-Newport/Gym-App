@@ -842,6 +842,9 @@ final class TrainingCalendarViewModel {
     private(set) var visibleMonth: Date = Date()
     private(set) var hasProgram = false
     private(set) var monthSessionCount = 0
+    /// True while the programming engine is rebuilding a session, so the button cannot be tapped
+    /// a second time and queue a duplicate regeneration.
+    private(set) var isRegenerating = false
 
     var selectedDate: Date?
     var pendingReschedule: SessionRescheduler.Plan?
@@ -1083,8 +1086,10 @@ final class TrainingCalendarViewModel {
 
     /// Rebuilds one session's exercises from the programming engine, keeping anything the user
     /// pinned. The dose is regenerated with it — a new set of movements needs its own prescription.
-    func regenerate(templateID: UUID) {
+    func regenerate(templateID: UUID) async {
         guard let context, let catalog, let program, let template = template(id: templateID) else { return }
+        isRegenerating = true
+        defer { isRegenerating = false }
         do {
             let programs = ProgramRepository(context: context)
             let profiles = ProfileRepository(context: context)
@@ -1106,22 +1111,36 @@ final class TrainingCalendarViewModel {
 
             var request = ProgrammingRequest(profile: profile)
             request.preferences = try preferences.snapshots()
+            // Only the movements the engine will actually reason about: everything already
+            // planned across the week, plus what the user has done lately. Asking for all 1,324
+            // catalogue entries built a history snapshot for ~1,300 exercises never performed.
+            let recentIDs = try preferences.recentlyPerformedIDs(limit: 40)
+            let plannedIDs = program.orderedTemplates.flatMap { $0.orderedExercises.map(\.exerciseID) }
             request.histories = try workouts.histories(
-                forExerciseIDs: catalog.exercises.map(\.id), sessionLimit: 6
+                forExerciseIDs: plannedIDs + recentIDs, sessionLimit: 6
             )
             request.recovery = recovery
             request.increments = try profiles.increments()
             request.weekIndex = program.completedWeeks
             request.isDeloadWeek = program.mesocycleLengthWeeks > 1
                 && (program.completedWeeks + 1) % program.mesocycleLengthWeeks == 0
-            request.recentlyUsedExerciseIDs = try preferences.recentlyPerformedIDs(limit: 40)
+            request.recentlyUsedExerciseIDs = recentIDs
             request.lockedExerciseIDs = lockedIDs
             // Seeded from the template so regenerating twice in a row does not produce the same
             // session again — the user asked for something different.
             request.randomSeed = UInt64(truncatingIfNeeded: template.id.hashValue) ^ UInt64(Date().timeIntervalSince1970)
 
-            let engine = WorkoutProgrammingEngine(catalog: catalog.exercises)
-            let generated = engine.generate(request)
+            // The engine is pure and by far the most expensive part, so it runs off the main
+            // actor. Every repository call around it stays here: `ModelContext` is not `Sendable`
+            // and moving a fetch into the detached task would be a data race, not a speed-up.
+            let exercises = catalog.exercises
+            let generated = await Task.detached(priority: .userInitiated) {
+                WorkoutProgrammingEngine(catalog: exercises).generate(request)
+            }.value
+
+            // Re-resolved across the suspension point: the store can change while the engine runs.
+            guard let template = self.template(id: templateID) else { return }
+
             let replacement = generated.trainingSessions.first { $0.orderIndex == template.orderIndex }
                 ?? generated.trainingSessions.first
             guard let replacement, !replacement.exercises.isEmpty else {

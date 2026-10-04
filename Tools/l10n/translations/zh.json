@@ -1210,6 +1210,7 @@
   "nutritionLog.energy.over": "超出",
   "nutritionLog.energy.remaining": "剩余",
   "nutritionLog.energy.target": "目标",
+  "nutritionLog.error.noLongerAvailable": "该食物或食谱已不存在，无法再次记录。你已有的记录不受影响。",
   "nutritionLog.error.generic": "无法更新你的饮食记录，请重试。",
   "nutritionLog.favorites.emptyMessage": "把食物加入收藏，它就会出现在这里。",
   "nutritionLog.favorites.emptyTitle": "还没有收藏",

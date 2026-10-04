@@ -191,6 +191,7 @@
 		C210544A7786EA1A83C4C71D /* AnimatedExerciseImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82FB2142298E4F4BEE65EEF /* AnimatedExerciseImage.swift */; };
 		C2D0AD38CEE77E247FDE2C6B /* PersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F17FCEAE817ABFA7BA21AC5 /* PersistenceTests.swift */; };
 		C2EB3CC7EC4774ADD00E2E6B /* NutritionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A725DB75FF0921E2523974C /* NutritionRepository.swift */; };
+		C6496C3B7ACB61BC75D44B7E /* AppStoreScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56901FFFA6BF5231227E94F2 /* AppStoreScreenshotTests.swift */; };
 		C6AF6C782D11CD2531C4C9D5 /* FoodDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DFB685A734FB0F0CFCA3A0 /* FoodDataProvider.swift */; };
 		C74FAE9D8998839C5D3CFAFA /* NutritionHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C46C110373E528AE33C11C /* NutritionHubView.swift */; };
 		C84B457D2A6AFFF1EA38BACB /* WorkoutLiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9A803C8BEFDFBF8C23AF9B /* WorkoutLiveActivityService.swift */; };
@@ -364,6 +365,7 @@
 		502B2864DD00FCC9F9165CA7 /* SharedSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedSnapshot.swift; sourceTree = "<group>"; };
 		504CC18EED58E5B2961A697D /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		54A149CAD2DE2EB1EE955532 /* CalibrationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationSheet.swift; sourceTree = "<group>"; };
+		56901FFFA6BF5231227E94F2 /* AppStoreScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreScreenshotTests.swift; sourceTree = "<group>"; };
 		56ED47606803865D23D32CCC /* TestFactories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFactories.swift; sourceTree = "<group>"; };
 		5788393B82827BCC8A32947F /* TrainingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSettingsView.swift; sourceTree = "<group>"; };
 		5BD9CB2C15D9B271321FC374 /* DataImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImportService.swift; sourceTree = "<group>"; };
@@ -692,6 +694,7 @@
 			isa = PBXGroup;
 			children = (
 				D9F53ACD8E8DB5EF780F92C5 /* Support */,
+				56901FFFA6BF5231227E94F2 /* AppStoreScreenshotTests.swift */,
 				E164A39C347DF4192CDD62DD /* NavigationUITests.swift */,
 				EBE4CAD3C4C2F774BA951AC2 /* NutritionUITests.swift */,
 				1B01EA8C59A9C08A219312AB /* OnboardingUITests.swift */,
@@ -1252,6 +1255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6496C3B7ACB61BC75D44B7E /* AppStoreScreenshotTests.swift in Sources */,
 				30D98AACFCEB38F05A4B5DA2 /* NavigationUITests.swift in Sources */,
 				EC71D60C39E3C43761ACDB3A /* NutritionUITests.swift in Sources */,
 				B5FB34EFF003E56F177491A6 /* OnboardingUITests.swift in Sources */,

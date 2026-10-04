@@ -1132,6 +1132,7 @@
   "nutritionLog.energy.over": "De más",
   "nutritionLog.energy.remaining": "Restante",
   "nutritionLog.energy.target": "Objetivo",
+  "nutritionLog.error.noLongerAvailable": "Ese alimento o receta ya no existe, así que no se puede volver a registrar. La entrada que ya tienes no se ve afectada.",
   "nutritionLog.error.generic": "No se ha podido actualizar tu registro de comidas. Inténtalo de nuevo.",
   "nutritionLog.favorites.emptyMessage": "Marca un alimento como favorito y lo tendrás esperando aquí.",
   "nutritionLog.favorites.emptyTitle": "Aún no hay favoritos",

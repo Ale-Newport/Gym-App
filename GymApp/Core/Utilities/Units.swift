@@ -34,7 +34,7 @@ enum Units {
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = digits
         let text = formatter.string(from: NSNumber(value: value)) ?? String(format: "%.1f", value)
-        return includeUnit ? "\(text) \(unit.rawValue)" : text
+        return includeUnit ? joinUnit(text, unit.rawValue) : text
     }
 
     // MARK: - Length
@@ -56,7 +56,7 @@ enum Units {
     ) -> String {
         switch unit {
         case .centimeters:
-            return "\(Int(centimeters.rounded())) cm"
+            return joinUnit("\(Int(centimeters.rounded()))", "cm")
         case .feetInches:
             var (feet, inches) = feetAndInches(fromCentimeters: centimeters)
             var wholeInches = Int(inches.rounded())
@@ -88,7 +88,7 @@ enum Units {
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = value < 10 ? 2 : 1
         let text = formatter.string(from: NSNumber(value: value)) ?? "\(value)"
-        return "\(text) \(unit.rawValue)"
+        return joinUnit(text, unit.rawValue)
     }
 
     // MARK: - Energy
@@ -105,7 +105,7 @@ enum Units {
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 0
         let text = formatter.string(from: NSNumber(value: value)) ?? "\(Int(value))"
-        return includeUnit ? "\(text) \(unit.rawValue)" : text
+        return includeUnit ? joinUnit(text, unit.rawValue) : text
     }
 
     // MARK: - Time
@@ -136,12 +136,22 @@ enum Units {
 
     // MARK: - Numbers
 
+    /// Joins a formatted number to its unit.
+    ///
+    /// The separator is a non-breaking space on purpose: a quantity and its unit are one word, and
+    /// an ordinary space lets SwiftUI wrap "24 g" into "24" above "g" wherever the column is tight
+    /// — which is exactly what the meal headers on the Nutrition tab were doing.
+    static func joinUnit(_ text: String, _ unit: String) -> String {
+        "\(text)\u{00A0}\(unit)"
+    }
+
+
     static func formatMacro(grams: Double, locale: Locale = .current) -> String {
         let formatter = NumberFormatter()
         formatter.locale = locale
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = grams < 10 ? 1 : 0
-        return (formatter.string(from: NSNumber(value: grams)) ?? "\(Int(grams))") + " g"
+        return joinUnit(formatter.string(from: NSNumber(value: grams)) ?? "\(Int(grams))", "g")
     }
 
     static func formatDecimal(_ value: Double, digits: Int = 1, locale: Locale = .current) -> String {
@@ -154,9 +164,13 @@ enum Units {
     }
 
     static func formatSignedDecimal(_ value: Double, digits: Int = 1, locale: Locale = .current) -> String {
-        let text = formatDecimal(abs(value), digits: digits, locale: locale)
-        if value > 0 { return "+\(text)" }
-        if value < 0 { return "−\(text)" }
+        // The sign has to follow the number the user actually sees. Taking it from the raw value
+        // renders -0.004 kg as "−0", which reads as a loss that did not happen.
+        let scale = pow(10.0, Double(digits))
+        let rounded = value.isFinite ? (value * scale).rounded() / scale : 0
+        let text = formatDecimal(abs(rounded), digits: digits, locale: locale)
+        if rounded > 0 { return "+\(text)" }
+        if rounded < 0 { return "−\(text)" }
         return text
     }
 }

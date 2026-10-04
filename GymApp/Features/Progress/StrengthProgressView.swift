@@ -22,7 +22,7 @@ struct StrengthProgressView: View {
     }
 
     var body: some View {
-        ScrollView {
+        ProgressRangeScrollView(range: range) {
             VStack(alignment: .leading, spacing: Metrics.spacing16) {
                 content
             }
@@ -33,13 +33,6 @@ struct StrengthProgressView: View {
         .background(Color.appBackground)
         .navigationTitle(L("progress.strength.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TimeRangePicker(store: range)
-                Divider().overlay(Color.appSeparator)
-            }
-            .background(.bar)
-        }
         .sheet(isPresented: $isPickingExercise) {
             TrainedExercisePickerSheet(exercises: model.trainedExercises, selectedID: model.selectedExerciseID) { id in
                 Task { await model.select(id, context: modelContext, range: range) }
@@ -134,11 +127,7 @@ struct StrengthProgressView: View {
     // MARK: - Summary
 
     private var summaryTiles: some View {
-        LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 130), spacing: Metrics.spacing12)],
-            alignment: .leading,
-            spacing: Metrics.spacing12
-        ) {
+        ScaledTileGrid(minimumWidth: 130) {
             StatTile(
                 value: model.bestOneRepMaxKg.map { formatter.weight($0) } ?? "—",
                 label: L("progress.strength.bestEstimate"),
@@ -166,6 +155,12 @@ struct StrengthProgressView: View {
     }
 
     // MARK: - Chart
+
+    /// Both plotted series in display units. They share one axis, so the domain has to span both:
+    /// scaling to the estimate alone would push a heavy low-rep top set off the top of the chart.
+    private var strengthDomainValues: [Double] {
+        (model.topSetPoints + model.oneRepMaxPoints).map { formatter.weightValue($0.value) }
+    }
 
     private var strengthChart: some View {
         ChartCard(
@@ -206,7 +201,7 @@ struct StrengthProgressView: View {
                         .accessibilityValue(Text(formatter.weight(point.value)))
                     }
                 }
-                .chartYScale(domain: .automatic(includesZero: false))
+                .chartYScale(domain: ChartDomain.padded(strengthDomainValues, minimumSpan: 5))
                 .progressDateAxis(range.dateSpan)
                 .progressValueAxis()
                 .frame(height: 220)

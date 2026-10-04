@@ -90,23 +90,23 @@ struct UnitFormattingTests {
 
     @Test("A whole load formats without a decimal, a fractional one keeps a single digit")
     func weightFormatting() {
-        #expect(Units.formatWeight(kilograms: 100, unit: .kilograms, locale: posix) == "100 kg")
-        #expect(Units.formatWeight(kilograms: 62.5, unit: .kilograms, locale: posix) == "62.5 kg")
+        #expect(Units.formatWeight(kilograms: 100, unit: .kilograms, locale: posix) == "100\u{00A0}kg")
+        #expect(Units.formatWeight(kilograms: 62.5, unit: .kilograms, locale: posix) == "62.5\u{00A0}kg")
         #expect(
             Units.formatWeight(kilograms: 62.5, unit: .kilograms, locale: posix, includeUnit: false) == "62.5"
         )
-        #expect(Units.formatWeight(kilograms: 0, unit: .kilograms, locale: posix) == "0 kg")
+        #expect(Units.formatWeight(kilograms: 0, unit: .kilograms, locale: posix) == "0\u{00A0}kg")
     }
 
     @Test("A load shown in pounds is converted before it is formatted")
     func weightFormattingInPounds() {
-        #expect(Units.formatWeight(kilograms: 100, unit: .pounds, locale: posix) == "220.5 lb")
+        #expect(Units.formatWeight(kilograms: 100, unit: .pounds, locale: posix) == "220.5\u{00A0}lb")
     }
 
     @Test("Height formats as whole centimetres or as feet and inches")
     func heightFormatting() {
-        #expect(Units.formatHeight(centimeters: 175, unit: .centimeters, locale: posix) == "175 cm")
-        #expect(Units.formatHeight(centimeters: 175.4, unit: .centimeters, locale: posix) == "175 cm")
+        #expect(Units.formatHeight(centimeters: 175, unit: .centimeters, locale: posix) == "175\u{00A0}cm")
+        #expect(Units.formatHeight(centimeters: 175.4, unit: .centimeters, locale: posix) == "175\u{00A0}cm")
         #expect(Units.formatHeight(centimeters: 175, unit: .feetInches, locale: posix) == "5′ 9″")
         #expect(Units.formatHeight(centimeters: 160, unit: .feetInches, locale: posix) == "5′ 3″")
         #expect(Units.formatHeight(centimeters: 180, unit: .feetInches, locale: posix) == "5′ 11″")
@@ -130,8 +130,8 @@ struct UnitFormattingTests {
 
     @Test("Energy converts to kilojoules before formatting")
     func energyFormatting() {
-        #expect(Units.formatEnergy(kilocalories: 500, unit: .kilocalories, locale: posix) == "500 kcal")
-        #expect(Units.formatEnergy(kilocalories: 100, unit: .kilojoules, locale: posix) == "418 kJ")
+        #expect(Units.formatEnergy(kilocalories: 500, unit: .kilocalories, locale: posix) == "500\u{00A0}kcal")
+        #expect(Units.formatEnergy(kilocalories: 100, unit: .kilojoules, locale: posix) == "418\u{00A0}kJ")
         #expect(
             Units.formatEnergy(kilocalories: 500, unit: .kilocalories, locale: posix, includeUnit: false) == "500"
         )
@@ -163,9 +163,9 @@ struct UnitFormattingTests {
 
     @Test("Macro grams keep a decimal below ten and drop it above")
     func macroFormatting() {
-        #expect(Units.formatMacro(grams: 5.5, locale: posix) == "5.5 g")
-        #expect(Units.formatMacro(grams: 12.4, locale: posix) == "12 g")
-        #expect(Units.formatMacro(grams: 0, locale: posix) == "0 g")
+        #expect(Units.formatMacro(grams: 5.5, locale: posix) == "5.5\u{00A0}g")
+        #expect(Units.formatMacro(grams: 12.4, locale: posix) == "12\u{00A0}g")
+        #expect(Units.formatMacro(grams: 0, locale: posix) == "0\u{00A0}g")
     }
 }
 
@@ -531,7 +531,7 @@ struct DisplayFormatterTests {
 
     @Test("A stored kilogram is shown in whichever unit the user chose")
     func weightFollowsTheChosenUnit() {
-        #expect(Self.formatter(weight: .kilograms).weight(100) == "100 kg")
+        #expect(Self.formatter(weight: .kilograms).weight(100) == "100\u{00A0}kg")
         #expect(Self.formatter(weight: .pounds).weight(100).hasSuffix("lb"))
         // 100 kg is 220.46 lb; the formatter shows one decimal at most.
         #expect(Self.formatter(weight: .pounds).weight(100).hasPrefix("220"))
@@ -551,7 +551,7 @@ struct DisplayFormatterTests {
 
     @Test("Height, distance and energy each follow their own setting")
     func otherUnitsFollowTheirSettings() {
-        #expect(Self.formatter(height: .centimeters).height(180) == "180 cm")
+        #expect(Self.formatter(height: .centimeters).height(180) == "180\u{00A0}cm")
         #expect(Self.formatter(height: .feetInches).height(182.5) == "6′ 0″")
 
         #expect(Self.formatter(distance: .kilometers).distance(5_000).hasSuffix("km"))
@@ -559,15 +559,15 @@ struct DisplayFormatterTests {
 
         // en_US_POSIX does not group thousands; a real locale does, which is why the numbers are
         // compared without separators here and the grouping is left to the user's own locale.
-        #expect(Self.formatter(energy: .kilocalories).energy(2_000) == "2000 kcal")
+        #expect(Self.formatter(energy: .kilocalories).energy(2_000) == "2000\u{00A0}kcal")
         // 2,000 kcal is 8,368 kJ.
         #expect(Self.formatter(energy: .kilojoules).energy(2_000).hasPrefix("8368"))
     }
 
     @Test("Tonnage abbreviates once it passes a tonne, in the user's unit")
     func volumeAbbreviates() {
-        #expect(Self.formatter(weight: .kilograms).volume(9_438) == "9438 kg")
-        #expect(Self.formatter(weight: .kilograms).volume(24_000).hasSuffix(" t"))
+        #expect(Self.formatter(weight: .kilograms).volume(9_438) == "9438\u{00A0}kg")
+        #expect(Self.formatter(weight: .kilograms).volume(24_000).hasSuffix("\u{00A0}t"))
     }
 
     @MainActor

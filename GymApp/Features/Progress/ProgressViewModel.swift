@@ -231,7 +231,10 @@ final class BodyWeightViewModel {
         let interval = range.interval(now: now)
         do {
             let all = try progress.allBodyWeightEntries()
-            range.earliestDataDate = min(range.earliestDataDate ?? .distantFuture, all.first?.date ?? .distantFuture)
+            // `nil` has to keep meaning "no history anywhere". Folding the two optionals through
+            // `.distantFuture` turned "no weigh-ins yet" into a real date in the far future, and
+            // `interval(now:)` then clamped "All" to a single day for the whole tab.
+            range.earliestDataDate = [range.earliestDataDate, all.first?.date].compactMap { $0 }.min()
             models = Dictionary(uniqueKeysWithValues: all.map { ($0.id, $0) })
 
             let points = all.map { WeightTrendPoint(date: $0.date, weightKg: $0.weightKg) }

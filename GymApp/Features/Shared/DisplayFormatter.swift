@@ -44,9 +44,9 @@ struct DisplayFormatter: Sendable {
     func volume(_ kilograms: Double) -> String {
         let displayed = Units.display(kilograms: kilograms, unit: weightUnit)
         if displayed >= 10_000 {
-            return Units.formatDecimal(displayed / 1000, digits: 1, locale: locale) + " t"
+            return Units.joinUnit(Units.formatDecimal(displayed / 1000, digits: 1, locale: locale), "t")
         }
-        return Units.formatDecimal(displayed, digits: 0, locale: locale) + " " + weightUnit.rawValue
+        return Units.joinUnit(Units.formatDecimal(displayed, digits: 0, locale: locale), weightUnitLabel)
     }
 
     // MARK: - Body

@@ -106,8 +106,6 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        UIBackgroundModes:
-          - audio
         NSSupportsLiveActivities: true
         NSSupportsLiveActivitiesFrequentUpdates: true
         NSHealthShareUsageDescription: "Forge reads body mass, height, workouts, energy, steps and sleep so your training and nutrition targets stay in sync with the Health app. Granting access is optional — every feature works without it."

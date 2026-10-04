@@ -256,11 +256,7 @@ struct ExerciseDetailView: View {
     }
 
     private func statGrid(_ exercise: Exercise) -> some View {
-        LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 130), spacing: Metrics.spacing12, alignment: .leading)],
-            alignment: .leading,
-            spacing: Metrics.spacing16
-        ) {
+        ScaledTileGrid(minimumWidth: 130, rowSpacing: Metrics.spacing16) {
             if let lastPerformedAt = viewModel.lastPerformedAt ?? viewModel.history.lastPerformedAt {
                 StatTile(
                     value: formatter.relativeDay(lastPerformedAt),
@@ -353,7 +349,7 @@ struct ExerciseDetailView: View {
             .foregroundStyle(Color.appAccent)
         }
         .chartYAxisLabel(formatter.weightUnitLabel)
-        .chartYScale(domain: .automatic(includesZero: false))
+        .chartYScale(domain: ChartDomain.padded(samples.map { formatter.weightValue($0.valueKg) }, minimumSpan: 5))
         .frame(height: 180)
         // One series with a labelled axis, so nothing here depends on telling colours apart. For
         // VoiceOver the shape is summarised instead of read point by point.

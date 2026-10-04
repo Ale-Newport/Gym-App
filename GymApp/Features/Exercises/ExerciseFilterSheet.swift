@@ -74,8 +74,11 @@ struct ExerciseFilterSheet: View {
                 .buttonStyle(PrimaryButtonStyle())
                 .padding(.horizontal, Metrics.screenPadding)
                 .padding(.vertical, Metrics.spacing12)
-                .background(.bar)
+                // The column is narrowed first and the material painted second, so the bar reaches
+                // both edges of the sheet. The other way round the material stops at 620pt and the
+                // chips scroll visibly through the gutters beside it on iPad.
                 .readableWidth()
+                .background(.bar)
             }
         }
         .presentationDragIndicator(.visible)

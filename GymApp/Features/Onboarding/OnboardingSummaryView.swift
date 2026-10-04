@@ -26,8 +26,6 @@ struct OnboardingSummaryView: View {
     /// because one step can own more than one list.
     @State private var openLists: Set<String> = []
 
-    private static let tileColumns = [GridItem(.adaptive(minimum: 96), spacing: Metrics.spacing12)]
-
     var body: some View {
         VStack(alignment: .leading, spacing: Metrics.spacing24) {
             programSection
@@ -76,7 +74,7 @@ struct OnboardingSummaryView: View {
                                 .foregroundStyle(Color.appTextPrimary)
                                 .fixedSize(horizontal: false, vertical: true)
 
-                            LazyVGrid(columns: Self.tileColumns, alignment: .leading, spacing: Metrics.spacing12) {
+                            ScaledTileGrid(minimumWidth: 96) {
                                 StatTile(
                                     value: String(result.daysPerWeek),
                                     label: L("onboarding.result.daysPerWeek"),

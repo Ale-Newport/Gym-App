@@ -1157,6 +1157,7 @@
   "nutritionLog.energy.over": "Сверх",
   "nutritionLog.energy.remaining": "Осталось",
   "nutritionLog.energy.target": "Цель",
+  "nutritionLog.error.noLongerAvailable": "Этого продукта или рецепта больше нет, поэтому записать его снова нельзя. Уже сделанная запись не изменится.",
   "nutritionLog.error.generic": "Не удалось обновить дневник питания. Попробуй ещё раз.",
   "nutritionLog.favorites.emptyMessage": "Отметь продукт как избранный — и он будет ждать здесь.",
   "nutritionLog.favorites.emptyTitle": "Избранного пока нет",

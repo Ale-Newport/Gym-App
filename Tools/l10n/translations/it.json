@@ -1671,6 +1671,7 @@
   "nutritionLog.energy.over": "In eccesso",
   "nutritionLog.energy.remaining": "Rimanenti",
   "nutritionLog.energy.target": "Obiettivo",
+  "nutritionLog.error.noLongerAvailable": "Quell'alimento o quella ricetta non esiste più, quindi non può essere registrato di nuovo. La voce che hai già resta invariata.",
   "nutritionLog.error.generic": "Non è stato possibile aggiornare il diario alimentare. Riprova.",
   "nutritionLog.favorites.emptyMessage": "Segna un alimento come preferito e lo troverai qui.",
   "nutritionLog.favorites.emptyTitle": "Ancora nessun preferito",

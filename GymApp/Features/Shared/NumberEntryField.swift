@@ -157,6 +157,8 @@ struct SegmentedValuePicker<Value: Hashable>: View {
     let label: (Value) -> String
     @Binding var selection: Value
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: Metrics.spacing6) {
             if let title {
@@ -164,7 +166,11 @@ struct SegmentedValuePicker<Value: Hashable>: View {
                     .font(.appOverline)
                     .foregroundStyle(Color.appTextSecondary)
             }
-            HStack(spacing: Metrics.spacing6) {
+            // Segments stack once the text is large enough that side-by-side would break words
+            // mid-syllable — "Kilogra / ms (kg)" — the same accommodation the water quick-add
+            // buttons make. The height is a floor, not a fixed size, so a tall label grows its
+            // pill instead of being clipped by it.
+            layout {
                 ForEach(values, id: \.self) { value in
                     Button {
                         selection = value
@@ -173,7 +179,14 @@ struct SegmentedValuePicker<Value: Hashable>: View {
                         Text(label(value))
                             .font(.subheadline.weight(selection == value ? .semibold : .regular))
                             .frame(maxWidth: .infinity)
-                            .frame(height: Metrics.minimumTapTarget)
+                            // Side by side, every pill takes the height of the tallest one, so a
+                            // label that wraps to two lines does not leave its neighbours short.
+                            // Stacked, each pill keeps its own height instead of dividing up the
+                            // row's.
+                            .frame(
+                                minHeight: Metrics.minimumTapTarget,
+                                maxHeight: dynamicTypeSize.isAccessibilitySize ? nil : .infinity
+                            )
                             .foregroundStyle(selection == value ? Color.appOnAccent : Color.appTextSecondary)
                             .background(
                                 RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
@@ -184,6 +197,15 @@ struct SegmentedValuePicker<Value: Hashable>: View {
                     .accessibilityAddTraits(selection == value ? [.isButton, .isSelected] : .isButton)
                 }
             }
+            // Greedy pills would otherwise make the row greedy too, and a parent offering a tall
+            // definite height would stretch them. This pins the row to its tallest child.
+            .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    private var layout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: Metrics.spacing6))
+            : AnyLayout(HStackLayout(spacing: Metrics.spacing6))
     }
 }

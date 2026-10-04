@@ -30,6 +30,23 @@ final class NutritionDayViewModel {
     private(set) var totals: DailyNutritionTotals
     private(set) var progress: DailyNutritionProgress
     private(set) var savedMeals: [SavedMeal] = []
+
+    /// Everything the rows need to render, resolved once per load instead of once per render.
+    ///
+    /// The four meal sections live in a plain `VStack`, so every change to the day rebuilds all of
+    /// them. Resolving each row's food and recipe from inside `body` meant three store round-trips
+    /// per logged item — one of them a full fetch and re-sort of the whole `Recipe` table — on every
+    /// keystroke, every water tap and every day change.
+    ///
+    /// Deliberately ids and values, never the `FoodItem` objects themselves. This view model is
+    /// created once and lives for as long as the tab does, so a food deleted from the Library tab
+    /// in the meantime would leave a deleted model sitting in the cache — and reading a property
+    /// off a deleted SwiftData model is not something a food diary should be doing. Anything that
+    /// needs the object itself goes back to the store for it.
+    private var knownFoodIDs: Set<UUID> = []
+    private var favoriteFoodIDs: Set<UUID> = []
+    private var knownRecipeIDs: Set<UUID> = []
+    private var savedMealMacros: [UUID: MacroNutrients] = [:]
     /// Meals that the previous day has something in, so "same as yesterday" is only offered when
     /// it would actually do something.
     private(set) var yesterdaySlotsWithFood: Set<MealSlot> = []
@@ -102,6 +119,17 @@ final class NutritionDayViewModel {
             totals = try repository.totals(for: dayKey)
             progress = try repository.progress(for: dayKey)
             savedMeals = try repository.savedMeals()
+            savedMealMacros = Dictionary(
+                savedMeals.map { ($0.id, (try? repository.nutrition(of: $0).macros) ?? .zero) },
+                uniquingKeysWith: { first, _ in first }
+            )
+
+            let entries = entriesBySlot.values.flatMap { $0 }
+            let foods = Set(entries.compactMap(\.foodID)).compactMap { try? repository.food(id: $0) }
+            knownFoodIDs = Set(foods.map(\.id))
+            favoriteFoodIDs = Set(foods.filter(\.isFavorite).map(\.id))
+            knownRecipeIDs = Set(try repository.recipes().map(\.id))
+                .intersection(entries.compactMap(\.recipeID))
 
             let yesterday = DayKey.offset(from: dayKey, days: -1, calendar: calendar)
             yesterdaySlotsWithFood = Set(try repository.dayLog(for: yesterday).map(\.mealSlot))
@@ -158,11 +186,27 @@ final class NutritionDayViewModel {
     /// carries only a snapshot, and nothing left in the store knows how to build another portion
     /// of it, so the action is hidden rather than offered and then refused.
     func canDuplicate(_ entry: FoodLogEntry) -> Bool {
-        food(for: entry) != nil || recipe(for: entry) != nil
+        if let id = entry.foodID, knownFoodIDs.contains(id) { return true }
+        if let id = entry.recipeID, knownRecipeIDs.contains(id) { return true }
+        return false
     }
 
+    /// Whether this row's food still exists, so the favourite toggle is offered rather than shown
+    /// and then refused. Read from `body` for every row, so it must not touch the store.
+    func canFavorite(_ entry: FoodLogEntry) -> Bool {
+        guard let id = entry.foodID else { return false }
+        return knownFoodIDs.contains(id)
+    }
+
+    /// The confirmation is claimed inside the branch that actually wrote a row, never up front.
+    ///
+    /// `canDuplicate` answers from the id caches, which go stale the moment a food or recipe is
+    /// deleted from the Library while this tab is alive. The affordance therefore outlives the
+    /// thing it points at, and announcing "duplicated" before checking would have a food diary
+    /// reporting a write it never made — the one thing it must never do. The fall-through says so
+    /// plainly instead, and `perform`'s reload then retires the affordance on the same tap.
     func duplicate(_ entry: FoodLogEntry) {
-        perform(notice: L("nutritionLog.notice.duplicated")) {
+        perform {
             if let food = food(for: entry) {
                 try repository.addLogEntry(
                     food: food,
@@ -172,15 +216,22 @@ final class NutritionDayViewModel {
                     slot: entry.mealSlot,
                     dayKey: dayKey
                 )
+                notice = L("nutritionLog.notice.duplicated")
             } else if let recipe = recipe(for: entry) {
                 try repository.logRecipeServing(
                     recipe, servings: entry.quantity, to: entry.mealSlot, dayKey: dayKey
                 )
+                notice = L("nutritionLog.notice.duplicated")
+            } else {
+                actionError = L("nutritionLog.error.noLongerAvailable")
             }
         }
     }
 
-    func isFavorite(_ entry: FoodLogEntry) -> Bool { food(for: entry)?.isFavorite ?? false }
+    func isFavorite(_ entry: FoodLogEntry) -> Bool {
+        guard let id = entry.foodID else { return false }
+        return favoriteFoodIDs.contains(id)
+    }
 
     func toggleFavorite(_ entry: FoodLogEntry) {
         guard let food = food(for: entry) else { return }
@@ -191,6 +242,11 @@ final class NutritionDayViewModel {
     }
 
     /// The stored food behind an entry, when it still exists.
+    ///
+    /// A live fetch, on purpose. Every caller either mutates through the object or presents a sheet
+    /// built from it, and both want the current row rather than whatever was true at the last
+    /// load. Nothing on the scrolling path calls this — `canFavorite`, `canDuplicate` and
+    /// `isFavorite` answer from the caches above instead.
     func food(for entry: FoodLogEntry) -> FoodItem? {
         guard let id = entry.foodID else { return nil }
         return try? repository.food(id: id)
@@ -244,8 +300,10 @@ final class NutritionDayViewModel {
         }
     }
 
+    /// Totals for a saved meal, precomputed in `load()`. Every meal section renders this for every
+    /// saved meal in its menu, so it cannot be a fetch.
     func nutrition(of meal: SavedMeal) -> MacroNutrients {
-        (try? repository.nutrition(of: meal).macros) ?? .zero
+        savedMealMacros[meal.id] ?? .zero
     }
 
     // MARK: - Water

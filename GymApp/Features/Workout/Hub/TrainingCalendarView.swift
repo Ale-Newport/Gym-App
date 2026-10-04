@@ -184,6 +184,8 @@ struct TrainingCalendarView: View {
                         Text(L(weekday.shortLocalizationKey))
                             .font(.caption2.weight(.semibold))
                             .foregroundStyle(Color.appTextTertiary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -331,11 +333,16 @@ struct TrainingCalendarView: View {
                     }
                     moveMenu(templateID: templateID)
                     Button {
-                        model.regenerate(templateID: templateID)
+                        Task { await model.regenerate(templateID: templateID) }
                     } label: {
-                        Label(L("workoutHub.calendar.regenerate"), systemImage: "wand.and.stars")
+                        if model.isRegenerating {
+                            ProgressView()
+                        } else {
+                            Label(L("workoutHub.calendar.regenerate"), systemImage: "wand.and.stars")
+                        }
                     }
                     .buttonStyle(SecondaryButtonStyle())
+                    .disabled(model.isRegenerating)
                 }
                 Text(L("workoutHub.calendar.movePersists"))
                     .font(.caption2)
@@ -457,6 +464,11 @@ struct HubDayBadge: View {
             Text("\(day.dayNumber)")
                 .font(.footnote.weight(day.isToday ? .bold : .regular))
                 .foregroundStyle(day.isToday ? Color.appAccent : Color.appTextPrimary)
+                // Seven columns across a 375pt phone leave ~32pt each, with nothing spare. At the
+                // largest text sizes a bold two-digit date wants more than that, so it scales down
+                // inside its column instead of being cut in half.
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
             if let symbol = day.state.symbolName {
                 Image(systemName: symbol)
                     .font(.system(size: 9))
