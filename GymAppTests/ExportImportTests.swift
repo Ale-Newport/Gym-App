@@ -909,3 +909,102 @@ struct CSVExportTests {
         }
     }
 }
+
+// MARK: - What outlives the store
+
+/// Wiping or replacing the store deletes the workout in progress, but three things live outside the
+/// store and would go on describing it: the Live Activity, the active-workout id and the widget
+/// snapshot. ActivityKit cannot start an activity inside a unit test, so the Live Activity half is
+/// covered by `AppEnvironment.storeWasReplaced` being reached; the other two are observed directly.
+///
+/// Serialized because the widget snapshot is one shared file in the App Group container.
+@MainActor
+@Suite("Reset and restore clear what lives outside the store", .serialized)
+struct StoreReplacementSideEffectTests {
+
+    private struct Fixture {
+        let context: ModelContext
+        let environment: AppEnvironment
+        let settings: SettingsViewModel
+        let data: DataSettingsViewModel
+        let workoutID: UUID
+    }
+
+    /// A store with an active program and a workout in progress, as the app would hold it mid-session.
+    private func makeFixture() throws -> Fixture {
+        let context = try StoreTestSupport.makeContext()
+        try BackupFixture.populate(context)
+        let session = WorkoutSession()
+        session.titleSnapshot = "Upper A"
+        session.startedAt = StoreTestSupport.epoch
+        context.insert(session)
+        try context.save()
+
+        let environment = AppEnvironment(modelContainer: context.container)
+        environment.activeWorkoutID = session.id
+        environment.snapshotWriter.refresh(context: context, catalog: nil)
+
+        let settings = SettingsViewModel()
+        settings.load(context: context)
+        return Fixture(
+            context: context, environment: environment, settings: settings,
+            data: DataSettingsViewModel(), workoutID: session.id
+        )
+    }
+
+    private func backup(of context: ModelContext) throws -> PendingImport {
+        let data = try DataExportService(context: context).fullBackup()
+        let document = try DataExportService.decoder.decode(BackupDocument.self, from: data)
+        return PendingImport(url: BackupFixture.temporaryURL("replace.json"), fileName: "replace.json", document: document)
+    }
+
+    /// The widget snapshot, when this test host has an App Group container to write it to.
+    private var widgetSnapshot: SharedSnapshot? {
+        SharedSnapshotStore.shared.containerURL == nil ? nil : SharedSnapshotStore.shared.read()
+    }
+
+    @Test("Resetting all data forgets the workout in progress and empties the widget")
+    func resetForgetsTheWorkoutInProgress() throws {
+        let fixture = try makeFixture()
+        if let before = widgetSnapshot {
+            #expect(before.hasActiveWorkout, "the fixture should start with the widget showing the session")
+        }
+
+        fixture.data.reset(context: fixture.context, settings: fixture.settings, environment: fixture.environment)
+
+        #expect(fixture.data.errorMessage == nil)
+        #expect(fixture.environment.activeWorkoutID == nil)
+        if let after = widgetSnapshot {
+            #expect(after.hasActiveWorkout == false)
+            #expect(after.nextWorkoutTitle == nil)
+        }
+    }
+
+    @Test("A replacing restore forgets the workout in progress")
+    func replacingRestoreForgetsTheWorkoutInProgress() throws {
+        let fixture = try makeFixture()
+        fixture.data.pendingImport = try backup(of: fixture.context)
+        fixture.data.importStrategy = .replace
+
+        fixture.data.restore(context: fixture.context, settings: fixture.settings, environment: fixture.environment)
+
+        #expect(fixture.data.errorMessage == nil)
+        #expect(fixture.data.report != nil)
+        #expect(fixture.environment.activeWorkoutID == nil)
+    }
+
+    @Test("A merging restore leaves the workout in progress alone")
+    func mergingRestoreKeepsTheWorkoutInProgress() throws {
+        let fixture = try makeFixture()
+        fixture.data.pendingImport = try backup(of: fixture.context)
+        fixture.data.importStrategy = .merge
+
+        fixture.data.restore(context: fixture.context, settings: fixture.settings, environment: fixture.environment)
+
+        #expect(fixture.data.errorMessage == nil)
+        #expect(fixture.environment.activeWorkoutID == fixture.workoutID)
+        if let after = widgetSnapshot {
+            #expect(after.hasActiveWorkout)
+        }
+    }
+}

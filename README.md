@@ -340,7 +340,7 @@ xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-**911 unit tests** across 79 suites, plus the UI tests covering the flows that matter. Unit tests
+**914 unit tests** across 80 suites, plus the UI tests covering the flows that matter. Unit tests
 use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they build value
 types, call an engine, and check the result, so the whole unit suite finishes in about 15 seconds.
 

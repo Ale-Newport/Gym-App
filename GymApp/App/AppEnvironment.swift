@@ -53,6 +53,17 @@ final class AppEnvironment {
         await instructionStore.preload(language)
     }
 
+    /// Called after the store has been wiped or replaced wholesale.
+    ///
+    /// Three things live outside the store and would go on describing a workout that no longer
+    /// exists: the Live Activity, which survives the app process; the active-workout id; and the
+    /// widget snapshot, which would keep advertising the deleted program and today's deleted log.
+    func storeWasReplaced(context: ModelContext) {
+        liveActivityService.endAll()
+        activeWorkoutID = nil
+        snapshotWriter.refresh(context: context, catalog: catalog)
+    }
+
     /// Frees decoded media. Wired to `UIApplication.didReceiveMemoryWarningNotification`.
     func handleMemoryPressure() {
         Task {
