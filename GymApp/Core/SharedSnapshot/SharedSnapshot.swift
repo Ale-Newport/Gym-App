@@ -9,7 +9,7 @@ import Foundation
 /// Group container is faster, cannot be corrupted by a widget refresh, and keeps the widget target
 /// compiling against three types instead of thirty.
 struct SharedSnapshot: Codable, Hashable, Sendable {
-    static let appGroupIdentifier = "group.com.gymapp.forge"
+    static let appGroupIdentifier = "group.com.alejandronewport.forge"
     static let fileName = "snapshot.json"
     static let schemaVersion = 1
 

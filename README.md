@@ -82,6 +82,10 @@ The captures are driven entirely by accessibility identifiers, launch arguments 
 structure — never by matching a visible label — so the same run works in every language. A screen
 that can no longer be reached fails the run rather than leaving a stale PNG behind.
 
+Each simulator is put in the language and region being captured, so the status-bar clock and the
+iPad's date read naturally, and shows Apple's 9:41 marketing status bar. Both are restored when the
+run ends. A runner launch that SpringBoard refuses while busy is retried rather than failing the run.
+
 ## Requirements
 
 - **Xcode 26** or newer
@@ -113,11 +117,10 @@ xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
 
 ### Signing
 
-`project.yml` leaves `DEVELOPMENT_TEAM` empty and signs simulator builds ad-hoc, so a clone builds
-and runs in the Simulator with no setup. To run on a device, set your team in Xcode's Signing &
-Capabilities tab (or fill in `DEVELOPMENT_TEAM` in `project.yml`) and change the bundle identifiers
-from `com.gymapp.forge*` to something you own — including the App Group
-`group.com.gymapp.forge`, which the app and the widget share.
+`project.yml` signs with team `SM3MGV3PY8` (automatic signing) under the bundle identifiers
+`com.alejandronewport.forge*` and the App Group `group.com.alejandronewport.forge`, which the app
+and the widget share. Simulator builds are signed ad-hoc, so they need no account. Anyone building
+for a device under a different team must change the team and all three identifiers.
 
 ## Architecture
 
@@ -392,8 +395,8 @@ Three different licences apply to three different things. **Read
 | Open Food Facts (runtime, optional) | ODbL |
 
 > The artwork carries no credit line: `BundledExerciseMediaProvider` passes `nil` attribution, so
-> every `MediaAttributionLabel` hides itself. The athlete was built with MakeHuman/MPFB — check the
-> licences of any community assets on it before shipping. See [`docs/LICENSES.md`](docs/LICENSES.md).
+> every `MediaAttributionLabel` hides itself. The athlete was built from MakeHuman's bundled assets,
+> which are CC0 and need no credit either. See [`docs/LICENSES.md`](docs/LICENSES.md).
 
 ### Replacing the artwork
 
@@ -418,7 +421,7 @@ app on screen. `UITestLaunchSupport` (DEBUG only) seeds a named fixture from lau
 is how both the UI tests and a manual check start from a known state:
 
 ```bash
-xcrun simctl launch booted com.gymapp.forge \
+xcrun simctl launch booted com.alejandronewport.forge \
   -uiTestResetStore -uiTestScenario seasonedUser -uiTestInitialTab nutrition
 ```
 
@@ -439,33 +442,43 @@ Scenarios: `newUser`, `freshProgram`, `seasonedUser`, `activeWorkout`, `emptyNut
 
 ## Preparing for the App Store
 
-Two things are left, and neither can be done from inside the repository:
+The app is configured, signed and archived; [`docs/APP_STORE.md`](docs/APP_STORE.md) is the
+submission sheet — name, subtitle, keywords, descriptions in English and Spanish, privacy and
+age-rating answers, and the notes for App Review.
 
-1. **Check the athlete's asset licences.** The artwork is original, but the athlete was built with
-   MakeHuman/MPFB; any community skin, hair or clothing on him may require a credit. See
-   [`docs/LICENSES.md`](docs/LICENSES.md).
-2. **Set `DEVELOPMENT_TEAM`** and change every bundle identifier — `com.gymapp.forge`,
-   `com.gymapp.forge.widgets`, and the App Group `group.com.gymapp.forge` — to identifiers you own.
-   They are placeholders. The App Group is shared by the app and the widget and must match in
-   `project.yml`, `GymApp/App/GymApp.entitlements`, `GymAppWidgets/GymAppWidgets.entitlements` and
-   `SharedSnapshot.appGroupIdentifier`.
+Done:
 
-Everything else is done:
-
+- **Signing.** Team `SM3MGV3PY8`, automatic signing. Bundle ids `com.alejandronewport.forge` and
+  `com.alejandronewport.forge.widgets`, App Group `group.com.alejandronewport.forge` — registered,
+  with App Store distribution profiles. The App Group must match in `project.yml`,
+  `GymApp/App/GymApp.entitlements`, `GymAppWidgets/GymAppWidgets.entitlements` and
+  `SharedSnapshot.appGroupIdentifier`.
+- **Archive.** *Forge 1.0.0 (1)* is in Xcode's Organizer, and an App Store export of it signs with
+  the Apple Distribution certificate (34 MB `.ipa`).
+- **Artwork licences.** The exercise art is original, and the athlete uses only MakeHuman's bundled
+  CC0 assets — see [`docs/LICENSES.md`](docs/LICENSES.md).
+- **Screenshots** for iPhone 6.9" and iPad 13" in all ten languages, from `Tools/screenshots.sh`.
 - The app icon is a real 1024×1024 marketing icon in `Resources/Assets.xcassets/AppIcon.appiconset`.
-- Screenshots: `Tools/screenshots.sh` — see [Screens](#screens).
 - `ITSAppUsesNonExemptEncryption` is declared `false`.
-- App Privacy: with the defaults the honest answer is **no data collected**. `PrivacyInfo.xcprivacy`
-  declares the required-reason APIs the app actually uses.
+- App Privacy: the honest answer is **no data collected**. `PrivacyInfo.xcprivacy` declares the
+  required-reason APIs the app actually uses.
 - The Health, camera and notification usage strings are in `project.yml`. HealthKit asks to *write*
   only workouts and body mass, which is exactly what `NSHealthUpdateUsageDescription` describes — a
   purpose string that does not account for every requested type is a 5.1.1(i) rejection.
 - No background modes are declared. The rest-timer alert is a system sound, which needs none, and a
   backgrounded rest timer is covered by a local notification. Declaring `audio` without playing any
   is a 2.5.4 rejection.
-- Note in review comments that the app gives fitness and nutrition *estimates*, not medical advice.
 
-Then archive with the Release configuration and validate.
+Left, because each needs your Apple account or a public web page:
+
+1. Create the app record in App Store Connect with bundle id `com.alejandronewport.forge`.
+2. Publish `docs/PRIVACY.md` and a support page, and paste both URLs into the listing.
+3. Organizer → *Forge 1.0.0 (1)* → **Distribute App** → **App Store Connect** → **Upload**.
+4. Fill the listing from [`docs/APP_STORE.md`](docs/APP_STORE.md), attach the screenshots, select the
+   build and submit.
+
+For every later build, bump `CURRENT_PROJECT_VERSION` in `project.yml`, run `Tools/regen.sh`, and
+archive again.
 
 ### Still unverifiable in the Simulator
 

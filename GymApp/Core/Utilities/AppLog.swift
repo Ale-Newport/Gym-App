@@ -4,7 +4,7 @@ import OSLog
 /// Categorised loggers. Everything technical goes through `Logger`, which stays out of release
 /// builds' stdout and never records personal data.
 enum AppLog {
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.gymapp.forge"
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.alejandronewport.forge"
 
     static let app = Logger(subsystem: subsystem, category: "app")
     static let persistence = Logger(subsystem: subsystem, category: "persistence")
