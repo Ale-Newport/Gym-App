@@ -65,10 +65,6 @@
 		<string>LogWaterIntent</string>
 		<string>OpenTodayWorkoutIntent</string>
 	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>

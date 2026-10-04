@@ -54,7 +54,13 @@ struct ExerciseRowView: View {
         .padding(.vertical, 2)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityLabel)
+        // The label is the exercise's own name, which differs per row and per language. Tests and
+        // the screenshot run need a way to say "a row, any row".
+        .accessibilityIdentifier(ExerciseRowView.identifier)
     }
+
+    /// Shared by every exercise row, everywhere one is shown.
+    static let identifier = "exercise.row"
 
     private var metadataLine: String {
         [L(exercise.target.localizationKey), L(exercise.equipment.localizationKey)]

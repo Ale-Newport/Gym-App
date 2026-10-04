@@ -45,10 +45,14 @@ final class HealthService {
         return types
     }
 
+    /// Only what the app actually writes. Active energy used to be requested here, which put
+    /// "Active Energy" on the write half of the permission sheet while
+    /// `NSHealthUpdateUsageDescription` — correctly — only talks about workouts and body weight.
+    /// A purpose string that does not account for every requested type is a 5.1.1(i) rejection.
+    /// Read access to active energy is unaffected; it is covered by the share description.
     private var writeTypes: Set<HKSampleType> {
         var types: Set<HKSampleType> = [HKObjectType.workoutType()]
         if let bodyMass = HKObjectType.quantityType(forIdentifier: .bodyMass) { types.insert(bodyMass) }
-        if let energy = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned) { types.insert(energy) }
         return types
     }
 
@@ -169,7 +173,7 @@ final class HealthService {
     // MARK: - Writes
 
     /// Saves a completed strength-training workout.
-    func saveWorkout(start: Date, end: Date, activeEnergyKcal: Double?) async {
+    func saveWorkout(start: Date, end: Date) async {
         guard let store else { return }
         let configuration = HKWorkoutConfiguration()
         configuration.activityType = .traditionalStrengthTraining
@@ -178,15 +182,6 @@ final class HealthService {
         do {
             let builder = HKWorkoutBuilder(healthStore: store, configuration: configuration, device: .local())
             try await builder.beginCollection(at: start)
-
-            if let activeEnergyKcal, activeEnergyKcal > 0,
-               let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
-                let quantity = HKQuantity(unit: .kilocalorie(), doubleValue: activeEnergyKcal)
-                let sample = HKCumulativeQuantitySample(
-                    type: energyType, quantity: quantity, start: start, end: end
-                )
-                try await builder.addSamples([sample])
-            }
 
             try await builder.endCollection(at: end)
             _ = try await builder.finishWorkout()

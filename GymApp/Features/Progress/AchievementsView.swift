@@ -155,10 +155,7 @@ struct AchievementsView: View {
     private func section(title: String, badges: [AchievementBadge]) -> some View {
         VStack(alignment: .leading, spacing: Metrics.spacing12) {
             SectionHeader(title)
-            LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 156), spacing: Metrics.spacing12)],
-                spacing: Metrics.spacing12
-            ) {
+            ScaledTileGrid(minimumWidth: 156, alignment: .center, itemAlignment: .top) {
                 ForEach(badges) { badge in
                     AchievementBadgeTile(badge: badge, animatesUnlock: !reduceMotion)
                 }

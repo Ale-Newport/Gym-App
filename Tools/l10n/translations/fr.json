@@ -1671,6 +1671,7 @@
   "nutritionLog.energy.over": "Dépassement",
   "nutritionLog.energy.remaining": "Restant",
   "nutritionLog.energy.target": "Objectif",
+  "nutritionLog.error.noLongerAvailable": "Cet aliment ou cette recette n'existe plus, il est donc impossible de l'enregistrer à nouveau. L'entrée que vous avez déjà reste inchangée.",
   "nutritionLog.error.generic": "Ton journal alimentaire n’a pas pu être mis à jour. Réessaie.",
   "nutritionLog.favorites.emptyMessage": "Mets un aliment en favori et il t’attendra ici.",
   "nutritionLog.favorites.emptyTitle": "Pas encore de favoris",

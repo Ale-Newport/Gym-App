@@ -1641,6 +1641,7 @@
   "nutritionLog.energy.over": "ज़्यादा",
   "nutritionLog.energy.remaining": "बचा हुआ",
   "nutritionLog.energy.target": "लक्ष्य",
+  "nutritionLog.error.noLongerAvailable": "वह खाद्य पदार्थ या रेसिपी अब मौजूद नहीं है, इसलिए इसे दोबारा दर्ज नहीं किया जा सकता। आपकी मौजूदा प्रविष्टि पर कोई असर नहीं पड़ेगा।",
   "nutritionLog.error.generic": "आपका फ़ूड लॉग अपडेट नहीं हो सका। फिर कोशिश करें।",
   "nutritionLog.favorites.emptyMessage": "किसी फ़ूड को पसंदीदा बनाएँ और वह यहाँ मिलेगा।",
   "nutritionLog.favorites.emptyTitle": "अभी कोई पसंदीदा नहीं",

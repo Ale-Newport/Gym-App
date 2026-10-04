@@ -1084,8 +1084,7 @@ final class ActiveWorkoutViewModel {
         if let settings, settings.healthKitEnabled, settings.healthKitWriteWorkouts {
             await environment.healthService.saveWorkout(
                 start: session.startedAt,
-                end: session.endedAt ?? Date(),
-                activeEnergyKcal: nil
+                end: session.endedAt ?? Date()
             )
         }
 

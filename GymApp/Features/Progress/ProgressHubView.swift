@@ -29,7 +29,7 @@ struct ProgressHubView: View {
     var body: some View {
         @Bindable var router = router
 
-        ScrollView {
+        ProgressRangeScrollView(range: range) {
             VStack(alignment: .leading, spacing: Metrics.spacing16) {
                 content
             }
@@ -39,7 +39,6 @@ struct ProgressHubView: View {
         .background(Color.appBackground)
         .navigationTitle(L("progress.title"))
         .navigationBarTitleDisplayMode(.large)
-        .safeAreaInset(edge: .top, spacing: 0) { rangeBar }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -64,15 +63,7 @@ struct ProgressHubView: View {
         }
     }
 
-    // MARK: - Chrome
-
-    private var rangeBar: some View {
-        VStack(spacing: 0) {
-            TimeRangePicker(store: range)
-            Divider().overlay(Color.appSeparator)
-        }
-        .background(.bar)
-    }
+    // MARK: - Routing
 
     @ViewBuilder
     private func destination(for route: ProgressRoute) -> some View {
@@ -148,11 +139,7 @@ struct ProgressHubView: View {
         Card {
             VStack(alignment: .leading, spacing: Metrics.spacing12) {
                 SectionHeader(L("progress.training.title"), subtitle: rangeSubtitle)
-                LazyVGrid(
-                    columns: [GridItem(.adaptive(minimum: 120), spacing: Metrics.spacing12)],
-                    alignment: .leading,
-                    spacing: Metrics.spacing12
-                ) {
+                ScaledTileGrid(minimumWidth: 120) {
                     StatTile(
                         value: String(model.sessionCount),
                         label: L("progress.stat.sessions"),
@@ -369,7 +356,7 @@ struct ProgressHubView: View {
     private func signedWeight(_ kilograms: Double) -> String {
         let displayed = formatter.weightValue(kilograms)
         return Units.formatSignedDecimal(displayed, digits: 2, locale: formatter.locale)
-            + " " + formatter.weightUnitLabel
+            + "\u{00A0}" + formatter.weightUnitLabel
     }
 
     private var weightChartDescription: String {

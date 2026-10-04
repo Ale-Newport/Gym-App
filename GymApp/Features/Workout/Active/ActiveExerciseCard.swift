@@ -45,10 +45,12 @@ struct ActiveExerciseCard: View {
         VStack(spacing: 0) {
             header
                 .screenPadding()
+                .readableWidth()
                 .padding(.bottom, Metrics.spacing12)
 
             heroSection
                 .screenPadding()
+                .readableWidth()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: Metrics.spacing20) {
@@ -276,11 +278,7 @@ struct ActiveExerciseCard: View {
     private var targetsGrid: some View {
         VStack(alignment: .leading, spacing: Metrics.spacing8) {
             SectionHeader(L("active.targets.title"), subtitle: lastTimeLine)
-            LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 104), spacing: Metrics.spacing12, alignment: .leading)],
-                alignment: .leading,
-                spacing: Metrics.spacing12
-            ) {
+            ScaledTileGrid(minimumWidth: 104) {
                 ForEach(targetItems, id: \.label) { item in
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.label)

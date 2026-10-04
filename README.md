@@ -63,17 +63,24 @@ the engine leaves it alone, every program built by hand from nothing.
 
 ## Screens
 
-<!-- Replace these placeholders with real captures before submitting to the App Store.
-     Suggested set: Home, Active Workout, Exercise Detail, Exercise Library, Program Overview,
-     Nutrition Today, Progress, Settings — each in light and dark. -->
+Screenshots are generated, not collected by hand:
 
-| Home | Active workout | Exercise detail | Nutrition |
-|---|---|---|---|
-| _screenshot_ | _screenshot_ | _screenshot_ | _screenshot_ |
+```bash
+Tools/screenshots.sh                  # required device sizes, English
+Tools/screenshots.sh es fr            # specific languages
+Tools/screenshots.sh --all-languages  # all ten
+```
 
-| Library | Program | Progress | Settings |
-|---|---|---|---|
-| _screenshot_ | _screenshot_ | _screenshot_ | _screenshot_ |
+It drives `AppStoreScreenshotTests` (in `GymAppUITests`) once per device and language and writes
+`Screenshots/<device>/<language>/01-home.png` … through `08-settings.png`: Home, today's workout,
+an active session, the exercise library, an exercise, the food log, Progress and Settings.
+
+The device sizes are the two App Store Connect requires — iPhone 6.9" (1320×2868) and, because the
+app supports iPad, iPad 13" (2064×2752). Everything else is scaled from those by App Store Connect.
+
+The captures are driven entirely by accessibility identifiers, launch arguments and navigation
+structure — never by matching a visible label — so the same run works in every language. A screen
+that can no longer be reached fails the run rather than leaving a stale PNG behind.
 
 ## Requirements
 
@@ -322,7 +329,7 @@ xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-**904 unit tests** across 78 suites, plus **20 UI tests** covering the flows that matter. Unit tests
+**909 unit tests** across 79 suites, plus the UI tests covering the flows that matter. Unit tests
 use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they build value
 types, call an engine, and check the result, so the whole unit suite finishes in about 15 seconds.
 
@@ -423,16 +430,45 @@ Scenarios: `newUser`, `freshProgram`, `seasonedUser`, `activeWorkout`, `emptyNut
 
 ## Preparing for the App Store
 
-1. **Settle the media licence** with Gym visual, or replace the artwork. This is the blocking item.
-2. Set `DEVELOPMENT_TEAM` and change every bundle identifier and the App Group to identifiers you
-   own.
-3. Add a real app icon to `Resources/Assets.xcassets/AppIcon.appiconset`.
-4. Capture screenshots for every required device size, in light and dark.
-5. Archive with the Release configuration and validate.
-6. Fill in App Privacy: with the defaults, the honest answer is **no data collected**. The Health,
-   camera and notification usage strings are already in `project.yml`.
-7. `ITSAppUsesNonExemptEncryption` is already declared `false`.
-8. Note in review comments that the app gives fitness and nutrition *estimates*, not medical advice.
+Two things are left, and neither can be done from inside the repository:
+
+1. **Settle the media licence** with Gym visual, or replace the artwork. This is the blocking item —
+   see [Licences](#licences). Cloning this repository does not grant the right to ship the
+   animations; the app satisfies attribution and resolution, which is necessary and not sufficient.
+2. **Set `DEVELOPMENT_TEAM`** and change every bundle identifier — `com.gymapp.forge`,
+   `com.gymapp.forge.widgets`, and the App Group `group.com.gymapp.forge` — to identifiers you own.
+   They are placeholders. The App Group is shared by the app and the widget and must match in
+   `project.yml`, `GymApp/App/GymApp.entitlements`, `GymAppWidgets/GymAppWidgets.entitlements` and
+   `SharedSnapshot.appGroupIdentifier`.
+
+Everything else is done:
+
+- The app icon is a real 1024×1024 marketing icon in `Resources/Assets.xcassets/AppIcon.appiconset`.
+- Screenshots: `Tools/screenshots.sh` — see [Screens](#screens).
+- `ITSAppUsesNonExemptEncryption` is declared `false`.
+- App Privacy: with the defaults the honest answer is **no data collected**. `PrivacyInfo.xcprivacy`
+  declares the required-reason APIs the app actually uses.
+- The Health, camera and notification usage strings are in `project.yml`. HealthKit asks to *write*
+  only workouts and body mass, which is exactly what `NSHealthUpdateUsageDescription` describes — a
+  purpose string that does not account for every requested type is a 5.1.1(i) rejection.
+- No background modes are declared. The rest-timer alert is a system sound, which needs none, and a
+  backgrounded rest timer is covered by a local notification. Declaring `audio` without playing any
+  is a 2.5.4 rejection.
+- Note in review comments that the app gives fitness and nutrition *estimates*, not medical advice.
+
+Then archive with the Release configuration and validate.
+
+### Still unverifiable in the Simulator
+
+HealthKit, the barcode camera and notifications are implemented and build, but the Simulator cannot
+exercise real permission prompts or sensors. Run each once on a device before submitting: grant and
+then deny Health, scan a real barcode, and let a rest timer finish with the app backgrounded.
+
+### Not implemented
+
+CloudKit sync. The abstraction exists and `groupContainer` / `cloudKitDatabase` are pinned to
+`.none` deliberately — the app is offline by design and stores nothing on a server. Turning it on is
+a product decision, not a missing piece of wiring.
 
 ### A note on download size
 

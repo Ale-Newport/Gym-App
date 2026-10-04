@@ -260,6 +260,38 @@ struct ChartLegendView: View {
     }
 }
 
+// MARK: - Chart domains
+
+/// A y-domain that stays readable when a series barely moves.
+///
+/// `.automatic(includesZero: false)` collapses to a zero-height domain when every value is the
+/// same. Charts then draws the line jammed against an edge with the area fill covering the whole
+/// frame, so "your weight did not change" reads as a solid block of colour. Padding the range —
+/// with a floor under how narrow it may get — draws a flat series as a flat line through the
+/// middle, and still gives a moving one room to breathe.
+enum ChartDomain {
+
+    /// - Parameters:
+    ///   - values: every y value that will be plotted, already in display units.
+    ///   - minimumSpan: the narrowest window the caller will accept, in those same units.
+    static func padded(_ values: [Double], minimumSpan: Double = 0) -> ClosedRange<Double> {
+        let finite = values.filter { $0.isFinite }
+        guard let low = finite.min(), let high = finite.max() else { return 0...1 }
+
+        // Scale the floor with the magnitude of the data: 0.5 kg of headroom is right for a body
+        // weight and far too tight for a 200 kg deadlift.
+        let floor = max(minimumSpan, max(abs(high), abs(low)) * 0.04, 0.5)
+        let span = high - low
+
+        if span < floor {
+            let midpoint = (low + high) / 2
+            return (midpoint - floor / 2)...(midpoint + floor / 2)
+        }
+        let padding = span * 0.12
+        return (low - padding)...(high + padding)
+    }
+}
+
 // MARK: - Value types
 
 /// One point on a dated series. Kept `Sendable` so series can be built off the main actor.
@@ -299,25 +331,37 @@ struct SparklineChart: View {
     var accessibilityDescription: String
 
     var body: some View {
-        Chart(points) { point in
+        // Computed once so the area's baseline and the y-scale cannot disagree.
+        let domain = ChartDomain.padded(points.map(\.value))
+
+        return Chart(points) { point in
             LineMark(x: .value(L("progress.axis.date"), point.date), y: .value(L("progress.axis.value"), point.value))
                 .interpolationMethod(.monotone)
                 .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round))
                 .foregroundStyle(tint)
-            AreaMark(x: .value(L("progress.axis.date"), point.date), y: .value(L("progress.axis.value"), point.value))
-                .interpolationMethod(.monotone)
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [tint.opacity(0.28), tint.opacity(0)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
+            // `yStart` is pinned to the bottom of the domain rather than left to default to zero.
+            // A body weight never comes near zero, so the default baseline sits far below the plot
+            // area and Charts draws the fill straight out of the frame and over the next card.
+            AreaMark(
+                x: .value(L("progress.axis.date"), point.date),
+                yStart: .value(L("progress.axis.value"), domain.lowerBound),
+                yEnd: .value(L("progress.axis.value"), point.value)
+            )
+            .interpolationMethod(.monotone)
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [tint.opacity(0.28), tint.opacity(0)],
+                    startPoint: .top,
+                    endPoint: .bottom
                 )
+            )
         }
         .chartXAxis(.hidden)
         .chartYAxis(.hidden)
-        .chartYScale(domain: .automatic(includesZero: false))
+        .chartYScale(domain: domain)
         .frame(height: 44)
+        // Belt and braces: nothing this chart draws may ever spill onto a neighbouring card.
+        .clipped()
         .accessibilityElement()
         .accessibilityLabel(Text(accessibilityDescription))
     }
@@ -349,8 +393,57 @@ struct TimeRangePicker: View {
             .padding(.horizontal, Metrics.screenPadding)
             .padding(.vertical, Metrics.spacing4)
         }
+        // A horizontal `ScrollView` has no intrinsic height: it takes whatever it is offered, and
+        // inside `safeAreaInset(edge: .top)` that is most of the screen — which is how the chips
+        // ended up drawn a couple of hundred points below the bar they belong to, on top of the
+        // page. `fixedSize` makes it adopt its content's height instead.
+        //
+        // Deliberately not a stated height. A number would have to be scaled against Dynamic Type
+        // to survive accessibility sizes, and scaling it against `.body` while the chip's own tap
+        // target stays a flat 44pt makes the two disagree: the row is shorter than its chips below
+        // the default text size and clips them. The floor is a floor, never a ceiling.
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(minHeight: Metrics.minimumTapTarget + Metrics.spacing8)
         .scrollIndicators(.hidden)
-        .scrollClipDisabled()
+    }
+}
+
+// MARK: - Range-bar shell
+
+/// The Progress tab's scrolling shell: content that scrolls under a range bar that stays put.
+///
+/// `safeAreaInset(edge: .top)` is deliberately not used here, though it is the obvious tool for the
+/// job. Two things go wrong with it on iOS 26. The bar's background is laid out at the top of the
+/// screen but the picker inside it is not drawn there — a horizontal `ScrollView` has no intrinsic
+/// height, so it takes the full height the inset offers and the chips end up either centred far
+/// down the page, on top of the content, or not rendered at all. And on a screen that also asks for
+/// a large navigation title, the inset and the title compete for the same strip: the inset wins and
+/// the tab opens on a blank band where its own name should be.
+///
+/// A pinned section header gives the same behaviour — the bar scrolls up, then sticks under the
+/// navigation bar — renders reliably, and leaves the title alone.
+struct ProgressRangeScrollView<Content: View>: View {
+    let range: ProgressRangeStore
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
+                Section {
+                    content
+                } header: {
+                    VStack(spacing: 0) {
+                        // The chips share the content's column so they line up with the cards
+                        // below them; the material and the divider stay full-bleed, because a bar
+                        // that stops short of the screen edges reads as a floating box.
+                        TimeRangePicker(store: range)
+                            .readableWidth()
+                        Divider().overlay(Color.appSeparator)
+                    }
+                    .background(.bar)
+                }
+            }
+        }
     }
 }
 

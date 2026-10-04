@@ -38,6 +38,18 @@ struct BodyWeightView: View {
             }
         }
         .background(Color.appBackground)
+        // The tab promises that the range applies everywhere, and this screen already filters its
+        // chart and its readings by it — it was simply the one destination that never offered the
+        // control. It sits above the list rather than inside it because the content here is a
+        // `List`, not the `ProgressRangeScrollView` the five sibling screens use.
+        .safeAreaInset(edge: .top, spacing: 0) {
+            VStack(spacing: 0) {
+                TimeRangePicker(store: range)
+                    .readableWidth()
+                Divider().overlay(Color.appSeparator)
+            }
+            .background(.bar)
+        }
         .navigationTitle(L("progress.weight.title"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -170,6 +182,15 @@ struct BodyWeightView: View {
 
     // MARK: - Chart
 
+    /// Everything drawn on the y-axis, in display units, so the domain covers the goal line too.
+    /// A goal well below the current weight must not fall outside the chart.
+    private var weightDomainValues: [Double] {
+        var values = model.readings.map { formatter.weightValue($0.value) }
+        values += model.movingAverage.map { formatter.weightValue($0.value) }
+        if let goal = model.goalWeightKg { values.append(formatter.weightValue(goal)) }
+        return values
+    }
+
     private var chart: some View {
         VStack(alignment: .leading, spacing: Metrics.spacing12) {
             Chart {
@@ -208,7 +229,7 @@ struct BodyWeightView: View {
                         }
                 }
             }
-            .chartYScale(domain: .automatic(includesZero: false))
+            .chartYScale(domain: ChartDomain.padded(weightDomainValues, minimumSpan: 2))
             .progressDateAxis(range.dateSpan)
             .progressValueAxis()
             .frame(height: 220)
@@ -235,11 +256,7 @@ struct BodyWeightView: View {
     // MARK: - Stats
 
     private var statsRow: some View {
-        LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 130), spacing: Metrics.spacing12)],
-            alignment: .leading,
-            spacing: Metrics.spacing12
-        ) {
+        ScaledTileGrid(minimumWidth: 130) {
             StatTile(
                 value: model.analysis.currentTrendKg.map { formatter.weight($0) } ?? "—",
                 label: L("progress.weight.trendLabel"),
@@ -362,7 +379,7 @@ struct BodyWeightView: View {
     private func signedWeight(_ kilograms: Double) -> String {
         let displayed = formatter.weightValue(kilograms)
         return Units.formatSignedDecimal(displayed, digits: 2, locale: formatter.locale)
-            + " " + formatter.weightUnitLabel
+            + "\u{00A0}" + formatter.weightUnitLabel
     }
 }
 

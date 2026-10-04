@@ -20,7 +20,7 @@ struct VolumeProgressView: View {
     @State private var model = VolumeProgressViewModel()
 
     var body: some View {
-        ScrollView {
+        ProgressRangeScrollView(range: range) {
             VStack(alignment: .leading, spacing: Metrics.spacing16) {
                 content
             }
@@ -31,13 +31,6 @@ struct VolumeProgressView: View {
         .background(Color.appBackground)
         .navigationTitle(L("progress.volume.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TimeRangePicker(store: range)
-                Divider().overlay(Color.appSeparator)
-            }
-            .background(.bar)
-        }
         .task(id: range.range) { await reload() }
         .refreshable { await reload() }
     }

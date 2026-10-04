@@ -29,10 +29,6 @@ struct GeneratingProgramView: View {
         "onboarding.generate.stage.nutrition"
     ]
 
-    /// Adaptive rather than fixed: at the largest Dynamic Type sizes three tiles side by side would
-    /// clip, and a stat nobody can read is worse than a wrap.
-    private static let tileColumns = [GridItem(.adaptive(minimum: 96), spacing: Metrics.spacing12)]
-
     var body: some View {
         Group {
             switch model.generation {
@@ -128,9 +124,7 @@ struct GeneratingProgramView: View {
                     .foregroundStyle(Color.appTextPrimary)
                     .fixedSize(horizontal: false, vertical: true)
 
-                // An adaptive grid rather than a fixed row: at the largest Dynamic Type sizes three
-                // tiles side by side would clip, and a stat nobody can read is worse than a wrap.
-                LazyVGrid(columns: Self.tileColumns, alignment: .leading, spacing: Metrics.spacing12) {
+                ScaledTileGrid(minimumWidth: 96) {
                     StatTile(
                         value: String(result.daysPerWeek),
                         label: L("onboarding.result.daysPerWeek"),

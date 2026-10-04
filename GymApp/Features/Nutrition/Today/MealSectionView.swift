@@ -32,7 +32,7 @@ struct MealSectionView: View {
                             entry: entry,
                             isFavorite: model.isFavorite(entry),
                             canDuplicate: model.canDuplicate(entry),
-                            canFavorite: model.food(for: entry) != nil,
+                            canFavorite: model.canFavorite(entry),
                             onEdit: { onEditEntry(entry) },
                             onShowDetails: { onShowDetails(entry) },
                             onMove: { model.move(entry, to: $0) },

@@ -171,11 +171,7 @@ struct WorkoutFinishView: View {
     }
 
     private func statTiles(_ summary: WorkoutSummary) -> some View {
-        LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 132), spacing: Metrics.spacing12, alignment: .leading)],
-            alignment: .leading,
-            spacing: Metrics.spacing16
-        ) {
+        ScaledTileGrid(minimumWidth: 132, rowSpacing: Metrics.spacing16) {
             StatTile(
                 value: formatter.durationCompact(summary.durationSeconds),
                 label: L("active.finish.duration"),
@@ -393,9 +389,12 @@ struct WorkoutFinishView: View {
                 subtitle: L("active.finish.effortSubtitle")
             )
 
-            LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 150), spacing: Metrics.spacing8)],
-                spacing: Metrics.spacing8
+            ScaledTileGrid(
+                minimumWidth: 150,
+                columnSpacing: Metrics.spacing8,
+                rowSpacing: Metrics.spacing8,
+                alignment: .center,
+                itemAlignment: .top
             ) {
                 ForEach(SessionEffortFeedback.allCases) { option in
                     effortButton(option)

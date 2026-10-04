@@ -1202,6 +1202,7 @@
   "nutritionLog.energy.over": "Aşım",
   "nutritionLog.energy.remaining": "Kalan",
   "nutritionLog.energy.target": "Hedef",
+  "nutritionLog.error.noLongerAvailable": "O yiyecek veya tarif artık mevcut değil, bu yüzden tekrar kaydedilemez. Halihazırdaki kaydın etkilenmez.",
   "nutritionLog.error.generic": "Besin günlüğün güncellenemedi. Tekrar dene.",
   "nutritionLog.favorites.emptyMessage": "Bir besini favori olarak işaretle; burada seni beklesin.",
   "nutritionLog.favorites.emptyTitle": "Henüz favori yok",

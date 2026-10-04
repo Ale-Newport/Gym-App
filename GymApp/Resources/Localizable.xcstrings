@@ -105446,6 +105446,71 @@
         }
       }
     },
+    "nutritionLog.error.noLongerAvailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That food or recipe no longer exists, so it cannot be logged again. The entry you already have is unaffected."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese alimento o receta ya no existe, así que no se puede volver a registrar. La entrada que ya tienes no se ve afectada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet aliment ou cette recette n'existe plus, il est donc impossible de l'enregistrer à nouveau. L'entrée que vous avez déjà reste inchangée."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वह खाद्य पदार्थ या रेसिपी अब मौजूद नहीं है, इसलिए इसे दोबारा दर्ज नहीं किया जा सकता। आपकी मौजूदा प्रविष्टि पर कोई असर नहीं पड़ेगा।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quell'alimento o quella ricetta non esiste più, quindi non può essere registrato di nuovo. La voce che hai già resta invariata."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "해당 음식 또는 레시피가 더 이상 존재하지 않아 다시 기록할 수 없습니다. 이미 기록된 항목은 그대로 유지됩니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tego produktu lub przepisu już nie ma, więc nie można go zapisać ponownie. Istniejący wpis pozostaje bez zmian."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Этого продукта или рецепта больше нет, поэтому записать его снова нельзя. Уже сделанная запись не изменится."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O yiyecek veya tarif artık mevcut değil, bu yüzden tekrar kaydedilemez. Halihazırdaki kaydın etkilenmez."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "该食物或食谱已不存在，无法再次记录。你已有的记录不受影响。"
+          }
+        }
+      }
+    },
     "nutritionLog.favorites.emptyMessage": {
       "extractionState": "manual",
       "localizations": {

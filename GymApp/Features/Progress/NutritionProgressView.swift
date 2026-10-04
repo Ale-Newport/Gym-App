@@ -18,7 +18,7 @@ struct NutritionProgressView: View {
     @State private var model = NutritionProgressViewModel()
 
     var body: some View {
-        ScrollView {
+        ProgressRangeScrollView(range: range) {
             VStack(alignment: .leading, spacing: Metrics.spacing16) {
                 content
             }
@@ -29,13 +29,6 @@ struct NutritionProgressView: View {
         .background(Color.appBackground)
         .navigationTitle(L("progress.nutrition.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TimeRangePicker(store: range)
-                Divider().overlay(Color.appSeparator)
-            }
-            .background(.bar)
-        }
         .task(id: range.range) { await model.load(context: modelContext, range: range) }
         .refreshable { await model.load(context: modelContext, range: range) }
     }
@@ -83,11 +76,7 @@ struct NutritionProgressView: View {
     // MARK: - Summary
 
     private var summaryTiles: some View {
-        LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 130), spacing: Metrics.spacing12)],
-            alignment: .leading,
-            spacing: Metrics.spacing12
-        ) {
+        ScaledTileGrid(minimumWidth: 130) {
             StatTile(
                 value: model.averageMacros.map { formatter.energy($0.kilocalories) } ?? "—",
                 label: L("progress.nutrition.averageDay"),

@@ -18,7 +18,7 @@ struct AdherenceView: View {
     @State private var model = AdherenceViewModel()
 
     var body: some View {
-        ScrollView {
+        ProgressRangeScrollView(range: range) {
             VStack(alignment: .leading, spacing: Metrics.spacing16) {
                 content
             }
@@ -29,13 +29,6 @@ struct AdherenceView: View {
         .background(Color.appBackground)
         .navigationTitle(L("progress.adherence.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TimeRangePicker(store: range)
-                Divider().overlay(Color.appSeparator)
-            }
-            .background(.bar)
-        }
         .task(id: range.range) { await model.load(context: modelContext, range: range) }
         .refreshable { await model.load(context: modelContext, range: range) }
     }
@@ -98,9 +91,12 @@ struct AdherenceView: View {
                     subtitle: L("progress.range.subtitle", L(range.range.localizationKey))
                 )
                 // Two rings side by side on a phone, four across on an iPad, without a fixed count.
-                LazyVGrid(
-                    columns: [GridItem(.adaptive(minimum: 130), spacing: Metrics.spacing16)],
-                    spacing: Metrics.spacing16
+                ScaledTileGrid(
+                    minimumWidth: 130,
+                    columnSpacing: Metrics.spacing16,
+                    rowSpacing: Metrics.spacing16,
+                    alignment: .center,
+                    itemAlignment: .top
                 ) {
                     ringTile(
                         fraction: model.summary.sessionRate,

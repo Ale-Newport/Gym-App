@@ -1191,6 +1191,7 @@
   "nutritionLog.energy.over": "Ponad",
   "nutritionLog.energy.remaining": "Pozostało",
   "nutritionLog.energy.target": "Cel",
+  "nutritionLog.error.noLongerAvailable": "Tego produktu lub przepisu już nie ma, więc nie można go zapisać ponownie. Istniejący wpis pozostaje bez zmian.",
   "nutritionLog.error.generic": "Nie udało się zaktualizować dziennika jedzenia. Spróbuj ponownie.",
   "nutritionLog.favorites.emptyMessage": "Oznacz produkt jako ulubiony, a będzie tu na Ciebie czekał.",
   "nutritionLog.favorites.emptyTitle": "Brak ulubionych",

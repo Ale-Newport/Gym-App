@@ -9,6 +9,8 @@ enum HomeAccessibility {
     /// Whichever action today's card currently offers: start, resume, train again, light session,
     /// or create a program. One slot, one identifier.
     static let todayAction = "home.todayAction"
+    /// The profile button in Home's toolbar, which is the only way into Settings.
+    static let profile = "home.profile"
 }
 
 

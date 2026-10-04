@@ -1152,6 +1152,7 @@
   "nutritionLog.energy.over": "초과",
   "nutritionLog.energy.remaining": "남은 양",
   "nutritionLog.energy.target": "목표",
+  "nutritionLog.error.noLongerAvailable": "해당 음식 또는 레시피가 더 이상 존재하지 않아 다시 기록할 수 없습니다. 이미 기록된 항목은 그대로 유지됩니다.",
   "nutritionLog.error.generic": "음식 기록을 업데이트하지 못했어요. 다시 시도해 주세요.",
   "nutritionLog.favorites.emptyMessage": "음식을 즐겨찾기에 넣으면 여기에서 기다리고 있어요.",
   "nutritionLog.favorites.emptyTitle": "즐겨찾기가 아직 없어요",

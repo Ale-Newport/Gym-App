@@ -39,8 +39,13 @@ struct HomeView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.appBackground)
-        .navigationTitle(greeting)
-        .navigationBarTitleDisplayMode(.large)
+        // The greeting is the headline of the content, not the navigation title. A large title is
+        // a single line that clips at the tail, and the greeting is a whole sentence containing a
+        // name the user chose: "Buenas tardes, Alejandro" already overruns a 375pt iPhone, and
+        // Spanish, Italian, French and Russian all run longer here than English. In the content it
+        // wraps to as many lines as it needs.
+        .navigationTitle(L("tab.home"))
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -51,6 +56,9 @@ struct HomeView: View {
                         .minimumTapTarget()
                 }
                 .accessibilityLabel(Text(L("home.profileButton")))
+                // The label is localised, so anything that has to find this button in an arbitrary
+                // language — the screenshot run does — needs an identifier that is not.
+                .accessibilityIdentifier(HomeAccessibility.profile)
             }
         }
         .navigationDestination(for: HomeDestination.self) { destination in
@@ -75,6 +83,7 @@ struct HomeView: View {
     private var dashboard: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: Metrics.spacing16) {
+                greetingHeader
                 Text(formatter.weekdayAndDate(Date()))
                     .font(.subheadline)
                     .foregroundStyle(Color.appTextSecondary)
@@ -161,6 +170,14 @@ struct HomeView: View {
     }
 
     private var emptyState: some View {
+        VStack(alignment: .leading, spacing: Metrics.spacing16) {
+            greetingHeader
+                .screenPadding()
+            emptyStateBody
+        }
+    }
+
+    private var emptyStateBody: some View {
         EmptyStateView(
             systemImage: "figure.strengthtraining.traditional",
             title: L("home.empty.title"),
@@ -178,6 +195,15 @@ struct HomeView: View {
         }
         .readableWidth()
         .padding(.top, Metrics.spacing40)
+    }
+
+    /// The greeting, styled like the large title it replaced but free to wrap.
+    private var greetingHeader: some View {
+        Text(greeting)
+            .font(.largeTitle.weight(.bold))
+            .foregroundStyle(Color.appTextPrimary)
+            .fixedSize(horizontal: false, vertical: true)
+            .accessibilityAddTraits(.isHeader)
     }
 
     /// An action failed. The screen stays usable and the message offers the one thing that can help.
@@ -282,19 +308,19 @@ struct HomeView: View {
 
     // MARK: - Greeting
 
+    private var greetingSlot: String {
+        switch Calendar.current.component(.hour, from: Date()) {
+        case 5..<12: "morning"
+        case 12..<18: "afternoon"
+        case 18..<23: "evening"
+        default: "night"
+        }
+    }
+
+    /// The greeting the user reads, name included when there is one.
     private var greeting: String {
-        let hour = Calendar.current.component(.hour, from: Date())
-        let slot: String
-        switch hour {
-        case 5..<12: slot = "morning"
-        case 12..<18: slot = "afternoon"
-        case 18..<23: slot = "evening"
-        default: slot = "night"
-        }
-        if let name = model.userName {
-            return L("home.greeting.\(slot).named", name)
-        }
-        return L("home.greeting.\(slot)")
+        guard let name = model.userName else { return L("home.greeting.\(greetingSlot)") }
+        return L("home.greeting.\(greetingSlot).named", name)
     }
 }
 

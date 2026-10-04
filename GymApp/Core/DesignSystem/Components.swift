@@ -361,6 +361,45 @@ struct ExplanationNote: View {
     }
 }
 
+// MARK: - Tile grid
+
+/// A grid of tiles whose column width tracks Dynamic Type.
+///
+/// `GridItem(.adaptive(minimum:))` takes a constant, so a grid laid out for the default text size
+/// keeps trying to fit the same number of columns at accessibility sizes. The tiles do not get
+/// wider, the words do, and the result hyphenates inside columns far too narrow for them —
+/// "Entrena-miento" stacked above "Se-sio-nes". Scaling the minimum makes the grid drop to fewer,
+/// wider columns instead, which is what the extra width was always for.
+///
+/// `@ScaledMetric` on a bare `1` is the multiplier the current text size implies, so this needs no
+/// environment plumbing at the call sites.
+struct ScaledTileGrid<Content: View>: View {
+    /// Minimum column width at the default text size.
+    let minimumWidth: CGFloat
+    var columnSpacing: CGFloat = Metrics.spacing12
+    var rowSpacing: CGFloat = Metrics.spacing12
+    var alignment: HorizontalAlignment = .leading
+    var itemAlignment: Alignment = .topLeading
+    @ViewBuilder var content: Content
+
+    @ScaledMetric(relativeTo: .body) private var typeScale: CGFloat = 1
+
+    var body: some View {
+        LazyVGrid(
+            columns: [
+                GridItem(
+                    .adaptive(minimum: minimumWidth * typeScale),
+                    spacing: columnSpacing,
+                    alignment: itemAlignment
+                )
+            ],
+            alignment: alignment,
+            spacing: rowSpacing,
+            content: { content }
+        )
+    }
+}
+
 // MARK: - Layout helpers
 
 /// Constrains reading content to a comfortable width on iPad while filling the screen on iPhone.

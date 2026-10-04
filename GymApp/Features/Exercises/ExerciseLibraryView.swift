@@ -119,13 +119,12 @@ struct ExerciseLibraryView: View {
                 if showsIndexBar {
                     SectionIndexBar(titles: viewModel.indexTitles) { title in
                         guard let section = viewModel.sections.first(where: { $0.indexTitle == title }) else { return }
-                        if reduceMotion {
-                            proxy.scrollTo(section.id, anchor: .top)
-                        } else {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                proxy.scrollTo(section.id, anchor: .top)
-                            }
-                        }
+                        // Never animated. Animating the jump makes the lazy stack realise and
+                        // measure every row it sweeps past — up to 1,300 of them, each starting a
+                        // thumbnail load — and a finger dragging down the index crosses most of
+                        // the alphabet in under a second. The unanimated jump realises only the
+                        // destination, which is what the Reduce Motion path always did.
+                        proxy.scrollTo(section.id, anchor: .top)
                     }
                 }
             }
@@ -315,6 +314,12 @@ private struct SectionIndexBar: View {
         }
         .frame(width: Metrics.minimumTapTarget)
         .padding(.vertical, Metrics.spacing12)
+        // Capped, not fixed. Twenty-seven letters share the full height of the list inside a 44pt
+        // column; left to scale freely each glyph wants ~30pt at accessibility sizes and they
+        // render on top of one another. The range form only ever caps — a user on a small text
+        // size still gets their own size — and the bar stays available to VoiceOver, which the
+        // people most likely to be running large text are also most likely to be using.
+        .dynamicTypeSize(...DynamicTypeSize.large)
         .accessibilityElement()
         .accessibilityLabel(Text(L("exercises.index.label")))
         .accessibilityValue(Text(titles.indices.contains(activeIndex) ? titles[activeIndex] : ""))

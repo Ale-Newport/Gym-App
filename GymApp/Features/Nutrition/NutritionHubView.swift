@@ -238,7 +238,7 @@ struct NutritionHubView: View {
                 }
                 .buttonStyle(SecondaryButtonStyle())
 
-                NavigationLink { SavedMealsView(dayKey: model.dayKey) } label: {
+                NavigationLink { SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
                     Label(L("nutritionLog.empty.savedMeals"), systemImage: "square.stack.3d.up")
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: Metrics.minimumTapTarget)
@@ -364,10 +364,10 @@ struct NutritionHubView: View {
                 NavigationLink { MicronutrientDetailView(dayKey: model.dayKey) } label: {
                     Label(L("nutritionLog.menu.micronutrients"), systemImage: "chart.bar.doc.horizontal")
                 }
-                NavigationLink { SavedMealsView(dayKey: model.dayKey) } label: {
+                NavigationLink { SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
                     Label(L("nutritionLog.menu.savedMeals"), systemImage: "square.stack.3d.up")
                 }
-                NavigationLink { RecipeListView(dayKey: model.dayKey) } label: {
+                NavigationLink { RecipeListView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
                     Label(L("nutritionLog.menu.recipes"), systemImage: "list.bullet.rectangle")
                 }
                 Divider()
