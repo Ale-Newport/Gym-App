@@ -1,4 +1,3 @@
-import ActivityKit
 import Foundation
 import SwiftData
 
@@ -59,9 +58,7 @@ enum UITestLaunchSupport {
             // A Live Activity outlives the app process. One left by an earlier run points at a
             // workout the reset just deleted, and would sit in the Dynamic Island of every screen
             // captured afterwards — App Store screenshots included.
-            for activity in Activity<WorkoutActivityAttributes>.activities {
-                Task { await activity.end(nil, dismissalPolicy: .immediate) }
-            }
+            WorkoutLiveActivityService.endAllActivities()
         }
 
         guard let scenario = requestedScenario else { return }

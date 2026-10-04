@@ -189,6 +189,7 @@ private struct ImportPreviewSheet: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppEnvironment.self) private var environment
 
     var body: some View {
         NavigationStack {
@@ -252,7 +253,7 @@ private struct ImportPreviewSheet: View {
                         if data.importStrategy == .replace {
                             data.isConfirmingReplace = true
                         } else {
-                            data.restore(context: modelContext, settings: settings)
+                            data.restore(context: modelContext, settings: settings, environment: environment)
                         }
                     } label: {
                         if data.isRestoring {
@@ -281,7 +282,7 @@ private struct ImportPreviewSheet: View {
             .alert(L("import.confirmReplace.title"), isPresented: $data.isConfirmingReplace) {
                 Button(L("common.cancel"), role: .cancel) {}
                 Button(L("import.restore"), role: .destructive) {
-                    data.restore(context: modelContext, settings: settings)
+                    data.restore(context: modelContext, settings: settings, environment: environment)
                 }
             } message: {
                 Text(L("import.confirmReplace.message"))
@@ -394,6 +395,7 @@ private struct ResetConfirmationSheet: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppEnvironment.self) private var environment
     @State private var typed = ""
 
     private var confirmationWord: String { L("settings.data.reset.word") }
@@ -454,7 +456,7 @@ private struct ResetConfirmationSheet: View {
                     }
 
                     Button {
-                        data.reset(context: modelContext, settings: settings)
+                        data.reset(context: modelContext, settings: settings, environment: environment)
                         dismiss()
                     } label: {
                         Text(L("reset.confirm"))
@@ -593,7 +595,7 @@ final class DataSettingsViewModel {
         isConfirmingReplace = false
     }
 
-    func restore(context: ModelContext, settings: SettingsViewModel) {
+    func restore(context: ModelContext, settings: SettingsViewModel, environment: AppEnvironment) {
         guard let pending = pendingImport, !isRestoring else { return }
         isRestoring = true
         let strategy = importStrategy
@@ -602,6 +604,13 @@ final class DataSettingsViewModel {
             report = IdentifiedImportReport(value: result)
             pendingImport = nil
             settings.reload()
+            // A replace deletes everything first, the workout in progress included; a merge only
+            // adds, so what a widget shows may change but nothing it points at has gone.
+            if strategy == .replace {
+                environment.storeWasReplaced(context: context)
+            } else {
+                environment.snapshotWriter.refresh(context: context, catalog: environment.catalog)
+            }
             // A restored backup can carry a different language; the manager is what the interface
             // actually reads, so it has to be told or the setting would be inert until next launch.
             LocalizationManager.shared.setOverride(settings.settings?.languageOverride)
@@ -617,12 +626,15 @@ final class DataSettingsViewModel {
 
     // MARK: Reset
 
-    func reset(context: ModelContext, settings: SettingsViewModel) {
+    func reset(context: ModelContext, settings: SettingsViewModel, environment: AppEnvironment) {
         do {
             try ProfileRepository(context: context).resetAllData()
             // Re-reading recreates the three singleton rows, so the app lands on a genuine
             // first-launch state instead of on references to deleted objects.
             settings.reload()
+            // A workout in progress was deleted with everything else; its Live Activity and the
+            // widget must not outlive it.
+            environment.storeWasReplaced(context: context)
             LocalizationManager.shared.setOverride(nil)
             errorMessage = nil
             Haptics.success()
