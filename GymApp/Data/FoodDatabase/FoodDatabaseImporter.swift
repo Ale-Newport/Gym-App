@@ -21,11 +21,22 @@ struct FoodDatabaseVersionStore: Sendable {
         suiteName.flatMap(UserDefaults.init(suiteName:)) ?? .standard
     }
 
+    /// The language the built-in rows were last written in. Their names are translated, so a change
+    /// of interface language is a reason to re-import even though the database itself has not moved.
+    static let languageKey = "foodDatabaseLanguage"
+
     var storedVersion: String? { defaults.string(forKey: Self.defaultsKey) }
+    var storedLanguage: String? { defaults.string(forKey: Self.languageKey) }
 
-    func record(_ version: String) { defaults.set(version, forKey: Self.defaultsKey) }
+    func record(_ version: String, language: String) {
+        defaults.set(version, forKey: Self.defaultsKey)
+        defaults.set(language, forKey: Self.languageKey)
+    }
 
-    func clear() { defaults.removeObject(forKey: Self.defaultsKey) }
+    func clear() {
+        defaults.removeObject(forKey: Self.defaultsKey)
+        defaults.removeObject(forKey: Self.languageKey)
+    }
 }
 
 // MARK: - Progress and summary
@@ -111,6 +122,9 @@ actor FoodDatabaseImporter {
     /// - Parameters:
     ///   - loader: the bundle reader; injected so tests can point at a fixture bundle.
     ///   - versionStore: where the ingested version is remembered.
+    ///   - language: the dataset code of the language food names are written in (`"es"`). Foods
+    ///     with no translation for it keep their English name. A different language from the last
+    ///     run re-imports, so names follow the interface language.
     ///   - force: re-import even when the version matches. Used by the "rebuild food database"
     ///     maintenance action.
     ///   - now: reference date written to `createdAt`/`updatedAt`. A parameter rather than a call
@@ -120,6 +134,7 @@ actor FoodDatabaseImporter {
     func importIfNeeded(
         loader: FoodCatalogLoader = FoodCatalogLoader(),
         versionStore: FoodDatabaseVersionStore = FoodDatabaseVersionStore(),
+        language: String = "en",
         force: Bool = false,
         now: Date = Date(),
         progress: @Sendable (FoodImportProgress) -> Void = { _ in }
@@ -131,12 +146,14 @@ actor FoodDatabaseImporter {
 
         // The row count is checked as well as the version: a user who reset their data would
         // otherwise be left with an empty food database because the version still "matched".
-        if !force, versionStore.storedVersion == manifest.version, !existingBuiltIns.isEmpty {
+        if !force, versionStore.storedVersion == manifest.version,
+           versionStore.storedLanguage == language, !existingBuiltIns.isEmpty {
             progress(FoodImportProgress(phase: .finished, processed: 0, total: 0))
             return .upToDate(version: manifest.version)
         }
 
         let records = try loader.loadRecords()
+        let names = loader.loadNames()
         var summary = FoodDatabaseImportSummary(version: manifest.version, didRun: true)
 
         progress(FoodImportProgress(phase: .matching, processed: 0, total: records.count))
@@ -160,8 +177,9 @@ actor FoodDatabaseImporter {
                 continue
             }
 
+            let displayName = names.name(for: record.catalogID, language: language) ?? record.name
             if let existing = byCatalogID[record.catalogID] {
-                if apply(record, to: existing, now: now) {
+                if apply(record, named: displayName, to: existing, now: now) {
                     summary.updated += 1
                     written += 1
                 } else {
@@ -172,7 +190,7 @@ actor FoodDatabaseImporter {
                 item.catalogID = record.catalogID
                 item.source = .builtIn
                 item.createdAt = now
-                _ = apply(record, to: item, now: now)
+                _ = apply(record, named: displayName, to: item, now: now)
                 modelContext.insert(item)
                 summary.inserted += 1
                 written += 1
@@ -213,7 +231,7 @@ actor FoodDatabaseImporter {
             try modelContext.save()
         }
 
-        versionStore.record(manifest.version)
+        versionStore.record(manifest.version, language: language)
         progress(FoodImportProgress(phase: .finished, processed: records.count, total: records.count))
 
         AppLog.nutrition.info(
@@ -264,7 +282,7 @@ actor FoodDatabaseImporter {
     /// User state (`isFavorite`, `timesLogged`, `lastLoggedAt`, `costPer100`) is deliberately not
     /// in this list: those belong to the user, not to the database, and a refresh must leave them
     /// exactly as they were.
-    private func apply(_ record: FoodCatalogRecord, to item: FoodItem, now: Date) -> Bool {
+    private func apply(_ record: FoodCatalogRecord, named name: String, to item: FoodItem, now: Date) -> Bool {
         var changed = false
 
         func set<Value: Equatable>(_ keyPath: ReferenceWritableKeyPath<FoodItem, Value>, _ value: Value) {
@@ -274,7 +292,7 @@ actor FoodDatabaseImporter {
             }
         }
 
-        set(\.name, record.name)
+        set(\.name, name)
         set(\.kilocaloriesPer100, record.kcal)
         set(\.proteinGPer100, record.protein)
         set(\.carbsGPer100, record.carbs)

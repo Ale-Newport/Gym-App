@@ -9,12 +9,16 @@ import Foundation
 /// re-rank food search. The rules are the same ones the exercise index uses — lowercase, strip
 /// diacritics, collapse punctuation to spaces — so "creme fraiche" finds "Crème fraîche" and
 /// "chicken, breast" finds "Chicken breast".
+///
+/// Letters and digits of every script survive, not only a–z: the catalogue ships names in ten
+/// languages, and a normaliser that reduced Cyrillic, Hangul, Devanagari or Han to nothing would
+/// make every one of them unsearchable.
 enum FoodTextNormalizer {
     private static let posixLocale = Locale(identifier: "en_US_POSIX")
 
     static func normalize(_ text: String) -> String {
         text.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: posixLocale)
-            .replacingOccurrences(of: "[^a-z0-9]+", with: " ", options: .regularExpression)
+            .replacingOccurrences(of: "[^\\p{L}\\p{M}\\p{N}]+", with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespaces)
     }
 
@@ -67,11 +71,11 @@ struct FoodCatalogRecord: Codable, Hashable, Sendable {
         return LocalizationManager.shared.localized(nameKey)
     }
 
-    func asSearchResult(providerID: String, attribution: String?) -> FoodSearchResult {
+    func asSearchResult(providerID: String, attribution: String?, displayName: String? = nil) -> FoodSearchResult {
         FoodSearchResult(
             providerID: providerID,
             externalID: catalogID,
-            name: name,
+            name: displayName ?? name,
             brand: nil,
             barcode: nil,
             basisUnit: servingUnit,
@@ -121,6 +125,31 @@ enum FoodCatalogError: LocalizedError, Hashable, Sendable {
     }
 }
 
+// MARK: - Translated names
+
+/// The food names the catalogue ships in languages other than English, keyed by language code and
+/// then by catalogue id. English is the record's own `name`, so it is not repeated here.
+///
+/// A side table rather than a field on every record, because the names are data that grows by
+/// language and is maintained by someone other than whoever maintains the nutrition values. A food
+/// with no entry for a language simply keeps its English name there.
+struct FoodNameTable: Sendable {
+    static let empty = FoodNameTable(byLanguage: [:])
+
+    let byLanguage: [String: [String: String]]
+
+    /// The name to show for `catalogID` in `language`, or `nil` to fall back to English.
+    func name(for catalogID: String, language: String) -> String? {
+        guard let value = byLanguage[language]?[catalogID], !value.isEmpty else { return nil }
+        return value
+    }
+
+    /// Every translated name of one food, for the search index.
+    func names(for catalogID: String) -> [String] {
+        byLanguage.values.compactMap { $0[catalogID] }.filter { !$0.isEmpty }
+    }
+}
+
 // MARK: - Search index
 
 /// A precomputed, diacritic- and case-insensitive index over the bundled foods.
@@ -145,23 +174,36 @@ struct FoodSearchIndex: Sendable {
     }
 
     /// Where a query matched, best first. Determines result ordering.
+    ///
+    /// Whole words outrank word fragments. "pollo" is the word at the heart of "Pechuga de pollo",
+    /// and only the first five letters of "Pollock"; a user typing it means the first, and ranking
+    /// by "starts with these letters" alone put the fish above the chicken.
     enum MatchKind: Int, Comparable, Sendable {
         case exactName = 0
+        /// The name opens with the query as whole word(s): "egg" in "Egg, whole, raw".
         case namePrefix = 1
-        case nameTokenPrefix = 2
-        case nameSubstring = 3
+        /// The query is a whole word elsewhere in the name: "egg" in "Scrambled egg".
+        case nameWord = 2
+        /// The name opens with the query, mid-word: "egg" in "Eggplant".
+        case namePartialPrefix = 3
+        case nameTokenPrefix = 4
+        case nameSubstring = 5
         /// Matched only after singularising the word or following a synonym.
-        case synonym = 4
-        case tag = 5
+        case synonym = 6
+        case tag = 7
 
         static func < (lhs: MatchKind, rhs: MatchKind) -> Bool { lhs.rawValue < rhs.rawValue }
     }
 
     private let entries: [Entry]
 
-    init(records: [FoodCatalogRecord]) {
-        entries = records.map { record in
-            let normalized = FoodTextNormalizer.normalize(record.name)
+    /// - Parameter names: translated names. Every language is indexed, not only the one the app is
+    ///   showing, so a Spanish user who types "chicken" and an English user who types "pollo" both
+    ///   find it — people name food in the language they ate it in, whatever the interface says.
+    init(records: [FoodCatalogRecord], names: FoodNameTable = .empty) {
+        var built: [Entry] = []
+        built.reserveCapacity(records.count * 2)
+        for record in records {
             var tags: [String] = []
             for tag in record.roleTags + record.dietaryTags + record.allergenTags {
                 tags.append(FoodTextNormalizer.normalize(tag))
@@ -172,14 +214,27 @@ struct FoodSearchIndex: Sendable {
                     tags.append(token)
                 }
             }
-            return Entry(
-                catalogID: record.catalogID,
-                normalizedName: normalized,
-                nameTokens: normalized.split(separator: " ").map(String.init),
-                tagTerms: Array(Set(tags)),
-                prominence: Self.prominence(of: record)
-            )
+            let tagTerms = Array(Set(tags))
+            let prominence = Self.prominence(of: record)
+
+            // One entry per distinct spelling of the name. A food that matches under two of them
+            // is collapsed back to a single result by `search`.
+            var spellings = [FoodTextNormalizer.normalize(record.name)]
+            for translated in names.names(for: record.catalogID) {
+                let normalized = FoodTextNormalizer.normalize(translated)
+                if !normalized.isEmpty, !spellings.contains(normalized) { spellings.append(normalized) }
+            }
+            for normalized in spellings {
+                built.append(Entry(
+                    catalogID: record.catalogID,
+                    normalizedName: normalized,
+                    nameTokens: normalized.split(separator: " ").map(String.init),
+                    tagTerms: tagTerms,
+                    prominence: prominence
+                ))
+            }
         }
+        entries = built
     }
 
     /// How strongly a record should win a tie.
@@ -217,7 +272,8 @@ struct FoodSearchIndex: Sendable {
             if entry.normalizedName == normalizedQuery {
                 worstKind = .exactName
             } else if entry.normalizedName.hasPrefix(normalizedQuery) {
-                worstKind = .namePrefix
+                worstKind = Self.endsAtWordBoundary(entry.normalizedName, after: normalizedQuery.count)
+                    ? .namePrefix : .namePartialPrefix
             } else if words.count > 1 && entry.normalizedName.contains(normalizedQuery) {
                 worstKind = .nameSubstring
             } else {
@@ -240,9 +296,18 @@ struct FoodSearchIndex: Sendable {
             if lhs.length != rhs.length { return lhs.length < rhs.length }
             return lhs.id < rhs.id
         }
-        // `prefix(_:)` traps on a negative length, and `limit` arrives from a caller rather than
-        // from here — the remote provider already caps its own, so this one must too.
-        return scored.prefix(max(0, limit)).map(\.id)
+        // A food can match under several spellings; the best one sorted first, so the first sight
+        // of an id is the one to keep. `limit` arrives from a caller rather than from here — the
+        // remote provider already caps its own, so this one must too, and a negative one must not
+        // trap.
+        var seen = Set<String>()
+        var ids: [String] = []
+        let cap = max(0, limit)
+        for candidate in scored where seen.insert(candidate.id).inserted {
+            guard ids.count < cap else { break }
+            ids.append(candidate.id)
+        }
+        return ids
     }
 
     private func match(word: String, in entry: Entry) -> MatchKind? {
@@ -259,10 +324,21 @@ struct FoodSearchIndex: Sendable {
 
     private func nameMatch(_ word: String, in entry: Entry) -> MatchKind? {
         if entry.normalizedName == word { return .exactName }
-        if entry.normalizedName.hasPrefix(word) { return .namePrefix }
+        let opens = entry.normalizedName.hasPrefix(word)
+        if opens, Self.endsAtWordBoundary(entry.normalizedName, after: word.count) { return .namePrefix }
+        if entry.nameTokens.contains(word) { return .nameWord }
+        if opens { return .namePartialPrefix }
         for token in entry.nameTokens where token.hasPrefix(word) { return .nameTokenPrefix }
         if entry.normalizedName.contains(word) { return .nameSubstring }
         return nil
+    }
+
+    /// True when the character after the first `length` characters of `name` is a space, or when
+    /// there is none — that is, the prefix ends a word rather than splitting one.
+    private static func endsAtWordBoundary(_ name: String, after length: Int) -> Bool {
+        guard name.count > length else { return true }
+        let index = name.index(name.startIndex, offsetBy: length)
+        return name[index] == " "
     }
 
     /// Crude English singularisation, applied only as a fallback.
@@ -341,12 +417,14 @@ struct FoodCatalog: Sendable {
     let manifest: FoodCatalogManifest
     let records: [FoodCatalogRecord]
     let index: FoodSearchIndex
+    let names: FoodNameTable
     private let byID: [String: FoodCatalogRecord]
 
-    init(manifest: FoodCatalogManifest, records: [FoodCatalogRecord]) {
+    init(manifest: FoodCatalogManifest, records: [FoodCatalogRecord], names: FoodNameTable = .empty) {
         self.manifest = manifest
         self.records = records
-        self.index = FoodSearchIndex(records: records)
+        self.names = names
+        self.index = FoodSearchIndex(records: records, names: names)
         self.byID = Dictionary(records.map { ($0.catalogID, $0) }, uniquingKeysWith: { first, _ in first })
     }
 
@@ -438,16 +516,30 @@ struct FoodCatalogLoader: Sendable {
         return records
     }
 
+    /// The translated food names, or an empty table when the file is absent or unreadable. Names
+    /// are a convenience on top of the nutrition data, so a broken names file must degrade to
+    /// English rather than take the food database down with it.
+    func loadNames() -> FoodNameTable {
+        guard let url = url("foods.names.json"), let data = try? Data(contentsOf: url) else { return .empty }
+        do {
+            return FoodNameTable(byLanguage: try JSONDecoder().decode([String: [String: String]].self, from: data))
+        } catch {
+            AppLog.nutrition.error("Food names unreadable, using English: \(String(describing: error), privacy: .public)")
+            return .empty
+        }
+    }
+
     /// Loads manifest and records together and builds the search index.
     func load() throws -> FoodCatalog {
         let manifest = try loadManifest()
         let records = try loadRecords()
+        let names = loadNames()
         if records.count != manifest.foodCount {
             AppLog.nutrition.error(
                 "Food database count mismatch: manifest says \(manifest.foodCount) but \(records.count) loaded"
             )
         }
-        return FoodCatalog(manifest: manifest, records: records)
+        return FoodCatalog(manifest: manifest, records: records, names: names)
     }
 }
 
@@ -535,6 +627,12 @@ actor LocalFoodDatabaseProvider: FoodDataProvider {
 
     var attribution: String { "USDA FoodData Central (public domain)" }
 
+    /// The language food names are shown in. Read from the main actor, where the language lives.
+    @MainActor
+    static func currentLanguageCode() -> String {
+        LocalizationManager.shared.current.datasetCode
+    }
+
     // MARK: FoodDataProvider
 
     func search(_ query: String, limit: Int) async throws -> [FoodSearchResult] {
@@ -542,8 +640,14 @@ actor LocalFoodDatabaseProvider: FoodDataProvider {
         guard !trimmed.isEmpty else { return [] }
         do {
             let catalog = try await catalog()
-            return catalog.search(trimmed, limit: limit)
-                .map { $0.asSearchResult(providerID: identifier, attribution: attribution) }
+            let language = await Self.currentLanguageCode()
+            return catalog.search(trimmed, limit: limit).map { record in
+                record.asSearchResult(
+                    providerID: identifier,
+                    attribution: attribution,
+                    displayName: catalog.names.name(for: record.catalogID, language: language)
+                )
+            }
         } catch let error as FoodCatalogError {
             throw FoodProviderError.decoding(error.errorDescription ?? String(describing: error))
         }
@@ -559,8 +663,14 @@ actor LocalFoodDatabaseProvider: FoodDataProvider {
     func food(withIdentifier identifier: String) async throws -> FoodSearchResult? {
         do {
             let catalog = try await catalog()
-            return catalog.record(id: identifier)?
-                .asSearchResult(providerID: self.identifier, attribution: attribution)
+            let language = await Self.currentLanguageCode()
+            return catalog.record(id: identifier).map { record in
+                record.asSearchResult(
+                    providerID: self.identifier,
+                    attribution: attribution,
+                    displayName: catalog.names.name(for: record.catalogID, language: language)
+                )
+            }
         } catch let error as FoodCatalogError {
             throw FoodProviderError.decoding(error.errorDescription ?? String(describing: error))
         }
