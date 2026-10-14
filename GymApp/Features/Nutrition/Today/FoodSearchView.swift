@@ -76,7 +76,14 @@ final class FoodSearchViewModel {
         defer { isSearching = false }
 
         do {
-            storedResults = try repository.searchFoods(term, limit: 40)
+            // "Your foods" are the ones the user made or scanned. The bundled foods are stored too,
+            // so that logging them can keep a favourite and a count, but they are listed below as
+            // the built-in database in relevance order, not here in alphabetical order under a
+            // heading that says they are the user's own.
+            storedResults = try repository.searchFoods(term, limit: 120)
+                .filter { $0.source != .builtIn }
+                .prefix(40)
+                .map { $0 }
         } catch {
             storedResults = []
             failureMessage = NutritionDayViewModel.message(for: error)
@@ -135,8 +142,16 @@ struct FoodSearchView: View {
                 LoadingStateView(message: L("common.loading"))
             }
         }
+        // Fill the sheet and start at the top: the search field belongs at the head of the panel,
+        // not wherever a container with spare height decides to centre it.
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .task {
             if model == nil { model = FoodSearchViewModel(context: context) }
+            // Searching is the whole point of this tab, so it opens ready to type. The short wait
+            // is what lets the sheet finish presenting; focusing during the animation is dropped.
+            try? await Task.sleep(for: .milliseconds(450))
+            guard !Task.isCancelled else { return }
+            isFieldFocused = true
         }
     }
 
@@ -146,6 +161,7 @@ struct FoodSearchView: View {
 
         VStack(spacing: Metrics.spacing12) {
             searchField(model)
+                .padding(.top, Metrics.spacing4)
 
             if model.isSearching && !model.hasAnyResult {
                 LoadingStateView(message: L("nutritionLog.search.searching"))
@@ -171,6 +187,7 @@ struct FoodSearchView: View {
                 results(model)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .task(id: model.query) {
             // Debounce: a search per keystroke would re-run the store query four times a word for
             // no benefit the user can perceive.

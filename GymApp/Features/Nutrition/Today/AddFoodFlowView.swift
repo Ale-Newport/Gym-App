@@ -370,7 +370,12 @@ struct AddFoodFlowView: View {
                     LoadingStateView(message: L("common.loading"))
                 }
             }
-            .background(Color.appBackground)
+            // The screen is a column that starts at the top and fills the sheet. Without the
+            // frame the content takes only the height it needs, and a container with spare height
+            // centres it — which put the search field in the middle of the sheet, with the page
+            // background painted behind that band only and the sheet's own white everywhere else.
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle(L("nutritionLog.add.title", L(slot.localizationKey)))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -468,6 +473,8 @@ struct AddFoodFlowView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityAddTraits(model.tab == tab ? [.isButton, .isSelected] : .isButton)
+                    // The label alone is ambiguous: "Search" is also the keyboard's return key.
+                    .accessibilityIdentifier("nutritionLog.tab.\(tab.rawValue)")
                 }
             }
             .screenPadding()
