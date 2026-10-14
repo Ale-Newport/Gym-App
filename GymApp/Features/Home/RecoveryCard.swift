@@ -34,9 +34,8 @@ struct RecoveryCard: View {
                 readinessRow
                 ExplanationNote(text: summary.summary.text, systemImage: "bolt.heart")
 
-                if !summary.readyGroups.isEmpty {
-                    groupSection(title: L("home.recovery.readyGroups"), groups: summary.readyGroups)
-                }
+                // Only what needs attention is listed. "Everything is ready" is the normal state
+                // and is already said by the meter above; naming six ready muscle groups is noise.
                 if !summary.recoveringGroups.isEmpty {
                     groupSection(title: L("home.recovery.loadedGroups"), groups: summary.recoveringGroups)
                 }

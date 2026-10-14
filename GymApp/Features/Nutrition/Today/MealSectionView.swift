@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// One meal of the day: its entries, its subtotal, and everything that adds to it.
@@ -23,9 +24,9 @@ struct MealSectionView: View {
             VStack(alignment: .leading, spacing: Metrics.spacing8) {
                 header
 
-                if entries.isEmpty {
-                    emptyRow
-                } else {
+                // An empty meal is a header and the add button: the button already says what the
+                // card is for, and a sentence repeating it only makes four empty cards tall.
+                if !entries.isEmpty {
                     ForEach(entries, id: \.id) { entry in
                         Divider().overlay(Color.appSeparator)
                         FoodLogRow(
@@ -119,15 +120,6 @@ struct MealSectionView: View {
                 .contentShape(Rectangle())
         }
         .accessibilityLabel(L("nutritionLog.a11y.mealActions", L(slot.localizationKey)))
-    }
-
-    private var emptyRow: some View {
-        Text(L("nutritionLog.meal.empty"))
-            .font(.footnote)
-            .foregroundStyle(Color.appTextTertiary)
-            .fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, Metrics.spacing8)
     }
 
     private var addButton: some View {

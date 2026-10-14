@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// Start training without following today's plan.

@@ -341,7 +341,10 @@ final class ExerciseLibraryViewModel {
             ))
         }
 
-        let favorites = favoriteIDs.compactMap { byID[$0] }
+        // A favourite already listed under "recent" is not listed twice in a row: the heart on its
+        // row says it is a favourite, and the two shortcuts stop repeating each other.
+        let shownRecently = Set(recent.map(\.id))
+        let favorites = favoriteIDs.compactMap { byID[$0] }.filter { !shownRecently.contains($0.id) }
         if !favorites.isEmpty {
             result.append(ExerciseListSection(
                 id: "favorites",

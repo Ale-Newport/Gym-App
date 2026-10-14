@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// One logged food inside a meal.

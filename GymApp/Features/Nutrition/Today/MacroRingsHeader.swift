@@ -171,10 +171,15 @@ struct MacroRingsHeader: View {
             }
             if let target, target > 0 {
                 ProgressBar(value: consumed, total: target, tint: tint, height: 8, warnsOnOverflow: true)
-                Text(macroCaption(consumed: consumed, target: target))
-                    .font(.caption2)
-                    .foregroundStyle(consumed > target ? Color.appWarning : Color.appTextTertiary)
-                    .fixedSize(horizontal: false, vertical: true)
+                // The figure above already says "148 / 165 g", so a caption repeating what is left
+                // is noise. It appears only when it adds something: the amount over target, written
+                // out so the state never depends on colour alone.
+                if consumed > target {
+                    Text(macroCaption(consumed: consumed, target: target))
+                        .font(.caption2)
+                        .foregroundStyle(Color.appWarning)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
         }
         .accessibilityElement(children: .combine)
