@@ -61,8 +61,11 @@ is only active while the scanner screen is open.
 ## Notifications
 
 All notifications are local, scheduled on-device by `UNUserNotificationCenter`. There is no push
-server and no remote notification capability. Each category — training reminder, rest timer,
-weigh-in reminder, meal reminder — is switched on independently and off by default.
+server and no remote notification capability. Setup offers two reminders — one on your training
+days, one when a rest period ends — on the app's own screen, *before* iOS is asked for permission.
+iOS is only asked if you turn at least one on, "Not now" never asks, and nothing is scheduled
+without your yes at both steps. The weigh-in and meal reminders are off until you switch them on in
+Settings → Notifications, and every category can be changed or turned off there at any time.
 
 ## Your data, on your terms
 

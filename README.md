@@ -35,8 +35,10 @@ device: no account, no server, no model call.
 
 ## What it does
 
-**Training.** A first-run questionnaire collects who you are, what you want, when you can train and
-what equipment you have. From that, `WorkoutProgrammingEngine` selects a split, allocates weekly
+**Training.** A first-run setup of five short screens — who you are, your goal and level, when you
+can train, what equipment you have, and which reminders you want — asks for the least that lets
+the engines build a good first program. There is no account. Everything finer (plate sizes, diet,
+exclusions) lives in Settings. From those answers, `WorkoutProgrammingEngine` selects a split, allocates weekly
 volume per muscle group, and fills every slot with a scored exercise from the catalogue. During a
 session the animation dominates the screen while you log sets in one tap each. Afterwards,
 `ProgressionEngine` decides — per exercise — whether to add load, add reps, hold, or back off, and
@@ -314,6 +316,13 @@ language override in Settings needs to point at a specific `.lproj` bundle. The 
 device; the override persists and re-renders immediately without disturbing navigation
 (`LocalizationManager` is `@Observable`, so calling `L(_:)` in a `body` registers the dependency).
 
+**Food names are translated.** Foods are everyday words, unlike gym jargon, so all 594 bundled
+foods carry a name in each of the nine other languages (`Resources/FoodDatabase/foods.names.json`,
+built by `Tools/build_food_names.py` from `Tools/l10n/food-names/<lang>.json` plus the curated
+`food.*` strings). Names are written into the store in the interface language — the importer
+re-runs when the language changes — and the search index holds every language's spelling, so
+"pollo" and "chicken" both find chicken whichever language the app is in.
+
 **What is and is not translated.** The interface, every explanation the engines produce, the muscle,
 equipment and body-part vocabulary, and the exercise instructions are all translated into all ten
 languages. **Exercise names are not** — the upstream dataset carries names in English only, and 500
@@ -437,6 +446,8 @@ Scenarios: `newUser`, `freshProgram`, `seasonedUser`, `activeWorkout`, `emptyNut
 | Retune exercise selection | Edit `ExerciseScoringWeights` in `TrainingContracts.swift`. The weights are data, and the tests assert the invariants. |
 | Change weekly volume targets | `VolumeAllocator` — the base ranges per experience level are constants at the top. |
 | Change progression behaviour | `ProgressionEngine`, plus the thresholds documented in `docs/fragments/progression.md`. |
+| Change a tab's title or actions | `Core/DesignSystem/ScreenHeader.swift` — every top-level screen draws its title and actions on one row with `.screenHeader(...)`, and hides the system navigation bar. |
+| Change the first-run guide | `Features/Tour/GuidedTourView.swift` — one `TourStop` per tab; its strings are `tour.<tab>.title/body`. |
 | Add a screen | Create it under `Features/<Area>/`, add its strings to `Tools/l10n/keys/<area>.en.json`, run the localisation builder, then `xcodegen generate`. |
 | Rename the app | `PRODUCT_NAME`, `CFBundleDisplayName` and `app.name` in `Tools/l10n/keys/core.en.json`. |
 
@@ -472,7 +483,8 @@ Done:
 Left, because each needs your Apple account or a public web page:
 
 1. Create the app record in App Store Connect with bundle id `com.alejandronewport.forge`.
-2. Publish `docs/PRIVACY.md` and a support page, and paste both URLs into the listing.
+2. Publish the support and privacy pages (`docs/index.html`, `docs/privacy.html` — enable GitHub
+   Pages on the `/docs` folder of `main`) and paste both URLs into the listing.
 3. Organizer → *Forge 1.0.0 (1)* → **Distribute App** → **App Store Connect** → **Upload**.
 4. Fill the listing from [`docs/APP_STORE.md`](docs/APP_STORE.md), attach the screenshots, select the
    build and submit.

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — Privacy Policy</title>
+<meta name="description" content="Privacy policy for Forge. No account, no tracking: your data stays on your device.">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<main>
+<nav class="lang"><a href="index.html">← Support · Soporte</a></nav>
+<h1>Privacy</h1>
+<p>Forge is a local-first app. The short version: <strong>your training and nutrition data stays on your device unless you personally send it somewhere.</strong></p>
+<h2>What is stored, and where</h2>
+<table><tr><th>Data</th><th>Where it lives</th><th>Leaves the device?</th></tr><tr><td>Profile (name, date of birth, sex, height, body mass, goals)</td><td>SwiftData store in the app's Application Support directory</td><td>No</td></tr><tr><td>Training programs, workout history, every set</td><td>Same store</td><td>No</td></tr><tr><td>Body-weight entries, personal records, recovery check-ins</td><td>Same store</td><td>No</td></tr><tr><td>Food log, custom foods, saved meals, recipes, nutrition targets</td><td>Same store</td><td>No</td></tr><tr><td>Settings, language override, unit preferences</td><td>Same store and <code>UserDefaults</code></td><td>No</td></tr><tr><td>Widget snapshot (next workout, today's macros, streak)</td><td>A small JSON file in the app's App Group container</td><td>No</td></tr><tr><td>Exercise catalogue and media</td><td>Read-only files inside the app bundle</td><td>Not applicable</td></tr></table>
+<p>The store is protected by iOS file-level encryption while the device is locked, and it is included in an encrypted iCloud or Finder device backup exactly like any other app's data.</p>
+<h2>Analytics and tracking</h2>
+<p>There are none. No analytics SDK, no crash reporter, no advertising identifier, no third-party framework of any kind. <code>PrivacyInfo.xcprivacy</code> declares <code>NSPrivacyTracking = false</code>, an empty tracking-domains list, and an empty collected-data-types list, because nothing is collected.</p>
+<h2>Network access</h2>
+<p>Forge is fully functional with the network switched off: browsing exercises, playing animations, running a workout, logging sets, editing programs, searching the bundled food database and reading your progress all work offline.</p>
+<p>The app makes exactly one kind of network request, and only when you ask it to:</p>
+<p><strong>Open Food Facts</strong> (<a href="https://world.openfoodfacts.org">https://world.openfoodfacts.org</a>) — used when you search for a packaged product or scan a barcode. The request contains only the search term or the barcode. It carries no account identifier, no device identifier and no personal data. Results are cached in memory for the session. If the request fails, the app falls back to the bundled food database. No API key exists.</p>
+<p>Nothing else contacts a server. There is no account, no login and no sync service.</p>
+<h2>Health app</h2>
+<p>HealthKit integration is <strong>off until you turn it on</strong>, and every feature works without it. When you enable it, iOS shows its own permission sheet and you choose each data type individually.</p>
+<ul><li><strong>Read</strong> (optional): body mass, height, active energy, steps, sleep, workouts — used to keep your weight trend and energy estimates current.</li><li><strong>Write</strong> (optional): completed workouts and body-mass entries you log in Forge.</li></ul>
+<p>Health data is read into memory to compute what is shown on screen and is never transmitted anywhere. You can revoke access at any time in Settings → Health → Data Access &amp; Devices, and Forge continues to work.</p>
+<h2>Camera</h2>
+<p>The camera is used for exactly one thing: reading a barcode on food packaging. Frames are processed on-device by AVFoundation and are never stored, never written to disk and never uploaded. The camera is only active while the scanner screen is open.</p>
+<h2>Notifications</h2>
+<p>All notifications are local, scheduled on-device by <code>UNUserNotificationCenter</code>. There is no push server and no remote notification capability. Setup offers two reminders — one on your training days, one when a rest period ends — on the app's own screen, <em>before</em> iOS is asked for permission. iOS is only asked if you turn at least one on, "Not now" never asks, and nothing is scheduled without your yes at both steps. The weigh-in and meal reminders are off until you switch them on in Settings → Notifications, and every category can be changed or turned off there at any time.</p>
+<h2>Your data, on your terms</h2>
+<ul><li><strong>Export</strong> (Settings → Data): training and nutrition as CSV or JSON, or a complete versioned JSON backup. The file is written to a temporary directory and handed to the iOS share sheet, so you decide where it goes.</li><li><strong>Import</strong>: restore a backup, merging with what is on the device or replacing it. Replacement asks for explicit confirmation first.</li><li><strong>Delete</strong>: Settings → Data → Reset removes everything from the device. Deleting the app removes the store with it.</li></ul>
+<h2>Children</h2>
+<p>Forge is a general fitness app. It is not directed at children, and it collects nothing that would identify anyone.</p>
+<h2>Not medical advice</h2>
+<p>Forge estimates training readiness, recommends loads and calculates energy and macronutrient targets. These are <strong>estimates produced by documented formulas</strong>, not measurements, diagnoses or medical advice. The app does not assess injuries and does not replace a doctor, a dietitian or a coach. See <code>docs/ALGORITHMS.md</code> for exactly how every number is produced.</p>
+<h2>Resumen en español</h2>
+<p>Forge no pide cuenta, no tiene anuncios ni rastreo y no recopila datos: tu perfil, tus entrenos y tu registro de comidas se guardan solo en tu dispositivo. La única petición de red ocurre cuando tú buscas un producto o escaneas un código de barras: se envía únicamente el texto buscado o el código a Open Food Facts, sin identificadores. Salud de Apple, la cámara y las notificaciones son opcionales, se piden con tu consentimiento y puedes desactivarlas cuando quieras. Puedes exportar o borrar todos tus datos desde Ajustes → Datos.</p>
+<footer>© 2026 Alejandro Newport Diaz</footer>
+</main>
+</body>
+</html>

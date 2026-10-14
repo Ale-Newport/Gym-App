@@ -118,8 +118,8 @@ Forge ofrece estimaciones de forma física y nutrición para adultos sanos. No e
 
 | Field | Value |
 |---|---|
-| Support URL | **Required — still to publish.** Any page with a way to contact you. |
-| Privacy Policy URL | **Required — still to publish.** Host `docs/PRIVACY.md` (e.g. GitHub Pages, or the file on GitHub if the repository is public). |
+| Support URL | `https://ale-newport.github.io/Gym-App/` — the page is `docs/index.html`; it goes live when GitHub Pages is switched on for the `/docs` folder (section 7). |
+| Privacy Policy URL | `https://ale-newport.github.io/Gym-App/privacy.html` — `docs/privacy.html`, generated from `docs/PRIVACY.md`; regenerate it when that file changes. |
 | Marketing URL | Optional |
 
 ### Screenshots
@@ -161,20 +161,44 @@ diagnosis or treatment. Expected rating: **4+**.
 **Notes for the reviewer:**
 
 ```
-Forge needs no account and works fully offline. On first launch a short questionnaire builds a training program; every screen is reachable afterwards from the tab bar.
+Forge needs no account and works fully offline. On first launch a five-screen setup (about you, goal, week, equipment, reminders) builds a training program, followed by a short guide to the five tabs; every screen is reachable afterwards from the tab bar, and the guide can be replayed from Settings → About.
 
 - Apple Health is optional and off until the user enables it in Settings → Health. The app reads body mass, height, workouts, active energy, steps and sleep, and writes only completed workouts and body-mass entries.
 - The camera is used only to scan food barcodes (Nutrition → add food → scan). Barcode and search lookups go to Open Food Facts; nothing else contacts a server.
-- Notifications are local and off by default.
+- Notifications are local. The setup asks on the app's own screen first and only shows the iOS permission prompt if the user turns a reminder on; "Not now" never asks. Nothing is scheduled without both yes answers.
 - Calorie, macro and training figures are estimates for healthy adults, not medical advice; the app says so next to its energy targets and in Settings → Legal.
 - Exercise illustrations are original 3D renders made for this app.
 ```
 
-## 7. Before pressing Submit
+## 7. Steps to publish
 
-- [ ] Create the app record in App Store Connect with bundle ID `com.alejandronewport.forge`.
-- [ ] Publish the privacy policy and a support page, and paste both URLs.
-- [ ] Upload the archive from the Organizer and wait for processing.
-- [ ] On a real device: grant and then deny Health, scan a real barcode, and let a rest timer finish
-      with the app in the background — the Simulator cannot exercise these.
-- [ ] Attach the screenshots, fill sections 2–6, select the build, submit.
+Everything below needs your Apple account or a public web page, so it is yours to do.
+
+1. **Publish the two web pages.** GitHub → the `Gym-App` repository → Settings → Pages → *Deploy from
+   a branch* → branch `main`, folder `/docs` → Save. Wait a minute, then open the two URLs in
+   section 3 and check they load. (Pages needs a public repository on a free plan. If you would
+   rather not, any host works — upload `docs/index.html`, `docs/privacy.html` and `docs/site.css`.)
+   If you want an email on the support page, add it to the Contact block of `docs/index.html`.
+2. **Create the app record.** [App Store Connect](https://appstoreconnect.apple.com) → My Apps → +
+   → New App. Platform iOS, languages English (primary) and Spanish, name *Forge: Workout &
+   Nutrition*, bundle ID `com.alejandronewport.forge`, SKU `forge-ios-1`.
+3. **Archive.** Xcode → open `GymApp.xcodeproj` → scheme *GymApp*, destination *Any iOS Device
+   (arm64)* → Product → Archive. (`Tools/regen.sh` first if you changed files.)
+4. **Upload.** Organizer → select the archive → Distribute App → App Store Connect → Upload →
+   keep the defaults (automatic signing, upload symbols). Wait for the "processing" email.
+5. **Fill the listing** from sections 2–6: subtitle, promotional text, description, keywords, URLs,
+   category, age rating, App Privacy (*Data Not Collected*), review notes.
+6. **Screenshots.** Upload from `Screenshots/` (section 3). They are generated, not drawn: rerun
+   `Tools/screenshots.sh --all-languages` after any visual change.
+7. **Select the build** under the version, answer export compliance (already declared: no
+   non-exempt encryption), and press **Add for Review → Submit**.
+
+Before step 4, on a real iPhone (the Simulator cannot do these):
+
+- [ ] Finish setup, tap *Turn on reminders* and accept; check Settings → Notifications shows it on.
+- [ ] Finish setup on a second install with *Not now*; check iOS never showed a permission prompt.
+- [ ] Start a workout, complete a set with the app in the background, and let the rest timer end.
+- [ ] Scan a real barcode; grant and then deny Health.
+
+For every later build, raise `CURRENT_PROJECT_VERSION` in `project.yml`, run `Tools/regen.sh`, and
+archive again.
