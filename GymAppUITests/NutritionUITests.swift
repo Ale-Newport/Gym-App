@@ -53,11 +53,12 @@ final class NutritionUITests: ForgeUITestCase {
         awaitExistence(addFood, "An add-food control on one of the meal sections")
         tap(addFood, "The add food control")
 
-        // The sheet opens on a source picker — Search, Recent, Favourites, Saved meals, Recipes,
-        // My foods — so the search source has to be chosen before there is a field to type in.
-        let searchSource = app.buttons["Search"]
+        // The sheet opens on the Search source, with the field already focused. The source chips are
+        // addressed by identifier: "Search" is also the keyboard's return key, so the label alone
+        // would match whichever of the two the query reaches first.
+        let searchSource = app.buttons["nutritionLog.tab.search"]
         awaitExistence(searchSource, "The Search source on the add-food sheet")
-        tap(searchSource, "The Search source")
+        XCTAssertTrue(searchSource.isSelected, "The add-food sheet did not open on the Search source.")
 
         // The bundled database answers offline, so a plain search is enough to reach a real food.
         let search = app.textFields["nutritionLog.searchField"]

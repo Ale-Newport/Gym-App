@@ -82,25 +82,32 @@ enum EN {
 
     enum Onboarding {
         static let welcomeTitle = "Welcome to Forge"
-        static let basicsTitle = "About you"
-        static let goalsTitle = "What you are training for"
-        static let experienceTitle = "Your background"
-        static let availabilityTitle = "Your week"
-        static let equipmentTitle = "What you train with"
-        static let restrictionsTitle = "Anything to avoid"
-        static let nutritionTitle = "Food"
-        static let summaryTitle = "Check it over"
+        static let aboutTitle = "About you"
+        static let goalTitle = "Your goal"
+        static let weekTitle = "Your week"
+        static let gearTitle = "Your equipment"
+        static let remindersTitle = "Stay on track"
+        static let readyTitle = "Your plan"
 
         static let start = "Get started"
-        static let build = "Build my program"
+        static let turnOnReminders = "Turn on reminders"
+        static let notNow = "Not now"
         static let finish = "Start training"
 
         static let goalBuildMuscle = "Build muscle"
-        static let goalsEmptyHint = "Pick at least one goal."
+        static let goalEmptyHint = "Pick a goal to continue."
 
-        static let programSection = "Your program"
-        static let noProgramTitle = "No program yet"
-        static let readyTitle = "Ready when you are"
+        static let weekSection = "Your week"
+        static let nutritionSection = "Your daily targets"
+    }
+
+    enum Tour {
+        static let skip = "Skip"
+        static let homeTitle = "Today at a glance"
+        static let workoutTitle = "Train in a tap"
+        static let exercisesTitle = "500 animated exercises"
+        static let nutritionTitle = "Log what you eat"
+        static let progressTitle = "See how you're doing"
     }
 
     enum Home {
@@ -378,6 +385,27 @@ class ForgeUITestCase: XCTestCase {
             .matching(NSPredicate(format: "label MATCHES[c] %@", pattern))
         guard query.count > 0 else { return nil }
         return query.element(boundBy: 0).label
+    }
+
+    /// The title of a top-level screen, which draws its own header instead of a navigation bar.
+    func screenTitle(_ title: String) -> XCUIElement {
+        app.staticTexts
+            .matching(identifier: "screenHeader.title")
+            .matching(NSPredicate(format: "label == %@", title))
+            .firstMatch
+    }
+
+    /// The exercise library's search field, which lives in the content now that the navigation bar
+    /// is hidden on tab roots.
+    var librarySearchField: XCUIElement { app.textFields["exercises.searchField"] }
+
+    /// Closes the first-run guide if it is on screen. A fresh install shows it over the main
+    /// screen, and it blocks every tap behind it.
+    func dismissGuidedTourIfPresented() {
+        let skip = app.buttons["tour.skip"]
+        guard skip.waitForExistence(timeout: Timeout.quick) else { return }
+        skip.tap()
+        _ = waitUntil("the guide closes", timeout: Timeout.standard) { !skip.exists }
     }
 
     /// Taps the leading item of the named navigation bar, which is its back button.

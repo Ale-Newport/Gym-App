@@ -20,16 +20,15 @@ final class NavigationUITests: ForgeUITestCase {
             XCTAssertTrue(selected, "Tapping the \(title) tab did not select it.")
         }
 
-        // Each tab that owns a screen names it in its navigation bar. Nutrition is deliberately not
-        // asserted on here: its screen is an unbuilt placeholder, which `NutritionUITests` reports.
+        // Each tab names its screen in its own header row.
         openTab(EN.Tab.workout)
-        awaitExistence(app.navigationBars[EN.WorkoutHub.title], "The Workout tab's screen")
+        awaitExistence(screenTitle(EN.WorkoutHub.title), "The Workout tab's screen")
 
         openTab(EN.Tab.exercises)
-        awaitExistence(app.navigationBars[EN.Exercises.title], "The Exercises tab's screen")
+        awaitExistence(screenTitle(EN.Exercises.title), "The Exercises tab's screen")
 
         openTab(EN.Tab.progress)
-        awaitExistence(app.navigationBars[EN.Progress.title], "The Progress tab's screen")
+        awaitExistence(screenTitle(EN.Progress.title), "The Progress tab's screen")
 
         openTab(EN.Tab.home)
         awaitExistence(app.buttons[EN.Home.profileButton], "The Home tab's screen")
@@ -51,9 +50,9 @@ final class NavigationUITests: ForgeUITestCase {
     func testOpeningAnExerciseFromTheLibraryShowsItsDetailScreen() {
         launch(.seasonedUser)
         openTab(EN.Tab.exercises)
-        awaitExistence(app.navigationBars[EN.Exercises.title], "The exercise library")
+        awaitExistence(screenTitle(EN.Exercises.title), "The exercise library")
 
-        let search = app.searchFields.firstMatch
+        let search = librarySearchField
         tap(search, "The library's search field")
         search.typeText(EN.Exercises.benchPressQuery)
 
@@ -84,9 +83,9 @@ final class NavigationUITests: ForgeUITestCase {
     func testSearchingForNothingShowsTheLibrarysEmptyState() {
         launch(.seasonedUser)
         openTab(EN.Tab.exercises)
-        awaitExistence(app.navigationBars[EN.Exercises.title], "The exercise library")
+        awaitExistence(screenTitle(EN.Exercises.title), "The exercise library")
 
-        let search = app.searchFields.firstMatch
+        let search = librarySearchField
         tap(search, "The library's search field")
         search.typeText("zzzzqqqq")
 

@@ -136,7 +136,7 @@ final class AppStoreScreenshotTests: ForgeUITestCase {
 
     private func captureWorkout() {
         launchForCapture(.seasonedUser, tab: "workout")
-        settle(app.navigationBars.firstMatch, "The Workout tab")
+        settle(app.staticTexts[ScreenHeaderAccessibility.title], "The Workout tab")
         capture(2, "workout-today")
         app.terminate()
     }
@@ -156,14 +156,14 @@ final class AppStoreScreenshotTests: ForgeUITestCase {
 
     private func captureExerciseLibrary() {
         launchForCapture(.seasonedUser, tab: "exercises")
-        settle(app.searchFields.firstMatch, "The exercise library")
+        settle(app.textFields[ExerciseRowIdentifier.searchField], "The exercise library")
         capture(4, "exercise-library")
         app.terminate()
     }
 
     private func captureExerciseDetail() {
         launchForCapture(.seasonedUser, tab: "exercises")
-        settle(app.searchFields.firstMatch, "The exercise library")
+        settle(app.textFields[ExerciseRowIdentifier.searchField], "The exercise library")
         let firstRow = app.buttons.matching(identifier: ExerciseRowIdentifier.row).firstMatch
         settle(firstRow, "The first exercise in the library")
         firstRow.tap()
@@ -185,7 +185,7 @@ final class AppStoreScreenshotTests: ForgeUITestCase {
 
     private func captureProgress() {
         launchForCapture(.seasonedUser, tab: "progress")
-        settle(app.navigationBars.firstMatch, "The Progress tab")
+        settle(app.staticTexts[ScreenHeaderAccessibility.title], "The Progress tab")
         capture(7, "progress")
         app.terminate()
     }
@@ -211,6 +211,13 @@ final class AppStoreScreenshotTests: ForgeUITestCase {
 enum ExerciseRowIdentifier {
     /// `ExerciseRowView.identifier`, in GymApp/Features/Shared/ExerciseComponents.swift.
     static let row = "exercise.row"
+    /// The library's search field, in GymApp/Features/Exercises/ExerciseLibraryView.swift.
+    static let searchField = "exercises.searchField"
+}
+
+enum ScreenHeaderAccessibility {
+    /// `ScreenHeaderAccessibility.title`, in GymApp/Core/DesignSystem/ScreenHeader.swift.
+    static let title = "screenHeader.title"
 }
 
 enum HomeAccessibility {
