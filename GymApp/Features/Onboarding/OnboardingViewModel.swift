@@ -4,25 +4,7 @@ import SwiftData
 
 // MARK: - Supporting value types
 
-/// One self-reported strength marker while it is being typed. Loads are held canonically in
-/// kilograms; the field the user sees converts at the edge like everything else.
-struct StrengthSeedDraft: Hashable, Sendable {
-    var weightKg: Double?
-    var reps: Int?
-
-    /// A seed is only worth storing when both halves are present: a load with no rep count says
-    /// nothing about strength, and `LoadEstimator` would have to invent the missing half.
-    var isUsable: Bool { (weightKg ?? 0) > 0 && (reps ?? 0) > 0 }
-}
-
-/// A benchmark lift matched against the catalogue, ready to be offered as a strength seed.
-struct StrengthSeedOption: Identifiable, Hashable, Sendable {
-    var labelKey: String
-    var exercise: Exercise
-    var id: String { exercise.id }
-}
-
-/// What the generation step produced, kept as plain values so the review screen can render the
+/// What the generation step produced, kept as plain values so the result screen can render the
 /// program without touching SwiftData a second time.
 struct OnboardingProgramResult: Hashable, Sendable {
     var programTitle: String
@@ -53,6 +35,23 @@ enum OnboardingGenerationState: Hashable, Sendable {
     var isRunning: Bool { self == .running }
 }
 
+/// What the user decided about notifications, which is a different thing from what iOS allows.
+///
+/// Reminders are only ever switched on after the user said yes on our own screen *and* iOS said
+/// yes to the system prompt. The two answers are kept apart so a refusal at either gate is
+/// recorded as exactly that, and so the interface never shows a reminder as enabled while the
+/// system is dropping it.
+enum OnboardingNotificationOutcome: Hashable, Sendable {
+    /// The reminders step has not been answered yet.
+    case notAsked
+    /// The user chose not to receive reminders. iOS was not asked.
+    case declined
+    /// The user said yes and iOS refused (now or earlier).
+    case deniedBySystem
+    /// The user said yes and iOS agreed.
+    case granted
+}
+
 // MARK: - View model
 
 /// Owns every answer the onboarding flow collects, the rules that decide when an answer is usable,
@@ -61,11 +60,15 @@ enum OnboardingGenerationState: Hashable, Sendable {
 /// The draft is held here rather than in the step views for one reason: the answers are
 /// interdependent. Training days change the split, equipment changes which exercises exist, the
 /// goal changes the calorie direction. A step view that owned its own slice of state could not see
-/// those relationships, and the review screen could not show them back.
+/// those relationships.
 ///
 /// Answers are written to the store as each step is left, not batched at the end. Onboarding is the
 /// longest uninterrupted stretch of typing the app will ever ask for, and losing it to a phone call
 /// is not a failure mode worth designing in.
+///
+/// Fields the flow does not ask about — plate sizes, diet, exclusions, strength seeds — are never
+/// touched: they keep whatever the profile already holds, so re-running the flow from Settings
+/// cannot overwrite a refinement made there.
 @MainActor
 @Observable
 final class OnboardingViewModel {
@@ -78,18 +81,15 @@ final class OnboardingViewModel {
     private var didLoad = false
 
     /// Set when the user walks back into a question after a program has already been built, so the
-    /// generation step knows the plan on file no longer matches the answers on screen.
+    /// result step knows the plan on file no longer matches the answers on screen.
     private(set) var needsRegeneration = false
 
     /// A persistence failure, shown inline with a retry rather than as an alert.
     var errorMessage: String?
 
-    // MARK: Draft — identity and body
+    // MARK: Draft — about you
 
     var name: String = ""
-    /// Date of birth is optional, and the nutrition engine says so in its own explanation when it is
-    /// missing rather than quietly assuming an age.
-    var wantsBirthDate: Bool = true
     var birthDate: Date = OnboardingViewModel.defaultBirthDate
     var biologicalSex: BiologicalSex = .unspecified
 
@@ -100,28 +100,24 @@ final class OnboardingViewModel {
 
     var heightCm: Double? = 175
     var currentWeightKg: Double? = 75
-    var wantsTargetWeight: Bool = false
-    var targetWeightKg: Double?
 
-    // MARK: Draft — goals
+    // MARK: Draft — goal and level
 
     /// Ordered: the first goal is the primary one and drives the rep ranges and the energy balance.
+    /// The flow offers one choice; a profile that already holds more keeps them until a different
+    /// goal is picked.
     var goals: [TrainingGoal] = []
     var priorityGroups: [MuscleGroup] = []
     var priorityRegions: [TrainingFocusRegion] = []
-
-    // MARK: Draft — experience
+    var nutritionEnabled = true
 
     var experience: ExperienceLevel = .beginner {
         didSet { if experience != oldValue { alignTrainingMonths(to: experience, from: oldValue) } }
     }
     var trainingMonths: Int? = 6
     var techniqueConfidence: TechniqueConfidence = .learning
-    var wantsStrengthSeeds = false
-    var strengthSeeds: [String: StrengthSeedDraft] = [:]
-    private(set) var strengthSeedOptions: [StrengthSeedOption] = []
 
-    // MARK: Draft — availability
+    // MARK: Draft — week
 
     var availableWeekdays: Set<Weekday> = Set(OnboardingSchedule.suggestedWeekdays(count: 3))
     var sessionMinutes: Int = 60
@@ -129,7 +125,7 @@ final class OnboardingViewModel {
     var cardioPreference: CardioPreference = .either
     var activityLevel: ActivityLevel = .moderate
 
-    // MARK: Draft — equipment
+    // MARK: Draft — gear
 
     var equipmentPreset: GymSetupPreset = .fullGym
     var selectedEquipment: Set<Equipment> = Equipment.fullGym
@@ -141,24 +137,15 @@ final class OnboardingViewModel {
     var machineIncrementKg: Double? = 5
     var cableIncrementKg: Double? = 2.5
 
-    // MARK: Draft — restrictions
-
     var mobilityLimitations: Set<MobilityLimitation> = []
     var avoidedPatterns: Set<MovementPattern> = []
-    var excludedExerciseIDs: [String] = []
 
-    // MARK: Draft — nutrition
+    // MARK: Draft — reminders
 
-    var nutritionEnabled = true
-    var dietType: DietType = .omnivore
-    var allergenTags: Set<String> = []
-    var intoleranceTags: Set<String> = []
-    var excludedFoodTags: Set<String> = []
-    var customFoodTags: [String] = []
-    var mealsPerDay: Int = 4
-    var nutritionPace: NutritionGoalPace = .moderate
-    var wantsBudget = false
-    var weeklyFoodBudget: Double?
+    var wantsTrainingReminder = true
+    var reminderTime: Date = OnboardingViewModel.time(hour: OnboardingSchedule.defaultReminderHour, minute: 0)
+    var wantsRestAlert = true
+    private(set) var notificationOutcome: OnboardingNotificationOutcome = .notAsked
 
     // MARK: Generation
 
@@ -166,6 +153,13 @@ final class OnboardingViewModel {
 
     private static var defaultBirthDate: Date {
         Calendar.current.date(byAdding: .year, value: -30, to: Date()) ?? Date()
+    }
+
+    private static func time(hour: Int, minute: Int) -> Date {
+        var components = DateComponents()
+        components.hour = hour
+        components.minute = minute
+        return Calendar.current.date(from: components) ?? Date()
     }
 
     // MARK: - Loading
@@ -196,13 +190,10 @@ final class OnboardingViewModel {
             step = plan.first
 
             name = profile.name ?? ""
-            wantsBirthDate = profile.birthDate != nil
             birthDate = profile.birthDate ?? Self.defaultBirthDate
             biologicalSex = profile.biologicalSex
             heightCm = profile.heightCm
             currentWeightKg = profile.currentWeightKg
-            targetWeightKg = profile.targetWeightKg
-            wantsTargetWeight = profile.targetWeightKg != nil
 
             goals = profile.goals
             priorityGroups = profile.priorityGroups
@@ -211,11 +202,6 @@ final class OnboardingViewModel {
             experience = profile.experience
             trainingMonths = profile.trainingExperienceMonths
             techniqueConfidence = profile.techniqueConfidence
-            strengthSeeds = Dictionary(
-                profile.strengthSeeds.map { ($0.exerciseID, StrengthSeedDraft(weightKg: $0.weightKg, reps: $0.reps)) },
-                uniquingKeysWith: { first, _ in first }
-            )
-            wantsStrengthSeeds = !strengthSeeds.isEmpty
 
             if !profile.availableWeekdays.isEmpty { availableWeekdays = Set(profile.availableWeekdays) }
             sessionMinutes = profile.sessionMinutesCap
@@ -236,51 +222,25 @@ final class OnboardingViewModel {
 
             mobilityLimitations = Set(profile.mobilityLimitations)
             avoidedPatterns = Set(profile.avoidedMovementPatterns)
-            excludedExerciseIDs = profile.excludedExerciseIDs
 
-            dietType = profile.dietType
-            allergenTags = Set(profile.allergenTags)
-            intoleranceTags = Set(profile.intoleranceTags)
-            excludedFoodTags = Set(profile.excludedFoodTags)
-            customFoodTags = profile.excludedFoodTags.filter { !OnboardingOptions.excludableFoodTags.contains($0) }
-            mealsPerDay = profile.mealsPerDay
-            nutritionPace = profile.nutritionPace
-            weeklyFoodBudget = profile.weeklyFoodBudget
-            wantsBudget = profile.weeklyFoodBudget != nil
+            if isReturningUser {
+                wantsTrainingReminder = settings.trainingReminderEnabled
+                reminderTime = Self.time(hour: settings.trainingReminderHour, minute: settings.trainingReminderMinute)
+                wantsRestAlert = settings.restTimerNotificationEnabled
+                notificationOutcome = settings.notificationsEnabled ? .granted : .notAsked
+            }
         } catch {
             errorMessage = Self.message(for: error)
         }
     }
 
-    /// Matches the benchmark lifts against the loaded catalogue. Cheap, and idempotent.
-    func prepareStrengthSeeds(catalog: ExerciseCatalog) {
-        guard strengthSeedOptions.isEmpty, catalog.isLoaded else { return }
-        var used = Set<String>()
-        var options: [StrengthSeedOption] = []
-        for entry in OnboardingOptions.strengthSeedQueries {
-            for term in entry.terms {
-                let matches = catalog.search(term, limit: 12).filter { !used.contains($0.id) }
-                // Prefer a result whose name actually contains the phrase; the search index is
-                // fuzzy on purpose and its best score is not always the canonical lift.
-                let match = matches.first { $0.name.localizedCaseInsensitiveContains(term) } ?? matches.first
-                if let match {
-                    used.insert(match.id)
-                    options.append(StrengthSeedOption(labelKey: entry.labelKey, exercise: match))
-                    break
-                }
-            }
-        }
-        strengthSeedOptions = options
-    }
-
     // MARK: - Navigation
 
     var canGoBack: Bool { plan.previous(before: step) != nil }
-    var canSkip: Bool { step.isSkippable }
 
     var progress: Double { plan.progress(at: step) }
 
-    /// "Step 3 of 7", or `nil` on the screens that ask nothing.
+    /// "Step 3 of 5", or `nil` on the screens that ask nothing.
     var stepCounter: String? {
         guard let number = plan.questionNumber(of: step) else { return nil }
         return L("onboarding.progress.counter", number, plan.questionCount)
@@ -310,22 +270,9 @@ final class OnboardingViewModel {
         move(to: previous)
     }
 
-    /// Moves past an optional step without demanding an answer.
-    func skip(context: ModelContext) {
-        guard step.isSkippable, let next = plan.next(after: step) else { return }
-        _ = persist(step, context: context)
-        move(to: next)
-    }
-
-    /// Jumps straight to a step. Used by the review screen's per-section edit buttons.
-    func jump(to destination: OnboardingStep) {
-        guard plan.steps.contains(destination) else { return }
-        move(to: destination)
-    }
-
     private func move(to destination: OnboardingStep) {
         // Editing an answer after the program exists invalidates it. The flag is what makes the
-        // generation step re-run instead of showing a plan built from superseded answers.
+        // result step re-run instead of showing a plan built from superseded answers.
         if destination.collectsInput, generation.result != nil {
             needsRegeneration = true
         }
@@ -337,9 +284,8 @@ final class OnboardingViewModel {
 
     /// Field order used to pick which of several problems to name first.
     private static let fieldOrder = [
-        "heightCm", "currentWeightKg", "targetWeightKg", "birthDate", "goals", "priorityGroups",
-        "availableWeekdays", "sessionMinutes", "selectedEquipment", "plates", "machineIncrementKg",
-        "cableIncrementKg", "barbellBarWeightKg", "ezBarWeightKg", "mealsPerDay", "weeklyFoodBudget"
+        "heightCm", "currentWeightKg", "birthDate", "goals", "priorityGroups",
+        "availableWeekdays", "sessionMinutes", "selectedEquipment"
     ]
 
     /// Every problem on `step`, keyed by the field it belongs to, so a control can show its own hint
@@ -347,32 +293,26 @@ final class OnboardingViewModel {
     func issues(for step: OnboardingStep) -> [String: String] {
         var issues: [String: String] = [:]
         switch step {
-        case .basics:
+        case .about:
             if let message = rangeIssue(heightCm, range: InputValidation.heightCm, unitKey: "onboarding.unit.cm") {
                 issues["heightCm"] = message
             }
             if let message = rangeIssue(currentWeightKg, range: InputValidation.bodyMassKg, unitKey: "onboarding.unit.kg") {
                 issues["currentWeightKg"] = message
             }
-            if wantsTargetWeight,
-               let message = rangeIssue(targetWeightKg, range: InputValidation.bodyMassKg, unitKey: "onboarding.unit.kg") {
-                issues["targetWeightKg"] = message
+            let years = Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year ?? -1
+            if !InputValidation.ageYears.contains(years) {
+                issues["birthDate"] = L(
+                    "start.hint.age",
+                    InputValidation.ageYears.lowerBound, InputValidation.ageYears.upperBound
+                )
             }
-            if wantsBirthDate {
-                let years = Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year ?? -1
-                if !InputValidation.ageYears.contains(years) {
-                    issues["birthDate"] = L(
-                        "onboarding.hint.age",
-                        InputValidation.ageYears.lowerBound, InputValidation.ageYears.upperBound
-                    )
-                }
-            }
-        case .goals:
-            if goals.isEmpty { issues["goals"] = L("onboarding.hint.goalsEmpty") }
+        case .goal:
+            if goals.isEmpty { issues["goals"] = L("start.hint.goalEmpty") }
             if goals.contains(.targetMuscleGroup), priorityGroups.isEmpty, priorityRegions.isEmpty {
                 issues["priorityGroups"] = L("onboarding.hint.priorityRequired")
             }
-        case .availability:
+        case .week:
             if availableWeekdays.isEmpty { issues["availableWeekdays"] = L("onboarding.hint.daysEmpty") }
             if !InputValidation.sessionMinutes.contains(sessionMinutes) {
                 issues["sessionMinutes"] = L(
@@ -380,38 +320,9 @@ final class OnboardingViewModel {
                     InputValidation.sessionMinutes.lowerBound, InputValidation.sessionMinutes.upperBound
                 )
             }
-        case .equipment:
+        case .gear:
             if selectedEquipment.isEmpty { issues["selectedEquipment"] = L("onboarding.hint.equipmentEmpty") }
-            if usesBarbell, selectedPlatesKg.isEmpty { issues["plates"] = L("onboarding.hint.platesEmpty") }
-            if usesBarbell,
-               let message = rangeIssue(barbellBarWeightKg, range: InputValidation.loadKg, unitKey: "onboarding.unit.kg") {
-                issues["barbellBarWeightKg"] = message
-            }
-            if selectedEquipment.contains(.ezBarbell),
-               let message = rangeIssue(ezBarWeightKg, range: InputValidation.loadKg, unitKey: "onboarding.unit.kg") {
-                issues["ezBarWeightKg"] = message
-            }
-            if usesMachines, let message = incrementIssue(machineIncrementKg) {
-                issues["machineIncrementKg"] = message
-            }
-            if selectedEquipment.contains(.cable), let message = incrementIssue(cableIncrementKg) {
-                issues["cableIncrementKg"] = message
-            }
-        case .nutrition:
-            guard nutritionEnabled else { break }
-            if !InputValidation.mealsPerDay.contains(mealsPerDay) {
-                issues["mealsPerDay"] = L(
-                    "onboarding.hint.mealsPerDay",
-                    InputValidation.mealsPerDay.lowerBound, InputValidation.mealsPerDay.upperBound
-                )
-            }
-            if wantsBudget, let budget = weeklyFoodBudget, !budget.isFinite || budget <= 0 {
-                issues["weeklyFoodBudget"] = L("onboarding.hint.budget")
-            }
-            if wantsBudget, weeklyFoodBudget == nil {
-                issues["weeklyFoodBudget"] = L("onboarding.hint.budget")
-            }
-        case .welcome, .experience, .restrictions, .generating, .summary:
+        case .welcome, .reminders, .ready:
             break
         }
         return issues
@@ -435,43 +346,9 @@ final class OnboardingViewModel {
         return L("onboarding.hint.range", lower, upper, L(unitKey))
     }
 
-    private func incrementIssue(_ value: Double?) -> String? {
-        guard let value, value.isFinite else { return L("onboarding.hint.missingNumber") }
-        guard !InputValidation.loadIncrementKg.contains(value) else { return nil }
-        let lower = Units.formatWeight(
-            kilograms: InputValidation.loadIncrementKg.lowerBound, unit: weightUnit, includeUnit: false, fractionDigits: 2
-        )
-        let upper = Units.formatWeight(
-            kilograms: InputValidation.loadIncrementKg.upperBound, unit: weightUnit, includeUnit: false, fractionDigits: 0
-        )
-        return L("onboarding.hint.range", lower, upper, weightUnit.rawValue)
-    }
-
     // MARK: - Derived answers
 
     var daysPerWeek: Int { max(1, availableWeekdays.count) }
-
-    var usesBarbell: Bool {
-        !selectedEquipment.isDisjoint(with: [.barbell, .olympicBarbell, .trapBar, .smithMachine])
-    }
-
-    var usesMachines: Bool {
-        !selectedEquipment.isDisjoint(with: [.leverageMachine, .sledMachine])
-    }
-
-    var usesDumbbells: Bool { selectedEquipment.contains(.dumbbell) }
-    var usesKettlebells: Bool { selectedEquipment.contains(.kettlebell) }
-
-    /// Groups and regions merged, in the order the user picked them, for the review screen.
-    var resolvedPriorityGroups: [MuscleGroup] {
-        var seen = Set<MuscleGroup>()
-        var result: [MuscleGroup] = []
-        for group in priorityGroups where seen.insert(group).inserted { result.append(group) }
-        for region in priorityRegions {
-            for group in region.groups where seen.insert(group).inserted { result.append(group) }
-        }
-        return result
-    }
 
     /// How many exercises the current equipment selection makes available. Every exercise in the
     /// dataset carries exactly one piece of equipment, so summing the per-equipment counts is exact
@@ -480,26 +357,20 @@ final class OnboardingViewModel {
         equipment.reduce(0) { $0 + catalog.count(forEquipment: $1) }
     }
 
-    func unlockedExerciseCount(catalog: ExerciseCatalog) -> Int {
-        exerciseCount(for: selectedEquipment, catalog: catalog)
-    }
-
-    /// Patterns already ruled out by the mobility answers, which the pattern picker shows as
-    /// pre-selected and locked so the user is not asked the same question twice.
-    var patternsImpliedByLimitations: Set<MovementPattern> {
-        mobilityLimitations.reduce(into: Set<MovementPattern>()) { $0.formUnion($1.blockedPatterns) }
-    }
+    /// True when the user has said yes to at least one reminder on our own screen.
+    var wantsAnyReminder: Bool { wantsTrainingReminder || wantsRestAlert }
 
     // MARK: - Draft mutation
 
-    func toggleGoal(_ goal: TrainingGoal) {
-        if let index = goals.firstIndex(of: goal) {
-            goals.remove(at: index)
-        } else {
-            // Four goals is already more than a single program can serve; past that the engine is
-            // being asked to optimise for everything, which optimises for nothing.
-            guard goals.count < 4 else { return }
-            goals.append(goal)
+    /// Makes `goal` the one goal. A different choice replaces the whole list, because the flow
+    /// shows a single selection and a hidden second goal would shape a program the user never saw
+    /// themselves ask for.
+    func selectGoal(_ goal: TrainingGoal) {
+        guard goals.first != goal || goals.count > 1 else { return }
+        goals = [goal]
+        if goal != .targetMuscleGroup {
+            priorityGroups = []
+            priorityRegions = []
         }
     }
 
@@ -508,14 +379,6 @@ final class OnboardingViewModel {
             priorityGroups.remove(at: index)
         } else if priorityGroups.count < 4 {
             priorityGroups.append(group)
-        }
-    }
-
-    func togglePriorityRegion(_ region: TrainingFocusRegion) {
-        if let index = priorityRegions.firstIndex(of: region) {
-            priorityRegions.remove(at: index)
-        } else if priorityRegions.count < 2 {
-            priorityRegions.append(region)
         }
     }
 
@@ -544,84 +407,46 @@ final class OnboardingViewModel {
         selectedEquipment = preset.equipment
     }
 
-    func toggleEquipment(_ item: Equipment) {
-        if selectedEquipment.contains(item) {
-            selectedEquipment.remove(item)
-        } else {
-            selectedEquipment.insert(item)
-        }
-        // Bodyweight is always true of a human being; letting it be switched off produces a profile
-        // where the selector legitimately has nothing to return.
-        selectedEquipment.insert(.bodyWeight)
-        equipmentPreset = .custom
-    }
-
     func toggleLimitation(_ limitation: MobilityLimitation) {
         if mobilityLimitations.contains(limitation) {
             mobilityLimitations.remove(limitation)
         } else {
             mobilityLimitations.insert(limitation)
         }
-        // Patterns implied by a limitation are derived, never stored twice: dropping them from the
-        // explicit set keeps "what the user chose" and "what follows from it" separable.
-        avoidedPatterns.subtract(patternsImpliedByLimitations)
     }
 
-    func togglePattern(_ pattern: MovementPattern) {
-        guard !patternsImpliedByLimitations.contains(pattern) else { return }
-        if avoidedPatterns.contains(pattern) {
-            avoidedPatterns.remove(pattern)
-        } else {
-            avoidedPatterns.insert(pattern)
-        }
-    }
-
-    func toggleExcludedExercise(_ id: String) {
-        if let index = excludedExerciseIDs.firstIndex(of: id) {
-            excludedExerciseIDs.remove(at: index)
-        } else {
-            excludedExerciseIDs.append(id)
-        }
-    }
-
-    func toggleTag(_ tag: String, in set: ReferenceWritableKeyPath<OnboardingViewModel, Set<String>>) {
-        if self[keyPath: set].contains(tag) {
-            self[keyPath: set].remove(tag)
-        } else {
-            self[keyPath: set].insert(tag)
-        }
-    }
-
-    func addCustomFoodTag(_ raw: String) {
-        let cleaned = InputValidation.normalisedTags([raw])
-        guard let tag = cleaned.first, !customFoodTags.contains(tag) else { return }
-        customFoodTags.append(tag)
-        excludedFoodTags.insert(tag)
-    }
-
-    func removeCustomFoodTag(_ tag: String) {
-        customFoodTags.removeAll { $0 == tag }
-        excludedFoodTags.remove(tag)
-    }
-
-    /// Clears the optional strength seeds. Wired to the section's Skip control.
-    func clearStrengthSeeds() {
-        strengthSeeds = [:]
-        wantsStrengthSeeds = false
+    /// Records the answer to the reminders step. Called by the view once the system prompt, if it
+    /// was needed, has been answered.
+    func recordNotificationOutcome(_ outcome: OnboardingNotificationOutcome) {
+        notificationOutcome = outcome
     }
 
     // MARK: - Unit-aware bindings
 
     /// Everything below converts at the presentation edge. The draft itself never holds a pound.
 
+    /// Metric or imperial as one choice. People think in systems, not in a mass unit and a length
+    /// unit, and offering the two separately only invites "kilograms and feet".
+    var unitSystem: UnitSystem {
+        get { weightUnit == .kilograms ? .metric : .imperial }
+        set {
+            weightUnit = newValue == .metric ? .kilograms : .pounds
+            heightUnit = newValue == .metric ? .centimeters : .feetInches
+        }
+    }
+
+    /// Whole years, derived from the birth date the profile stores. Setting it re-derives the date.
+    var ageYears: Int? {
+        get { Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year }
+        set {
+            guard let newValue else { return }
+            birthDate = Calendar.current.date(byAdding: .year, value: -newValue, to: Date()) ?? birthDate
+        }
+    }
+
     var currentWeightDisplay: Double? {
         get { currentWeightKg.map { Units.display(kilograms: $0, unit: weightUnit) } }
         set { currentWeightKg = newValue.map { Units.kilograms(fromDisplay: $0, unit: weightUnit) } }
-    }
-
-    var targetWeightDisplay: Double? {
-        get { targetWeightKg.map { Units.display(kilograms: $0, unit: weightUnit) } }
-        set { targetWeightKg = newValue.map { Units.kilograms(fromDisplay: $0, unit: weightUnit) } }
     }
 
     var heightFeet: Int? {
@@ -643,84 +468,10 @@ final class OnboardingViewModel {
         }
     }
 
-    var barbellBarWeightDisplay: Double? {
-        get { barbellBarWeightKg.map { Units.display(kilograms: $0, unit: weightUnit) } }
-        set { barbellBarWeightKg = newValue.map { Units.kilograms(fromDisplay: $0, unit: weightUnit) } }
-    }
-
-    var ezBarWeightDisplay: Double? {
-        get { ezBarWeightKg.map { Units.display(kilograms: $0, unit: weightUnit) } }
-        set { ezBarWeightKg = newValue.map { Units.kilograms(fromDisplay: $0, unit: weightUnit) } }
-    }
-
-    var machineIncrementDisplay: Double? {
-        get { machineIncrementKg.map { Units.display(kilograms: $0, unit: weightUnit) } }
-        set { machineIncrementKg = newValue.map { Units.kilograms(fromDisplay: $0, unit: weightUnit) } }
-    }
-
-    var cableIncrementDisplay: Double? {
-        get { cableIncrementKg.map { Units.display(kilograms: $0, unit: weightUnit) } }
-        set { cableIncrementKg = newValue.map { Units.kilograms(fromDisplay: $0, unit: weightUnit) } }
-    }
-
-    func seedWeightDisplay(for exerciseID: String) -> Double? {
-        strengthSeeds[exerciseID]?.weightKg.map { Units.display(kilograms: $0, unit: weightUnit) }
-    }
-
-    func setSeedWeightDisplay(_ value: Double?, for exerciseID: String) {
-        var draft = strengthSeeds[exerciseID] ?? StrengthSeedDraft()
-        draft.weightKg = value.map { Units.kilograms(fromDisplay: $0, unit: weightUnit) }
-        strengthSeeds[exerciseID] = draft
-    }
-
-    func setSeedReps(_ value: Int?, for exerciseID: String) {
-        var draft = strengthSeeds[exerciseID] ?? StrengthSeedDraft()
-        draft.reps = value.map { InputValidation.clampedReps($0) }
-        strengthSeeds[exerciseID] = draft
-    }
-
-    /// The plate sizes offered, in the user's own unit. A gym stocked in pounds has 45s and 35s, not
-    /// 20 kg plates, so offering the metric ladder to an imperial user is offering the wrong gym.
-    var plateOptionsKg: [Double] {
-        weightUnit == .kilograms
-            ? OnboardingOptions.plateOptionsKg
-            : OnboardingOptions.plateOptionsLb.map { $0 * WeightUnit.pounds.kilogramsPerUnit }
-    }
-
-    var dumbbellStepOptionsKg: [Double] {
-        weightUnit == .kilograms
-            ? OnboardingOptions.dumbbellStepOptionsKg
-            : OnboardingOptions.dumbbellStepOptionsLb.map { $0 * WeightUnit.pounds.kilogramsPerUnit }
-    }
-
-    var kettlebellOptionsKg: [Double] {
-        weightUnit == .kilograms
-            ? OnboardingOptions.kettlebellOptionsKg
-            : OnboardingOptions.kettlebellOptionsLb.map { $0 * WeightUnit.pounds.kilogramsPerUnit }
-    }
-
-    func togglePlate(_ kilograms: Double) {
-        if let existing = selectedPlatesKg.first(where: { abs($0 - kilograms) < 0.001 }) {
-            selectedPlatesKg.remove(existing)
-        } else {
-            selectedPlatesKg.insert(kilograms)
-        }
-    }
-
-    func isPlateSelected(_ kilograms: Double) -> Bool {
-        selectedPlatesKg.contains { abs($0 - kilograms) < 0.001 }
-    }
-
-    func toggleKettlebell(_ kilograms: Double) {
-        if let existing = kettlebellsKg.first(where: { abs($0 - kilograms) < 0.001 }) {
-            kettlebellsKg.remove(existing)
-        } else {
-            kettlebellsKg.insert(kilograms)
-        }
-    }
-
-    func isKettlebellSelected(_ kilograms: Double) -> Bool {
-        kettlebellsKg.contains { abs($0 - kilograms) < 0.001 }
+    /// The time the reminder fires, as hour and minute components.
+    var reminderComponents: (hour: Int, minute: Int) {
+        let parts = Calendar.current.dateComponents([.hour, .minute], from: reminderTime)
+        return (parts.hour ?? OnboardingSchedule.defaultReminderHour, parts.minute ?? 0)
     }
 
     /// Swapping units re-seeds the gym's hardware, because the hardware genuinely differs: a pound
@@ -734,7 +485,7 @@ final class OnboardingViewModel {
             cableIncrementKg = 5 * poundsPerKg
             dumbbellStepKg = 5 * poundsPerKg
             selectedPlatesKg = Set([45, 35, 25, 10, 5, 2.5].map { $0 * poundsPerKg })
-            kettlebellsKg = Set(OnboardingOptions.kettlebellOptionsLb.map { $0 * poundsPerKg })
+            kettlebellsKg = Set([10, 15, 20, 25, 35, 45, 55, 70].map { $0 * poundsPerKg })
         } else {
             barbellBarWeightKg = 20
             ezBarWeightKg = 10
@@ -747,15 +498,23 @@ final class OnboardingViewModel {
         AppLog.app.debug("Onboarding units changed from \(previous.rawValue, privacy: .public) to \(self.weightUnit.rawValue, privacy: .public)")
     }
 
-    /// Keeps the months-of-training figure honest when the level changes: somebody who has just
-    /// said they have never trained should not be left holding "6 months".
+    /// Keeps the months-of-training figure and the technique answer honest when the level changes:
+    /// somebody who has just said they have never trained should not be left holding "6 months",
+    /// and somebody who says "advanced" should not be programmed as still learning the lifts.
     private func alignTrainingMonths(to level: ExperienceLevel, from previous: ExperienceLevel) {
         switch level {
-        case .never: trainingMonths = 0
-        case .beginner where (trainingMonths ?? 0) == 0 || previous == .never: trainingMonths = 6
-        case .intermediate where (trainingMonths ?? 0) < 12: trainingMonths = 18
-        case .advanced where (trainingMonths ?? 0) < 36: trainingMonths = 48
-        default: break
+        case .never:
+            trainingMonths = 0
+            techniqueConfidence = .unfamiliar
+        case .beginner:
+            if (trainingMonths ?? 0) == 0 || previous == .never { trainingMonths = 6 }
+            techniqueConfidence = .learning
+        case .intermediate:
+            if (trainingMonths ?? 0) < 12 { trainingMonths = 18 }
+            techniqueConfidence = .confident
+        case .advanced:
+            if (trainingMonths ?? 0) < 36 { trainingMonths = 48 }
+            techniqueConfidence = .confident
         }
     }
 
@@ -777,18 +536,18 @@ final class OnboardingViewModel {
         let repository = ProfileRepository(context: context)
         do {
             switch step {
-            case .welcome, .generating, .summary:
+            case .welcome, .ready:
                 break
-            case .basics:
+            case .about:
                 try repository.updateIdentity(
                     name: .some(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : name),
-                    birthDate: .some(wantsBirthDate ? birthDate : nil),
+                    birthDate: .some(birthDate),
                     biologicalSex: biologicalSex
                 )
+                // The target weight is not asked here; leaving it out keeps whatever is on file.
                 try repository.updateBodyMetrics(
                     heightCm: heightCm,
-                    currentWeightKg: currentWeightKg,
-                    targetWeightKg: .some(wantsTargetWeight ? targetWeightKg : nil)
+                    currentWeightKg: currentWeightKg
                 )
                 try repository.updateSettings { settings in
                     settings.weightUnit = self.weightUnit
@@ -797,20 +556,23 @@ final class OnboardingViewModel {
                     // mass unit is what every user expects and none of them wants to be asked.
                     settings.distanceUnit = self.weightUnit == .kilograms ? .kilometers : .miles
                 }
-            case .goals:
+            case .goal:
                 try repository.updateGoals(
                     goals: goals,
                     priorityGroups: priorityGroups,
                     priorityRegions: priorityRegions
                 )
-            case .experience:
                 try repository.updateExperience(
                     level: experience,
                     months: trainingMonths ?? 0,
                     techniqueConfidence: techniqueConfidence
                 )
-                try persistStrengthSeeds(repository)
-            case .availability:
+                try repository.updateSettings { settings in
+                    settings.nutritionEnabled = self.nutritionEnabled
+                    settings.dynamicCalorieAdjustmentEnabled = self.nutritionEnabled
+                    settings.waterTrackingEnabled = self.nutritionEnabled
+                }
+            case .week:
                 try repository.updateAvailability(
                     weekdays: Array(availableWeekdays),
                     sessionMinutesCap: sessionMinutes,
@@ -818,11 +580,7 @@ final class OnboardingViewModel {
                     cardioPreference: cardioPreference
                 )
                 try repository.updateGoals(activityLevel: activityLevel)
-                try repository.updateSettings { settings in
-                    settings.trainingReminderHour = self.preferredTrainingTime.reminderHour
-                    settings.trainingReminderMinute = 0
-                }
-            case .equipment:
+            case .gear:
                 try repository.updateEquipment(preset: equipmentPreset, availableEquipment: selectedEquipment)
                 try repository.updateIncrements(
                     barbellBarWeightKg: barbellBarWeightKg,
@@ -833,26 +591,21 @@ final class OnboardingViewModel {
                     machineIncrementKg: machineIncrementKg,
                     cableIncrementKg: cableIncrementKg
                 )
-            case .restrictions:
                 try repository.updateRestrictions(
                     mobilityLimitations: Array(mobilityLimitations),
                     avoidedPatterns: Array(avoidedPatterns)
                 )
-                try repository.setExcludedExerciseIDs(excludedExerciseIDs)
-            case .nutrition:
-                try repository.updateNutritionPreferences(
-                    dietType: dietType,
-                    allergenTags: Array(allergenTags),
-                    intoleranceTags: Array(intoleranceTags),
-                    excludedFoodTags: Array(excludedFoodTags),
-                    mealsPerDay: mealsPerDay,
-                    pace: nutritionPace,
-                    weeklyFoodBudget: .some(wantsBudget ? weeklyFoodBudget : nil)
-                )
+            case .reminders:
+                // Nothing is switched on without consent on both gates: the user's yes on our
+                // screen and the system's yes at its prompt.
+                let isGranted = notificationOutcome == .granted
+                let time = reminderComponents
                 try repository.updateSettings { settings in
-                    settings.nutritionEnabled = self.nutritionEnabled
-                    settings.dynamicCalorieAdjustmentEnabled = self.nutritionEnabled
-                    settings.waterTrackingEnabled = self.nutritionEnabled
+                    settings.notificationsEnabled = isGranted
+                    settings.trainingReminderEnabled = isGranted && self.wantsTrainingReminder
+                    settings.trainingReminderHour = time.hour
+                    settings.trainingReminderMinute = time.minute
+                    settings.restTimerNotificationEnabled = self.wantsRestAlert
                 }
             }
             errorMessage = nil
@@ -864,19 +617,8 @@ final class OnboardingViewModel {
         }
     }
 
-    private func persistStrengthSeeds(_ repository: ProfileRepository) throws {
-        for option in strengthSeedOptions {
-            let draft = strengthSeeds[option.exercise.id]
-            if wantsStrengthSeeds, let draft, draft.isUsable, let weight = draft.weightKg, let reps = draft.reps {
-                try repository.upsertStrengthSeed(exerciseID: option.exercise.id, weightKg: weight, reps: reps)
-            } else {
-                try repository.removeStrengthSeed(exerciseID: option.exercise.id)
-            }
-        }
-    }
-
     /// Re-writes every step. Used before generating and before finishing, so a step the user jumped
-    /// over from the review screen can never be the one answer that never reached the store.
+    /// over can never be the one answer that never reached the store.
     @discardableResult
     func persistAll(context: ModelContext) -> Bool {
         for step in plan.steps where step.collectsInput {
@@ -885,9 +627,16 @@ final class OnboardingViewModel {
         return true
     }
 
+    /// Schedules the reminders the user agreed to. A no-op unless both gates said yes, because
+    /// `NotificationService.applySettings` clears the queue whenever notifications are off.
+    func applyNotificationSchedule(service: NotificationService, context: ModelContext) async {
+        guard let settings = try? ProfileRepository(context: context).settings() else { return }
+        await service.applySettings(settings, weekdays: Weekday.orderedMondayFirst.filter(availableWeekdays.contains))
+    }
+
     // MARK: - Program generation
 
-    /// True when the generation step should do work rather than show what it already produced.
+    /// True when the result step should do work rather than show what it already produced.
     var shouldGenerate: Bool {
         switch generation {
         case .idle, .failed: true
@@ -1028,15 +777,20 @@ final class OnboardingViewModel {
     // MARK: - Completion
 
     /// Marks onboarding finished. `RootView` watches `onboardingCompletedAt` and swaps the whole
-    /// app over the moment it is set, so this is the last thing that happens.
+    /// app over the moment it is set, so this is the last thing that happens. The guided tour is
+    /// queued first, so the main screen opens with it already waiting.
     @discardableResult
     func finish(context: ModelContext) -> Bool {
         guard persistAll(context: context) else { return false }
         do {
+            // The guide is for people meeting the app for the first time. Somebody who has just
+            // re-run setup from Settings already knows where everything is.
+            if !isReturningUser { GuidedTourStore.markPending() }
             try ProfileRepository(context: context).completeOnboarding()
             Haptics.success()
             return true
         } catch {
+            GuidedTourStore.clearPending()
             errorMessage = Self.message(for: error)
             return false
         }

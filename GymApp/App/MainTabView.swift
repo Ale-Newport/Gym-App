@@ -32,6 +32,17 @@ struct MainTabView: View {
             }
         }
         .tint(Color.appAccent)
+        .overlay {
+            if router.isShowingTour {
+                GuidedTourView()
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: router.isShowingTour)
+        .task {
+            // Setup just finished, or the app was closed before the guide was seen.
+            if GuidedTourStore.isPending { router.isShowingTour = true }
+        }
     }
 
     /// Tapping the already-selected tab pops that tab's stack to its root.

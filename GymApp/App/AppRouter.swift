@@ -52,6 +52,8 @@ final class AppRouter {
     var presentedWorkoutID: UUID?
     var pendingDeepLink: AppDeepLink?
     var isPresentingWeightEntry = false
+    /// True while the first-run guide is on screen over the tab bar.
+    var isShowingTour = false
     var isPresentingWaterEntry = false
     var pendingMealSlot: MealSlot?
 

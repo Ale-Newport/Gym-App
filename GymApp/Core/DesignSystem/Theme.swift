@@ -44,6 +44,9 @@ extension Color {
     /// sites. Changing the accent should not mean auditing all of them.
     static let appOnAccent = dynamic(light: 0xFFFFFF, dark: 0xFFFFFF)
 
+    /// The dimming layer behind a full-screen overlay such as the first-run guide.
+    static let appScrim = Color.black.opacity(0.4)
+
     static let appSuccess = dynamic(light: 0x1B8F4D, dark: 0x35C77F)
     static let appWarning = dynamic(light: 0xB8730B, dark: 0xE8A33D)
     static let appDanger = dynamic(light: 0xC42D2D, dark: 0xF06060)

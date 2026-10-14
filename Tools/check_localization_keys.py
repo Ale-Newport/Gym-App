@@ -47,6 +47,7 @@ DYNAMIC_PREFIXES = (
     "servingUnit.", "pace.", "sessionStatus.", "setKind.", "calibration.", "progression.",
     "prKind.", "range.", "micro.", "foodSource.", "substitution.", "progressionAction.",
     "split.", "session.", "export.", "import.", "tab.", "food.",
+    "start.step.", "tour.",
 )
 
 

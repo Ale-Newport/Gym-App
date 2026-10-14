@@ -60,6 +60,18 @@ final class AppEnvironment {
     /// widget snapshot, which would keep advertising the deleted program and today's deleted log.
     func storeWasReplaced(context: ModelContext) {
         liveActivityService.endAll()
+        // A replaced store is a different set of reminders: rebuild the queue from the new
+        // settings, which clears it when they are the defaults of a wiped store. The guide is owed
+        // again once the user has been through setup.
+        let notifications = notificationService
+        let repository = ProfileRepository(context: context)
+        if let settings = try? repository.settings(), let profile = try? repository.profile() {
+            let weekdays = profile.availableWeekdays
+            Task { await notifications.applySettings(settings, weekdays: weekdays) }
+        } else {
+            notifications.cancelAll()
+        }
+        GuidedTourStore.clearPending()
         activeWorkoutID = nil
         snapshotWriter.refresh(context: context, catalog: catalog)
     }

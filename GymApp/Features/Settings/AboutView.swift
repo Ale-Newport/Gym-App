@@ -17,6 +17,7 @@ struct AboutView: View {
     @State private var about = AboutViewModel()
 
     @Environment(AppEnvironment.self) private var environment
+    @Environment(AppRouter.self) private var router
 
     init() {}
 
@@ -248,6 +249,42 @@ struct AboutView: View {
             .buttonStyle(.plain)
             .accessibilityLabel(Text(L("settings.about.rerunOnboarding")))
             .accessibilityHint(Text(L("settings.about.rerunOnboarding.detail")))
+
+            Button {
+                // Back to the Home tab's root, then the guide over it: the guide walks the tab
+                // bar, and it should start from the beginning of it.
+                router.homePath = NavigationPath()
+                router.selectedTab = .home
+                router.isShowingTour = true
+                Haptics.tap()
+            } label: {
+                HStack(spacing: Metrics.spacing12) {
+                    Image(systemName: "questionmark.circle")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(Color.appAccent)
+                        .frame(width: 28, height: 28)
+                        .background(
+                            Color.appAccentMuted,
+                            in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
+                        )
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: Metrics.spacing2) {
+                        Text(L("tour.replay"))
+                            .foregroundStyle(Color.appTextPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text(L("tour.replay.detail"))
+                            .font(.footnote)
+                            .foregroundStyle(Color.appTextSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: Metrics.spacing8)
+                }
+                .frame(minHeight: Metrics.gymTapTarget)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text(L("tour.replay")))
+            .accessibilityHint(Text(L("tour.replay.detail")))
         } header: {
             Text(L("settings.about.section.setup"))
         }

@@ -59,6 +59,8 @@ enum UITestLaunchSupport {
             // workout the reset just deleted, and would sit in the Dynamic Island of every screen
             // captured afterwards — App Store screenshots included.
             WorkoutLiveActivityService.endAllActivities()
+            // The guide is owed after onboarding, and an earlier run may have left it pending.
+            GuidedTourStore.clearPending()
         }
 
         guard let scenario = requestedScenario else { return }

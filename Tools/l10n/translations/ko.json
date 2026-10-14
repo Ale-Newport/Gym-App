@@ -6,7 +6,6 @@
   "tab.exercises": "운동 목록",
   "tab.nutrition": "식단",
   "tab.progress": "통계",
-
   "common.done": "완료",
   "common.cancel": "취소",
   "common.save": "저장",
@@ -62,14 +61,11 @@
   "common.min": "분",
   "common.sec": "초",
   "common.hr": "시간",
-
   "duration.minutes": "%lld분",
   "duration.hours": "%lld시간",
   "duration.hoursMinutes": "%lld시간 %lld분",
-
   "media.unavailable": "이미지를 불러올 수 없어요",
   "media.attribution.title": "운동 이미지",
-
   "notification.rest.title": "휴식이 끝났어요",
   "notification.rest.body": "%@ — %lld세트를 시작할 차례예요.",
   "notification.training.title": "운동할 시간이에요",
@@ -80,7 +76,6 @@
   "notification.weight.body": "매일 한 번씩 재면 추세가 정확해져요.",
   "notification.meal.title": "식사를 기록해요",
   "notification.meal.body": "오늘의 수치를 최신으로 유지해요.",
-
   "common.increase": "늘리기",
   "common.decrease": "줄이기",
   "exercise.favorite": "즐겨찾기",
@@ -97,7 +92,6 @@
   "exercise.fact.secondary": "함께 쓰는 근육",
   "exercise.fact.repRange": "권장 횟수",
   "exercise.fact.rest": "권장 휴식",
-
   "export.trainingCSV": "운동 기록 (CSV)",
   "export.trainingCSV.detail": "기록한 모든 세트를 스프레드시트에서 바로 열 수 있어요.",
   "export.trainingJSON": "운동 기록 (JSON)",
@@ -113,7 +107,6 @@
   "export.preparing": "파일을 준비하고 있어요…",
   "export.failed": "내보내기 파일을 만들지 못했어요.",
   "export.shareFile": "파일 공유",
-
   "import.title": "백업 가져오기",
   "import.subtitle": "Forge 백업 파일을 복원해요.",
   "import.chooseFile": "백업 파일 선택",
@@ -136,7 +129,6 @@
   "import.error.notABackup": "Forge 백업 파일이 아니에요.",
   "import.error.version": "더 새로운 버전의 Forge에서 만든 백업이에요.",
   "import.error.write": "백업을 복원하지 못했어요.",
-
   "backup.count.programs": "프로그램",
   "backup.count.sessions": "운동",
   "backup.count.records": "개인 기록",
@@ -145,40 +137,33 @@
   "backup.count.foodLog": "음식 기록",
   "backup.count.savedMeals": "저장한 식사",
   "backup.count.recipes": "레시피",
-
   "reset.title": "모든 데이터 초기화",
   "reset.message": "이 기기에서 프로필, 프로그램, 운동 기록, 식단 기록을 지워요. 남기고 싶은 게 있다면 먼저 백업을 내보내세요.",
   "reset.confirm": "전부 삭제",
   "reset.done": "모든 데이터를 삭제했어요.",
-
   "exercises.title": "운동 목록",
   "exercises.loading": "운동 목록을 불러오는 중이에요…",
   "exercises.searchPrompt": "운동 %lld개 검색",
-
   "exercises.section.recent": "최근 한 운동",
   "exercises.section.favorites": "즐겨찾기",
   "exercises.section.results": "검색 결과",
   "exercises.resultCount": {
     "other": "운동 %lld개"
   },
-
   "exercises.empty.title": "일치하는 운동이 없어요",
   "exercises.empty.message": "이 검색어와 필터를 함께 만족하는 운동이 없어요.",
   "exercises.empty.action": "검색어와 필터 지우기",
-
   "exercises.row.hint": "운동 상세를 열어요",
   "exercises.row.lastPerformed": "마지막 수행 %@",
   "exercises.row.timesPerformed": {
     "other": "%lld번 수행함"
   },
   "exercises.index.label": "자모 색인",
-
   "exercises.sort.label": "정렬",
   "exercises.sort.name": "이름순",
   "exercises.sort.relevance": "관련도순",
   "exercises.sort.mostUsed": "많이 한 순",
   "exercises.sort.favoritesFirst": "즐겨찾기 먼저",
-
   "exercises.filters.label": "필터",
   "exercises.filters.title": "필터",
   "exercises.filters.quick": "빠른 필터",
@@ -199,11 +184,9 @@
   "exercises.filters.showCount": {
     "other": "운동 %lld개 보기"
   },
-
   "exercises.detail.title": "운동",
   "exercises.detail.missing.title": "이 운동은 더 이상 제공되지 않아요",
   "exercises.detail.missing.message": "이 버전의 앱에 들어 있는 운동 목록에 포함되어 있지 않아요.",
-
   "exercises.action.favorite": "즐겨찾기에 추가",
   "exercises.action.unfavorite": "즐겨찾기에서 제거",
   "exercises.action.favorited": "즐겨찾기에 추가했어요.",
@@ -223,13 +206,10 @@
   "exercises.action.templateGone": "그 세션은 더 이상 없어요.",
   "exercises.action.goToWorkouts": "운동으로 이동",
   "exercises.action.openWorkout": "운동 열기",
-
   "exercises.feedback.title": "이 운동은 어떤가요?",
   "exercises.feedback.subtitle": "답에 따라 이 운동이 얼마나 자주 계획에 들어갈지 달라져요.",
-
   "exercises.facts.title": "상세 정보",
   "exercises.instructions.title": "하는 방법",
-
   "exercises.history.title": "내 기록",
   "exercises.history.viewAll": "전체 기록 보기",
   "exercises.history.records": "개인 기록",
@@ -256,7 +236,6 @@
   "exercises.history.noChart": "아직 세션이 하나뿐이에요. 그래프에는 두 번 이상 필요해요.",
   "exercises.history.empty.title": "아직 해 본 적 없는 운동이에요",
   "exercises.history.empty.message": "세트를 기록하면 중량, 최고 세트, 예상 1RM이 여기에 나타나요.",
-
   "exercises.trend.label": "지표",
   "exercises.trend.date": "날짜",
   "exercises.trend.oneRepMax": "예상 1RM",
@@ -264,13 +243,11 @@
   "exercises.trend.volume": "볼륨",
   "exercises.trend.chartLabel": "%@ 변화",
   "exercises.trend.summary": "세션 %lld회, %@(%@)부터 %@(%@)까지.",
-
   "exercises.alternatives.title": "대체 운동",
   "exercises.alternatives.loading": "대체 운동을 찾는 중이에요…",
   "exercises.alternatives.empty.title": "대체 운동이 없어요",
   "exercises.alternatives.empty.message": "가진 장비로 같은 방식으로 자극할 수 있는 운동이 없어요.",
   "exercises.alternatives.similarity": "%lld%% 유사",
-
   "exercises.templates.title": "세션 선택",
   "exercises.templates.activeProgram": "%@ · 현재 계획",
   "exercises.templates.empty.title": "아직 세션이 없어요",
@@ -278,11 +255,9 @@
   "exercises.templates.exerciseCount": {
     "other": "운동 %lld개"
   },
-
   "exercises.picker.title": "운동 선택",
   "exercises.picker.hint": "이 운동을 선택해요",
   "exercises.picker.noneChosen": "아직 선택하지 않았어요",
-
   "home.greeting.morning": "좋은 아침이에요",
   "home.greeting.afternoon": "좋은 오후예요",
   "home.greeting.evening": "좋은 저녁이에요",
@@ -292,27 +267,28 @@
   "home.greeting.evening.named": "%@님, 좋은 저녁이에요",
   "home.greeting.night.named": "%@님, 아직 안 주무셨네요",
   "home.profileButton": "프로필과 설정",
-
   "home.loading": "오늘 하루를 준비하고 있어요…",
   "home.error.load": "오늘의 대시보드를 불러오지 못했어요.",
   "home.error.action": "변경 사항을 저장하지 못했어요.",
   "home.empty.title": "여기서 훈련이 시작돼요",
   "home.empty.message": "Forge가 목표, 장비, 실제로 운동할 수 있는 요일에 맞춰 한 주를 짜 줘요.",
   "home.empty.action": "내 프로그램 만들기",
-
   "home.today.title": "오늘",
   "home.today.start": "운동 시작",
   "home.today.resume": "운동 이어하기",
   "home.today.working": "잠시만요…",
-  "home.today.exercises": {"other": "운동 %lld개"},
-  "home.today.sets": {"other": "%lld세트"},
+  "home.today.exercises": {
+    "other": "운동 %lld개"
+  },
+  "home.today.sets": {
+    "other": "%lld세트"
+  },
   "home.today.inProgress": "진행 중",
   "home.today.setsDone": "%lld/%lld세트 완료",
   "home.today.startedAt": "%@ 시작",
   "home.today.viewProgram": "프로그램 보기",
   "home.today.deloadChip": "가벼운 주",
   "home.today.startAccessibility": "%@ 시작. %@.",
-
   "home.today.restTitle": "휴식일",
   "home.today.restMessage": "오늘은 아무 일정도 없고, 그게 계획이에요. 이미 해 둔 운동이 성과로 바뀌는 시간이에요.",
   "home.today.restNext": "다음: %@ (%@)",
@@ -321,7 +297,6 @@
   "home.today.startLight": "가벼운 세션 시작",
   "home.today.stretchSuggestion": "아니면 %@ 어때요",
   "home.today.stretchAction": "보여 주세요",
-
   "home.today.statSets": "세트",
   "home.today.statTime": "시간",
   "home.today.statVolume": "볼륨",
@@ -329,19 +304,16 @@
   "home.today.doneMessage": "%@ 마쳤어요. 수고했어요.",
   "home.today.viewSummary": "요약 보기",
   "home.today.trainAgain": "한 번 더 운동",
-
   "home.today.noProgramTitle": "아직 프로그램이 없어요",
   "home.today.noProgramMessage": "이미 알려 준 것만으로 충분해요. 목표와 장비, 가능한 요일로 한 주를 짜 드릴게요.",
   "home.today.createProgram": "내 프로그램 만들기",
   "home.today.creatingProgram": "한 주를 짜는 중이에요…",
-
   "home.deload.title": "가벼운 주가 필요한 시점이에요",
   "home.deload.why": "이렇게 판단한 이유",
   "home.deload.accept": "가벼운 주로 하기",
   "home.deload.postpone": "이번 주는 괜찮아요",
   "home.deload.decline": "하지 않을게요",
   "home.deload.note": "받아들여도 세션은 그대로 두고, 더 가볍게 더 적은 세트로 시작해요.",
-
   "home.recovery.title": "회복",
   "home.recovery.readiness": "준비도",
   "home.recovery.readinessValue": "%lld%%",
@@ -363,7 +335,6 @@
   "home.recovery.scale.lots": "많음",
   "home.recovery.rating": "%@, 5점 중 %lld점",
   "home.recovery.save": "체크인 저장",
-
   "home.nutrition.title": "식단",
   "home.nutrition.eaten": "섭취",
   "home.nutrition.remaining": "남음",
@@ -379,7 +350,6 @@
   "home.nutrition.water": "물",
   "home.nutrition.waterProgress": "%lld / %lld ml",
   "home.nutrition.addWater": "%lld ml 추가",
-
   "home.progress.title": "통계",
   "home.progress.weight": "체중",
   "home.progress.trendUp": "주당 %@ 증가",
@@ -390,17 +360,19 @@
   "home.progress.logWeight": "체중 기록",
   "home.progress.thisWeek": "이번 주",
   "home.progress.sessionsOfPlan": "%lld / %lld",
-  "home.progress.sessionsDone": {"other": "세션 %lld회"},
+  "home.progress.sessionsDone": {
+    "other": "세션 %lld회"
+  },
   "home.progress.openTab": "통계 열기",
-
   "home.streak.title": "연속 기록",
-  "home.streak.weeks": {"other": "%lld주"},
+  "home.streak.weeks": {
+    "other": "%lld주"
+  },
   "home.streak.none": "오늘 시작해 봐요",
   "home.streak.best": "최고: %lld",
   "home.streak.dayTrained": "%@: 운동함",
   "home.streak.dayRest": "%@: 세션 없음",
   "home.streak.lastSeven": "최근 7일",
-
   "food.error.notFound": "일치하는 음식이 없어요",
   "food.error.network": "음식 서비스에 연결하지 못했어요. 오프라인 결과를 보여 드릴게요.",
   "food.error.decoding": "음식 서비스가 Forge에서 읽을 수 없는 응답을 보냈어요.",
@@ -504,7 +476,6 @@
   "food.serving.waffle": "와플 1장",
   "food.serving.wedge": "1쪽",
   "food.serving.wing": "닭날개 1개",
-
   "food.almondMilk": "아몬드 음료, 무가당",
   "food.almonds": "아몬드",
   "food.apple": "사과, 생것, 껍질째",
@@ -749,7 +720,6 @@
   "food.wholewheatBiscuits": "통밀 시리얼 비스킷",
   "food.wholewheatPastaDry": "통밀 파스타, 마른 것",
   "food.wineRed": "레드 와인, 알코올 13%",
-
   "nutrition.energy.estimateDisclaimer": "이 수치는 출발점이 되는 추정치이고 의학적 조언이 아니에요. 실제 결과가 쌓이면 앱이 조정해 드려요.",
   "nutrition.energy.bmr": "키와 체중, 나이로 볼 때 쉴 때 하루 약 %@ kcal을 쓰는 것으로 추정돼요.",
   "nutrition.energy.bmrDefaultAge": "생년월일이 없어서 %@세로 가정하고 계산했어요. 입력하면 더 정확해져요.",
@@ -763,7 +733,6 @@
   "nutrition.energy.floorAboveMaintenance": "앱이 권장하는 하루 최소 섭취량은 %@ kcal인데, 추정 유지 칼로리 %@ kcal보다 이미 높아요. 이보다 적게 먹으라고 권하지는 않으니, 여기서부터는 활동량을 늘리는 쪽이 더 나아요.",
   "nutrition.energy.deficitCapped": "적자는 하루 %@ kcal로 제한했어요. 그보다 빠르면 근육이 줄고 오래 유지하기도 어려워요.",
   "nutrition.energy.surplusCapped": "잉여는 하루 %@ kcal로 제한했어요. 그래야 늘어나는 무게에서 지방보다 근육의 비중이 커져요.",
-
   "nutrition.macro.protein": "단백질은 %@ g으로 잡았어요. 체중 1 kg당 약 %@ g으로, 운동하는 사람에게 흔한 범위예요.",
   "nutrition.macro.proteinDeficit": "유지 칼로리보다 적게 먹고 있어서 단백질을 그 범위의 위쪽으로 잡았어요. 체지방을 줄이는 동안 근육을 지키는 데 도움이 돼요.",
   "nutrition.macro.proteinAdjustedMass": "단백질은 체중계 숫자 대신 보정 체중 %@ kg을 기준으로 계산해서 현실적인 값이 나와요.",
@@ -773,12 +742,10 @@
   "nutrition.macro.fatCompromise": "매크로가 칼로리 목표 안에 들어가도록 지방을 %@ g으로 줄였어요.",
   "nutrition.macro.carbs": "탄수화물은 남은 %@ g이고, 운동의 연료가 돼요.",
   "nutrition.macro.lowCalorieCompromise": "이 칼로리에서는 단백질과 지방만으로 예산이 다 차서 탄수화물이 0이 됐어요. 속도를 늦추면 훨씬 현실적인 계획이 나와요.",
-
   "nutrition.adjustAction.increase": "조금 더 먹기",
   "nutrition.adjustAction.decrease": "조금 덜 먹기",
   "nutrition.adjustAction.hold": "지금대로 유지",
   "nutrition.adjustAction.insufficientData": "데이터가 아직 부족해요",
-
   "nutrition.adjust.insufficientData": "체중 기록이 아직 부족해요. 하루하루의 흔들림과 진짜 추세를 구분하려면 약 %@회의 기록이 %@일에 걸쳐 필요해요.",
   "nutrition.adjust.staleData": "가장 최근 체중 기록이 %@일 넘게 지나서 추세가 오래됐어요. 새로 기록하면 다시 살펴볼게요.",
   "nutrition.adjust.lowConfidence": "체중 기록이 아직 들쭉날쭉해서 추세를 읽기 어려워요. 목표는 그대로 둘게요.",
@@ -791,7 +758,6 @@
   "nutrition.adjust.floorReached": "칼로리가 이미 앱이 권장하는 하한인 %@ kcal이에요. 여기서부터는 활동량을 늘리는 쪽이 더 나아요.",
   "nutrition.adjust.ceilingReached": "칼로리가 이미 유지 칼로리보다 한참 높은 %@ kcal이라 더 늘리지 않을게요.",
   "nutrition.adjust.approval": "받아들이기 전에는 아무것도 바뀌지 않아요.",
-
   "meal.pattern.proteinCarbVegetable": "단백질, 탄수화물, 채소",
   "meal.pattern.proteinCarbFat": "단백질, 탄수화물, 지방 식품",
   "meal.pattern.proteinVegetableFat": "단백질, 채소, 지방 식품",
@@ -805,7 +771,6 @@
   "meal.pattern.mixed": "여러 음식의 조합",
   "meal.pattern.savedMeal": "저장한 식사 중 하나",
   "meal.pattern.recipe": "내 레시피 중 하나",
-
   "meal.reason.macros": "단백질 약 %@ g, 탄수화물 %@ g, 지방 %@ g을 채워요.",
   "meal.reason.protein": "오늘 남은 단백질의 대부분인 %@ g을 채워요.",
   "meal.reason.calories": "약 %@ kcal이고, 이 식사에 남은 양은 %@ kcal이에요.",
@@ -817,9 +782,7 @@
   "meal.reason.variety": "최근 며칠 동안 기록하지 않은 음식들이에요.",
   "meal.reason.micronutrients": "하루 식이섬유와 미량 영양소를 채우는 데 도움이 돼요.",
   "meal.reason.budget": "정해 둔 식비 예산 안에 들어와요.",
-
   "nutritionLibrary.common.macroLine": "%@ · 단백질 %@ · 탄수화물 %@ · 지방 %@",
-
   "nutritionLibrary.food.newTitle": "새 음식",
   "nutritionLibrary.food.editTitle": "음식 편집",
   "nutritionLibrary.food.basics": "기본 정보",
@@ -836,7 +799,6 @@
   "nutritionLibrary.food.fat": "지방",
   "nutritionLibrary.food.energyMismatch": "라벨에는 %@이라고 되어 있는데, 단백질과 탄수화물, 지방을 더하면 %@이에요. 포장에 적힌 값은 반올림되기 때문에 작은 차이는 정상이에요.",
   "nutritionLibrary.food.useImplied": "대신 %@ 사용",
-
   "nutritionLibrary.food.servings": "제공량",
   "nutritionLibrary.food.servingsHint": "실제로 먹는 단위를 등록해 두면 다음부터 한 번만 눌러 기록할 수 있어요.",
   "nutritionLibrary.food.addServing": "제공량 추가",
@@ -846,18 +808,15 @@
   "nutritionLibrary.food.removeServing": "%@ 제거",
   "nutritionLibrary.food.gramsPerPiece": "1개 무게",
   "nutritionLibrary.food.gramsPerPieceHint": "이 음식을 개수로 기록할 때 써요. 개수로 세지 않는다면 비워 두세요.",
-
   "nutritionLibrary.food.micronutrients": "미량 영양소",
   "nutritionLibrary.food.micronutrientsHint": "선택 사항이에요. 라벨에 적힌 것만 채워 주세요. 비워 둔 항목은 0이 아니라 모름으로 남아요.",
   "nutritionLibrary.food.filledCount": "%lld개 입력함",
   "nutritionLibrary.food.microFieldLabel": "%@ (%@)",
-
   "nutritionLibrary.food.tags": "태그",
   "nutritionLibrary.food.tagsHint": "Forge는 태그로 이 음식을 걸러 내고, 언제 추천할지 정해요.",
   "nutritionLibrary.food.dietaryTags": "포함 성분",
   "nutritionLibrary.food.allergenTags": "알레르기 유발 물질",
   "nutritionLibrary.food.roleTags": "종류와 용도",
-
   "nutritionLibrary.food.delete": "이 음식 삭제",
   "nutritionLibrary.food.deleteTitle": "이 음식을 삭제할까요?",
   "nutritionLibrary.food.deleteMessage": "내 목록에서 사라져요. 이미 기록한 내용의 수치는 그대로 남아요.",
@@ -866,7 +825,6 @@
     "other": "저장한 식사와 레시피 %lld개가 이 음식을 쓰고 있어요. 이 음식이 없으면 영양 정보를 계산할 수 없어요."
   },
   "nutritionLibrary.food.deleteAnyway": "그래도 삭제",
-
   "nutritionLibrary.tag.meat": "육류",
   "nutritionLibrary.tag.poultry": "가금류",
   "nutritionLibrary.tag.fish": "생선",
@@ -895,7 +853,6 @@
   "nutritionLibrary.tag.drink": "음료",
   "nutritionLibrary.tag.supplement": "보충제",
   "nutritionLibrary.tag.budget": "저렴",
-
   "nutritionLibrary.meals.title": "저장한 식사",
   "nutritionLibrary.meals.newTitle": "새 식사",
   "nutritionLibrary.meals.editTitle": "식사 편집",
@@ -931,7 +888,6 @@
   "nutritionLibrary.meals.nameFromDayMessage": "그때 기록한 음식과 양 그대로 저장돼요.",
   "nutritionLibrary.meals.defaultName": "늘 먹는 %@",
   "nutritionLibrary.meals.nothingToLog": "이 식사에 기록할 것이 남아 있지 않아요. 담긴 음식이 내 목록에 더 이상 없어요.",
-
   "nutritionLibrary.picker.addFood": "음식 추가",
   "nutritionLibrary.picker.searchPrompt": "음식 검색",
   "nutritionLibrary.picker.emptyTitle": "찾은 음식이 없어요",
@@ -941,7 +897,6 @@
   "nutritionLibrary.picker.amount": "양",
   "nutritionLibrary.picker.unit": "단위",
   "nutritionLibrary.picker.removeFood": "%@ 제거",
-
   "nutritionLibrary.recipes.title": "레시피",
   "nutritionLibrary.recipes.newTitle": "새 레시피",
   "nutritionLibrary.recipes.editTitle": "레시피 편집",
@@ -979,7 +934,6 @@
   "nutritionLibrary.recipes.servingSheetMessage": "%@, 얼마나 드셨어요?",
   "nutritionLibrary.recipes.servingsToLog": "회분",
   "nutritionLibrary.recipes.logButton": "이 레시피 기록",
-
   "nutritionLibrary.suggest.title": "식사 추천",
   "nutritionLibrary.suggest.loading": "맞는 조합을 찾는 중이에요…",
   "nutritionLibrary.suggest.slot": "식사",
@@ -1005,7 +959,6 @@
   "nutritionLibrary.suggest.dayFullTitle": "오늘 목표는 거의 채웠어요",
   "nutritionLibrary.suggest.dayFullMessage": "오늘 목표에 남은 양이 거의 없어서 추천할 만한 게 없어요. 저장한 식사와 레시피는 언제든 쓸 수 있어요.",
   "nutritionLibrary.suggest.nothingToLog": "이 음식들이 내 목록에 더 이상 없어서 아무것도 기록하지 않았어요.",
-
   "nutritionLibrary.micros.title": "미량 영양소",
   "nutritionLibrary.micros.vitamins": "비타민",
   "nutritionLibrary.micros.minerals": "무기질",
@@ -1027,7 +980,6 @@
   "nutritionLibrary.micros.rowLimitAccessibility": "%@, 눈여겨볼 항목: %@, 기준 섭취량의 %@.",
   "nutritionLibrary.micros.rowNoReferenceAccessibility": "%@: %@. 기준 섭취량 없음.",
   "nutritionLibrary.micros.rowUnknownAccessibility": "%@: 이 음식 데이터에 없음.",
-
   "nutritionLibrary.targets.title": "하루 목표",
   "nutritionLibrary.targets.currentTitle": "내 하루 목표",
   "nutritionLibrary.targets.automaticSubtitle": "Forge가 프로필과 체중 기록으로 계산한 값이에요.",
@@ -1040,7 +992,6 @@
   "nutritionLibrary.targets.noTargetTitle": "아직 하루 목표가 없어요",
   "nutritionLibrary.targets.noTargetMessage": "Forge가 키와 체중, 나이, 활동량, 목표로 추정해 드릴 수 있어요. 나중에 무엇이든 바꿀 수 있어요.",
   "nutritionLibrary.targets.useAutomatic": "하루 %@으로 설정",
-
   "nutritionLibrary.targets.breakdownTitle": "이 숫자가 나온 과정",
   "nutritionLibrary.targets.breakdownSubtitle": "직접 측정한 값이 아니라 공개된 공식으로 낸 추정치예요.",
   "nutritionLibrary.targets.bmr": "휴식 상태",
@@ -1056,29 +1007,24 @@
   "nutritionLibrary.targets.rateGain": "무거워질",
   "nutritionLibrary.targets.rateNone": "이 목표대로면 체중이 그대로 유지될 거예요.",
   "nutritionLibrary.targets.trendWeight": "추세 체중은 %@이고, 주당 %@ kg씩 변하고 있어요.",
-
   "nutritionLibrary.targets.reasoningTitle": "이렇게 계산했어요",
   "nutritionLibrary.targets.reasoningSubtitle": "추정의 모든 단계를 순서대로 보여 줘요.",
-
   "nutritionLibrary.targets.proposedEnergy": "지금은 하루 %@, 받아들이면 하루 %@이 돼요.",
   "nutritionLibrary.targets.proposalConsent": "받아들이기 전에는 아무것도 바뀌지 않아요.",
   "nutritionLibrary.targets.accept": "적용",
   "nutritionLibrary.targets.notNow": "나중에",
-
   "nutritionLibrary.targets.historyTitle": "변경 내역",
   "nutritionLibrary.targets.historySubtitle": "목표가 바뀐 시점과 이유를 모두 남겨요.",
   "nutritionLibrary.targets.historyEmpty": "아직 목표가 바뀐 적이 없어요.",
   "nutritionLibrary.targets.historyAutomatic": "자동",
   "nutritionLibrary.targets.historyManual": "직접 설정",
   "nutritionLibrary.targets.historyChange": "하루 %@에서 %@으로",
-
   "nutritionLibrary.targets.overrideMessage": "원하는 숫자로 정하면 돼요. 자동으로 되돌리기 전까지 Forge가 그 값을 계속 써요.",
   "nutritionLibrary.targets.energyField": "하루 열량",
   "nutritionLibrary.targets.macroMismatch": "단백질과 탄수화물, 지방을 더하면 %@인데 입력한 %@과 맞지 않아요.",
   "nutritionLibrary.targets.belowFloor": "하루 %@ 미만이라 앱이 권장하는 하한보다 낮아요. 그래도 저장할 수 있어요.",
   "nutritionLibrary.targets.reason.manual": "목표를 직접 설정했어요.",
   "nutritionLibrary.targets.reason.reset": "Forge가 계산해 주는 값으로 되돌렸어요.",
-
   "nutritionLog.a11y.addFoodTo": "%@에 음식 추가",
   "nutritionLog.a11y.addWater": "물 %@ 추가",
   "nutritionLog.a11y.energyNoTarget": "오늘 %@ 섭취. 열량 목표 없음.",
@@ -1255,232 +1201,43 @@
   "nutritionLog.water.remaining": "%@ 남음",
   "nutritionLog.water.targetReached": "목표 달성",
   "nutritionLog.water.title": "물",
-
   "onboarding.loading": "운동 목록을 불러오는 중이에요",
   "onboarding.emptyCatalog.title": "쓸 수 있는 운동이 없어요",
   "onboarding.emptyCatalog.message": "운동 목록이 비어 있어서 프로그램을 만들 수 없어요. 다시 불러와 주세요.",
-
   "onboarding.progress.counter": "%lld/%lld단계",
-  "onboarding.action.start": "시작하기",
-  "onboarding.action.build": "내 프로그램 만들기",
-  "onboarding.action.finish": "운동 시작하기",
   "onboarding.action.hint": "이 단계를 저장하고 다음으로 넘어가요",
-  "onboarding.action.skipStep": "이 단계 건너뛰기",
   "onboarding.chip.locked": "설정한 제한 때문에 이미 제외됐어요",
-
-  "onboarding.step.welcome.title": "Forge에 오신 것을 환영해요",
-  "onboarding.step.welcome.subtitle": "몇 가지만 답하면 한 주에 꼭 맞는 프로그램이 만들어져요.",
-  "onboarding.step.basics.title": "기본 정보",
-  "onboarding.step.basics.subtitle": "열량 목표와 시작 중량의 바탕이 되는 숫자들이에요.",
-  "onboarding.step.goals.title": "무엇을 위해 운동하나요",
-  "onboarding.step.goals.subtitle": "가장 먼저 고른 목표가 중심이 되고, 나머지는 그 주변을 채워요.",
-  "onboarding.step.experience.title": "운동 경험",
-  "onboarding.step.experience.subtitle": "첫 블록의 강도와 다양성을 정해요.",
-  "onboarding.step.availability.title": "일주일",
-  "onboarding.step.availability.subtitle": "얼마나 자주, 한 번에 얼마나 오래 운동할 수 있는지 알려 주세요.",
-  "onboarding.step.equipment.title": "무엇으로 운동하나요",
-  "onboarding.step.equipment.subtitle": "실제로 중량을 걸 수 있는 운동만 추천해요.",
-  "onboarding.step.restrictions.title": "피하고 싶은 것",
-  "onboarding.step.restrictions.subtitle": "선택 사항이에요. 아예 보고 싶지 않은 동작과 운동을 골라 주세요.",
-  "onboarding.step.nutrition.title": "식사",
-  "onboarding.step.nutrition.subtitle": "선택 사항이에요. 꺼 두면 식단 탭이 보이지 않아요.",
-  "onboarding.step.generating.title": "프로그램을 만드는 중",
-  "onboarding.step.generating.subtitle": "볼륨, 분할, 운동, 그리고 목표 순서로 정해요.",
-  "onboarding.step.summary.title": "확인해 보세요",
-  "onboarding.step.summary.subtitle": "알려 주신 내용 전부예요. 시작하기 전에 얼마든지 바꿀 수 있어요.",
-
-  "onboarding.welcome.program.title": "내 한 주에 맞는 프로그램",
-  "onboarding.welcome.program.detail": "가능한 요일과 시간, 쓸 수 있는 장비로 만들어요.",
-  "onboarding.welcome.progress.title": "눈에 보이는 성장",
-  "onboarding.welcome.progress.detail": "모든 세트를 기록하고, 숫자가 오르면 중량도 함께 올라가요.",
-  "onboarding.welcome.explain.title": "숫자만이 아니라 이유까지",
-  "onboarding.welcome.explain.detail": "모든 제안에 그렇게 판단한 이유가 함께 있어서, 언제든 다르게 정할 수 있어요.",
-  "onboarding.welcome.privacy.title": "데이터는 내 폰에만",
-  "onboarding.welcome.privacy.detail": "계정도 로그인도 없고, 아무것도 밖으로 보내지 않아요.",
-  "onboarding.welcome.time": "약 5분 걸리고, 운동 %lld개 중에서 골라요.",
-
-  "onboarding.basics.units": "단위",
-  "onboarding.basics.units.detail": "아래 항목은 모두 이 단위로 입력하고 표시해요.",
-  "onboarding.basics.weightUnit": "체중",
-  "onboarding.basics.heightUnit": "키",
   "onboarding.basics.name": "이름",
-  "onboarding.basics.name.detail": "선택 사항이에요. 인사할 때만 써요.",
-  "onboarding.basics.name.placeholder": "이름",
-  "onboarding.basics.birthDate": "생년월일",
-  "onboarding.basics.birthDate.detail": "나이에 따라 추정 열량이 달라져요.",
-  "onboarding.basics.birthDate.toggle": "생년월일 사용하기",
-  "onboarding.basics.birthDate.skipped": "없으면 평균 성인 나이로 가정하고 열량을 추정해요.",
   "onboarding.basics.sex": "생물학적 성별",
-  "onboarding.basics.sex.detail": "열량을 추정하는 공식에서만 써요.",
-  "onboarding.basics.sex.unspecified.detail": "추정치는 두 값의 사이에 놓여요.",
-  "onboarding.basics.body": "키와 체중",
-  "onboarding.basics.body.detail": "열량 목표와 첫 작업 중량의 기준이 돼요.",
   "onboarding.basics.height": "키",
   "onboarding.basics.heightFeet": "피트",
   "onboarding.basics.heightInches": "인치",
   "onboarding.basics.weight": "체중",
-  "onboarding.basics.target": "목표 체중",
-  "onboarding.basics.target.detail": "선택 사항이에요. 열량 목표의 방향만 정해요.",
-  "onboarding.basics.target.toggle": "목표 체중이 있어요",
-  "onboarding.basics.target.same": "현재 체중과 같아서 목표는 유지 칼로리에 맞춰져요.",
-  "onboarding.basics.target.lose": "%@ 감량이 목표예요. 열량 목표는 유지 칼로리보다 낮게 잡혀요.",
-  "onboarding.basics.target.gain": "%@ 증량이 목표예요. 열량 목표는 유지 칼로리보다 높게 잡혀요.",
-
   "onboarding.unit.cm": "cm",
   "onboarding.unit.kg": "kg",
   "onboarding.unit.minutesShort": "%lld분",
-  "onboarding.unit.months": "개월",
-
-  "onboarding.hint.age": "%lld세부터 %lld세 사이의 생년월일을 골라 주세요.",
   "onboarding.hint.missingNumber": "숫자를 입력해 주세요.",
   "onboarding.hint.range": "%@에서 %@ %@ 사이의 값을 입력해 주세요.",
-  "onboarding.hint.goalsEmpty": "목표를 하나 이상 골라 주세요.",
   "onboarding.hint.priorityRequired": "집중할 근육 그룹이나 부위를 하나 이상 골라 주세요.",
   "onboarding.hint.daysEmpty": "운동할 수 있는 요일을 하나 이상 골라 주세요.",
   "onboarding.hint.sessionMinutes": "한 세션은 %lld분에서 %lld분까지 가능해요.",
   "onboarding.hint.equipmentEmpty": "장비를 하나 이상 골라 주세요.",
-  "onboarding.hint.platesEmpty": "체육관에 있는 원판을 골라 주세요.",
-  "onboarding.hint.mealsPerDay": "하루 %lld끼에서 %lld끼 사이로 골라 주세요.",
-  "onboarding.hint.budget": "0보다 큰 주간 식비를 입력해 주세요.",
-
-  "onboarding.goals.title": "내 목표",
-  "onboarding.goals.detail": "최대 4개까지 고를 수 있어요. 가장 먼저 고른 것이 중심이 돼요.",
-  "onboarding.goals.primary": "주 목표",
-  "onboarding.goals.rank": "#%lld",
-  "onboarding.goals.limit": "하나의 프로그램이 제대로 담을 수 있는 목표는 4개까지예요.",
-  "onboarding.goals.regions": "강조할 부위",
-  "onboarding.goals.regions.detail": "선택 사항이에요. 여러 근육 그룹을 한 번에 우선하는 빠른 방법이에요.",
   "onboarding.goals.muscles": "우선할 근육",
-  "onboarding.goals.muscles.detail": "선택 사항이에요. 여유가 있을 때 추가 세트가 이쪽으로 가요.",
   "onboarding.goals.muscles.required": "근육 그룹 집중을 골랐으니 하나 이상 선택해 주세요.",
   "onboarding.goals.muscles.limit": "의미 있게 볼륨을 더할 수 있는 건 4개까지예요.",
-  "onboarding.goals.muscles.summary": "추가 세트는 근육 그룹 %lld개에 먼저 돌아가요.",
-
-  "onboarding.experience.level": "운동 경력",
-  "onboarding.experience.level.detail": "추천되는 운동의 난이도 상한을 정해요.",
-  "onboarding.experience.months": "운동한 개월 수",
-  "onboarding.experience.months.detail": "꾸준히 운동한 기간이 대략 얼마나 되는지 알려 주세요.",
-  "onboarding.experience.months.years": "약 %@년이에요.",
-  "onboarding.experience.technique": "자세",
-  "onboarding.experience.technique.detail": "주요 종목에서 자세에 얼마나 확신이 있는지 알려 주세요.",
-  "onboarding.experience.seeds": "지금 드는 무게",
-  "onboarding.experience.seeds.detail": "선택 사항이에요. 아는 종목의 무게와 횟수를 적으면 알맞은 시작 중량이 잡혀요.",
-  "onboarding.experience.seeds.add": "드는 무게 입력하기",
-  "onboarding.experience.seeds.loading": "기준 종목을 맞춰 보는 중",
-  "onboarding.experience.seeds.partial": "아는 종목만 채우면 돼요. 나머지는 첫 본세트에서 추정해요.",
-  "onboarding.experience.seeds.weight": "무게",
-  "onboarding.experience.seeds.reps": "횟수",
-
-  "onboarding.seed.squat": "스쿼트",
-  "onboarding.seed.bench": "벤치프레스",
-  "onboarding.seed.deadlift": "데드리프트",
-  "onboarding.seed.overheadPress": "오버헤드 프레스",
-  "onboarding.seed.row": "바벨 로우",
-  "onboarding.seed.pulldown": "랫 풀다운",
-
-  "onboarding.availability.days": "운동하는 날",
-  "onboarding.availability.days.detail": "일주일에 현실적으로 며칠 운동할 수 있는지 알려 주세요.",
   "onboarding.availability.perWeek": "주당 일수",
-  "onboarding.availability.days.summary": "주 %lld일이에요. 세션 사이에 회복 시간이 남도록 배치해요.",
   "onboarding.availability.length": "세션 길이",
-  "onboarding.availability.length.detail": "세트 사이 휴식을 포함해 한 번에 쓸 수 있는 최대 시간이에요.",
-  "onboarding.availability.lengthFine": "세밀 조정",
-  "onboarding.availability.lengthFine.detail": "5분 단위",
   "onboarding.availability.length.short": "짧은 세션도 충분히 좋아요. 대신 한 세션에 들어가는 운동 수가 줄어요.",
-  "onboarding.availability.time": "주로 운동하는 시간",
-  "onboarding.availability.time.detail": "알림을 켰을 때 언제 알릴지 정해요.",
-  "onboarding.availability.cardio": "유산소",
-  "onboarding.availability.cardio.detail": "컨디셔닝을 웨이트와 함께 할지, 따로 할지 정해요.",
   "onboarding.availability.activity": "평소 활동량",
-  "onboarding.availability.activity.detail": "체육관 밖의 생활이에요. 운동보다 열량 추정에 더 크게 작용해요.",
-
-  "onboarding.equipment.preset": "어디에서 운동하나요",
-  "onboarding.equipment.preset.detail": "구성을 하나 고른 뒤 아래에서 세밀하게 조정해 보세요.",
-  "onboarding.equipment.unlocks": {"other": "운동 %lld개"},
-  "onboarding.equipment.fineTune": "내 장비",
-  "onboarding.equipment.fineTune.detail": "쓸 수 있는 건 모두 체크하고, 없는 건 체크를 해제해 주세요.",
-  "onboarding.equipment.empty.title": "표시할 장비가 없어요",
-  "onboarding.equipment.empty.message": "운동 목록을 아직 다 불러오지 못해서 고를 것이 없어요.",
-  "onboarding.equipment.bodyweightLocked": "맨몸은 항상 켜져 있어요. 언제나 쓸 수 있으니까요.",
-  "onboarding.equipment.increments": "선택할 수 있는 중량",
-  "onboarding.equipment.increments.detail": "체육관에서 실제로 만들 수 있는 무게만 제안하기 위해서예요.",
-  "onboarding.equipment.barWeight": "바벨 무게",
-  "onboarding.equipment.plates": "가지고 있는 원판",
-  "onboarding.equipment.plates.detail": "바벨 제안 중량은 이 원판으로 만들 수 있는 값으로 반올림돼요.",
-  "onboarding.equipment.ezBarWeight": "EZ 바 무게",
-  "onboarding.equipment.dumbbellStep": "덤벨 간격",
-  "onboarding.equipment.dumbbellStep.detail": "%@부터 위로 올라가요.",
-  "onboarding.equipment.kettlebells": "가지고 있는 케틀벨",
-  "onboarding.equipment.machineIncrement": "머신 스택 간격",
-  "onboarding.equipment.cableIncrement": "케이블 스택 간격",
-
-  "onboarding.restrictions.limitations": "불편한 동작",
-  "onboarding.restrictions.limitations.detail": "선택 사항이에요. 여기서 고른 것은 프로그램에서 빠져요. 진단이 아니라 선호일 뿐이에요.",
-  "onboarding.restrictions.patterns": "건너뛸 동작",
-  "onboarding.restrictions.patterns.detail": "선택 사항이에요. 아예 받고 싶지 않은 동작 패턴이에요.",
-  "onboarding.restrictions.patterns.implied": "위에서 답한 내용으로 이미 %lld개가 제외됐어요.",
-  "onboarding.restrictions.exclusions": "절대 추천하지 않을 운동",
-  "onboarding.restrictions.exclusions.detail": "선택 사항이에요. 받고 싶지 않은 운동을 검색해 보세요.",
-  "onboarding.restrictions.exclusions.add": "이 운동을 제외 목록에 추가해요",
-  "onboarding.restrictions.exclusions.remove": "이 운동을 제외 목록에서 빼요",
-  "onboarding.restrictions.search": "운동 검색",
-  "onboarding.restrictions.search.placeholder": "운동 검색하기",
-  "onboarding.restrictions.search.hint": "두 글자 이상 입력하면 목록을 검색해요.",
-  "onboarding.restrictions.search.empty.title": "일치하는 결과가 없어요",
-  "onboarding.restrictions.search.empty.message": "목록에 “%@”와 일치하는 것이 없어요. 더 짧은 단어로 찾아보세요.",
-
-  "onboarding.nutrition.enable": "식사 기록",
-  "onboarding.nutrition.enable.detail": "음식을 세는 방식이 맞는 사람도, 아닌 사람도 있어요. 선택은 사용자 몫이에요.",
-  "onboarding.nutrition.enable.toggle": "식사를 기록하고 하루 목표 설정하기",
-  "onboarding.nutrition.enable.off": "하루 목표를 정하지 않고 식단 탭도 숨겨요. 나중에 설정에서 켤 수 있어요.",
-  "onboarding.nutrition.diet": "식사 방식",
-  "onboarding.nutrition.diet.detail": "앱이 추천할 수 있는 음식을 걸러요.",
-  "onboarding.nutrition.diet.excludes": "%@ 제외",
-  "onboarding.nutrition.allergens": "알레르기",
-  "onboarding.nutrition.allergens.detail": "이 태그가 붙은 음식은 절대 추천하지 않아요.",
-  "onboarding.nutrition.intolerances": "불내증",
-  "onboarding.nutrition.intolerances.detail": "알레르기와 똑같이 완전히 제외해요.",
-  "onboarding.nutrition.excluded": "빼고 싶은 음식",
-  "onboarding.nutrition.excluded.detail": "받고 싶지 않은 음식이에요.",
-  "onboarding.nutrition.excluded.placeholder": "음식이나 재료 추가",
-  "onboarding.nutrition.excluded.add": "뺄 음식 추가",
-  "onboarding.nutrition.excluded.hint": "한 단어가 가장 잘 맞아요. 요리 이름이 아니라 재료 태그와 대조해요.",
-  "onboarding.nutrition.meals": "하루 식사 수",
-  "onboarding.nutrition.meals.detail": "하루 목표를 몇 끼로 나눌지 정해요.",
-  "onboarding.nutrition.meals.fourPlus": "단백질이 하루에 더 고르게 나뉘어요.",
-  "onboarding.nutrition.meals.three": "끼니 수가 적고 양이 커서 한 끼 단백질이 더 많아져요.",
-  "onboarding.nutrition.pace": "변화 속도",
-  "onboarding.nutrition.pace.detail": "체중이 목표를 향해 얼마나 빠르게 움직일지 정해요.",
-  "onboarding.nutrition.pace.generic": "체중을 입력하면 주 단위 수치로 볼 수 있어요.",
-  "onboarding.nutrition.pace.weekly": "주당 약 %@",
-  "onboarding.nutrition.budget": "주간 식비",
-  "onboarding.nutrition.budget.detail": "선택 사항이에요. 설정하면 더 저렴한 추천을 우선해요.",
-  "onboarding.nutrition.budget.toggle": "예산 안에서 장보기",
-  "onboarding.nutrition.budget.amount": "주간 예산",
-  "onboarding.nutrition.budget.currency": "쓰는 통화 그대로예요. 서로 비교하는 데에만 써요.",
+  "onboarding.equipment.unlocks": {
+    "other": "운동 %lld개"
+  },
   "onboarding.nutrition.targetReason": "초기 설정에서 답한 내용으로 정했어요.",
-
-  "onboarding.foodTag.peanut": "땅콩",
-  "onboarding.foodTag.nuts": "견과류",
-  "onboarding.foodTag.gluten": "글루텐",
-  "onboarding.foodTag.dairy": "유제품",
-  "onboarding.foodTag.egg": "달걀",
-  "onboarding.foodTag.soy": "대두",
-  "onboarding.foodTag.fish": "생선",
-  "onboarding.foodTag.shellfish": "갑각류",
-  "onboarding.foodTag.seafood": "해산물",
-  "onboarding.foodTag.sesame": "참깨",
-  "onboarding.foodTag.honey": "꿀",
-  "onboarding.foodTag.meat": "육류",
-  "onboarding.foodTag.poultry": "가금류",
-  "onboarding.foodTag.supplement": "보충제",
-
   "onboarding.generate.stage.volume": "주간 볼륨을 계산하는 중",
   "onboarding.generate.stage.split": "한 주에 맞는 분할을 고르는 중",
   "onboarding.generate.stage.exercises": "쓸 수 있는 운동을 고르는 중",
   "onboarding.generate.stage.fitting": "각 세션을 시간에 맞추는 중",
   "onboarding.generate.stage.nutrition": "하루 목표를 정하는 중",
-  "onboarding.generate.patience": "잠시 걸려요. 목록의 모든 운동을 답변과 대조해 점수를 매기고 있어요.",
   "onboarding.generate.waiting": "프로그램이 준비되면 쓸 수 있어요",
   "onboarding.generate.error.catalog": "운동 목록이 비어 있어서 프로그램을 만들 수 없어요.",
   "onboarding.generate.error.empty": "가진 장비와 제외한 동작을 빼면 넣을 운동이 남지 않아요. 장비를 추가하거나 제외를 하나 풀고 다시 시도해 주세요.",
@@ -1489,79 +1246,15 @@
   "onboarding.generate.manualExplanation": "이 프로그램은 직접 만들고 있어서 앱이 설명할 내용이 아직 없어요. 준비되면 각 요일에 운동을 추가해 주세요.",
   "onboarding.program.title": "%@ 프로그램",
   "onboarding.program.manualTitle": "내 프로그램",
-
   "onboarding.result.daysPerWeek": "주당 일수",
   "onboarding.result.weeklySets": "주간 세트",
   "onboarding.result.weeklyTime": "주간 시간",
   "onboarding.result.week": "내 한 주",
-  "onboarding.result.week.detail": "계획의 한 주예요. 전부 나중에 바꿀 수 있어요.",
-  "onboarding.result.restDay": "휴식",
   "onboarding.result.sessionDetail": "운동 %lld개 · %lld세트 · %lld분",
-  "onboarding.result.volume": "주간 볼륨",
-  "onboarding.result.volume.detail": "한 주 동안 근육 그룹별로 하는 유효 세트예요.",
-  "onboarding.result.volume.empty.title": "아직 보여 줄 게 없어요",
-  "onboarding.result.volume.empty.message": "이 프로그램에는 근육 그룹에 배정된 세트가 없어요.",
-  "onboarding.result.setsPerWeek": "주당 %@세트",
-  "onboarding.result.why": "이 계획의 이유",
-  "onboarding.result.why.detail": "각 결정의 근거예요.",
-  "onboarding.result.why.empty.title": "이번에는 남길 메모가 없어요",
-  "onboarding.result.why.empty.message": "이 프로그램에는 따로 설명할 것이 없었어요.",
   "onboarding.result.nutrition": "내 하루 목표",
-  "onboarding.result.nutrition.detail": "출발점이에요. 체중 추세에 따라 조정돼요.",
   "onboarding.result.protein": "단백질",
   "onboarding.result.carbs": "탄수화물",
   "onboarding.result.fat": "지방",
-  "onboarding.result.maintenance": "유지 칼로리는 하루 약 %@으로 추정돼요.",
-  "onboarding.result.nutrition.off.title": "식사 기록이 꺼져 있어요",
-  "onboarding.result.nutrition.off.message": "하루 목표를 설정하지 않았어요. 필요하면 언제든 설정에서 켤 수 있어요.",
-
-  "onboarding.summary.program": "내 프로그램",
-  "onboarding.summary.basics": "내 정보",
-  "onboarding.summary.goals": "내 목표",
-  "onboarding.summary.experience": "내 경험",
-  "onboarding.summary.availability": "내 한 주",
-  "onboarding.summary.equipment": "내 장비",
-  "onboarding.summary.restrictions": "피할 것",
-  "onboarding.summary.nutrition": "내 식사",
-  "onboarding.summary.edit": "%@ 편집",
-  "onboarding.summary.expand": "전체 목록을 보여 줘요",
-  "onboarding.summary.collapse": "목록을 접어요",
-  "onboarding.summary.program.empty.title": "아직 프로그램이 없어요",
-  "onboarding.summary.program.empty.message": "답변은 저장됐지만, 아직 그것으로 만든 프로그램이 없어요.",
-  "onboarding.summary.program.build": "내 프로그램 만들기",
-  "onboarding.summary.split": "분할",
-  "onboarding.summary.units": "단위",
-  "onboarding.summary.age": "나이",
-  "onboarding.summary.ageYears": "%lld세",
-  "onboarding.summary.primaryGoal": "주 목표",
-  "onboarding.summary.otherGoals": "그 외",
-  "onboarding.summary.months": {"other": "%lld개월"},
-  "onboarding.summary.seeds": {"other": "종목 %lld개 기록함"},
-  "onboarding.summary.daysPerWeek": {"other": "주 %lld일"},
-  "onboarding.summary.sessionCap": "최대 %lld분",
-  "onboarding.summary.trainingDays": "운동하는 요일",
-  "onboarding.summary.groupCount": {"other": "근육 그룹 %lld개"},
-  "onboarding.summary.equipmentCount": {"other": "%lld개"},
-  "onboarding.summary.plateCount": {"other": "원판 %lld종"},
-  "onboarding.summary.kettlebellCount": {"other": "케틀벨 %lld개"},
-  "onboarding.summary.exercisesAvailable": "쓸 수 있는 운동",
-  "onboarding.summary.avoided": "건너뛰는 동작",
-  "onboarding.summary.movementCount": {"other": "동작 %lld개"},
-  "onboarding.summary.limitationCount": "%lld개 선택함",
-  "onboarding.summary.excludedCount": {"other": "운동 %lld개"},
-  "onboarding.summary.tagCount": {"other": "태그 %lld개"},
-  "onboarding.summary.loadingExercises": "운동 이름을 불러오는 중",
-  "onboarding.summary.foodTracking": "식사 기록",
-  "onboarding.summary.on": "켜짐",
-  "onboarding.summary.off": "꺼짐",
-  "onboarding.summary.dailyTarget": "하루 목표",
-  "onboarding.summary.macros": "단백질 / 탄수화물 / 지방",
-  "onboarding.summary.nutritionOff": "하루 목표가 없어서 식단 탭은 보이지 않아요.",
-  "onboarding.summary.ready.title": "준비됐어요",
-  "onboarding.summary.ready.detail": "확인하면 답변이 저장되고, 이 프로그램이 활성화되면서 앱이 열려요. 여기 있는 내용은 나중에 설정에서 바꿀 수 있어요.",
-  "onboarding.summary.ready.privacy": "전부 이 폰에만 저장돼요.",
-  "onboarding.summary.confirm.hint": "설정을 마치고 앱을 열어요",
-
   "program.title": "프로그램",
   "program.loading": "프로그램을 불러오는 중이에요",
   "program.error.generic": "프로그램을 업데이트하지 못했어요. 다시 시도해 주세요.",
@@ -1569,31 +1262,25 @@
   "program.clone.defaultTitle": "%@ 사본",
   "program.renameProgram": "프로그램 이름 바꾸기",
   "program.library.title": "저장한 템플릿",
-
   "program.empty.title": "아직 프로그램이 없어요",
   "program.empty.message": "Forge가 목표와 일정, 가진 장비로 만들어 드릴 수 있어요. 만든 뒤에도 무엇이든 바꿀 수 있어요.",
   "program.empty.generate": "내 프로그램 만들기",
   "program.empty.manual": "처음부터 직접 만들기",
-
   "program.action.menu": "프로그램 옵션",
   "program.action.regenerate": "프로그램 다시 만들기",
   "program.action.clone": "프로그램 복제",
   "program.action.newManual": "새 빈 프로그램",
-
   "program.stat.daysPerWeek": "일수",
   "program.stat.sessions": "세션",
   "program.stat.mesocycle": "블록 주차",
-
   "program.regenerate.confirmTitle": "프로그램을 다시 만들까요?",
   "program.regenerate.confirmAction": "다시 만들기",
   "program.regenerate.confirmMessage": "잠근 운동과 전체 기록은 그대로예요. 분할과 세션, 잠그지 않은 운동은 목표와 일정, 장비를 바탕으로 다시 골라요.",
-
   "program.name.newTitle": "프로그램 이름 정하기",
   "program.name.cloneTitle": "사본 이름 정하기",
   "program.name.renameTitle": "프로그램 이름 바꾸기",
   "program.name.placeholder": "프로그램 이름",
   "program.name.newNote": "세션은 직접 만들게 돼요. 일정상 주 %lld일까지 운동할 수 있어요.",
-
   "program.split.change": "분할 바꾸기",
   "program.split.customNote": "이 한 주는 직접 만들어서 뒤에 깔린 자동 분할이 없어요.",
   "program.split.recommends": "운동하는 요일에는 Forge가 %@을 추천해요.",
@@ -1609,7 +1296,6 @@
   "program.split.applyAction": "분할 바꾸기",
   "program.split.applyMessage": "이 구성에 맞춰 한 주가 다시 짜여요. 잠근 운동은 유지되고 기록도 그대로예요.",
   "program.split.applyHint": "이 분할에 맞춰 한 주를 다시 짜요",
-
   "program.volume.title": "주간 볼륨",
   "program.volume.subtitle": "모든 근육 그룹을 합쳐 주당 %@세트",
   "program.volume.emptyTitle": "아직 계획된 볼륨이 없어요",
@@ -1624,17 +1310,14 @@
   "program.volume.status.belowMinimum": "최소치 미만",
   "program.volume.status.inRange": "범위 안",
   "program.volume.status.aboveCeiling": "상한 초과",
-
   "program.sessions.title": "내 한 주",
   "program.sessions.emptyTitle": "이 프로그램은 비어 있어요",
   "program.sessions.emptyMessage": "첫 세션을 추가하거나, Forge가 한 주를 짜도록 해 보세요.",
   "program.sessions.add": "세션 추가",
-
   "program.manage.title": "관리",
   "program.manage.settingsDetail": "요일, 우선순위, 증량, 휴식",
   "program.manage.templatesDetail": "세션을 저장해 두고 다시 쓰기",
   "program.manage.versionsDetail": "저장된 버전: %lld",
-
   "program.editor.title": "세션 편집",
   "program.editor.sessionsHeader": "세션",
   "program.editor.sessionsFooter": "끌어서 순서를 바꾸고, 옆으로 밀어 이름 바꾸기나 복제, 삭제를 할 수 있어요.",
@@ -1655,7 +1338,6 @@
   "program.editor.renameTitle": "세션 이름 바꾸기",
   "program.editor.renameField": "세션 이름",
   "program.editor.renameNote": "비워 두면 %@ 이름으로 돌아가요.",
-
   "program.session.restDay": "휴식일",
   "program.session.summary": "운동 %lld개 · %lld세트 · %@",
   "program.session.lockedCount": "%lld개 잠김",
@@ -1698,7 +1380,6 @@
   "program.session.exclude": "추천하지 않기",
   "program.session.excludeNote": "제외하면 앞으로 어디에서도 추천되지 않아요. 직접 제거하기 전까지 이 세션에는 남아 있어요.",
   "program.session.viewExercise": "이 운동 정보",
-
   "program.notice.created": "프로그램을 만들었어요. 첫 세션을 추가해 시작해 보세요.",
   "program.notice.cloned": "복사했어요. 사본은 활성화하기 전까지 비활성 상태예요.",
   "program.notice.activated": "이제 %@ 프로그램을 사용해요.",
@@ -1710,12 +1391,10 @@
   "program.notice.excludeCleared": "이 운동을 다시 추천할 수 있어요.",
   "program.notice.templateSaved": "세션을 템플릿에 저장했어요.",
   "program.notice.templateApplied": "템플릿을 프로그램에 추가했어요.",
-
   "program.version.splitChanged": "분할을 %@ 구성으로 변경",
   "program.version.sessionRegenerated": "%@ 세션의 운동을 새로 고름",
   "program.version.exerciseSwapped": "%@ → %@ 교체",
   "program.version.settingsChanged": "운동 설정을 바꾼 뒤 다시 만듦",
-
   "program.settings.title": "프로그램 설정",
   "program.settings.section.schedule": "일정",
   "program.settings.daysPerWeek": "주당 운동 일수",
@@ -1768,7 +1447,6 @@
   "program.settings.rebuildAction": "프로그램 다시 만들기",
   "program.settings.rebuildMessage": "잠근 운동과 전체 기록은 그대로예요. 분할과 세션, 잠그지 않은 운동은 이 설정을 바탕으로 다시 골라요.",
   "program.settings.noProgramNote": "아직 프로그램이 없어요. 이 설정이 첫 프로그램의 바탕이 돼요.",
-
   "program.versions.title": "버전 기록",
   "program.versions.header": "최신 순",
   "program.versions.immutable": "기록은 더해지기만 해요. 버전은 수정하거나 삭제할 수 없어서, 계획이 어땠고 왜 바뀌었는지 그대로 남아요.",
@@ -1786,7 +1464,6 @@
   "program.versions.snapshotEmptyTitle": "기록된 세션이 없어요",
   "program.versions.snapshotEmptyMessage": "이 시점의 프로그램에는 세션이 없었어요.",
   "program.versions.readOnly": "그때의 계획을 남긴 기록이에요. 수정할 수 없고, 지금 따르는 프로그램에도 영향을 주지 않아요.",
-
   "program.templates.title": "세션 템플릿",
   "program.templates.save": "템플릿으로 저장",
   "program.templates.count": {
@@ -1806,7 +1483,6 @@
   "program.templates.deleteTitle": "이 템플릿을 삭제할까요?",
   "program.templates.deleteMessage": "이미 이 템플릿으로 만든 세션은 영향을 받지 않아요.",
   "program.templates.openHint": "이 템플릿에 담긴 내용을 보여 줘요",
-
   "achievement.dayStreak.detail": "%lld일 연속으로 운동해요.",
   "achievement.dayStreak.title": "%lld일 연속",
   "achievement.firstWorkout.detail": "첫 운동을 마쳐요.",
@@ -1823,7 +1499,6 @@
   "achievement.weekStreak.title": "%lld주 연속",
   "achievement.weighIns.detail": "서로 다른 %lld일에 체중을 기록해요.",
   "achievement.weighIns.title": "체중 기록 %lld번",
-
   "active.addExercise": "운동 추가",
   "active.addSet": "세트 추가",
   "active.addWarmupSet": "웜업 추가",
@@ -1976,7 +1651,6 @@
   "active.sets.empty.title": "아직 세트가 없어요",
   "active.sets.progress": "%lld / %lld 완료",
   "active.sets.title": "세트",
-
   "active.showAnimation": "애니메이션 보기",
   "active.skipExercise": "이 운동 건너뛰기",
   "active.skippedNotice": "이 운동을 건너뛰어서 여기서는 아무것도 기록되지 않아요.",
@@ -2014,7 +1688,6 @@
   "active.warmup.row": "%lld. %@ × %lld회",
   "active.warmup.subtitle": "첫 세트까지 무게를 올려요. 기록에는 들어가지 않아요.",
   "active.warmup.title": "웜업",
-
   "activity.active": "활동적",
   "activity.active.detail": "몸을 쓰는 일이거나 하루 활동량이 많아요",
   "activity.light": "가볍게 활동",
@@ -2025,11 +1698,9 @@
   "activity.sedentary.detail": "책상 앞에서 일하고 걷는 일이 적어요",
   "activity.veryActive": "매우 활동적",
   "activity.veryActive.detail": "힘든 육체 노동이거나 하루 두 번 운동해요",
-
   "appearance.dark": "다크",
   "appearance.light": "라이트",
   "appearance.system": "시스템",
-
   "autoreg.addSet": "세션이 쉬웠고 이 근육 그룹은 주간 목표에 못 미쳐서 세트를 하나 더해요.",
   "autoreg.noChange": "모두 순조로워요. 다음 세션은 계획대로예요.",
   "autoreg.reduceLoad": "%@ 운동이 목표 횟수에 조금 못 미쳐서 다음에는 조금 가볍게 시작해요.",
@@ -2039,7 +1710,6 @@
   "autoreg.shortenSession": "세션이 정해 둔 시간보다 약 %@분 길어져서 조금 줄일게요.",
   "autoreg.swap.failed": "%@ 운동이 모든 세트에서 부족했고 더 뺄 중량도 없어요. 다른 운동이 더 잘 맞을 수 있어요.",
   "autoreg.swap.substituted": "세션 중에 %@ 운동을 교체했어요. 아예 다른 운동으로 바꾸는 편이 더 잘 맞을 수 있어요.",
-
   "bodyPart.back": "등",
   "bodyPart.cardio": "유산소",
   "bodyPart.chest": "가슴",
@@ -2051,17 +1721,14 @@
   "bodyPart.upper_arms": "위팔",
   "bodyPart.upper_legs": "허벅지",
   "bodyPart.waist": "복부",
-
   "calibration.correct": "적당했어요",
   "calibration.hard": "힘들었어요",
   "calibration.tooEasy": "너무 쉬웠어요",
   "calibration.tooHeavy": "너무 무거웠어요",
-
   "cardio.afterLifting": "웨이트 뒤에",
   "cardio.either": "아무 때나 괜찮아요",
   "cardio.none": "유산소 안 함",
   "cardio.separateSessions": "따로 하는 세션",
-
   "deload.reason.blockLength": "가벼운 주 없이 %@주 동안 강하게 운동했어요.",
   "deload.reason.effortInflation": "운동 %@개에서 같은 중량이 더 힘들게 느껴지고 있어요.",
   "deload.reason.effortInflationSession": "같은 운동량인데 세션이 더 힘들게 느껴지고 있어요.",
@@ -2072,22 +1739,18 @@
   "deload.reason.subjective": "며칠째 하루 체크인 점수가 낮아요.",
   "deload.summary.recommended": "가벼운 주가 다음 단계로 알맞아 보여요. 볼륨은 약 %@%% 줄이고 중량은 약 %@%% 낮춰요.",
   "deload.summary.watch": "아직 바꿀 것은 없지만, 몇 가지는 눈여겨볼 만해요.",
-
   "diet.flexitarian": "플렉시테리언",
   "diet.omnivore": "가리지 않음",
   "diet.pescatarian": "페스코 베지테리언",
   "diet.vegan": "비건",
   "diet.vegetarian": "베지테리언",
-
   "difficulty.advanced": "고급",
   "difficulty.beginner": "초급",
   "difficulty.intermediate": "중급",
-
   "distanceUnit.km": "킬로미터",
   "distanceUnit.mi": "마일",
   "energyUnit.kJ": "킬로줄 (kJ)",
   "energyUnit.kcal": "칼로리 (kcal)",
-
   "equipment.assisted": "어시스트",
   "equipment.band": "밴드",
   "equipment.barbell": "바벨",
@@ -2117,13 +1780,11 @@
   "equipment.upper_body_ergometer": "상체 에르고미터",
   "equipment.weighted": "중량 추가",
   "equipment.wheel_roller": "애브 휠",
-
   "exerciseFeedback.dislike": "별로예요",
   "exerciseFeedback.like": "좋아요",
   "exerciseFeedback.love": "아주 좋아요",
   "exerciseFeedback.neutral": "상관없어요",
   "exerciseFeedback.neverRecommend": "다시 추천하지 않기",
-
   "experience.advanced": "고급",
   "experience.advanced.detail": "꾸준히 운동한 지 3년 이상이에요",
   "experience.beginner": "초급",
@@ -2132,7 +1793,6 @@
   "experience.intermediate.detail": "꾸준히 운동한 지 1~3년이에요",
   "experience.never": "운동해 본 적 없어요",
   "experience.never.detail": "체육관이 완전히 처음이에요",
-
   "explain.deloadApplied": "가벼운 주를 적용했어요. 볼륨을 줄이고 중량도 조금 낮췄어요.",
   "explain.equipmentChanged": "지금 가진 장비에 맞춰 프로그램을 다시 만들었어요.",
   "explain.exerciseReplaced": "%@ 자리에 %@ 운동을 넣었어요. 이유: %@.",
@@ -2142,20 +1802,17 @@
   "explain.scheduleChanged": "새 운동 요일에 맞춰 한 주를 다시 짰어요.",
   "explain.volumeIncreased": "회복 상태와 최근 수행을 바탕으로 %@ 볼륨을 늘렸어요.",
   "explain.volumeReduced": "최근 세션과 회복 피드백을 보니 과했던 것 같아 %@ 볼륨을 줄였어요.",
-
   "focusRegion.arms": "팔",
   "focusRegion.core": "코어",
   "focusRegion.fullBody": "전신",
   "focusRegion.lowerBody": "하체",
   "focusRegion.posteriorChain": "후면 사슬",
   "focusRegion.upperBody": "상체",
-
   "foodSource.builtIn": "내장 데이터베이스",
   "foodSource.custom": "직접 만든 음식",
   "foodSource.openFoodFacts": "Open Food Facts",
   "foodSource.recipe": "레시피",
   "foodSource.usda": "USDA",
-
   "goal.buildMuscle": "근육 키우기",
   "goal.buildMuscle.detail": "약간의 잉여 열량으로 크기를 키워요",
   "goal.buildStrength": "더 강해지기",
@@ -2172,7 +1829,6 @@
   "goal.recomposition.detail": "근육을 늘리면서 동시에 체지방을 줄여요",
   "goal.targetMuscleGroup": "특정 근육 그룹 집중",
   "goal.targetMuscleGroup.detail": "고른 근육에 볼륨을 더 넣어요",
-
   "gymPreset.bodyweightOnly": "맨몸만",
   "gymPreset.bodyweightOnly.detail": "장비가 전혀 없어요",
   "gymPreset.custom": "직접 고르기",
@@ -2183,10 +1839,8 @@
   "gymPreset.homeGym.detail": "덤벨과 바벨, 밴드, 벤치가 있어요",
   "gymPreset.limitedGym": "장비가 적은 체육관",
   "gymPreset.limitedGym.detail": "프리웨이트와 케이블, 머신 몇 대가 있어요",
-
   "heightUnit.cm": "센티미터",
   "heightUnit.ft_in": "피트와 인치",
-
   "intents.addMeal.description": "고른 식사의 음식 선택 화면에서 Forge를 열어요.",
   "intents.addMeal.parameter": "식사",
   "intents.addMeal.shortTitle": "음식 추가",
@@ -2210,11 +1864,9 @@
   "intents.startWorkout.description": "Forge를 열고 오늘 세션을 시작해요. 이미 진행 중이면 이어서 해요.",
   "intents.startWorkout.shortTitle": "운동 시작",
   "intents.startWorkout.title": "운동 시작하기",
-
   "laterality.alternating": "번갈아",
   "laterality.bilateral": "양쪽 동시",
   "laterality.unilateral": "한쪽씩",
-
   "limitation.deepKneeFlexion": "무릎 깊게 굽히기",
   "limitation.deepKneeFlexion.detail": "깊은 스쿼트와 런지를 피해요",
   "limitation.gripIntensive": "악력 많이 쓰기",
@@ -2231,13 +1883,11 @@
   "limitation.spinalLoading.detail": "등에 바를 얹는 동작을 피해요",
   "limitation.wristExtension": "손목 젖히기",
   "limitation.wristExtension.detail": "손목을 젖힌 채 무게를 싣는 동작을 피해요",
-
   "loadEstimate.explain.fromBodyWeight": "%@ 운동을 %@으로 %@회부터 시작해요. 체중 %@ 기준으로 일부러 가볍게 잡은 첫 추정치이니, 첫 세트를 평가해 주면 맞춰 드릴게요.",
   "loadEstimate.explain.fromOwnHistory": "%@ 운동을 %@으로 %@회부터 시작해요. 이 운동에서 세운 최고 세트를 바탕으로 잡았어요 (예상 1RM %@).",
   "loadEstimate.explain.fromRelated": "%@ 운동을 %@으로 %@회부터 시작해요. %@ 기록에서 가져왔어요 (예상 1RM %@).",
   "loadEstimate.explain.fromSeed": "%@ 운동을 %@으로 %@회부터 시작해요. 알려 주신 %@ × %@회에서 거꾸로 계산했어요.",
   "loadEstimate.explain.minimum": "%@ 운동을 쓸 수 있는 가장 가벼운 %@으로 시작해요. 첫 세트를 평가해 주면 거기서부터 맞는 중량을 찾아 드릴게요.",
-
   "loadability.assistedBodyweight": "어시스트 맨몸",
   "loadability.band": "밴드",
   "loadability.barbell": "바벨",
@@ -2250,15 +1900,12 @@
   "loadability.machineStack": "머신 스택",
   "loadability.none": "중량 없음",
   "loadability.weightedBodyweight": "맨몸 + 중량",
-
   "meal.breakfast": "아침",
   "meal.dinner": "저녁",
   "meal.lunch": "점심",
   "meal.snacks": "간식",
-
   "mechanic.compound": "복합 운동",
   "mechanic.isolation": "고립 운동",
-
   "micro.calcium": "칼슘",
   "micro.cholesterol": "콜레스테롤",
   "micro.fiber": "식이섬유",
@@ -2282,7 +1929,6 @@
   "micro.vitaminE": "비타민 E",
   "micro.vitaminK": "비타민 K",
   "micro.zinc": "아연",
-
   "movementPattern.calfRaise": "카프 레이즈",
   "movementPattern.cardio": "유산소",
   "movementPattern.carry": "캐리",
@@ -2312,7 +1958,6 @@
   "movementPattern.verticalPush": "수직 밀기",
   "movementPattern.wristExtension": "손목 펴기",
   "movementPattern.wristFlexion": "손목 굽히기",
-
   "muscle.abductors": "외전근",
   "muscle.abs": "복근",
   "muscle.adductors": "내전근",
@@ -2328,7 +1973,6 @@
   "muscle.hipFlexors": "고관절 굴곡근",
   "muscle.lats": "광배근",
   "muscle.levatorScapulae": "견갑거근",
-
   "muscle.lowerBack": "허리",
   "muscle.neck": "목",
   "muscle.obliques": "복사근",
@@ -2343,7 +1987,6 @@
   "muscle.traps": "승모근",
   "muscle.triceps": "삼두근",
   "muscle.upperBack": "상부 등",
-
   "muscleGroup.abductors": "외전근",
   "muscleGroup.abs": "복근",
   "muscleGroup.adductors": "내전근",
@@ -2362,16 +2005,13 @@
   "muscleGroup.shoulders": "어깨",
   "muscleGroup.traps": "승모근",
   "muscleGroup.triceps": "삼두근",
-
   "oneRepMax.formula.average": "혼합",
   "oneRepMax.formula.brzycki": "Brzycki",
   "oneRepMax.formula.epley": "Epley",
   "oneRepMax.formula.lombardi": "Lombardi",
-
   "pace.fast": "빠르게",
   "pace.moderate": "꾸준히",
   "pace.slow": "천천히",
-
   "prKind.bestSetVolume": "최고 세트 볼륨",
   "prKind.estimatedOneRepMax": "예상 1RM",
   "prKind.heaviestWeight": "최고 중량",
@@ -2380,11 +2020,9 @@
   "prKind.longestDuration": "최장 버티기",
   "prKind.mostReps": "최다 횟수",
   "prKind.sessionVolume": "세션 볼륨",
-
   "program.version.clonedFrom": "%@에서 복사함",
   "program.version.createdManually": "프로그램 만듦",
   "program.version.superseded": "이 프로그램의 새 버전으로 대체됨",
-
   "programming.balance": "한 주 동안 미는 볼륨과 당기는 볼륨이 균형을 이뤄요.",
   "programming.cardio.afterLifting": "요청하신 대로 주당 컨디셔닝 블록 %@개를 웨이트 뒤에 넣었어요.",
   "programming.cardio.separate": "요청하신 대로 주당 컨디셔닝 세션 %@개를 웨이트와 따로 넣었어요.",
@@ -2406,7 +2044,6 @@
   "programming.volume.deload": "가벼운 주라서 볼륨을 일부러 줄였어요.",
   "programming.volume.fatigue": "최근 세션과 체크인을 보면 아직 회복 중인 것 같아 볼륨을 조금 줄였어요.",
   "programming.volume.timeCapped": "쓸 수 있는 시간에 맞춰 볼륨을 정했어요. 세션 %@회, 한 번에 최대 %@분이에요.",
-
   "progress.achievements.earned": "달성",
   "progress.achievements.earnedOn": "%@ 달성",
   "progress.achievements.empty.message": "앱이 지금까지 한 것을 알아가면서 이정표가 여기에 나타나요.",
@@ -2416,7 +2053,6 @@
   "progress.achievements.noneYet": "아직 달성한 게 없어요. 첫 세션을 마치면 첫 이정표가 도착해요.",
   "progress.achievements.title": "이정표",
   "progress.achievements.unlockedOf": "%lld / %lld 달성",
-
   "progress.adherence.completed": "완료",
   "progress.adherence.consistency": "기록",
   "progress.adherence.consistencyNote": "기록은 시험이 아니라 습관이에요. 하루 빠져도 추세가 조금 덜 촘촘해질 뿐이에요.",
@@ -2450,12 +2086,10 @@
   "progress.adherence.weekly": "주별 세션",
   "progress.adherence.weeklySubtitle": "주 단위로 마친 것",
   "progress.adherence.weighIns": "체중을 잰 날",
-
   "progress.axis.date": "날짜",
   "progress.axis.series": "계열",
   "progress.axis.value": "값",
   "progress.axis.weight": "체중",
-
   "progress.chart.empty.message": "이 기간에는 데이터가 없어요. 기간을 늘려 보세요.",
   "progress.chart.empty.title": "아직 그릴 게 없어요",
   "progress.empty.message": "운동을 마치거나 체중을 기록하면 이 탭이 채워지기 시작해요.",
@@ -2466,7 +2100,6 @@
   "progress.macro.carbs": "탄수화물",
   "progress.macro.fat": "지방",
   "progress.macro.protein": "단백질",
-
   "progress.nutrition.aboveTarget": "평균적인 하루가 목표보다 %@ 많아요.",
   "progress.nutrition.averageDay": "평균적인 하루",
   "progress.nutrition.averageOverDays": {
@@ -2492,12 +2125,10 @@
   "progress.nutrition.target": "목표",
   "progress.nutrition.title": "식단",
   "progress.nutrition.weeklyAverage": "주간 평균",
-
   "progress.percent": "%lld%%",
   "progress.range.accessibility": "%@ 기간 보기",
   "progress.range.subtitle": "%@ 표시 중",
   "progress.range.widen": "전체 기간 보기",
-
   "progress.records.atReps": "%lld회에서",
   "progress.records.countInRange": {
     "other": "이 기간의 기록 %lld개"
@@ -2508,13 +2139,11 @@
   "progress.records.forExercise": "이 운동의 기록",
   "progress.records.improvedBy": "%@ 향상",
   "progress.records.noneForExercise": "이 운동에는 아직 저장된 기록이 없어요.",
-
   "progress.records.noneForFilter": "그런 종류의 기록이 없어요",
   "progress.records.noneForFilterMessage": "필터를 지우면 이 기간의 전체를 볼 수 있어요.",
   "progress.records.noneInRange": "이 기간에는 새 기록이 없어요.",
   "progress.records.reps": "%lld회",
   "progress.records.title": "기록",
-
   "progress.stat.sessions": "세션",
   "progress.stat.sets": "완료한 세트",
   "progress.stat.time": "운동 시간",
@@ -2523,7 +2152,6 @@
   "progress.streak.weeks": {
     "other": "%lld주 연속으로 운동했어요."
   },
-
   "progress.strength.bestEstimate": "최고 예상 1RM",
   "progress.strength.chartFootnote": "1RM은 최대치가 아닌 세트에서 추정한 값이에요. 앱이 진짜 1회 최대 시도를 요구하지는 않아요.",
   "progress.strength.chartTitle": "시간에 따른 근력",
@@ -2548,7 +2176,6 @@
   "progress.strength.unestimable": "이 동작은 중량과 횟수로 기록되지 않아서 1RM을 추정할 수 없어요.",
   "progress.title": "통계",
   "progress.training.title": "운동",
-
   "progress.volume.creditsFootnote": "세트 크레딧으로 세요. 한 세트는 주동근에 온전히, 함께 쓰는 근육에는 일부만 인정되고, 주간 목표도 이렇게 계산해요.",
   "progress.volume.empty.message": "세트를 완료한 세션을 마치면 주간 내역이 여기에 나타나요.",
   "progress.volume.empty.title": "아직 기록된 볼륨이 없어요",
@@ -2569,7 +2196,6 @@
   "progress.volume.tonnageFootnote": "중량 × 횟수가 의미 있는 세트만 세기 때문에 어시스트와 맨몸 운동은 빠져요.",
   "progress.volume.tonnageSubtitle": "주마다 들어 올린 총 무게",
   "progress.volume.weekOf": "%@ 주",
-
   "progress.weight.add": "체중 기록",
   "progress.weight.chartAccessibility": "시간에 따른 체중",
   "progress.weight.chartSummary": "%@부터 %@까지의 추세",
@@ -2613,7 +2239,6 @@
   "progress.weight.trendCaption": "7일 평균",
   "progress.weight.trendLabel": "추세 체중",
   "progress.weight.trendSection": "추세",
-
   "progression.doubleProgression": "이중 증량",
   "progression.doubleProgression.detail": "횟수를 범위 위쪽까지 올린 뒤 무게를 더해요",
   "progression.explain.addReps": "%@ 운동은 %@으로 유지하고 모든 세트에서 %@회를 목표로 해요. 지난번 가장 적었던 세트는 %@회였어요.",
@@ -2659,43 +2284,36 @@
   "progression.rirBased.detail": "목표 여유 반복 수를 지키도록 중량을 조정해요",
   "progression.volumeProgression": "볼륨 증량",
   "progression.volumeProgression.detail": "중량보다 세트를 먼저 늘려요",
-
   "progressionAction.addReps": "횟수 늘리기",
   "progressionAction.calibrate": "중량 찾기",
   "progressionAction.deload": "가볍게 가기",
   "progressionAction.increaseLoad": "중량 올리기",
   "progressionAction.maintain": "그대로 유지",
   "progressionAction.reduceLoad": "중량 낮추기",
-
   "pushPull.cardio": "유산소",
   "pushPull.core": "코어",
   "pushPull.legs": "다리",
   "pushPull.neutral": "일반",
   "pushPull.pull": "풀",
   "pushPull.push": "푸시",
-
   "range.all": "전체",
   "range.month": "1개월",
   "range.sixMonths": "6개월",
   "range.threeMonths": "3개월",
   "range.week": "7일",
   "range.year": "1년",
-
   "recovery.summary.fresh": "오늘은 발목 잡는 게 없어요. 계획대로 운동해요.",
   "recovery.summary.low.groups": "여러 근육 그룹에 아직 피로가 많이 남아 있어요. 오늘은 가볍게 가는 편이 좋아요.",
   "recovery.summary.low.systemic": "지금은 준비도가 낮아요. 오늘은 가볍게 가는 편이 좋아요.",
   "recovery.summary.moderate.groups": "일부만 회복됐어요. 몇몇 근육 그룹에 최근 운동의 피로가 남아 있어요.",
   "recovery.summary.moderate.systemic": "일부만 회복됐어요. 전반적인 준비도가 평소보다 조금 낮아요.",
-
   "recovery.summary.ready": "회복 상태가 좋아서 온전한 세션을 소화할 수 있어요.",
-
   "repo.error.fetchFailed": "지금은 데이터를 읽지 못했어요. 다시 시도해 주세요.",
   "repo.error.notEditable": "내장 데이터베이스의 항목이라 편집할 수 없어요. 복제하면 내 버전을 만들 수 있어요.",
   "repo.error.notFound": "그 항목은 더 이상 없어요.",
   "repo.error.saveFailed": "그 변경을 저장하지 못했어요. 다시 시도해 주세요.",
   "repo.error.snapshotCodingFailed": "프로그램 기록 항목을 저장하지 못했어요.",
   "repo.error.stillReferenced": "이 음식은 저장한 식사와 레시피 %@개에서 쓰고 있어요. 그래도 삭제할까요?",
-
   "selection.blocked.alreadyInSession": "이미 이 세션에 있어요",
   "selection.blocked.avoidedPattern": "피하기로 한 동작이에요",
   "selection.blocked.equipment": "가지고 있지 않은 장비가 필요해요",
@@ -2704,12 +2322,10 @@
   "selection.blocked.neverRecommend": "다시 보지 않기로 했어요",
   "selection.blocked.notLoadable": "이 자리에는 중량을 실을 수 있는 운동이 필요해요",
   "selection.blocked.stretch": "본운동이 아니라 스트레칭이에요",
-
   "servingUnit.g": "그램",
   "servingUnit.ml": "밀리리터",
   "servingUnit.piece": "개",
   "servingUnit.serving": "제공량",
-
   "session.title.activeRecovery": "회복 운동",
   "session.title.activeRecovery.a": "회복 운동 A",
   "session.title.activeRecovery.b": "회복 운동 B",
@@ -2758,25 +2374,21 @@
   "session.title.upper.c": "상체 C",
   "session.title.upper.d": "상체 D",
   "session.untitled": "운동",
-
   "sessionEffort.easy": "쉬웠어요",
   "sessionEffort.exhausting": "완전히 지쳤어요",
   "sessionEffort.good": "좋았어요",
   "sessionEffort.hard": "힘들었어요",
-
   "sessionStatus.completed": "완료",
   "sessionStatus.inProgress": "진행 중",
   "sessionStatus.planned": "계획됨",
   "sessionStatus.rest": "휴식일",
   "sessionStatus.skipped": "건너뜀",
-
   "setKind.amrap": "AMRAP",
   "setKind.backoff": "백오프 세트",
   "setKind.calibration": "중량 찾기",
   "setKind.dropSet": "드롭 세트",
   "setKind.warmup": "웜업",
   "setKind.working": "본세트",
-
   "settings.about.ack.apple": "전부 Apple 프레임워크로만 만들었어요. Forge에는 서드파티 코드가 없어요.",
   "settings.about.ack.dataset": "운동 데이터와 안내는 Hasan Emir Yıldırım의 자료이고 MIT 라이선스를 따라요.",
   "settings.about.ack.media": "운동 썸네일과 애니메이션은 이 앱을 위해 만든 오리지널 3D 렌더예요.",
@@ -2798,7 +2410,6 @@
   "settings.about.tagline": "운동과 식단을 내 기기 안에서.",
   "settings.about.title": "정보",
   "settings.about.versionValue": "버전 %@",
-
   "settings.appearance.accessibilityNote": "Forge는 글자 크기와 대비, 동작 줄이기 설정을 따라요. 그 설정은 iOS 설정의 손쉬운 사용에 있어요.",
   "settings.appearance.footer": "시스템은 기기의 라이트·다크 설정을 따라요.",
   "settings.appearance.openSystem": "iOS 설정 열기",
@@ -2809,7 +2420,6 @@
   "settings.appearance.section.system": "글자와 동작",
   "settings.appearance.section.theme": "테마",
   "settings.appearance.title": "화면 모양",
-
   "settings.data.import.emptyBackup.message": "파일 자체는 정상이지만 운동과 프로그램, 음식 기록이 하나도 없어서 복원해도 달라지는 게 없어요.",
   "settings.data.import.emptyBackup.title": "이 백업은 비어 있어요",
   "settings.data.import.strategy": "복원 방식",
@@ -2823,11 +2433,9 @@
   "settings.data.reset.word": "삭제",
   "settings.data.section.reset": "처음부터 다시",
   "settings.data.title": "데이터",
-
   "settings.empty.action": "다시 시도",
   "settings.empty.message": "프로필이 아직 만들어지지 않았어요. 다시 시도해 설정해 주세요.",
   "settings.empty.title": "설정을 준비하지 못했어요",
-
   "settings.equipment.addDumbbell": "덤벨 추가",
   "settings.equipment.addKettlebell": "케틀벨 추가",
   "settings.equipment.addPlate": "원판 추가",
@@ -2858,9 +2466,7 @@
   "settings.equipment.section.plates": "원판",
   "settings.equipment.section.preset": "내 체육관",
   "settings.equipment.title": "장비",
-
   "settings.foodTag.dairy": "유제품",
-
   "settings.foodTag.egg": "달걀",
   "settings.foodTag.fish": "생선",
   "settings.foodTag.gluten": "글루텐",
@@ -2873,7 +2479,6 @@
   "settings.foodTag.sesame": "참깨",
   "settings.foodTag.shellfish": "갑각류",
   "settings.foodTag.soy": "대두",
-
   "settings.goals.emptyExplainer": "고른 게 없으면 Forge가 전반적인 체력을 기준으로 계획해요.",
   "settings.goals.experience": "경력 수준",
   "settings.goals.experienceEffect": "Forge가 %@ 수준까지의 운동을 고르고 여유 반복 수를 약 %lld회 남겨요.",
@@ -2891,7 +2496,6 @@
   "settings.goals.section.priorities": "우선순위",
   "settings.goals.technique": "자세",
   "settings.goals.title": "목표",
-
   "settings.health.connected": "연결됨",
   "settings.health.connectionFooter": "iOS가 데이터 종류마다 따로 물어보고, 답한 내용은 나중에 바꿀 수 있어요.",
   "settings.health.denied": "건강 접근이 거부됐어요. iOS 설정의 건강에서 바꿀 수 있어요.",
@@ -2921,14 +2525,12 @@
   "settings.health.writeBodyMassNote": "허용하면 Forge에서 기록한 체중이 건강에도 저장돼요.",
   "settings.health.writeWorkouts": "마친 운동",
   "settings.health.writeWorkouts.detail": "마친 세션을 운동 기록으로 저장해요",
-
   "settings.language.deviceFooter": "Forge가 iPhone에 설정된 언어를 그대로 써요.",
   "settings.language.followDevice": "기기 설정 따르기",
   "settings.language.footer": "여기서 고른 언어는 Forge에만 적용되고, 바로 반영돼요.",
   "settings.language.section.device": "기기",
   "settings.language.section.languages": "언어",
   "settings.language.title": "언어",
-
   "settings.legal.dataset.body": "운동 이름과 분류, 장비, 주동근, 단계별 안내는 Hasan Emir Yıldırım이 MIT 라이선스로 공개한 오픈 데이터셋에서 가져왔어요.",
   "settings.legal.dataset.distinction": "데이터는 MIT 라이선스예요. 그림은 아니에요.",
   "settings.legal.dataset.licence": "MIT 라이선스 읽기",
@@ -2960,9 +2562,7 @@
   "settings.legal.section.software": "소프트웨어",
   "settings.legal.software.apple": "Forge는 Apple Developer Program 라이선스 계약에 따라 Apple 프레임워크로 만들었고, 서드파티 패키지가 없어요.",
   "settings.legal.title": "법적 고지와 개인 정보",
-
   "settings.loading": "설정을 불러오는 중이에요",
-
   "settings.notifications.addMealTime": "시간 추가",
   "settings.notifications.denied": "iOS 설정에서 Forge의 알림이 꺼져 있어요.",
   "settings.notifications.enable": "알림 허용",
@@ -2992,7 +2592,6 @@
   "settings.notifications.weight": "체중 재라고 알리기",
   "settings.notifications.weightFooter": "매일 같은 시간에 재면 체중 추세가 안정돼요.",
   "settings.notifications.weightTime": "시간",
-
   "settings.nutrition.allergens": "알레르기",
   "settings.nutrition.diet": "식사 방식",
   "settings.nutrition.dietExcludes": "%@ 제외해요.",
@@ -3023,7 +2622,6 @@
   "settings.nutrition.waterFooter": "규칙이라기보다 대략의 기준이에요. 더운 날과 긴 세션에는 더 필요해요.",
   "settings.nutrition.waterTarget": "하루 목표",
   "settings.nutrition.waterTracking": "물 기록",
-
   "settings.profile.activity": "활동 수준",
   "settings.profile.activityExplainer": "체육관 밖의 하루를 골라 주세요. 세션에서 쓰는 양은 Forge가 그 위에 더해요.",
   "settings.profile.addBirthDate": "생년월일 추가",
@@ -3032,7 +2630,6 @@
     "other": "%lld세"
   },
   "settings.profile.birthDate": "생년월일",
-
   "settings.profile.birthDateExplainer": "나이를 알면 열량 추정이 더 정확해져요. 없으면 Forge가 더 넓은 기본값을 써요.",
   "settings.profile.bodyExplainer": "체중은 %@, 키는 %@으로 입력할 수 있어요. 둘 다 열량 목표와 모든 중량 추정에 쓰여요.",
   "settings.profile.currentWeight": "현재 체중",
@@ -3052,14 +2649,12 @@
   "settings.profile.subtitle": "내 정보를 채워 주세요",
   "settings.profile.targetWeight": "목표 체중",
   "settings.profile.title": "프로필",
-
   "settings.section.about": "정보",
   "settings.section.app": "앱",
   "settings.section.data": "내 데이터",
   "settings.section.nutrition": "내 식단",
   "settings.section.training": "내 운동",
   "settings.title": "설정",
-
   "settings.training.autoProgression": "자동으로 증량하기",
   "settings.training.autoProgression.detail": "지난 세션이 어땠는지를 보고 중량과 횟수를 조정해요",
   "settings.training.autoregulation": "컨디션에 맞추기",
@@ -3101,7 +2696,6 @@
   "settings.training.targetRIR": "목표 여유 반복 수",
   "settings.training.title": "운동",
   "settings.training.weekdays": "운동할 수 있는 요일",
-
   "settings.units.distance": "거리",
   "settings.units.energy": "열량",
   "settings.units.example.distance": "유산소 거리",
@@ -3117,11 +2711,9 @@
   "settings.units.section.system": "단위계",
   "settings.units.title": "단위",
   "settings.units.weight": "무게",
-
   "sex.female": "여성",
   "sex.male": "남성",
   "sex.unspecified": "밝히지 않음",
-
   "split.custom": "직접 만든 계획",
   "split.fourWay": "4분할",
   "split.fullBody": "전신",
@@ -3142,7 +2734,6 @@
   "split.torsoArmsLegs": "몸통 / 어깨와 팔 / 다리",
   "split.upperLower": "상체 / 하체",
   "split.upperLowerFull": "상체 / 하체 / 전신",
-
   "substitution.bodyweightOnly": "맨몸만 가능해요",
   "substitution.dislike": "이 운동이 별로예요",
   "substitution.easier": "더 쉽게 하고 싶어요",
@@ -3185,12 +2776,10 @@
   "substitution.reason.supported": "몸을 받쳐 주는 자세예요",
   "substitution.reason.unilateral": "한쪽씩 훈련해요",
   "substitution.sameMuscleDifferentExercise": "같은 근육, 다른 운동",
-
   "technique.coached": "코치를 받아 봤어요",
   "technique.confident": "주요 종목 자세에 자신 있어요",
   "technique.learning": "아직 자세를 배우는 중이에요",
   "technique.unfamiliar": "제 자세가 맞는지 잘 모르겠어요",
-
   "trackingMode.assistedBodyweight": "어시스트 맨몸",
   "trackingMode.distanceAndDuration": "거리와 시간",
   "trackingMode.duration": "시간",
@@ -3198,19 +2787,15 @@
   "trackingMode.weightAndDuration": "무게와 시간",
   "trackingMode.weightAndReps": "무게 × 횟수",
   "trackingMode.weightedBodyweight": "맨몸 + 추가 중량",
-
   "trainingTime.afternoon": "오후",
   "trainingTime.earlyMorning": "이른 아침",
   "trainingTime.evening": "저녁",
   "trainingTime.midday": "정오",
   "trainingTime.morning": "아침",
-
   "trainingTime.night": "밤",
   "trainingTime.varies": "그때그때 달라요",
-
   "unitSystem.imperial": "야드파운드법",
   "unitSystem.metric": "미터법",
-
   "validation.age.range": "%@세에서 %@세 사이의 나이를 입력해 주세요.",
   "validation.bodyMass.range": "%@에서 %@ kg 사이의 체중을 입력해 주세요.",
   "validation.collection.empty": "먼저 항목을 하나 이상 추가해 주세요.",
@@ -3226,7 +2811,6 @@
   "validation.number.notFinite": "숫자를 입력해 주세요.",
   "validation.portion.range": "%@에서 %@ 사이의 양을 입력해 주세요.",
   "validation.servings.range": "%@에서 %@ 사이의 회분 수를 입력해 주세요.",
-
   "weekday.friday": "금요일",
   "weekday.monday": "월요일",
   "weekday.saturday": "토요일",
@@ -3241,10 +2825,8 @@
   "weekday.thursday": "목요일",
   "weekday.tuesday": "화요일",
   "weekday.wednesday": "수요일",
-
   "weightUnit.kg": "킬로그램 (kg)",
   "weightUnit.lb": "파운드 (lb)",
-
   "widget.accessibility.calories": "오늘 %2$@ 킬로칼로리 중 %1$@ 섭취",
   "widget.accessibility.inProgress": "%@ 진행 중",
   "widget.accessibility.openApp": "Forge 열기",
@@ -3304,7 +2886,6 @@
   "widget.week.label": "이번 주",
   "widget.week.progress": "%1$lld/%2$lld",
   "widget.workout.generic": "운동",
-
   "workoutHub.calendar.bringForward": "앞당기기",
   "workoutHub.calendar.jumpToToday": "%@. 눌러서 이번 달로 돌아가요.",
   "workoutHub.calendar.legend": "표시의 뜻",
@@ -3339,7 +2920,6 @@
   "workoutHub.calendar.state.rest": "휴식일",
   "workoutHub.calendar.thisWeek": "이번 주",
   "workoutHub.calendar.thisWeekSubtitle": "날짜를 누르면 그날 무엇이 있는지 보고 바꿀 수 있어요.",
-
   "workoutHub.detail.comparisonSubtitle": "%@의 같은 세션과 비교했어요.",
   "workoutHub.detail.comparisonTitle": "지난번과 비교",
   "workoutHub.detail.completed": "완료",
@@ -3370,17 +2950,14 @@
   "workoutHub.detail.unchanged": "변화 없음",
   "workoutHub.detail.upBy": "%@ 증가 (이전 %@)",
   "workoutHub.detail.volume": "볼륨",
-
   "workoutHub.error.calendar": "달력을 불러오지 못했어요.",
   "workoutHub.error.detail": "이 세션을 열지 못했어요.",
   "workoutHub.error.history": "기록을 불러오지 못했어요.",
   "workoutHub.error.load": "오늘의 계획을 불러오지 못했어요.",
-
   "workoutHub.error.saveNotes": "메모를 저장하지 못했어요.",
   "workoutHub.error.schedule": "일정을 바꾸지 못했어요.",
   "workoutHub.error.start": "운동을 시작하지 못했어요.",
   "workoutHub.error.title": "문제가 생겼어요",
-
   "workoutHub.history.emptyMessage": "운동을 마치면 기록한 모든 세트와 함께 여기에 나타나요.",
   "workoutHub.history.emptyTitle": "아직 세션이 없어요",
   "workoutHub.history.loading": "기록을 불러오는 중",
@@ -3393,7 +2970,6 @@
   "workoutHub.history.searchPrompt": "운동으로 검색",
   "workoutHub.history.setsOf": "%lld / %lld세트",
   "workoutHub.history.title": "기록",
-
   "workoutHub.quickStart.emptyDetail": "무엇을 하든 그대로 기록해요.",
   "workoutHub.quickStart.emptyTitle": "빈 세션",
   "workoutHub.quickStart.freestyleSubtitle": "아무것도 없이 시작해서 하면서 운동을 추가해요.",
@@ -3407,7 +2983,6 @@
   "workoutHub.quickStart.repeatTitle": "한 번 더",
   "workoutHub.quickStart.templateDetail": "운동 %lld개 · %lld세트",
   "workoutHub.quickStart.title": "빠른 시작",
-
   "workoutHub.reschedule.applied": "한 주를 다시 짰어요.",
   "workoutHub.reschedule.footnote": "이 변경은 프로그램이 각 세션을 배치하는 요일에 적용돼서, 다음 주도 새 순서를 따라요.",
   "workoutHub.reschedule.kept": "%@ 세션은 %@에 그대로 있어요.",
@@ -3421,15 +2996,12 @@
   "workoutHub.reschedule.summaryNoChange": "이미 한 주가 잘 짜여 있어요. 남은 세션이 모두 가장 좋은 날에 있어요.",
   "workoutHub.reschedule.title": "한 주 다시 짜기",
   "workoutHub.reschedule.versionReason": "놓친 세션에 맞춰 한 주를 다시 짰어요.",
-
   "workoutHub.resume.accessibility": "진행 중인 운동 이어하기: %@",
   "workoutHub.resume.title": "진행 중인 운동",
-
   "workoutHub.section.calendar": "달력",
   "workoutHub.section.picker": "운동 보기",
   "workoutHub.section.today": "오늘",
   "workoutHub.title": "운동",
-
   "workoutHub.today.addExercise": "운동 추가",
   "workoutHub.today.addedByYou": "이 운동은 직접 오늘 세션에 추가했어요.",
   "workoutHub.today.autoProgressionOff": "자동 증량이 꺼져 있어서 오늘 수치는 프로그램에 저장된 값이에요.",
@@ -3465,5 +3037,65 @@
   "workoutHub.today.swapped": "교체됨",
   "workoutHub.today.targetRIR": "여유 반복 수",
   "workoutHub.today.trainAnyway": "그래도 운동하기",
-  "workoutHub.today.viewProgram": "내 프로그램 보기"
+  "workoutHub.today.viewProgram": "내 프로그램 보기",
+  "start.step.welcome.title": "환영합니다",
+  "start.step.welcome.subtitle": "약 1분이면 설정이 끝나요.",
+  "start.welcome.title": "Forge에 오신 것을 환영합니다",
+  "start.welcome.subtitle": "운동과 식단 계획이 1분 만에 준비됩니다.",
+  "start.welcome.private.title": "계정이 필요 없어요",
+  "start.welcome.private.detail": "바로 시작하세요. 모든 데이터는 기기에만 저장돼요.",
+  "start.welcome.plan.title": "나에게 맞춘 계획",
+  "start.welcome.plan.detail": "목표, 일정, 장비에 맞춘 운동과 칼로리.",
+  "start.welcome.adapts.title": "하면서 계속 맞춰져요",
+  "start.welcome.adapts.detail": "중량, 반복, 식단이 실제 한 만큼에 맞춰 바뀌어요.",
+  "start.welcome.time": "약 1분 걸려요. 나중에 설정에서 모두 바꿀 수 있어요.",
+  "start.step.about.title": "내 정보",
+  "start.step.about.subtitle": "계획을 맞추기 위한 몇 가지 수치예요.",
+  "start.step.goal.title": "내 목표",
+  "start.step.goal.subtitle": "지금 가장 중요한 것을 고르세요.",
+  "start.step.week.title": "내 한 주",
+  "start.step.week.subtitle": "얼마나 자주, 얼마나 오래 운동할 수 있나요.",
+  "start.step.gear.title": "내 장비",
+  "start.step.gear.subtitle": "어떤 장비로 운동할 수 있나요.",
+  "start.step.reminders.title": "꾸준히 이어가요",
+  "start.step.reminders.subtitle": "받고 싶은 알림만 고르세요. 그 외에는 없어요.",
+  "start.step.ready.title": "내 계획",
+  "start.step.ready.subtitle": "답변을 바탕으로 만들었어요. 언제든 바꿀 수 있어요.",
+  "start.action.begin": "시작하기",
+  "start.action.enableReminders": "알림 켜기",
+  "start.action.notNow": "나중에",
+  "start.action.finish": "운동 시작하기",
+  "start.hint.age": "나이를 %lld세에서 %lld세 사이로 입력하세요.",
+  "start.hint.goalEmpty": "계속하려면 목표를 고르세요.",
+  "start.about.units": "단위",
+  "start.about.name.placeholder": "이름 (선택)",
+  "start.about.age": "나이",
+  "start.about.years": "세",
+  "start.about.why": "칼로리와 시작 중량을 추정하는 데만 쓰이며, 기기 밖으로 나가지 않아요.",
+  "start.goal.level": "내 수준",
+  "start.goal.nutrition": "식단 기록 포함",
+  "start.goal.nutrition.detail": "목표에 맞춘 하루 칼로리와 영양소. 설정에서 끌 수 있어요.",
+  "start.week.days.hint": "운동할 수 있는 요일을 누르세요. 그에 맞춰 계획해요.",
+  "start.gear.limitations": "피해야 할 부상이나 동작이 있나요? (선택)",
+  "start.gear.limitations.open": "펼쳐짐",
+  "start.gear.limitations.detail": "이를 무리하게 하는 운동은 제외돼요. 의학적 조언이 아닙니다.",
+  "start.reminders.training": "운동하는 날",
+  "start.reminders.training.detail": "정한 시간에 한 번, 운동하는 날에만 알려드려요.",
+  "start.reminders.consent": "켜면 iOS가 허용 여부를 물어봐요.",
+  "start.reminders.later": "설정에서 언제든 바꾸거나 끌 수 있어요.",
+  "start.reminders.deniedNote": "iOS 설정에서 Forge 알림이 꺼져 있어요. 언제든 그곳에서 허용할 수 있어요.",
+  "start.ready.footer": "모든 운동, 세트, 식사를 바꿀 수 있고 Forge가 각 결정의 이유를 설명해요.",
+  "tour.skip": "건너뛰기",
+  "tour.home.title": "오늘을 한눈에",
+  "tour.home.body": "오늘의 운동, 회복 상태, 하루 진행 상황을 볼 수 있어요. 프로필 버튼은 설정을 열어요.",
+  "tour.workout.title": "한 번에 운동 시작",
+  "tour.workout.body": "운동을 시작하고 세트마다 한 번만 눌러 기록하세요. 번개 버튼은 빠른 운동을 시작해요.",
+  "tour.exercises.title": "애니메이션 운동 500개",
+  "tour.exercises.body": "검색하고 필터링하며 모든 동작을 확인하세요. 기구가 사용 중이면 운동을 바꿀 수 있어요.",
+  "tour.nutrition.title": "먹은 것을 기록하세요",
+  "tour.nutrition.body": "음식을 검색하고, 바코드를 스캔하고, 지난 식사를 다시 담으세요. 목표는 내 목표에 맞춰져요.",
+  "tour.progress.title": "발전 상황을 확인하세요",
+  "tour.progress.body": "체중, 기록, 차트를 볼 수 있어요. +를 눌러 체중을 기록하세요.",
+  "tour.replay": "빠른 둘러보기 보기",
+  "tour.replay.detail": "각 탭을 짧게 둘러봐요."
 }

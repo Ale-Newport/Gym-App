@@ -70,15 +70,33 @@ struct RootView: View {
             // afterwards, but without this a user who installs the app, adds the widget and has not
             // yet finished a workout would keep seeing the placeholder.
             environment.snapshotWriter.refresh(context: modelContext, catalog: environment.catalog)
+            await refreshReminders()
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {
                 environment.snapshotWriter.refresh(context: modelContext, catalog: environment.catalog)
             }
+            if phase == .active {
+                Task { await refreshReminders() }
+            }
+        }
+        .onChange(of: LocalizationManager.shared.current) {
+            Task { await AppBootstrap.importFoodDatabase(container: environment.modelContainer) }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didReceiveMemoryWarningNotification)) { _ in
             environment.handleMemoryPressure()
         }
+    }
+
+    /// Rebuilds the reminder queue from the stored settings.
+    ///
+    /// The queue is derived state: it depends on the training days, which Settings can change
+    /// without ever visiting the notification screen, and on a permission the user can withdraw in
+    /// iOS Settings while the app is closed. Re-deriving it whenever the app comes forward is what
+    /// keeps what iOS will deliver the same as what the app says it will deliver.
+    private func refreshReminders() async {
+        guard isOnboarded, let row = settings.first else { return }
+        await environment.notificationService.applySettings(row, weekdays: profile?.availableWeekdays ?? [])
     }
 
     private var colorScheme: ColorScheme? {
@@ -160,8 +178,11 @@ enum AppBootstrap {
     /// with only the user's own foods.
     static func importFoodDatabase(container: ModelContainer) async {
         let importer = FoodDatabaseImporter(modelContainer: container)
+        // Food names are written in the interface language, so a change of language re-imports. The
+        // importer compares against the language it last wrote and does nothing when it is the same.
+        let language = await MainActor.run { LocalizationManager.shared.current.datasetCode }
         do {
-            let summary = try await importer.importIfNeeded()
+            let summary = try await importer.importIfNeeded(language: language)
             if summary.didRun {
                 AppLog.nutrition.info(
                     "Food database imported: version \(summary.version, privacy: .public), \(summary.inserted) added, \(summary.updated) updated, \(summary.removed) removed"

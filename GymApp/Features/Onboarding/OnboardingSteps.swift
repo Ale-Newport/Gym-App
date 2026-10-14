@@ -4,56 +4,45 @@ import Foundation
 
 /// One screen of first-run onboarding.
 ///
+/// The flow asks for the least that lets the engines build a good first program — who you are, what
+/// you want, when you can train, what you can train with — and leaves everything finer (plate
+/// sizes, diet, exclusions, weekly budgets) to Settings, where it can be changed at any time. A
+/// first launch that opens with twenty questions loses people before they have seen the app.
+///
 /// The enum is deliberately flat rather than a tree of optional sub-flows: every question the
 /// engines need has to be asked exactly once, and a branching flow makes "did we ever ask about
 /// equipment?" a question the code has to answer at runtime instead of by construction.
 enum OnboardingStep: String, CaseIterable, Identifiable, Hashable, Sendable {
     case welcome
-    case basics
-    case goals
-    case experience
-    case availability
-    case equipment
-    case restrictions
-    case nutrition
-    case generating
-    case summary
+    case about
+    case goal
+    case week
+    case gear
+    case reminders
+    case ready
 
     var id: String { rawValue }
 
-    var titleKey: String { "onboarding.step.\(rawValue).title" }
-    var subtitleKey: String { "onboarding.step.\(rawValue).subtitle" }
+    var titleKey: String { "start.step.\(rawValue).title" }
+    var subtitleKey: String { "start.step.\(rawValue).subtitle" }
 
     var symbolName: String {
         switch self {
         case .welcome: "sparkles"
-        case .basics: "person.crop.circle"
-        case .goals: "target"
-        case .experience: "figure.strengthtraining.traditional"
-        case .availability: "calendar"
-        case .equipment: "dumbbell.fill"
-        case .restrictions: "bandage.fill"
-        case .nutrition: "fork.knife"
-        case .generating: "wand.and.stars"
-        case .summary: "checklist"
+        case .about: "person.crop.circle"
+        case .goal: "target"
+        case .week: "calendar"
+        case .gear: "dumbbell.fill"
+        case .reminders: "bell.badge"
+        case .ready: "checkmark.seal"
         }
     }
 
-    /// Steps the user may move past without touching anything, because every field on them is
-    /// genuinely optional. `Skip` is only ever offered here — putting it on a step that feeds a
-    /// recommendation would be offering to make the app worse without saying so.
-    var isSkippable: Bool {
-        switch self {
-        case .restrictions: true
-        default: false
-        }
-    }
-
-    /// Steps that ask the user something. The counter reads "3 of 7" over these, because the
-    /// welcome, generation and review screens are the app's work rather than the user's.
+    /// Steps that ask the user something. The counter reads "3 of 5" over these, because the
+    /// welcome and the result are the app's work rather than the user's.
     var collectsInput: Bool {
         switch self {
-        case .welcome, .generating, .summary: false
+        case .welcome, .ready: false
         default: true
         }
     }
@@ -61,10 +50,9 @@ enum OnboardingStep: String, CaseIterable, Identifiable, Hashable, Sendable {
     /// The label on the footer's primary button.
     var primaryActionKey: String {
         switch self {
-        case .welcome: "onboarding.action.start"
-        case .nutrition: "onboarding.action.build"
-        case .generating: "common.continue"
-        case .summary: "onboarding.action.finish"
+        case .welcome: "start.action.begin"
+        case .reminders: "start.action.enableReminders"
+        case .ready: "start.action.finish"
         default: "common.next"
         }
     }
@@ -74,13 +62,8 @@ enum OnboardingStep: String, CaseIterable, Identifiable, Hashable, Sendable {
 
 /// The ordered list of steps for one run of the flow, plus the movement rules between them.
 ///
-/// Two rules are not simply "the next case in the enum", which is why ordering lives here rather
-/// than in the container view:
-///
-/// 1. A user sent back through onboarding from Settings has already seen the welcome screen, so it
-///    is dropped — re-reading the pitch for an app they are already using is friction, not warmth.
-/// 2. `.generating` is never a *backwards* destination. Walking back from the review screen has to
-///    land on the last question the user answered, not re-run the programming engine on the way.
+/// A user sent back through onboarding from Settings has already seen the welcome screen, so it is
+/// dropped — re-reading the pitch for an app they are already using is friction, not warmth.
 struct OnboardingStepPlan: Hashable, Sendable {
     let steps: [OnboardingStep]
 
@@ -91,7 +74,7 @@ struct OnboardingStepPlan: Hashable, Sendable {
         isReturningUser ? .returning : .firstRun
     }
 
-    var first: OnboardingStep { steps.first ?? .basics }
+    var first: OnboardingStep { steps.first ?? .about }
 
     /// The steps the progress counter is expressed over.
     var questionSteps: [OnboardingStep] { steps.filter(\.collectsInput) }
@@ -105,11 +88,8 @@ struct OnboardingStepPlan: Hashable, Sendable {
         return index < steps.count ? steps[index] : nil
     }
 
-    /// The previous step a Back button should land on. `.generating` is skipped, so review → back
-    /// returns to the last question rather than rebuilding the program.
     func previous(before step: OnboardingStep) -> OnboardingStep? {
-        var index = index(of: step) - 1
-        while index >= 0, steps[index] == .generating { index -= 1 }
+        let index = index(of: step) - 1
         return index >= 0 ? steps[index] : nil
     }
 
@@ -122,7 +102,7 @@ struct OnboardingStepPlan: Hashable, Sendable {
     var questionCount: Int { questionSteps.count }
 
     /// 0…1 for the progress bar. Uses position in the full plan so the bar keeps moving across the
-    /// generation and review screens instead of sitting pinned at 100 % for the last two taps.
+    /// result screen instead of sitting pinned at 100 % for the last tap.
     func progress(at step: OnboardingStep) -> Double {
         guard steps.count > 1 else { return 1 }
         return Double(index(of: step)) / Double(steps.count - 1)
@@ -150,57 +130,22 @@ enum OnboardingSchedule {
         }
     }
 
-    /// Session lengths offered as one-tap choices. Anything outside these is still reachable through
-    /// the stepper; these are just the answers people actually give.
-    static let sessionMinuteOptions = [30, 45, 60, 75, 90, 120]
+    /// Session lengths offered as one-tap choices. Anything outside these is still reachable from
+    /// Settings; these are just the answers people actually give.
+    static let sessionMinuteOptions = [30, 45, 60, 75, 90]
 
-    /// Meals-per-day choices. Above six the day stops being meals and becomes grazing, which the
-    /// nutrition engine models as four slots anyway.
-    static let mealsPerDayOptions = [2, 3, 4, 5, 6]
+    /// The equipment presets worth putting in front of somebody on day one. "Custom" is a
+    /// Settings-level control: it asks for exactly what you own, which is a question for later.
+    static let equipmentPresets: [GymSetupPreset] = [.fullGym, .limitedGym, .homeGym, .bodyweightOnly]
+
+    /// The hour a training reminder defaults to, before the user has said when they train.
+    static let defaultReminderHour = 18
 }
 
 // MARK: - Curated option lists
 
 /// The subsets of the taxonomies that are worth putting in front of somebody during onboarding.
-///
-/// The full enums are exhaustive because the dataset is; a first-run questionnaire that offered all
-/// twenty-nine movement patterns would be answered by nobody. These lists are the ones a user can
-/// recognise in their own body.
 enum OnboardingOptions {
-
-    /// Patterns a user can meaningfully say "not that one" about.
-    static let avoidablePatterns: [MovementPattern] = [
-        .verticalPush, .horizontalPush, .verticalPull, .horizontalPull,
-        .squat, .hinge, .lunge, .carry, .hipThrust, .calfRaise, .cardio
-    ]
-
-    /// Allergen tags present in the bundled food database, plus the dietary tags people are most
-    /// often allergic to. Both sets are matched identically by `NutritionProfileSnapshot`.
-    static let allergenTags = [
-        "peanut", "nuts", "gluten", "dairy", "egg", "soy", "fish", "shellfish", "seafood", "sesame"
-    ]
-
-    /// Intolerances are treated as hard exclusions too — the app is in no position to judge how much
-    /// of an intolerance is "a bit".
-    static let intoleranceTags = ["dairy", "gluten", "egg", "soy", "honey"]
-
-    /// Food groups people commonly ask never to be suggested.
-    static let excludableFoodTags = ["meat", "poultry", "fish", "seafood", "dairy", "egg", "honey", "supplement"]
-
-    /// Plate sizes offered when the user has a barbell, in kilograms. Anything smaller than 1.25 kg
-    /// is a micro-plate most gyms do not stock, so it is off by default rather than absent.
-    static let plateOptionsKg: [Double] = [25, 20, 15, 10, 5, 2.5, 1.25, 0.5]
-    /// The same rack in a gym stocked in pounds. Offering 20 kg plates to somebody whose gym has
-    /// 45s means every rounded recommendation lands on a weight they cannot actually load.
-    static let plateOptionsLb: [Double] = [45, 35, 25, 10, 5, 2.5, 1.25]
-
-    /// The gap between adjacent dumbbells. Drives the generated ladder rather than being stored.
-    static let dumbbellStepOptionsKg: [Double] = [1, 2, 2.5, 5]
-    static let dumbbellStepOptionsLb: [Double] = [2.5, 5, 10]
-
-    /// Kettlebell ladders are near-universal, so they are offered as toggles over the standard set.
-    static let kettlebellOptionsKg: [Double] = [4, 8, 12, 16, 20, 24, 28, 32, 40]
-    static let kettlebellOptionsLb: [Double] = [10, 15, 20, 25, 35, 45, 55, 70]
 
     /// Builds a dumbbell ladder from the smallest pair upwards. Real racks thin out at the top, so
     /// the step doubles past 40 kg rather than pretending every 2 kg increment exists to 60.
@@ -214,18 +159,4 @@ enum OnboardingOptions {
         }
         return values.isEmpty ? EquipmentIncrements.default.availableDumbbellsKg : values
     }
-
-    /// Benchmark lifts used to seed first-session loads, in the order they are offered.
-    ///
-    /// Matching is by name against the catalogue rather than by hard-coded identifier: the dataset
-    /// is regenerated from an upstream source, and an id that disappears would silently drop the
-    /// question. A name match that finds nothing simply offers one fewer lift.
-    static let strengthSeedQueries: [(labelKey: String, terms: [String])] = [
-        ("onboarding.seed.squat", ["barbell high bar squat", "barbell full squat", "barbell squat"]),
-        ("onboarding.seed.bench", ["barbell bench press"]),
-        ("onboarding.seed.deadlift", ["barbell deadlift"]),
-        ("onboarding.seed.overheadPress", ["barbell overhead press", "barbell standing military press", "barbell shoulder press"]),
-        ("onboarding.seed.row", ["barbell bent over row", "barbell row"]),
-        ("onboarding.seed.pulldown", ["cable pulldown", "lever front pulldown"])
-    ]
 }

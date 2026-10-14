@@ -6,7 +6,6 @@
   "tab.exercises": "Egzersizler",
   "tab.nutrition": "Beslenme",
   "tab.progress": "İlerleme",
-
   "common.done": "Tamam",
   "common.cancel": "Vazgeç",
   "common.save": "Kaydet",
@@ -62,14 +61,11 @@
   "common.min": "dk",
   "common.sec": "sn",
   "common.hr": "sa",
-
   "duration.minutes": "%lld dk",
   "duration.hours": "%lld sa",
   "duration.hoursMinutes": "%lld sa %lld dk",
-
   "media.unavailable": "Görsel yok",
   "media.attribution.title": "Egzersiz görseli",
-
   "notification.rest.title": "Dinlenme bitti",
   "notification.rest.body": "%@ — %lld. set hazır.",
   "notification.training.title": "Antrenman zamanı",
@@ -80,7 +76,6 @@
   "notification.weight.body": "Her gün tek bir tartım, trendini doğru tutar.",
   "notification.meal.title": "Öğününü kaydet",
   "notification.meal.body": "Bugünkü rakamlarını güncel tut.",
-
   "export.trainingCSV": "Antrenman (CSV)",
   "export.trainingCSV.detail": "Kaydettiğin her set, tablo programına hazır.",
   "export.trainingJSON": "Antrenman (JSON)",
@@ -96,7 +91,6 @@
   "export.preparing": "Dosyan hazırlanıyor…",
   "export.failed": "Dışa aktarma oluşturulamadı.",
   "export.shareFile": "Dosyayı paylaş",
-
   "import.title": "Yedeği içe aktar",
   "import.subtitle": "Bir Forge yedek dosyasını geri yükle.",
   "import.chooseFile": "Yedek dosyası seç",
@@ -119,7 +113,6 @@
   "import.error.notABackup": "Bu bir Forge yedek dosyası değil.",
   "import.error.version": "Bu yedek, Forge'un daha yeni bir sürümüyle oluşturulmuş.",
   "import.error.write": "Yedek geri yüklenemedi.",
-
   "backup.count.programs": "Programlar",
   "backup.count.sessions": "Antrenmanlar",
   "backup.count.records": "Kişisel rekorlar",
@@ -128,12 +121,10 @@
   "backup.count.foodLog": "Besin kayıtları",
   "backup.count.savedMeals": "Kayıtlı öğünler",
   "backup.count.recipes": "Tarifler",
-
   "reset.title": "Tüm verileri sıfırla",
   "reset.message": "Bu işlem profilini, programlarını, antrenman geçmişini ve besin günlüğünü bu cihazdan siler. Bir kısmını saklamak istiyorsan önce yedek al.",
   "reset.confirm": "Her şeyi sil",
   "reset.done": "Tüm veriler silindi.",
-
   "common.increase": "Artır",
   "common.decrease": "Azalt",
   "exercise.favorite": "Favori",
@@ -150,14 +141,12 @@
   "exercise.fact.secondary": "Ayrıca çalışır",
   "exercise.fact.repRange": "Önerilen tekrar",
   "exercise.fact.rest": "Önerilen dinlenme",
-
   "repo.error.saveFailed": "Bu değişiklik kaydedilemedi. Tekrar dene.",
   "repo.error.fetchFailed": "Verilerin şu anda okunamadı. Tekrar dene.",
   "repo.error.notFound": "Bu öğe artık mevcut değil.",
   "repo.error.notEditable": "Bu öğe yerleşik veritabanından geliyor ve düzenlenemez. Kendi sürümünü oluşturmak için kopyala.",
   "repo.error.stillReferenced": "Bu besin, kayıtlı öğün veya tariflerinin %@ tanesinde kullanılıyor. Yine de silinsin mi?",
   "repo.error.snapshotCodingFailed": "Program geçmişi kaydı saklanamadı.",
-
   "validation.height.range": "%@ ile %@ cm arasında bir boy gir.",
   "validation.bodyMass.range": "%@ ile %@ kg arasında bir kilo gir.",
   "validation.age.range": "%@ ile %@ yaş arasında bir değer gir.",
@@ -173,18 +162,14 @@
   "validation.number.notFinite": "Bir sayı gir.",
   "validation.equipment.ladderEmpty": "Bu listeye en az bir ağırlık ekle.",
   "validation.equipment.incrementRange": "%@ ile %@ kg arasında bir artış değeri gir.",
-
   "program.version.superseded": "Bu programın daha yeni bir sürümüyle değiştirildi",
   "program.version.createdManually": "Program oluşturuldu",
   "program.version.clonedFrom": "Şundan kopyalandı: %@",
-
   "session.untitled": "Antrenman",
   "split.custom": "Kendi planın",
-
   "exercises.title": "Egzersizler",
   "exercises.loading": "Egzersiz kütüphanesi yükleniyor…",
   "exercises.searchPrompt": "%lld egzersiz içinde ara",
-
   "exercises.section.recent": "Son yaptıkların",
   "exercises.section.favorites": "Favoriler",
   "exercises.section.results": "Sonuçlar",
@@ -192,11 +177,9 @@
     "one": "%lld egzersiz",
     "other": "%lld egzersiz"
   },
-
   "exercises.empty.title": "Eşleşen bir şey yok",
   "exercises.empty.message": "Bu arama ve bu filtrelerin ikisine birden uyan egzersiz yok.",
   "exercises.empty.action": "Aramayı ve filtreleri temizle",
-
   "exercises.row.hint": "Egzersizi açar",
   "exercises.row.lastPerformed": "Son yapılış: %@",
   "exercises.row.timesPerformed": {
@@ -204,13 +187,11 @@
     "other": "%lld kez yapıldı"
   },
   "exercises.index.label": "Alfabe dizini",
-
   "exercises.sort.label": "Sırala",
   "exercises.sort.name": "Ad",
   "exercises.sort.relevance": "İlgi düzeyi",
   "exercises.sort.mostUsed": "En çok kullanılan",
   "exercises.sort.favoritesFirst": "Önce favoriler",
-
   "exercises.filters.label": "Filtreler",
   "exercises.filters.title": "Filtreler",
   "exercises.filters.quick": "Hızlı filtreler",
@@ -234,11 +215,9 @@
     "one": "%lld egzersizi göster",
     "other": "%lld egzersizi göster"
   },
-
   "exercises.detail.title": "Egzersiz",
   "exercises.detail.missing.title": "Bu egzersiz artık mevcut değil",
   "exercises.detail.missing.message": "Uygulamanın bu sürümüyle gelen egzersiz kütüphanesinde yer almıyor.",
-
   "exercises.action.favorite": "Favorilere ekle",
   "exercises.action.unfavorite": "Favorilerden çıkar",
   "exercises.action.favorited": "Favorilerine eklendi.",
@@ -258,13 +237,10 @@
   "exercises.action.templateGone": "Bu seans artık mevcut değil.",
   "exercises.action.goToWorkouts": "Antrenmanlara git",
   "exercises.action.openWorkout": "Antrenmanı aç",
-
   "exercises.feedback.title": "Bu egzersiz hakkında ne düşünüyorsun?",
   "exercises.feedback.subtitle": "Cevabın, bu egzersizin sana ne sıklıkta verileceğini değiştirir.",
-
   "exercises.facts.title": "Ayrıntılar",
   "exercises.instructions.title": "Nasıl yapılır",
-
   "exercises.history.title": "Geçmişin",
   "exercises.history.viewAll": "Tüm geçmişi gör",
   "exercises.history.records": "Kişisel rekorlar",
@@ -293,7 +269,6 @@
   "exercises.history.noChart": "Şimdilik tek seans var — grafik için en az iki gerekir.",
   "exercises.history.empty.title": "Bunu henüz yapmadın",
   "exercises.history.empty.message": "Bir set kaydet; ağırlıkların, en iyi setlerin ve tahmini 1RM'in burada görünsün.",
-
   "exercises.trend.label": "Ölçüt",
   "exercises.trend.date": "Tarih",
   "exercises.trend.oneRepMax": "Tahmini 1RM",
@@ -301,13 +276,11 @@
   "exercises.trend.volume": "Hacim",
   "exercises.trend.chartLabel": "Zaman içinde %@",
   "exercises.trend.summary": "%lld seans; %@ (%@) değerinden %@ (%@) değerine.",
-
   "exercises.alternatives.title": "Alternatifler",
   "exercises.alternatives.loading": "Alternatifler aranıyor…",
   "exercises.alternatives.empty.title": "Alternatif bulunamadı",
   "exercises.alternatives.empty.message": "Sahip olduğun ekipmanla bunu aynı şekilde çalıştıran bir hareket yok.",
   "exercises.alternatives.similarity": "%%%lld benzer",
-
   "exercises.templates.title": "Bir seans seç",
   "exercises.templates.activeProgram": "%@ · güncel plan",
   "exercises.templates.empty.title": "Henüz seans yok",
@@ -316,11 +289,9 @@
     "one": "%lld egzersiz",
     "other": "%lld egzersiz"
   },
-
   "exercises.picker.title": "Bir egzersiz seç",
   "exercises.picker.hint": "Bu egzersizi seçer",
   "exercises.picker.noneChosen": "Henüz bir şey seçilmedi",
-
   "home.greeting.morning": "Günaydın",
   "home.greeting.afternoon": "İyi günler",
   "home.greeting.evening": "İyi akşamlar",
@@ -330,27 +301,30 @@
   "home.greeting.evening.named": "İyi akşamlar %@",
   "home.greeting.night.named": "Hâlâ ayaktasın %@",
   "home.profileButton": "Profil ve ayarlar",
-
   "home.loading": "Günün hazırlanıyor…",
   "home.error.load": "Bugünün panosu yüklenemedi.",
   "home.error.action": "Bu değişiklik kaydedilemedi.",
   "home.empty.title": "Antrenmanın burada başlıyor",
   "home.empty.message": "Forge; hedeflerine, ekipmanına ve gerçekten antrenman yapabildiğin günlere göre bir hafta kurar.",
   "home.empty.action": "Programımı oluştur",
-
   "home.today.title": "Bugün",
   "home.today.start": "Antrenmanı başlat",
   "home.today.resume": "Antrenmana devam et",
   "home.today.working": "Bir saniye…",
-  "home.today.exercises": {"one": "%lld egzersiz", "other": "%lld egzersiz"},
-  "home.today.sets": {"one": "%lld set", "other": "%lld set"},
+  "home.today.exercises": {
+    "one": "%lld egzersiz",
+    "other": "%lld egzersiz"
+  },
+  "home.today.sets": {
+    "one": "%lld set",
+    "other": "%lld set"
+  },
   "home.today.inProgress": "Devam ediyor",
   "home.today.setsDone": "%lld/%lld set tamamlandı",
   "home.today.startedAt": "Başlangıç: %@",
   "home.today.viewProgram": "Programı gör",
   "home.today.deloadChip": "Hafif hafta",
   "home.today.startAccessibility": "%@ başlat. %@.",
-
   "home.today.restTitle": "Dinlenme günü",
   "home.today.restMessage": "Bugün için bir şey planlanmadı, bu da planın bir parçası. Yaptığın iş, toparlanırken ilerlemeye dönüşür.",
   "home.today.restNext": "Sırada: %@, %@ günü",
@@ -359,7 +333,6 @@
   "home.today.startLight": "Hafif bir seans başlat",
   "home.today.stretchSuggestion": "Ya da şunu dene: %@",
   "home.today.stretchAction": "Göster",
-
   "home.today.statSets": "Set",
   "home.today.statTime": "Süre",
   "home.today.statVolume": "Hacim",
@@ -367,19 +340,16 @@
   "home.today.doneMessage": "%@ tamamlandı. Eline sağlık.",
   "home.today.viewSummary": "Özeti gör",
   "home.today.trainAgain": "Yeniden antrenman yap",
-
   "home.today.noProgramTitle": "Henüz program yok",
   "home.today.noProgramMessage": "Forge'a fazladan bir şey söylemene gerek yok — haftanı hedeflerinden, ekipmanından ve uygun günlerinden kurar.",
   "home.today.createProgram": "Programımı oluştur",
   "home.today.creatingProgram": "Haftan kuruluyor…",
-
   "home.deload.title": "Hafif bir haftanın vakti geldi",
   "home.deload.why": "Bunun nedenleri",
   "home.deload.accept": "Hafif haftayı kabul et",
   "home.deload.postpone": "Bu hafta olmaz",
   "home.deload.decline": "Gerek yok",
   "home.deload.note": "Kabul edersen tüm seansların yerinde kalır; yalnızca daha hafif ve daha az setle başlarlar.",
-
   "home.recovery.title": "Toparlanma",
   "home.recovery.readiness": "Hazırlık",
   "home.recovery.readinessValue": "%%%lld",
@@ -401,7 +371,6 @@
   "home.recovery.scale.lots": "Çok",
   "home.recovery.rating": "%@, 5 üzerinden %lld",
   "home.recovery.save": "Yanıtları kaydet",
-
   "home.nutrition.title": "Beslenme",
   "home.nutrition.eaten": "Alınan",
   "home.nutrition.remaining": "Kalan",
@@ -417,7 +386,6 @@
   "home.nutrition.water": "Su",
   "home.nutrition.waterProgress": "%lld/%lld ml",
   "home.nutrition.addWater": "%lld ml ekle",
-
   "home.progress.title": "İlerleme",
   "home.progress.weight": "Vücut ağırlığı",
   "home.progress.trendUp": "Haftada %@ artış",
@@ -428,17 +396,21 @@
   "home.progress.logWeight": "Kilo kaydet",
   "home.progress.thisWeek": "Bu hafta",
   "home.progress.sessionsOfPlan": "%lld/%lld",
-  "home.progress.sessionsDone": {"one": "%lld seans", "other": "%lld seans"},
+  "home.progress.sessionsDone": {
+    "one": "%lld seans",
+    "other": "%lld seans"
+  },
   "home.progress.openTab": "İlerlemeyi aç",
-
   "home.streak.title": "Seri",
-  "home.streak.weeks": {"one": "%lld hafta", "other": "%lld hafta"},
+  "home.streak.weeks": {
+    "one": "%lld hafta",
+    "other": "%lld hafta"
+  },
   "home.streak.none": "Bugün bir seri başlat",
   "home.streak.best": "En iyi: %lld",
   "home.streak.dayTrained": "%@: antrenman yapıldı",
   "home.streak.dayRest": "%@: seans yok",
   "home.streak.lastSeven": "Son yedi gün",
-
   "food.error.notFound": "Eşleşen besin bulunamadı",
   "food.error.network": "Besin servisine ulaşılamadı. Çevrimdışı sonuçlar gösteriliyor.",
   "food.error.decoding": "Besin servisi, Forge'un okuyamadığı bir yanıt gönderdi.",
@@ -788,7 +760,6 @@
   "food.wholewheatBiscuits": "Tam buğdaylı kahvaltı bisküvisi",
   "food.wholewheatPastaDry": "Tam buğday makarnası, kuru",
   "food.wineRed": "Kırmızı şarap, %13 alkol",
-
   "nutrition.energy.estimateDisclaimer": "Bu rakamlar başlangıç için birer tahmindir, tıbbi tavsiye değildir. Kendi sonuçların geldikçe uygulama bunları ayarlar.",
   "nutrition.energy.bmr": "Boyuna, kilona ve yaşına göre vücudunun dinlenirken günde yaklaşık %@ kcal yaktığı tahmin ediliyor.",
   "nutrition.energy.bmrDefaultAge": "Kayıtlı bir doğum tarihi yok, bu yüzden tahmin %@ yaşını varsayıyor. Kendi yaşını eklersen daha isabetli olur.",
@@ -802,7 +773,6 @@
   "nutrition.energy.floorAboveMaintenance": "Bu uygulamanın senin için önereceği en düşük günlük alım %@ kcal ve bu zaten tahmini idamen olan %@ kcal'in üzerinde. Bundan daha az yemeyi uygulama önermez; buradan sonrası için daha çok hareket etmek daha iyi bir yol.",
   "nutrition.energy.deficitCapped": "Açık günde %@ kcal ile sınırlandı. Bundan hızlısı kasa mal olur ve nadiren kalıcı olur.",
   "nutrition.energy.surplusCapped": "Fazlalık günde %@ kcal ile sınırlandı; böylece aldığının daha büyük kısmı yağ değil kas olur.",
-
   "nutrition.macro.protein": "Protein %@ g olarak belirlendi; bu, vücut ağırlığının kilogramı başına yaklaşık %@ g eder ve antrenman yapanlar için alışılmış aralıktır.",
   "nutrition.macro.proteinDeficit": "İdamenin altında beslendiğin için protein bu aralığın üst ucuna yakın; bu da yağ kaybederken kasını korumana yardımcı olur.",
   "nutrition.macro.proteinAdjustedMass": "Protein, tartıdaki kilon yerine %@ kg'lık düzeltilmiş bir vücut ağırlığından hesaplandı; böylece rakam gerçekçi kalıyor.",
@@ -812,12 +782,10 @@
   "nutrition.macro.fatCompromise": "Makrolar kalori hedefine sığsın diye yağ %@ g'a çekildi.",
   "nutrition.macro.carbs": "Kalan %@ g karbonhidrata gidiyor; antrenmanının yakıtı da bu.",
   "nutrition.macro.lowCalorieCompromise": "Bu kalori düzeyinde bütçeyi tek başına protein ve yağ dolduruyor, bu yüzden karbonhidrat sıfır. Daha yavaş bir tempo sana daha uygulanabilir bir plan verir.",
-
   "nutrition.adjustAction.increase": "Biraz daha fazla ye",
   "nutrition.adjustAction.decrease": "Biraz daha az ye",
   "nutrition.adjustAction.hold": "Böyle devam et",
   "nutrition.adjustAction.insufficientData": "Henüz yeterli veri yok",
-
   "nutrition.adjust.insufficientData": "Henüz yeterli tartım yok. Uygulamanın gerçek bir trendi günlük dalgalanmadan ayırabilmesi için yaklaşık %@ ölçüm ve %@ gün gerekiyor.",
   "nutrition.adjust.staleData": "En son tartım %@ günden eski, yani trend güncel değil. Yeni bir tartım ekle, uygulama yeniden baksın.",
   "nutrition.adjust.lowConfidence": "Tartımlar bir trend okunamayacak kadar dağınık, bu yüzden hedeflerin olduğu gibi kalıyor.",
@@ -830,7 +798,6 @@
   "nutrition.adjust.floorReached": "Kalorin zaten %@ kcal; bu, uygulamanın senin için önereceği en düşük düzey. Buradan sonrası için daha çok hareket etmek daha iyi bir yol.",
   "nutrition.adjust.ceilingReached": "Kalorin zaten %@ kcal, yani idamenin epey üstünde; uygulama daha fazlasını eklemez.",
   "nutrition.adjust.approval": "Sen kabul etmeden hiçbir şey değişmez.",
-
   "meal.pattern.proteinCarbVegetable": "Protein, karbonhidrat ve sebze",
   "meal.pattern.proteinCarbFat": "Protein, karbonhidrat ve bir yağ kaynağı",
   "meal.pattern.proteinVegetableFat": "Protein, sebze ve bir yağ kaynağı",
@@ -844,7 +811,6 @@
   "meal.pattern.mixed": "Karışık besinler",
   "meal.pattern.savedMeal": "Kayıtlı öğünlerinden biri",
   "meal.pattern.recipe": "Tariflerinden biri",
-
   "meal.reason.macros": "Yaklaşık %@ g protein, %@ g karbonhidrat ve %@ g yağ karşılar.",
   "meal.reason.protein": "Kalan proteinin büyük kısmını, %@ g kadarını doldurur.",
   "meal.reason.calories": "Yaklaşık %@ kcal; bu öğün için kalan ise %@ kcal.",
@@ -856,9 +822,7 @@
   "meal.reason.variety": "Bunların hiçbiri son birkaç gündür kaydedilmedi.",
   "meal.reason.micronutrients": "Güne biraz lif ve mikro besin katar.",
   "meal.reason.budget": "Belirlediğin besin bütçesine sığar.",
-
   "nutritionLibrary.common.macroLine": "%@ · %@ protein · %@ karbonhidrat · %@ yağ",
-
   "nutritionLibrary.food.newTitle": "Yeni besin",
   "nutritionLibrary.food.editTitle": "Besini düzenle",
   "nutritionLibrary.food.basics": "Temel bilgiler",
@@ -875,7 +839,6 @@
   "nutritionLibrary.food.fat": "Yağ",
   "nutritionLibrary.food.energyMismatch": "Etikette %@ yazıyor ama protein, karbonhidrat ve yağ toplamı %@ ediyor. Paketler kendi rakamlarını yuvarlar, küçük bir fark normaldir.",
   "nutritionLibrary.food.useImplied": "Bunun yerine %@ kullan",
-
   "nutritionLibrary.food.servings": "Porsiyonlar",
   "nutritionLibrary.food.servingsHint": "Gerçekten kullandığın porsiyonlara ad ver; bu besini sonra kaydetmek tek dokunuş olsun.",
   "nutritionLibrary.food.addServing": "Porsiyon ekle",
@@ -885,18 +848,15 @@
   "nutritionLibrary.food.removeServing": "%@ porsiyonunu kaldır",
   "nutritionLibrary.food.gramsPerPiece": "Bir adedin ağırlığı",
   "nutritionLibrary.food.gramsPerPieceHint": "Bu besini adetle kaydettiğinde kullanılır. Adetle ölçülmüyorsa boş bırak.",
-
   "nutritionLibrary.food.micronutrients": "Mikro besinler",
   "nutritionLibrary.food.micronutrientsHint": "İsteğe bağlı. Yalnızca etikette yazanları gir — boş bıraktıkların sıfır sayılmaz, bilinmiyor kalır.",
   "nutritionLibrary.food.filledCount": "%lld tanesi dolduruldu",
   "nutritionLibrary.food.microFieldLabel": "%@, %@ cinsinden",
-
   "nutritionLibrary.food.tags": "Etiketler",
   "nutritionLibrary.food.tagsHint": "Forge bu besini etiketlere göre filtreler ve ne zaman önereceğine onlarla karar verir.",
   "nutritionLibrary.food.dietaryTags": "İçerir",
   "nutritionLibrary.food.allergenTags": "Alerjenler",
   "nutritionLibrary.food.roleTags": "Tür ve kullanım",
-
   "nutritionLibrary.food.delete": "Bu besini sil",
   "nutritionLibrary.food.deleteTitle": "Bu besin silinsin mi?",
   "nutritionLibrary.food.deleteMessage": "Kütüphanenden çıkar. Daha önce kaydettiklerin rakamlarıyla birlikte kalır.",
@@ -906,7 +866,6 @@
     "other": "%lld kayıtlı öğün ve tarif bu besini kullanıyor. Besin olmadan kendi besin değerlerini hesaplayamazlar."
   },
   "nutritionLibrary.food.deleteAnyway": "Yine de sil",
-
   "nutritionLibrary.tag.meat": "Kırmızı et",
   "nutritionLibrary.tag.poultry": "Kanatlı eti",
   "nutritionLibrary.tag.fish": "Balık",
@@ -935,7 +894,6 @@
   "nutritionLibrary.tag.drink": "İçecek",
   "nutritionLibrary.tag.supplement": "Takviye",
   "nutritionLibrary.tag.budget": "Ekonomik",
-
   "nutritionLibrary.meals.title": "Kayıtlı öğünler",
   "nutritionLibrary.meals.newTitle": "Yeni öğün",
   "nutritionLibrary.meals.editTitle": "Öğünü düzenle",
@@ -974,7 +932,6 @@
   "nutritionLibrary.meals.nameFromDayMessage": "O öğün için kaydettiğin besinler ve miktarlarla saklanır.",
   "nutritionLibrary.meals.defaultName": "Her zamanki %@",
   "nutritionLibrary.meals.nothingToLog": "Bu öğünde kaydedilecek bir şey kalmamış. İçindeki besinler artık kütüphanende değil.",
-
   "nutritionLibrary.picker.addFood": "Besin ekle",
   "nutritionLibrary.picker.searchPrompt": "Besin ara",
   "nutritionLibrary.picker.emptyTitle": "Besin bulunamadı",
@@ -984,7 +941,6 @@
   "nutritionLibrary.picker.amount": "Miktar",
   "nutritionLibrary.picker.unit": "Birim",
   "nutritionLibrary.picker.removeFood": "%@ besinini çıkar",
-
   "nutritionLibrary.recipes.title": "Tarifler",
   "nutritionLibrary.recipes.newTitle": "Yeni tarif",
   "nutritionLibrary.recipes.editTitle": "Tarifi düzenle",
@@ -1025,7 +981,6 @@
   "nutritionLibrary.recipes.servingSheetMessage": "%@ tarifinden ne kadar yedin?",
   "nutritionLibrary.recipes.servingsToLog": "Porsiyon",
   "nutritionLibrary.recipes.logButton": "Bu tarifi kaydet",
-
   "nutritionLibrary.suggest.title": "Öğün önerileri",
   "nutritionLibrary.suggest.loading": "Neyin uyduğu hesaplanıyor…",
   "nutritionLibrary.suggest.slot": "Öğün",
@@ -1053,7 +1008,6 @@
   "nutritionLibrary.suggest.dayFullTitle": "Günün tamamlanmış",
   "nutritionLibrary.suggest.dayFullMessage": "Bugünkü hedefinden çok az kaldı, bu yüzden önerilecek kayda değer bir şey yok. Kayıtlı öğünlerin ve tariflerin istersen burada.",
   "nutritionLibrary.suggest.nothingToLog": "Bu besinlerin hiçbiri artık kütüphanende değil, bu yüzden hiçbir şey kaydedilmedi.",
-
   "nutritionLibrary.micros.title": "Mikro besinler",
   "nutritionLibrary.micros.vitamins": "Vitaminler",
   "nutritionLibrary.micros.minerals": "Mineraller",
@@ -1076,7 +1030,6 @@
   "nutritionLibrary.micros.rowLimitAccessibility": "%@, gözden kaçırmaman gerekenlerden: %@, referans alımın %@ kadarı.",
   "nutritionLibrary.micros.rowNoReferenceAccessibility": "%@: %@. Referans alım yok.",
   "nutritionLibrary.micros.rowUnknownAccessibility": "%@: bu besin verisinde yok.",
-
   "nutritionLibrary.targets.title": "Günlük hedefler",
   "nutritionLibrary.targets.currentTitle": "Günlük hedefin",
   "nutritionLibrary.targets.automaticSubtitle": "Forge, profilinden ve tartımlarından hesapladı.",
@@ -1089,7 +1042,6 @@
   "nutritionLibrary.targets.noTargetTitle": "Henüz günlük hedef yok",
   "nutritionLibrary.targets.noTargetMessage": "Forge; boyundan, kilondan, yaşından, aktivitenden ve hedefinden bir tahmin çıkarabilir. Sonradan hepsini değiştirebilirsin.",
   "nutritionLibrary.targets.useAutomatic": "Günde %@ kullan",
-
   "nutritionLibrary.targets.breakdownTitle": "Bu rakam nereden geliyor",
   "nutritionLibrary.targets.breakdownSubtitle": "Yayımlanmış formüllerden çıkan tahminler; senin üzerinde yapılmış ölçümler değil.",
   "nutritionLibrary.targets.bmr": "Dinlenirken",
@@ -1105,29 +1057,24 @@
   "nutritionLibrary.targets.rateGain": "ağır",
   "nutritionLibrary.targets.rateNone": "Bu hedefle kilon sabit kalmalı.",
   "nutritionLibrary.targets.trendWeight": "Kilo trendin %@, haftada %@ kg değişiyor.",
-
   "nutritionLibrary.targets.reasoningTitle": "Bu nasıl hesaplandı",
   "nutritionLibrary.targets.reasoningSubtitle": "Tahminin her adımı, sırasıyla.",
-
   "nutritionLibrary.targets.proposedEnergy": "Şu an günde %@, kabul edersen günde %@.",
   "nutritionLibrary.targets.proposalConsent": "Sen kabul etmeden hiçbir şey değişmez.",
   "nutritionLibrary.targets.accept": "Kabul et",
   "nutritionLibrary.targets.notNow": "Şimdi değil",
-
   "nutritionLibrary.targets.historyTitle": "Değişiklikler",
   "nutritionLibrary.targets.historySubtitle": "Hedefinin her değişimi ve nedeni.",
   "nutritionLibrary.targets.historyEmpty": "Hedefin henüz değişmedi.",
   "nutritionLibrary.targets.historyAutomatic": "Otomatik",
   "nutritionLibrary.targets.historyManual": "Senin belirlediğin",
   "nutritionLibrary.targets.historyChange": "Günde %@ değerinden %@ değerine",
-
   "nutritionLibrary.targets.overrideMessage": "Sana uyan rakamları gir. Otomatiğe dönene kadar Forge bunları kullanır.",
   "nutritionLibrary.targets.energyField": "Günlük enerji",
   "nutritionLibrary.targets.macroMismatch": "Protein, karbonhidrat ve yağın toplamı %@ ediyor; bu, girdiğin %@ değeriyle uyuşmuyor.",
   "nutritionLibrary.targets.belowFloor": "Bu, uygulamanın önereceği en düşük değer olan günde %@ değerinin altında. Yine de kaydedebilirsin.",
   "nutritionLibrary.targets.reason.manual": "Bu hedefleri elle sen belirledin.",
   "nutritionLibrary.targets.reason.reset": "Forge'un senin için hesapladığı değerlere dönüldü.",
-
   "nutritionLog.a11y.addFoodTo": "%@ öğününe besin ekle",
   "nutritionLog.a11y.addWater": "%@ su ekle",
   "nutritionLog.a11y.energyNoTarget": "Bugün %@ alındı. Enerji hedefi belirlenmedi.",
@@ -1307,232 +1254,44 @@
   "nutritionLog.water.remaining": "%@ kaldı",
   "nutritionLog.water.targetReached": "Hedefe ulaşıldı",
   "nutritionLog.water.title": "Su",
-
   "onboarding.loading": "Egzersiz kütüphanen yükleniyor",
   "onboarding.emptyCatalog.title": "Çalışılacak egzersiz yok",
   "onboarding.emptyCatalog.message": "Egzersiz kütüphanesi boş döndü, bu yüzden program kuracak bir şey yok. Yeniden yüklemeyi dene.",
-
   "onboarding.progress.counter": "Adım %lld / %lld",
-  "onboarding.action.start": "Başlayalım",
-  "onboarding.action.build": "Programımı oluştur",
-  "onboarding.action.finish": "Antrenmana başla",
   "onboarding.action.hint": "Bu adımı kaydeder ve devam eder",
-  "onboarding.action.skipStep": "Bu adımı atla",
   "onboarding.chip.locked": "Belirttiğin kısıtlardan biri bunu zaten eliyor",
-
-  "onboarding.step.welcome.title": "Forge'a hoş geldin",
-  "onboarding.step.welcome.subtitle": "Birkaç soru; ardından haftana göre kurulmuş bir programın olacak.",
-  "onboarding.step.basics.title": "Sen",
-  "onboarding.step.basics.subtitle": "Enerji hedefinin ve başlangıç ağırlıklarının dayandığı rakamlar.",
-  "onboarding.step.goals.title": "Neye çalışıyorsun",
-  "onboarding.step.goals.subtitle": "İlk seçtiğin hedef belirleyici olur. Diğerleri çevresindeki seçimleri renklendirir.",
-  "onboarding.step.experience.title": "Geçmişin",
-  "onboarding.step.experience.subtitle": "Bu, ilk bloğunun ne kadar zorlu ve çeşitli olacağını belirler.",
-  "onboarding.step.availability.title": "Haftan",
-  "onboarding.step.availability.subtitle": "Ne sıklıkta antrenman yapabildiğin ve her seferinde ne kadar vaktin olduğu.",
-  "onboarding.step.equipment.title": "Nelerle çalışıyorsun",
-  "onboarding.step.equipment.subtitle": "Yalnızca gerçekten yükleyebileceğin egzersizler önerilir.",
-  "onboarding.step.restrictions.title": "Kaçınılacaklar",
-  "onboarding.step.restrictions.subtitle": "İsteğe bağlı. Hiç karşına çıkmasını istemediğin hareketler ve egzersizler.",
-  "onboarding.step.nutrition.title": "Beslenme",
-  "onboarding.step.nutrition.subtitle": "İsteğe bağlı. Kapatırsan beslenme sekmesi karşına çıkmaz.",
-  "onboarding.step.generating.title": "Programın kuruluyor",
-  "onboarding.step.generating.subtitle": "Önce hacim, sonra split, sonra egzersizler, sonra hedeflerin.",
-  "onboarding.step.summary.title": "Gözden geçir",
-  "onboarding.step.summary.subtitle": "Bize söylediğin her şey. Başlamadan önce dilediğini değiştir.",
-
-  "onboarding.welcome.program.title": "Haftana uyan bir program",
-  "onboarding.welcome.program.detail": "Ayırabildiğin günlere, vaktine ve ulaşabildiğin ekipmana göre kurulur.",
-  "onboarding.welcome.progress.title": "Görebildiğin ilerleme",
-  "onboarding.welcome.progress.detail": "Her set kaydedilir ve rakamların yükseldikçe ağırlıkların da yükselir.",
-  "onboarding.welcome.explain.title": "Yalnızca rakam değil, gerekçe",
-  "onboarding.welcome.explain.detail": "Her öneri, arkasındaki mantıkla birlikte gelir; istersen onu geçersiz kılabilirsin.",
-  "onboarding.welcome.privacy.title": "Verilerin telefonunda kalır",
-  "onboarding.welcome.privacy.detail": "Hesap yok, giriş yok, hiçbir yere hiçbir şey gönderilmiyor.",
-  "onboarding.welcome.time": "Yaklaşık beş dakika ve aralarından seçilecek %lld egzersiz.",
-
-  "onboarding.basics.units": "Birimler",
-  "onboarding.basics.units.detail": "Aşağıdaki her şey bu birimlerle girilir ve gösterilir.",
-  "onboarding.basics.weightUnit": "Ağırlık",
-  "onboarding.basics.heightUnit": "Boy",
   "onboarding.basics.name": "Adın",
-  "onboarding.basics.name.detail": "İsteğe bağlı. Yalnızca sana seslenmek için kullanılır.",
-  "onboarding.basics.name.placeholder": "Ad",
-  "onboarding.basics.birthDate": "Doğum tarihi",
-  "onboarding.basics.birthDate.detail": "Yaş, tahmini enerji ihtiyacını değiştirir.",
-  "onboarding.basics.birthDate.toggle": "Doğum tarihimi kullan",
-  "onboarding.basics.birthDate.skipped": "Bu olmadan enerji tahminin ortalama bir yetişkin yaşını varsayar.",
   "onboarding.basics.sex": "Biyolojik cinsiyet",
-  "onboarding.basics.sex.detail": "Yalnızca enerji ihtiyacını tahmin eden denklemde kullanılır.",
-  "onboarding.basics.sex.unspecified.detail": "Tahminin iki değerin arasında bir yerde olur.",
-  "onboarding.basics.body": "Boy ve kilo",
-  "onboarding.basics.body.detail": "Enerji hedefinin ve ilk çalışma ağırlıklarının temeli.",
   "onboarding.basics.height": "Boy",
   "onboarding.basics.heightFeet": "Fit",
   "onboarding.basics.heightInches": "İnç",
   "onboarding.basics.weight": "Kilo",
-  "onboarding.basics.target": "Hedef kilo",
-  "onboarding.basics.target.detail": "İsteğe bağlı. Yalnızca enerji hedefinin yönünü belirler, başka bir şeyi değil.",
-  "onboarding.basics.target.toggle": "Bir hedef kilom var",
-  "onboarding.basics.target.same": "Bu, şu anki kilonla aynı; yani hedefin idame düzeyinde olur.",
-  "onboarding.basics.target.lose": "Verilecek %@. Enerji hedefin idamenin altında olur.",
-  "onboarding.basics.target.gain": "Alınacak %@. Enerji hedefin idamenin üstünde olur.",
-
   "onboarding.unit.cm": "cm",
   "onboarding.unit.kg": "kg",
   "onboarding.unit.minutesShort": "%lld dk",
-  "onboarding.unit.months": "ay",
-
-  "onboarding.hint.age": "%lld ile %lld yıl öncesi arasında bir doğum tarihi seç.",
   "onboarding.hint.missingNumber": "Bir sayı gir.",
   "onboarding.hint.range": "%@ ile %@ %@ arasında bir değer gir.",
-  "onboarding.hint.goalsEmpty": "En az bir hedef seç.",
   "onboarding.hint.priorityRequired": "Odaklanacağın en az bir kas grubu veya bölge seç.",
   "onboarding.hint.daysEmpty": "Antrenman yapabileceğin en az bir gün seç.",
   "onboarding.hint.sessionMinutes": "Bir seans %lld ile %lld dakika arasında olabilir.",
   "onboarding.hint.equipmentEmpty": "En az bir ekipman seç.",
-  "onboarding.hint.platesEmpty": "Salonunda bulunan plakaları seç.",
-  "onboarding.hint.mealsPerDay": "Günde %lld ile %lld öğün arasında seç.",
-  "onboarding.hint.budget": "Sıfırdan büyük bir haftalık besin bütçesi gir.",
-
-  "onboarding.goals.title": "Hedeflerin",
-  "onboarding.goals.detail": "En fazla dört tane seç. İlk seçtiğin belirleyici olur.",
-  "onboarding.goals.primary": "Birincil",
-  "onboarding.goals.rank": "%lld.",
-  "onboarding.goals.limit": "Tek bir programın iyi hizmet edebileceği en fazla hedef sayısı dörttür.",
-  "onboarding.goals.regions": "Öne çıkarılacak bölgeler",
-  "onboarding.goals.regions.detail": "İsteğe bağlı. Birden fazla kas grubuna aynı anda öncelik vermenin hızlı yolu.",
   "onboarding.goals.muscles": "Öncelikli kaslar",
-  "onboarding.goals.muscles.detail": "İsteğe bağlı. Yer olduğunda fazladan setler bunlara gider.",
   "onboarding.goals.muscles.required": "En az bir tane seç — bir kas grubuna odaklanmayı seçtin.",
   "onboarding.goals.muscles.limit": "Anlamlı bir ek hacim alabilecek en fazla sayı dörttür.",
-  "onboarding.goals.muscles.summary": "Fazladan setler önce %lld kas grubuna gider.",
-
-  "onboarding.experience.level": "Antrenman deneyimi",
-  "onboarding.experience.level.detail": "Bu, sana sunulacak egzersizlerin zorluk üst sınırını belirler.",
-  "onboarding.experience.months": "Kaç aydır antrenman",
-  "onboarding.experience.months.detail": "Kabaca ne kadar süredir düzenli antrenman yapıyorsun.",
-  "onboarding.experience.months.years": "Bu yaklaşık %@ yıl eder.",
-  "onboarding.experience.technique": "Teknik",
-  "onboarding.experience.technique.detail": "Temel hareketlerdeki formundan ne kadar eminsin.",
-  "onboarding.experience.seeds": "Şu an kaldırdıkların",
-  "onboarding.experience.seeds.detail": "İsteğe bağlı. Bildiğin herhangi bir hareket için bir ağırlık ve tekrar sayısı, makul bir başlangıç ağırlığı belirler.",
-  "onboarding.experience.seeds.add": "Kaldırdıklarımı ekle",
-  "onboarding.experience.seeds.loading": "Referans hareketler eşleştiriliyor",
-  "onboarding.experience.seeds.partial": "Yalnızca bildiğin hareketleri doldur. Kalanlar ilk çalışma setlerinden tahmin edilir.",
-  "onboarding.experience.seeds.weight": "Ağırlık",
-  "onboarding.experience.seeds.reps": "Tekrar",
-
-  "onboarding.seed.squat": "Squat",
-  "onboarding.seed.bench": "Bench press",
-  "onboarding.seed.deadlift": "Deadlift",
-  "onboarding.seed.overheadPress": "Omuz üstü press",
-  "onboarding.seed.row": "Barbell row",
-  "onboarding.seed.pulldown": "Lat pulldown",
-
-  "onboarding.availability.days": "Antrenman günleri",
-  "onboarding.availability.days.detail": "Haftada gerçekçi olarak kaç gün antrenman yapabilirsin.",
   "onboarding.availability.perWeek": "Haftada gün",
-  "onboarding.availability.days.summary": "Haftada %lld gün — seanslar arasında toparlanma kalsın diye aralıklı yerleştirilir.",
   "onboarding.availability.length": "Seans süresi",
-  "onboarding.availability.length.detail": "Setler arası dinlenme dahil, bir seansa ayırabileceğin en fazla süre.",
-  "onboarding.availability.lengthFine": "İnce ayar",
-  "onboarding.availability.lengthFine.detail": "Beşer dakikalık adımlarla",
   "onboarding.availability.length.short": "Kısa seanslar iyi işler. Her birinde daha az egzersiz olacağını bekle.",
-  "onboarding.availability.time": "Genelde ne zaman antrenman yaparsın",
-  "onboarding.availability.time.detail": "Hatırlatıcıları açarsan bildirimin ne zaman geleceğini belirler.",
-  "onboarding.availability.cardio": "Kardiyo",
-  "onboarding.availability.cardio.detail": "Kondisyon çalışması ağırlık antrenmanınla mı yoksa ayrı mı olsun.",
   "onboarding.availability.activity": "Günlük hareket",
-  "onboarding.availability.activity.detail": "Salon dışındaki hayatın. Enerji tahminini antrenmandan daha çok etkiler.",
-
-  "onboarding.equipment.preset": "Nerede antrenman yapıyorsun",
-  "onboarding.equipment.preset.detail": "Bir kurulumdan başla, sonra aşağıdan ince ayar yap.",
-  "onboarding.equipment.unlocks": {"one": "%lld egzersiz", "other": "%lld egzersiz"},
-  "onboarding.equipment.fineTune": "Ekipmanın",
-  "onboarding.equipment.fineTune.detail": "Ulaşabildiğin her şeyi işaretle, ulaşamadıklarının işaretini kaldır.",
-  "onboarding.equipment.empty.title": "Listelenecek ekipman yok",
-  "onboarding.equipment.empty.message": "Egzersiz kütüphanesi henüz yüklenmedi, bu yüzden seçilecek bir şey yok.",
-  "onboarding.equipment.bodyweightLocked": "Vücut ağırlığı hep açık kalır. Her zaman yanında olan tek şey odur.",
-  "onboarding.equipment.increments": "Seçebildiğin ağırlıklar",
-  "onboarding.equipment.increments.detail": "Böylece önerilen her ağırlık, salonunda gerçekten kurulabilen bir ağırlık olur.",
-  "onboarding.equipment.barWeight": "Bar ağırlığı",
-  "onboarding.equipment.plates": "Sahip olduğun plakalar",
-  "onboarding.equipment.plates.detail": "Barbell önerileri, bu plakalarla kurulabilecek değerlere yuvarlanır.",
-  "onboarding.equipment.ezBarWeight": "EZ bar ağırlığı",
-  "onboarding.equipment.dumbbellStep": "Dumbbell'lar arası fark",
-  "onboarding.equipment.dumbbellStep.detail": "Bu sana %@ ve üzerini verir.",
-  "onboarding.equipment.kettlebells": "Sahip olduğun kettlebell'lar",
-  "onboarding.equipment.machineIncrement": "Makine ağırlık adımı",
-  "onboarding.equipment.cableIncrement": "Kablo ağırlık adımı",
-
-  "onboarding.restrictions.limitations": "Seni rahatsız eden hareketler",
-  "onboarding.restrictions.limitations.detail": "İsteğe bağlı. Burada seçtiklerin programının dışında bırakılır. Bu bir tercihtir, teşhis değildir.",
-  "onboarding.restrictions.patterns": "Atlanacak hareketler",
-  "onboarding.restrictions.patterns.detail": "İsteğe bağlı. Hiç karşına çıkmasını istemediğin hareket kalıplarının tamamı.",
-  "onboarding.restrictions.patterns.implied": "Yukarıdaki yanıtların bunlardan %lld tanesini zaten eliyor.",
-  "onboarding.restrictions.exclusions": "Asla önerilmeyecek egzersizler",
-  "onboarding.restrictions.exclusions.detail": "İsteğe bağlı. Karşına çıkmasını istemediğin ne varsa ara.",
-  "onboarding.restrictions.exclusions.add": "Bu egzersizi hariç listene ekler",
-  "onboarding.restrictions.exclusions.remove": "Bu egzersizi hariç listenden çıkarır",
-  "onboarding.restrictions.search": "Egzersiz ara",
-  "onboarding.restrictions.search.placeholder": "Bir egzersiz ara",
-  "onboarding.restrictions.search.hint": "Kütüphanede arama yapmak için en az iki harf yaz.",
-  "onboarding.restrictions.search.empty.title": "Eşleşme yok",
-  "onboarding.restrictions.search.empty.message": "Kütüphanede “%@” ile eşleşen bir şey yok. Daha kısa bir kelime dene.",
-
-  "onboarding.nutrition.enable": "Beslenme takibi",
-  "onboarding.nutrition.enable.detail": "Yediklerini saymak kimine uyar, kimine uymaz. Karar senin.",
-  "onboarding.nutrition.enable.toggle": "Beslenmemi takip et ve günlük hedef belirle",
-  "onboarding.nutrition.enable.off": "Günlük hedef belirlenmez ve beslenme sekmesi gizli kalır. Sonradan Ayarlar'dan açabilirsin.",
-  "onboarding.nutrition.diet": "Nasıl besleniyorsun",
-  "onboarding.nutrition.diet.detail": "Uygulamanın önerebileceklerini filtreler.",
-  "onboarding.nutrition.diet.excludes": "Şunları dışarıda bırakır: %@",
-  "onboarding.nutrition.allergens": "Alerjiler",
-  "onboarding.nutrition.allergens.detail": "Bu etiketleri taşıyan hiçbir şey önerilmez.",
-  "onboarding.nutrition.intolerances": "İntoleranslar",
-  "onboarding.nutrition.intolerances.detail": "Tam olarak alerji gibi ele alınır: tümüyle dışarıda bırakılır.",
-  "onboarding.nutrition.excluded": "Dışarıda bırakılacak besinler",
-  "onboarding.nutrition.excluded.detail": "Karşına çıkmasını istemediğin ne varsa.",
-  "onboarding.nutrition.excluded.placeholder": "Bir besin veya malzeme ekle",
-  "onboarding.nutrition.excluded.add": "Dışarıda bırakılacak besin ekle",
-  "onboarding.nutrition.excluded.hint": "Tek kelime en iyi sonucu verir. Bunlar yemek adlarıyla değil, malzeme etiketleriyle eşleşir.",
-  "onboarding.nutrition.meals": "Günde öğün sayısı",
-  "onboarding.nutrition.meals.detail": "Günlük hedefinin kaça bölüneceği.",
-  "onboarding.nutrition.meals.fourPlus": "Proteinin güne daha dengeli yayılır.",
-  "onboarding.nutrition.meals.three": "Daha az ama daha büyük öğünler, yani öğün başına protein daha yüksek olur.",
-  "onboarding.nutrition.pace": "Değişim hızı",
-  "onboarding.nutrition.pace.detail": "Kilonun hedefine ne kadar hızlı yaklaşacağı.",
-  "onboarding.nutrition.pace.generic": "Bunu haftalık bir rakam olarak görmek için kilonu ekle.",
-  "onboarding.nutrition.pace.weekly": "Haftada yaklaşık %@",
-  "onboarding.nutrition.budget": "Haftalık besin bütçesi",
-  "onboarding.nutrition.budget.detail": "İsteğe bağlı. Bütçe belirlersen daha uygun fiyatlı öneriler tercih edilir.",
-  "onboarding.nutrition.budget.toggle": "Alışverişimi bir bütçe içinde tut",
-  "onboarding.nutrition.budget.amount": "Haftalık bütçe",
-  "onboarding.nutrition.budget.currency": "Kendi para biriminle. Yalnızca kendi içinde karşılaştırılır.",
+  "onboarding.equipment.unlocks": {
+    "one": "%lld egzersiz",
+    "other": "%lld egzersiz"
+  },
   "onboarding.nutrition.targetReason": "Kurulum yanıtlarından belirlendi.",
-
-  "onboarding.foodTag.peanut": "Yer fıstığı",
-  "onboarding.foodTag.nuts": "Sert kabuklu yemişler",
-  "onboarding.foodTag.gluten": "Gluten",
-  "onboarding.foodTag.dairy": "Süt ürünleri",
-  "onboarding.foodTag.egg": "Yumurta",
-  "onboarding.foodTag.soy": "Soya",
-  "onboarding.foodTag.fish": "Balık",
-  "onboarding.foodTag.shellfish": "Kabuklu deniz ürünleri",
-  "onboarding.foodTag.seafood": "Deniz ürünleri",
-  "onboarding.foodTag.sesame": "Susam",
-  "onboarding.foodTag.honey": "Bal",
-  "onboarding.foodTag.meat": "Kırmızı et",
-  "onboarding.foodTag.poultry": "Kanatlı eti",
-  "onboarding.foodTag.supplement": "Takviyeler",
-
   "onboarding.generate.stage.volume": "Haftalık hacmin hesaplanıyor",
   "onboarding.generate.stage.split": "Haftan için bir split seçiliyor",
   "onboarding.generate.stage.exercises": "Yükleyebileceğin egzersizler seçiliyor",
   "onboarding.generate.stage.fitting": "Her seans vaktine göre ayarlanıyor",
   "onboarding.generate.stage.nutrition": "Günlük hedeflerin belirleniyor",
-  "onboarding.generate.patience": "Bu biraz sürer. Kütüphanedeki her egzersiz, yanıtlarına göre puanlanıyor.",
   "onboarding.generate.waiting": "Programın hazır olduğunda kullanılabilir",
   "onboarding.generate.error.catalog": "Egzersiz kütüphanesi boş, bu yüzden program kurulamıyor.",
   "onboarding.generate.error.empty": "Ekipmanın ve elediğin hareketler geriye programlanacak bir şey bırakmıyor. Biraz ekipman ekle ya da bir kısıtı kaldırıp tekrar dene.",
@@ -1541,79 +1300,15 @@
   "onboarding.generate.manualExplanation": "Bu programı kendin kuruyorsun, dolayısıyla uygulamanın açıklayacağı bir şey yok. Hazır olduğunda her güne egzersiz ekle.",
   "onboarding.program.title": "%@ programın",
   "onboarding.program.manualTitle": "Programım",
-
   "onboarding.result.daysPerWeek": "Haftada gün",
   "onboarding.result.weeklySets": "Haftada set",
   "onboarding.result.weeklyTime": "Haftada süre",
   "onboarding.result.week": "Haftan",
-  "onboarding.result.week.detail": "Planın bir haftası. Tamamı sonradan değiştirilebilir.",
-  "onboarding.result.restDay": "Dinlenme",
   "onboarding.result.sessionDetail": "%lld egzersiz · %lld set · %lld dk",
-  "onboarding.result.volume": "Haftalık hacim",
-  "onboarding.result.volume.detail": "Hafta boyunca kas grubu başına zorlu set sayısı.",
-  "onboarding.result.volume.empty.title": "Henüz gösterilecek bir şey yok",
-  "onboarding.result.volume.empty.message": "Bu programda bir kas grubuna atanmış set yok.",
-  "onboarding.result.setsPerWeek": "Haftada %@ set",
-  "onboarding.result.why": "Bu plan neden böyle",
-  "onboarding.result.why.detail": "Her kararın arkasındaki gerekçe.",
-  "onboarding.result.why.empty.title": "Bu kez not yok",
-  "onboarding.result.why.empty.message": "Bu programda açıklanması gereken bir şey yoktu.",
   "onboarding.result.nutrition": "Günlük hedeflerin",
-  "onboarding.result.nutrition.detail": "Bir başlangıç noktası. Kilo trendin değiştikçe o da ayarlanır.",
   "onboarding.result.protein": "Protein",
   "onboarding.result.carbs": "Karbonhidrat",
   "onboarding.result.fat": "Yağ",
-  "onboarding.result.maintenance": "İdamen günde yaklaşık %@ olarak tahmin ediliyor.",
-  "onboarding.result.nutrition.off.title": "Beslenme takibi kapalı",
-  "onboarding.result.nutrition.off.message": "Günlük hedef belirlenmedi. İstediğin zaman Ayarlar'dan takibi açabilirsin.",
-
-  "onboarding.summary.program": "Programın",
-  "onboarding.summary.basics": "Bilgilerin",
-  "onboarding.summary.goals": "Hedeflerin",
-  "onboarding.summary.experience": "Deneyimin",
-  "onboarding.summary.availability": "Haftan",
-  "onboarding.summary.equipment": "Ekipmanın",
-  "onboarding.summary.restrictions": "Kaçınılacaklar",
-  "onboarding.summary.nutrition": "Beslenmen",
-  "onboarding.summary.edit": "%@ bölümünü düzenle",
-  "onboarding.summary.expand": "Listenin tamamını gösterir",
-  "onboarding.summary.collapse": "Listeyi gizler",
-  "onboarding.summary.program.empty.title": "Henüz program yok",
-  "onboarding.summary.program.empty.message": "Yanıtların kaydedildi ama henüz onlardan bir şey kurulmadı.",
-  "onboarding.summary.program.build": "Programımı oluştur",
-  "onboarding.summary.split": "Split",
-  "onboarding.summary.units": "Birimler",
-  "onboarding.summary.age": "Yaş",
-  "onboarding.summary.ageYears": "%lld yaşında",
-  "onboarding.summary.primaryGoal": "Ana hedef",
-  "onboarding.summary.otherGoals": "Ayrıca",
-  "onboarding.summary.months": {"one": "%lld ay", "other": "%lld ay"},
-  "onboarding.summary.seeds": {"one": "%lld hareket kaydedildi", "other": "%lld hareket kaydedildi"},
-  "onboarding.summary.daysPerWeek": {"one": "Haftada %lld gün", "other": "Haftada %lld gün"},
-  "onboarding.summary.sessionCap": "En fazla %lld dk",
-  "onboarding.summary.trainingDays": "Antrenman günlerin",
-  "onboarding.summary.groupCount": {"one": "%lld kas grubu", "other": "%lld kas grubu"},
-  "onboarding.summary.equipmentCount": {"one": "%lld öğe", "other": "%lld öğe"},
-  "onboarding.summary.plateCount": {"one": "%lld plaka boyu", "other": "%lld plaka boyu"},
-  "onboarding.summary.kettlebellCount": {"one": "%lld kettlebell", "other": "%lld kettlebell"},
-  "onboarding.summary.exercisesAvailable": "Kullanılabilir egzersizler",
-  "onboarding.summary.avoided": "Atlanan hareketler",
-  "onboarding.summary.movementCount": {"one": "%lld hareket", "other": "%lld hareket"},
-  "onboarding.summary.limitationCount": "%lld seçildi",
-  "onboarding.summary.excludedCount": {"one": "%lld egzersiz", "other": "%lld egzersiz"},
-  "onboarding.summary.tagCount": {"one": "%lld etiket", "other": "%lld etiket"},
-  "onboarding.summary.loadingExercises": "Egzersiz adları yükleniyor",
-  "onboarding.summary.foodTracking": "Beslenme takibi",
-  "onboarding.summary.on": "Açık",
-  "onboarding.summary.off": "Kapalı",
-  "onboarding.summary.dailyTarget": "Günlük hedef",
-  "onboarding.summary.macros": "Protein / karbonhidrat / yağ",
-  "onboarding.summary.nutritionOff": "Günlük hedef belirlenmedi, bu yüzden beslenme sekmesi gizli kalır.",
-  "onboarding.summary.ready.title": "Sen hazır olduğunda",
-  "onboarding.summary.ready.detail": "Onaylamak bu yanıtları kaydeder, bunu etkin programın yapar ve uygulamayı açar. Buradaki her şey sonradan Ayarlar'dan değiştirilebilir.",
-  "onboarding.summary.ready.privacy": "Hepsi bu telefonda kalır.",
-  "onboarding.summary.confirm.hint": "Kurulumu bitirir ve uygulamayı açar",
-
   "program.title": "Program",
   "program.loading": "Programın yükleniyor",
   "program.error.generic": "Programın güncellenemedi. Tekrar dene.",
@@ -1621,31 +1316,25 @@
   "program.clone.defaultTitle": "%@ kopyası",
   "program.renameProgram": "Programı yeniden adlandır",
   "program.library.title": "Kayıtlı şablonlar",
-
   "program.empty.title": "Henüz program yok",
   "program.empty.message": "Forge; hedeflerine, takvimine ve ekipmanına göre bir program kurabilir. Sonrasında her parçasını değiştirmek sana kalmış.",
   "program.empty.generate": "Programımı oluştur",
   "program.empty.manual": "Sıfırdan başla",
-
   "program.action.menu": "Program seçenekleri",
   "program.action.regenerate": "Programı yeniden kur",
   "program.action.clone": "Programı kopyala",
   "program.action.newManual": "Yeni boş program",
-
   "program.stat.daysPerWeek": "Gün",
   "program.stat.sessions": "Seans",
   "program.stat.mesocycle": "Blok haftası",
-
   "program.regenerate.confirmTitle": "Programın yeniden kurulsun mu?",
   "program.regenerate.confirmAction": "Yeniden kur",
   "program.regenerate.confirmMessage": "Kilitlediğin egzersizler ve tüm geçmişin korunur. Split, seanslar ve kilitlemediğin her egzersiz; hedeflerine, takvimine ve ekipmanına göre yeniden seçilir.",
-
   "program.name.newTitle": "Programına ad ver",
   "program.name.cloneTitle": "Kopyaya ad ver",
   "program.name.renameTitle": "Programı yeniden adlandır",
   "program.name.placeholder": "Program adı",
   "program.name.newNote": "Seansları kendin kuracaksın. Takvimin haftada %lld antrenman gününe uygun.",
-
   "program.split.change": "Split'i değiştir",
   "program.split.customNote": "Bu haftayı kendin kurdun, yani arkasında otomatik bir split yok.",
   "program.split.recommends": "Forge, antrenman günlerin için %@ öneriyor.",
@@ -1661,7 +1350,6 @@
   "program.split.applyAction": "Split'i değiştir",
   "program.split.applyMessage": "Haftan bu yapıya göre yeniden kurulur. Kilitli egzersizler korunur, geçmişin olduğu gibi kalır.",
   "program.split.applyHint": "Haftanı bu split'e göre yeniden kurar",
-
   "program.volume.title": "Haftalık hacim",
   "program.volume.subtitle": "Tüm kas grupları için haftada %@ set",
   "program.volume.emptyTitle": "Henüz planlanmış hacim yok",
@@ -1676,17 +1364,14 @@
   "program.volume.status.belowMinimum": "alt sınırın altında",
   "program.volume.status.inRange": "aralıkta",
   "program.volume.status.aboveCeiling": "tavanın üstünde",
-
   "program.sessions.title": "Haftan",
   "program.sessions.emptyTitle": "Bu program boş",
   "program.sessions.emptyMessage": "İlk seansını ekle ya da haftayı Forge kursun.",
   "program.sessions.add": "Seans ekle",
-
   "program.manage.title": "Yönet",
   "program.manage.settingsDetail": "Günler, öncelikler, ilerleme ve dinlenme",
   "program.manage.templatesDetail": "Bir seansı kaydet ve yeniden kullan",
   "program.manage.versionsDetail": "Kayıtlı sürüm: %lld",
-
   "program.editor.title": "Seansları düzenle",
   "program.editor.sessionsHeader": "Seanslar",
   "program.editor.sessionsFooter": "Sıralamak için sürükle. Yeniden adlandırmak, kopyalamak veya silmek için seansı kaydır.",
@@ -1707,7 +1392,6 @@
   "program.editor.renameTitle": "Seansı yeniden adlandır",
   "program.editor.renameField": "Seans adı",
   "program.editor.renameNote": "Şu ada dönmek için burayı boş bırak: %@.",
-
   "program.session.restDay": "Dinlenme günü",
   "program.session.summary": "%lld egzersiz · %lld set · %@",
   "program.session.lockedCount": "%lld kilitli",
@@ -1750,7 +1434,6 @@
   "program.session.exclude": "Asla önerme",
   "program.session.excludeNote": "Bir egzersizi hariç tutmak, onu her yerde gelecekteki önerilerin dışında bırakır. Sen çıkarana kadar bu seansta kalır.",
   "program.session.viewExercise": "Bu egzersiz hakkında",
-
   "program.notice.created": "Program oluşturuldu. Başlamak için ilk seansını ekle.",
   "program.notice.cloned": "Kopyalandı. Sen etkinleştirene kadar kopya pasif kalır.",
   "program.notice.activated": "%@ artık etkin programın.",
@@ -1762,12 +1445,10 @@
   "program.notice.excludeCleared": "Bu egzersiz yeniden önerilebilir.",
   "program.notice.templateSaved": "Seans şablonlarına kaydedildi.",
   "program.notice.templateApplied": "Şablon programına eklendi.",
-
   "program.version.splitChanged": "Split şuna değiştirildi: %@",
   "program.version.sessionRegenerated": "%@ için yeni egzersizler seçildi",
   "program.version.exerciseSwapped": "%@ yerine %@ getirildi",
   "program.version.settingsChanged": "Antrenman ayarlarını değiştirdikten sonra yeniden kuruldu",
-
   "program.settings.title": "Program ayarları",
   "program.settings.section.schedule": "Takvim",
   "program.settings.daysPerWeek": "Haftada antrenman günü",
@@ -1822,7 +1503,6 @@
   "program.settings.rebuildAction": "Programımı yeniden kur",
   "program.settings.rebuildMessage": "Kilitlediğin egzersizler ve tüm geçmişin korunur. Split, seanslar ve kilitlemediğin her egzersiz bu ayarlara göre yeniden seçilir.",
   "program.settings.noProgramNote": "Henüz bir programın yok. Bu ayarlar, ilk programın kurulacağı temeldir.",
-
   "program.versions.title": "Sürüm geçmişi",
   "program.versions.header": "En yenisi üstte",
   "program.versions.immutable": "Geçmişe yalnızca ekleme yapılır. Bir sürüm düzenlenemez veya silinemez; böylece planının nasıl göründüğü ve neden değiştiği okunabilir kalır.",
@@ -1840,7 +1520,6 @@
   "program.versions.snapshotEmptyTitle": "Kayıtlı seans yok",
   "program.versions.snapshotEmptyMessage": "Program bu noktada hiç seans içermiyordu.",
   "program.versions.readOnly": "Bu, planının o zamanki hâlinin bir kaydıdır. Düzenlenemez ve buradaki hiçbir şey şu an izlediğin programı değiştirmez.",
-
   "program.templates.title": "Seans şablonları",
   "program.templates.save": "Şablon olarak kaydet",
   "program.templates.count": {
@@ -1861,7 +1540,6 @@
   "program.templates.deleteTitle": "Bu şablon silinsin mi?",
   "program.templates.deleteMessage": "Ondan daha önce kurduğun seanslar etkilenmez.",
   "program.templates.openHint": "Bu şablonun neler içerdiğini gösterir",
-
   "explain.deloadApplied": "Hafif hafta uygulandı: daha az hacim ve biraz daha hafif ağırlıklar.",
   "explain.equipmentChanged": "Program, şu anki ekipmanına göre yeniden kuruldu.",
   "explain.exerciseReplaced": "%@ yerine %@ getirildi, nedeni: %@.",
@@ -1958,76 +1636,62 @@
   "split.torsoArmsLegs": "Gövde / Omuz ve Kol / Bacak",
   "split.upperLower": "Üst / Alt",
   "split.upperLowerFull": "Üst / Alt / Tüm Vücut",
-
   "progressionAction.increaseLoad": "Ağırlığı artır",
   "progressionAction.addReps": "Tekrar ekle",
   "progressionAction.maintain": "Sabit tut",
   "progressionAction.reduceLoad": "Ağırlığı azalt",
   "progressionAction.calibrate": "Kalibre et",
   "progressionAction.deload": "Deload",
-
   "oneRepMax.formula.epley": "Epley",
   "oneRepMax.formula.brzycki": "Brzycki",
   "oneRepMax.formula.lombardi": "Lombardi",
   "oneRepMax.formula.average": "Harmanlanmış",
-
   "progression.explain.increasedLoad": "%@ ağırlığı %@ değerinden %@ değerine çıkarıldı; %@ seans boyunca %@ setin tamamını en az %@ tekrarla ve en az %@ tekrar yedekte bırakarak tamamladın.",
   "progression.explain.increasedLoadSingle": "%@ ağırlığı %@ değerinden %@ değerine çıkarıldı; %@ setin tamamını en az %@ tekrarla ve en az %@ tekrar yedekte bırakarak tamamladın.",
   "progression.explain.increasedLoadDuration": "%@ ağırlığı %@ değerinden %@ değerine çıkarıldı; her seti %@ saniye tuttun. Süre, aralığın altından yeniden başlar.",
-
   "progression.explain.bankSession": "%@ %@ değerinde kalıyor. Bir sonraki ağırlık artışına giden %@ iyi seansın %@ tanesindesin.",
   "progression.explain.bankBeforeBigJump": "%@ bir seans daha %@ değerinde kalıyor. Mevcut en küçük adım %@; bu da şu anki ağırlığın yüzde %@ kadarı, yani önce bir sağlam seans daha biriktirmeye değer.",
-
   "progression.explain.addReps": "%@ ağırlığını %@ değerinde tut ve her sette %@ tekrara ulaşmaya çalış. Geçen sefer en düşük setin %@ tekrardı.",
   "progression.explain.holdForMargin": "%@ ağırlığını %@ değerinde tut. Her sette %@ tekrara ulaştın ama %@ tekrar yedekte kalma hedefinden daha çok zorlandın; bu yüzden o tekrarlar biraz daha rahat gelene kadar ağırlık bekliyor.",
   "progression.explain.addRepsUnloaded": "%@ hareketinde her sette %@ tekrara ulaşmaya çalış. Geçen sefer en düşük setin %@ tekrardı.",
   "progression.explain.extendReps": "%@ artık %@ ile %@ tekrar aralığına çıkıyor. Geçen seans her sette %@ tekrara ulaştın.",
   "progression.explain.holdDuration": "%@ hareketini set başına %@ ile %@ saniye arasında tut. Geçen sefer %@ saniye tuttun, yani hedefin içinde hâlâ yer var.",
   "progression.explain.extendDuration": "%@ artık set başına %@ ile %@ saniyeye çıkıyor. Geçen seans her seti %@ saniye tuttun.",
-
   "progression.explain.addSet": "%@ ağırlığını %@ değerinde tut ve bir set ekle; toplam %@ çalışma seti olsun. Bu plan, ağırlıktan önce hacim ekler.",
   "progression.explain.addSetUnloaded": "%@ hareketine bir set ekle; %@ set × %@ ile %@ tekrar olsun. Eklenecek ağırlık yok, yani sıradaki adım hacim.",
   "progression.explain.addSetDuration": "%@ hareketine bir set ekle; %@ set × %@ ile %@ saniye olsun.",
-
   "progression.explain.maintain": "%@ hareketini %@ ağırlıkla %@ ile %@ tekrar için tekrarla. Hedefin bir seans altında kalmak trend sayılmaz, bu yüzden şimdilik bir şey değişmiyor.",
   "progression.explain.maintainUnloaded": "%@ hareketini %@ ile %@ tekrar için tekrarla. Hedefin bir seans altında kalmak trend sayılmaz, bu yüzden şimdilik bir şey değişmiyor.",
   "progression.explain.maintainDuration": "%@ hareketini set başına %@ ile %@ saniye için tekrarla. Hedefin bir seans altında kalmak trend sayılmaz, bu yüzden şimdilik bir şey değişmiyor.",
   "progression.explain.lighterThanPlanned": "%@ hareketini %@ ağırlıkla tekrarla. Geçen seans planlanan ağırlığın altında, %@ olarak kaydedildi; bu yüzden planın doğru olup olmadığını göstermiyor.",
   "progression.explain.atMinimumLoad": "%@ hareketini %@ ağırlıkla tekrarla. Bu, bu hareketin inebildiği en hafif değer; burada tekrar biriktir ya da daha kolay bir varyasyona geç.",
   "progression.explain.noData": "%@ için henüz tamamlanmış set kaydı yok, bu yüzden reçete olduğu gibi kalıyor.",
-
   "progression.explain.reducedLoad": "%@ ağırlığı %@ değerinden %@ değerine düşürüldü; iki seans %@ tekrarın altında kaldı. Buradan yeniden yukarı çık.",
   "progression.explain.reducedLoadStall": "%@ ağırlığı %@ değerinden %@ değerine düşürüldü; %@ seans boyunca ilerleme olmadı. Küçük bir geri adım, temiz bir çıkış için sana alan verir.",
   "progression.explain.reducedLoadRIR": "%@ ağırlığı %@ değerinden %@ değerine düşürüldü. %@ tekrar yedekte bırakarak bitirdin, hedef ise %@ idi; bu, planın öngördüğünden tükenmeye daha yakın.",
   "progression.explain.reducedLoadDuration": "%@ ağırlığı %@ değerinden %@ değerine düşürüldü; iki seans %@ saniyenin altında kaldı.",
   "progression.explain.reducedReps": "%@ yeniden %@ ile %@ tekrar aralığına iniyor. Geçen seans %@ tekrar yaptın, yani hedef fazla yüksekti.",
   "progression.explain.reducedDuration": "%@ yeniden set başına %@ ile %@ saniyeye iniyor. Geçen seans %@ saniye tuttun, yani hedef fazla uzundu.",
-
   "progression.explain.outgrown": "%@ şu an %@ set × %@ tekrarda; bu, planın ağırlıksız programladığı en üst değer. Ağırlık ekle ya da daha zor bir varyasyona geç.",
   "progression.explain.outgrownDuration": "%@ şu an %@ set × %@ saniyede; bu, planın programladığı en üst değer. Ağırlık ekle ya da daha zor bir varyasyona geç.",
-
   "progression.explain.startReps": "%@ hareketine set başına %@ ile %@ tekrarla başla. Kaydettiklerine göre ayarlayacağız.",
   "progression.explain.startDuration": "%@ hareketine set başına %@ ile %@ saniyeyle başla. Kaydettiklerine göre ayarlayacağız.",
   "progression.explain.calibrate": "%@ hareketinden kontrol edebileceğin bir ağırlıkla tek set yap, sonra nasıl geldiğini değerlendir. Çalışma ağırlığını cevabına göre belirleyeceğiz.",
-
   "progression.explain.deload": "Hafif hafta: %@ %@ değerinden %@ değerine, %@ setten %@ sete iner. Şimdi hafif bir hafta, sonraki bloğu korur.",
   "progression.explain.deloadLoadOnly": "Hafif hafta: %@ %@ değerinden %@ değerine iner. Şimdi hafif bir hafta, sonraki bloğu korur.",
   "progression.explain.deloadUnloaded": "Hafif hafta: %@ %@ setten %@ sete iner. Şimdi hafif bir hafta, sonraki bloğu korur.",
   "progression.explain.deloadEasy": "Hafif hafta: %@ hareketini rahat tut ve her seti tükenmeye epey uzak bitir.",
-
   "loadEstimate.explain.fromSeed": "%@ hareketine %@ tekrar için %@ ağırlıkla başlıyorsun; bu, bize söylediğin %@ tekrarlık %@ değerinden geriye hesaplandı.",
   "loadEstimate.explain.fromOwnHistory": "%@ hareketine %@ tekrar için %@ ağırlıkla başlıyorsun; buradaki kendi en iyi setine dayanıyor (tahmini tek tekrar maksimumu %@).",
   "loadEstimate.explain.fromRelated": "%@ hareketine %@ tekrar için %@ ağırlıkla başlıyorsun; %@ hareketinden taşındı (tahmini tek tekrar maksimumu %@).",
   "loadEstimate.explain.fromBodyWeight": "%@ hareketine %@ tekrar için %@ ağırlıkla başlıyorsun. Bu, %@ olan vücut ağırlığından çıkarılmış bilerek hafif bir ilk tahmin; ilk setini değerlendir, düzeltelim.",
   "loadEstimate.explain.minimum": "%@ hareketine mevcut en hafif ayar olan %@ ile başlıyorsun. İlk setini değerlendir, doğru ağırlığı oradan bulalım.",
-
   "recovery.summary.fresh": "Bugün seni tutan bir şey yok. Planladığın gibi çalış.",
   "recovery.summary.ready": "Toparlanman tam bir seans için iyi görünüyor.",
   "recovery.summary.moderate.groups": "Kısmen toparlanmış. Bazı kas grupları son çalışmalardan hâlâ yorgunluk taşıyor.",
   "recovery.summary.moderate.systemic": "Kısmen toparlanmış. Genel hazırlığın her zamankinin biraz altında.",
   "recovery.summary.low.groups": "Birkaç kas grubu hâlâ epey yorgunluk taşıyor. Daha hafif bir seans mantıklı olur.",
   "recovery.summary.low.systemic": "Hazırlığın şu an düşük. Bugünü hafif tutmak mantıklı olur.",
-
   "deload.summary.recommended": "Hafif bir hafta doğru adım gibi görünüyor: yaklaşık %%%@ daha az hacim ve yaklaşık %%%@ daha hafif ağırlıklar.",
   "deload.summary.watch": "Henüz değişmesi gereken bir şey yok ama göz önünde tutmaya değer birkaç nokta var.",
   "deload.reason.performanceRegression": "Son birkaç seansta %@ egzersizde geri gidiş oldu.",
@@ -2038,7 +1702,6 @@
   "deload.reason.blockLength": "%@ haftadır hafif bir hafta olmadan sıkı çalışıyorsun.",
   "deload.reason.subjective": "Günlük yanıtların birkaç gündür düşük.",
   "deload.reason.missedSets": "Son zamanlarda planlanan setlerin yaklaşık %%%@ kadarı tamamlanmadı.",
-
   "autoreg.noChange": "Her şey yolunda. Sonraki seansın planlandığı gibi kalıyor.",
   "autoreg.reduceLoad": "%@ tekrar hedeflerinin altında kaldı, bu yüzden bir dahakine biraz daha hafif başlıyor.",
   "autoreg.reduceLoad.severe": "%@ tekrar hedeflerinin epey altında kaldı. Tekrarları geri getirmek için ağırlık düşürülüyor.",
@@ -2048,7 +1711,6 @@
   "autoreg.restLonger": "%@ hareketinde setler arasında tekrarlar hızla düştü. Daha uzun bir dinlenme performansı korur.",
   "autoreg.swap.substituted": "Seans sırasında %@ hareketini değiştirdin. Kalıcı bir alternatif sana daha uygun olabilir.",
   "autoreg.swap.failed": "%@ her sette yetersiz kaldı ve düşürülecek ağırlık yok. Farklı bir egzersiz daha iyi oturabilir.",
-
   "selection.blocked.alreadyInSession": "Bu seansta zaten var",
   "selection.blocked.avoidedPattern": "Bu hareketten kaçınmayı seçtin",
   "selection.blocked.equipment": "Sende olmayan ekipman gerekiyor",
@@ -2057,7 +1719,6 @@
   "selection.blocked.neverRecommend": "Bunu bir daha görmek istemediğini söyledin",
   "selection.blocked.notLoadable": "Bu sıra, ağırlık yükleyebileceğin bir egzersiz istiyor",
   "selection.blocked.stretch": "Bu bir esneme, çalışma egzersizi değil",
-
   "substitution.machineUnavailable": "Makine kullanılamıyor",
   "substitution.machineOccupied": "Başkası kullanıyor",
   "substitution.preferDumbbell": "Dumbbell kullanmayı tercih ederim",
@@ -2069,7 +1730,6 @@
   "substitution.harder": "Daha zor olsun",
   "substitution.sameMuscleDifferentExercise": "Aynı kas, farklı egzersiz",
   "substitution.jointDiscomfort": "Bir eklemimi rahatsız ediyor",
-
   "substitution.reason.sameTargetAndPattern": "Aynı hedef kas ve hareket kalıbı",
   "substitution.reason.sameTargetAndPattern.push": "Aynı hedef kas ve itiş kalıbı",
   "substitution.reason.sameTargetAndPattern.pull": "Aynı hedef kas ve çekiş kalıbı",
@@ -2079,7 +1739,6 @@
   "substitution.reason.samePattern": "Aynı hareket kalıbı",
   "substitution.reason.sameMuscleGroup": "Aynı kas grubunu çalıştırır",
   "substitution.reason.similarMovement": "Benzer bir hareket",
-
   "substitution.reason.noMachineNeeded": "Makine gerekmez",
   "substitution.reason.differentFeel": "Denenecek farklı bir hareket",
   "substitution.reason.differentPattern": "Farklı bir yol izler",
@@ -2094,7 +1753,6 @@
   "substitution.reason.progressing": "Bu harekette ilerleme kaydediyorsun",
   "substitution.reason.familiar": "Bunu daha önce çalıştın",
   "substitution.reason.staple": "Bilinen, temel bir hareket",
-
   "substitution.reason.equipment.dumbbell": "Yalnızca dumbbell gerekir",
   "substitution.reason.equipment.barbell": "Barbell kullanır",
   "substitution.reason.equipment.cable": "Kablo istasyonu kullanır",
@@ -2103,7 +1761,6 @@
   "substitution.reason.equipment.band": "Yalnızca direnç bandı gerekir",
   "substitution.reason.equipment.kettlebell": "Yalnızca kettlebell gerekir",
   "substitution.reason.equipment.weighted": "Ek ağırlıklı vücut ağırlığı hareketi",
-
   "progress.title": "İlerleme",
   "progress.loading": "Geçmişin yükleniyor…",
   "progress.percent": "%%%lld",
@@ -2120,7 +1777,6 @@
   "progress.empty.message": "Bir antrenmanı bitir ya da kilonu kaydet; bu sekme dolmaya başlasın.",
   "progress.empty.startWorkout": "Antrenman başlat",
   "progress.hub.openHint": "Ayrıntılı dökümü açar",
-
   "progress.training.title": "Antrenman",
   "progress.stat.sessions": "Seans",
   "progress.stat.sets": "Yapılan set",
@@ -2131,7 +1787,6 @@
     "one": "%lld haftadır aralıksız antrenman yapıyorsun.",
     "other": "%lld haftadır aralıksız antrenman yapıyorsun."
   },
-
   "progress.weight.title": "Vücut ağırlığı",
   "progress.weight.subtitle": "Trend, ölçümler ve hedef",
   "progress.weight.add": "Vücut ağırlığı kaydet",
@@ -2177,7 +1832,6 @@
   "progress.weight.health.upToDate": "Sağlık ile zaten güncel.",
   "progress.weight.health.nothing": "Sağlık'ta içe aktarılacak vücut ağırlığı yok.",
   "progress.weight.health.denied": "Sağlık erişimi verilmedi, bu yüzden hiçbir şey aktarılamadı.",
-
   "progress.strength.title": "Güç",
   "progress.strength.subtitle": "Egzersiz bazında tahmini 1RM ve en ağır set",
   "progress.strength.exercise": "Egzersiz",
@@ -2201,7 +1855,6 @@
   "progress.strength.empty.message": "Gücünün nasıl değiştiğini görmek için bir antrenman bitir ya da aralığı genişlet.",
   "progress.strength.noMatches": "Eşleşen egzersiz yok",
   "progress.strength.noMatchesMessage": "Burada yalnızca bu aralıkta çalıştığın egzersizler görünür.",
-
   "progress.volume.title": "Hacim",
   "progress.volume.subtitle": "Kas grubu başına haftalık set ve toplam tonaj",
   "progress.volume.thisWeek": "Son hafta, hedefe karşı",
@@ -2222,7 +1875,6 @@
   "progress.volume.tonnageFootnote": "Yalnızca ağırlık × tekrarın anlam taşıdığı setler sayılır; destekli ve vücut ağırlığı çalışmaları dışarıda kalır.",
   "progress.volume.empty.title": "Henüz kayıtlı hacim yok",
   "progress.volume.empty.message": "Tamamlanmış setlerle bir seans bitir; haftalık döküm burada görünsün.",
-
   "progress.adherence.title": "Süreklilik",
   "progress.adherence.subtitle": "Seanslar, setler ve kayıt tutma",
   "progress.adherence.overview": "Bu aralıkta",
@@ -2257,7 +1909,6 @@
   "progress.adherence.encourage.strong": "İyi gidiyorsun — planladığının çoğunu tutturuyorsun.",
   "progress.adherence.encourage.steady": "İstikrarlı gidiyor. Bitirilen seans, planlanan seansı yener.",
   "progress.adherence.encourage.building": "Alışkanlığı kuruyorsun ve bitirdiğin her seans bu grafikte.",
-
   "progress.records.title": "Rekorlar",
   "progress.records.countInRange": {
     "one": "Bu aralıkta %lld rekor",
@@ -2274,7 +1925,6 @@
   "progress.records.empty.message": "Rekorlar sen çalıştıkça kendiliğinden yakalanır. Birkaç seans bitir, burada görünsünler.",
   "progress.records.noneForFilter": "Bu türde rekor yok",
   "progress.records.noneForFilterMessage": "Bu aralıktaki her şeyi görmek için filtreyi temizle.",
-
   "progress.nutrition.title": "Beslenme",
   "progress.nutrition.subtitle": "Hedefe karşı enerji ve makrolar",
   "progress.nutrition.energyTitle": "Enerji",
@@ -2304,7 +1954,6 @@
   "progress.macro.protein": "Protein",
   "progress.macro.carbs": "Karbonhidrat",
   "progress.macro.fat": "Yağ",
-
   "progress.achievements.title": "Kilometre taşları",
   "progress.achievements.unlockedOf": "%lld/%lld kazanıldı",
   "progress.achievements.earned": "Kazanıldı",
@@ -2314,7 +1963,6 @@
   "progress.achievements.locked": "henüz kazanılmadı, %@",
   "progress.achievements.empty.title": "Kilometre taşı yok",
   "progress.achievements.empty.message": "Uygulama neler yaptığını öğrendikçe kilometre taşları burada görünür.",
-
   "achievement.firstWorkout.title": "İlk seans",
   "achievement.firstWorkout.detail": "İlk antrenmanını bitir.",
   "achievement.sessions.title": "%lld seans",
@@ -2331,7 +1979,6 @@
   "achievement.weighIns.detail": "%lld ayrı günde vücut ağırlığını kaydet.",
   "achievement.nutritionDays.title": "%lld gün kaydedildi",
   "achievement.nutritionDays.detail": "%lld gün beslenmeni kaydet.",
-
   "activity.active": "Hareketli",
   "activity.active.detail": "Bedensel iş ya da gün boyu bol hareket",
   "activity.light": "Az hareketli",
@@ -2684,19 +2331,16 @@
   "weekday.wednesday": "Çarşamba",
   "weightUnit.kg": "Kilogram (kg)",
   "weightUnit.lb": "Pound (lb)",
-
   "settings.title": "Ayarlar",
   "settings.loading": "Ayarların yükleniyor",
   "settings.empty.title": "Ayarlar hazır değil",
   "settings.empty.message": "Profilin henüz oluşturulmadı. Kurmak için tekrar dene.",
   "settings.empty.action": "Tekrar dene",
-
   "settings.section.training": "Antrenmanın",
   "settings.section.nutrition": "Beslenmen",
   "settings.section.app": "Uygulama",
   "settings.section.data": "Verilerin",
   "settings.section.about": "Hakkında",
-
   "settings.profile.title": "Profil",
   "settings.profile.subtitle": "Bilgilerini ekle",
   "settings.profile.noName": "Profilin",
@@ -2725,7 +2369,6 @@
   "settings.profile.section.activity": "Günlük hareket",
   "settings.profile.activity": "Hareket düzeyi",
   "settings.profile.activityExplainer": "Salon dışındaki gününü anlat. Forge, seanslarının yükünü bunun üzerine ekler.",
-
   "settings.goals.title": "Hedefler",
   "settings.goals.none": "Henüz hedef yok",
   "settings.goals.section.goals": "Neye çalışıyorsun",
@@ -2743,7 +2386,6 @@
   "settings.goals.months": "Kaç aydır antrenman",
   "settings.goals.technique": "Teknik",
   "settings.goals.experienceEffect": "Forge %@ düzeyine kadar egzersiz seçer ve yaklaşık %lld tekrar yedekte bırakır.",
-
   "settings.training.title": "Antrenman",
   "settings.training.noDays": "Gün belirlenmedi",
   "settings.training.daysCount": {
@@ -2786,7 +2428,6 @@
   "settings.training.section.limitations": "Kaçınılacak hareketler",
   "settings.training.limitationsNone": "Hiçbiri seçilmedi. Tüm hareket kalıpları kullanılabilir kalır.",
   "settings.training.limitationsFooter": "Forge planlarını yalnızca bunların etrafından kurar. Bunlar cihazında kalır ve asla teşhis olarak ele alınmaz.",
-
   "settings.equipment.title": "Ekipman",
   "settings.equipment.section.preset": "Salonun",
   "settings.equipment.preset": "Kurulum",
@@ -2817,7 +2458,6 @@
   "settings.equipment.restoreDefaults": "Alışılmış boyları geri getir",
   "settings.equipment.lastWeight": "En az bir ağırlık kalsın ki yükler yuvarlanacak bir değer bulsun.",
   "settings.equipment.removeWeight": "%@ ağırlığını kaldır",
-
   "settings.nutrition.title": "Beslenme",
   "settings.nutrition.section.enabled": "Beslenme",
   "settings.nutrition.enabled": "Beslenmeyi takip et",
@@ -2849,7 +2489,6 @@
   "settings.nutrition.waterTracking": "Suyu takip et",
   "settings.nutrition.waterTarget": "Günlük hedef",
   "settings.nutrition.waterFooter": "Kesin bir kural değil, kaba bir rehber. Sıcak günler ve uzun seanslar daha fazlasını ister.",
-
   "settings.units.title": "Birimler",
   "settings.units.section.system": "Sistem",
   "settings.units.mixed": "Metrik ve İngiliz birimlerini karışık kullanıyorsun; bunda bir sakınca yok.",
@@ -2865,7 +2504,6 @@
   "settings.units.example.distance": "Bir kardiyo mesafesi",
   "settings.units.example.energy": "Günlük enerji hedefi",
   "settings.units.example.volume": "Bir seansın hacmi",
-
   "settings.appearance.title": "Görünüm",
   "settings.appearance.section.theme": "Tema",
   "settings.appearance.footer": "Sistem, cihazının açık ve koyu ayarını izler.",
@@ -2876,14 +2514,12 @@
   "settings.appearance.section.system": "Metin ve hareket",
   "settings.appearance.openSystem": "iOS Ayarları'nı aç",
   "settings.appearance.accessibilityNote": "Forge; metin boyutu, kontrast ve hareket azaltma ayarlarını izler. Bunlar iOS Ayarları'nda, Erişilebilirlik altındadır.",
-
   "settings.language.title": "Dil",
   "settings.language.section.device": "Cihaz",
   "settings.language.followDevice": "Cihazı izle",
   "settings.language.deviceFooter": "Forge, iPhone'unun ayarlı olduğu dili kullanır.",
   "settings.language.section.languages": "Diller",
   "settings.language.footer": "Buradan dil seçmek yalnızca Forge'u değiştirir ve hemen uygulanır.",
-
   "settings.notifications.title": "Bildirimler",
   "settings.notifications.on": "Açık",
   "settings.notifications.off": "Kapalı",
@@ -2913,7 +2549,6 @@
   "settings.notifications.mealsEmpty.title": "Henüz saat yok",
   "settings.notifications.mealsEmpty.message": "Bir saat ekle; Forge o öğünü kaydetmeni hatırlatsın.",
   "settings.notifications.mealsFooter": "Günde en fazla altı tane, her biri günlük tekrarlanır.",
-
   "settings.health.title": "Sağlık",
   "settings.health.connected": "Bağlı",
   "settings.health.notConnected": "Bağlı değil",
@@ -2943,7 +2578,6 @@
   "settings.health.section.privacy": "Gizlilik",
   "settings.health.privacy": "Sağlık verileri, ekranda ne olacağını hesaplamak için belleğe okunur. Hiçbir yere gönderilmez; Forge'un hesabı da sunucusu da yoktur.",
   "settings.health.manageInSettings": "iOS Ayarları'ndan yönet",
-
   "settings.data.title": "Veriler",
   "settings.data.import.strategy": "Nasıl geri yüklensin",
   "settings.data.import.emptyBackup.title": "Bu yedek boş",
@@ -2957,7 +2591,6 @@
   "settings.data.reset.item.records": "Kişisel rekorlar ve tartımlar",
   "settings.data.reset.item.nutrition": "Besin günlüğün, kendi besinlerin, kayıtlı öğünlerin ve tariflerin",
   "settings.data.reset.item.settings": "Birimler ve dil dahil tüm ayarlar",
-
   "settings.about.title": "Hakkında",
   "settings.about.tagline": "Antrenmanın ve beslenmen, cihazında saklanır.",
   "settings.about.appVersion": "Sürüm",
@@ -2979,7 +2612,6 @@
   "settings.about.rerunOnboarding.confirmTitle": "Kurulum yeniden çalıştırılsın mı?",
   "settings.about.rerunOnboarding.confirmMessage": "Antrenmanların, kişisel rekorların ve besin günlüğün korunur. Yalnızca kurulum sorularını tekrar yanıtlarsın.",
   "settings.about.rerunOnboarding.confirmAction": "Kurulumu çalıştır",
-
   "settings.legal.title": "Yasal bilgiler ve gizlilik",
   "settings.legal.opensInBrowser": "Tarayıcında açılır",
   "settings.legal.section.media": "Egzersiz görselleri",
@@ -3011,7 +2643,6 @@
   "settings.legal.document.mediaTitle": "Medya bildirimi",
   "settings.legal.document.loading": "Belge açılıyor",
   "settings.legal.document.missing": "Bu belge, Forge'un bu sürümünde yer almıyor.",
-
   "settings.foodTag.meat": "Kırmızı et",
   "settings.foodTag.poultry": "Kanatlı eti",
   "settings.foodTag.fish": "Balık",
@@ -3025,7 +2656,6 @@
   "settings.foodTag.soy": "Soya",
   "settings.foodTag.shellfish": "Kabuklu deniz ürünleri",
   "settings.foodTag.sesame": "Susam",
-
   "active.title": "Antrenman",
   "active.loading": "Antrenmanın yükleniyor",
   "active.finish": "Bitir",
@@ -3056,21 +2686,18 @@
   "active.substitutedFrom": "Şunun yerine: %@",
   "active.lastTime": "Geçen sefer: %@ (%@)",
   "active.lastTime.none": "Bu egzersiz için henüz geçmiş yok",
-
   "active.empty.title": "Henüz egzersiz yok",
   "active.empty.message": "İlk egzersizini ekle; Forge sen ilerledikçe her seti kaydetsin.",
   "active.sets.title": "Setler",
   "active.sets.progress": "%lld / %lld tamamlandı",
   "active.sets.empty.title": "Henüz set yok",
   "active.sets.empty.message": "Bu egzersizi kaydetmeye başlamak için bir set ekle.",
-
   "active.targets.title": "Bugünün hedefleri",
   "active.target.sets": "Set",
   "active.target.reps": "Tekrar",
   "active.target.rest": "Dinlenme",
   "active.target.rir": "Yedekte kalan tekrar",
   "active.target.hold": "Tutuş",
-
   "active.set.number": "%lld. set",
   "active.set.warmup": "Isınma seti",
   "active.set.weight": "Ağırlık",
@@ -3091,14 +2718,11 @@
   "active.set.undoOne": "%lld. seti geri al",
   "active.set.markWarmup": "Bunu ısınma seti yap",
   "active.set.markWorking": "Bunu çalışma seti yap",
-
   "active.warmup.title": "Isınma",
   "active.warmup.subtitle": "İlk setine kadar kademeli çık. Bunlar kaydedilmez.",
   "active.warmup.row": "%lld. %@ × %lld tekrar",
-
   "active.hold.start": "Süreyi başlat",
   "active.hold.stop": "Durdur (%@)",
-
   "active.rest.title": "Dinlenme",
   "active.rest.start": "Dinlenmeyi başlat",
   "active.rest.skip": "Dinlenmeyi atla",
@@ -3111,7 +2735,6 @@
   "active.rest.nextSet": "Sırada: %lld. set",
   "active.rest.nextWarmup": "Sırada: ısınma seti",
   "active.rest.nextExercise": "Sırada: %@",
-
   "active.calibration.title": "Ağırlığını bul",
   "active.calibration.prompt": "Bu hareketi ilk kez yapıyorsun; ilk seti bir deneme gibi gör ve sonrasında değerlendir.",
   "active.calibration.heading": "%@ ile yaptığın set nasıl geldi?",
@@ -3126,7 +2749,6 @@
   "active.calibration.held": "Bu egzersizin kalanı %@ ağırlıkla devam ediyor.",
   "active.calibration.noted": "Cevabın: %@. Bu harekette ayarlanacak bir ağırlık yok.",
   "active.calibration.preview": "Sonraki setler: %@",
-
   "active.substitute.title": "Egzersizi değiştir",
   "active.substitute.replacing": "Değiştirilen",
   "active.substitute.reasonTitle": "Neden değiştiriyorsun?",
@@ -3150,7 +2772,6 @@
   "active.substitute.swapAnyway": "Yalnızca bugün için değiştir",
   "active.substitute.equipmentFailedTitle": "Salonun güncellenmedi",
   "active.substitute.equipmentFailedMessage": "Ekipman değişikliği kaydedilemedi. Tekrar dene ya da egzersizi yalnızca bugün için değiştir.",
-
   "active.edit.title": "Seansı düzenle",
   "active.edit.exercises": "Egzersizler",
   "active.edit.exercisesFooter": "Aksini söylemediğin sürece değişiklikler yalnızca bugünkü seansa uygulanır.",
@@ -3173,7 +2794,6 @@
   "active.edit.routineTitle": "Programın da değişsin mi?",
   "active.edit.routineAddedMessage": "%@ bugüne eklendi. Programındaki bu seansa da eklensin mi?",
   "active.edit.routineRemovedMessage": "%@ bugünden çıkarıldı. Programındaki bu seanstan da çıkarılsın mı?",
-
   "active.discard.title": "Bu antrenman silinsin mi?",
   "active.discard.message": "%@ ve %@ antrenman silinecek. Bu işlem geri alınamaz.",
   "active.discard.action": "Antrenmanı sil",
@@ -3181,7 +2801,6 @@
     "one": "%lld kayıtlı set",
     "other": "%lld kayıtlı set"
   },
-
   "active.finish.title": "Antrenmanı bitir",
   "active.finish.heading": "Seans tamam",
   "active.finish.save": "Seansı kaydet",
@@ -3222,10 +2841,8 @@
   "active.finish.adjustmentsTitle": "Bir dahakine değişenler",
   "active.finish.adjustmentsSubtitle": "Bu seansa ve onu nasıl değerlendirdiğine göre.",
   "active.finish.noAdjustments": "Bir dahaki sefer için değişmesi gereken bir şey yok.",
-
   "active.autoreg.applied": "Bitirdiğin bir seansın ardından programın güncellendi.",
   "active.routine.changedDuringSession": "Programın bir antrenman sırasında değiştirildi.",
-
   "active.error.title": "Bir şeyler ters gitti",
   "active.error.load": "Bu antrenman açılamadı.",
   "active.error.save": "Bu değişiklik kaydedilemedi.",
@@ -3233,14 +2850,12 @@
   "active.error.discard": "Bu antrenman silinemedi.",
   "active.error.notFound": "Bu antrenman artık kayıtlı değil.",
   "active.error.alreadyFinished": "Bu antrenman zaten bitirilmiş.",
-
   "workoutHub.title": "Antrenman",
   "workoutHub.section.picker": "Antrenman görünümü",
   "workoutHub.section.today": "Bugün",
   "workoutHub.section.calendar": "Takvim",
   "workoutHub.resume.title": "Süren antrenman",
   "workoutHub.resume.accessibility": "Süren antrenmana devam et: %@",
-
   "workoutHub.error.title": "Bir şeyler ters gitti",
   "workoutHub.error.load": "Bugünün planı yüklenemedi.",
   "workoutHub.error.start": "Antrenman başlatılamadı.",
@@ -3249,7 +2864,6 @@
   "workoutHub.error.detail": "Bu seans açılamadı.",
   "workoutHub.error.schedule": "Takvim değiştirilemedi.",
   "workoutHub.error.saveNotes": "Not kaydedilemedi.",
-
   "workoutHub.today.loading": "Bugünün planı hazırlanıyor",
   "workoutHub.today.start": "Antrenmanı başlat",
   "workoutHub.today.resume": "Antrenmana devam et",
@@ -3286,7 +2900,6 @@
   "workoutHub.today.exerciseMissing": "Bu egzersiz artık kütüphanede yok. Seans planınla örtüşmeye devam etsin diye burada tutuluyor.",
   "workoutHub.today.autoProgressionOff": "Otomatik ilerleme kapalı, bu yüzden bugünkü rakamlar programında kayıtlı olanlar.",
   "workoutHub.today.deloadWeek": "%@ haftalık bir bloğun son haftasındasın; bu yüzden ağırlıklar ve setler bilerek geri çekildi. Gelecek hafta sıfırdan başlıyor.",
-
   "workoutHub.quickStart.title": "Hızlı başlat",
   "workoutHub.quickStart.repeatTitle": "Aynısını yap",
   "workoutHub.quickStart.repeatSubtitle": "Bitirdiğin son seansı tekrarla.",
@@ -3300,7 +2913,6 @@
   "workoutHub.quickStart.templateDetail": "%lld egzersiz · %lld set",
   "workoutHub.quickStart.noTemplatesTitle": "Seçilecek seans yok",
   "workoutHub.quickStart.noTemplatesMessage": "Henüz bir programın yok, bu yüzden seçilecek bir şey de yok. O zamana kadar boş bir seans iş görür.",
-
   "workoutHub.calendar.loading": "Takvimin yükleniyor",
   "workoutHub.calendar.thisWeek": "Bu hafta",
   "workoutHub.calendar.thisWeekSubtitle": "O günde ne olduğunu görmek ya da değiştirmek için güne dokun.",
@@ -3335,7 +2947,6 @@
   "workoutHub.calendar.missedExplanation": "Kaçırılan bir gün planını bozmaz. Forge haftanın kalanını yeniden yerleştirebilir; böylece hiçbir seans düşmez ve aynı kas grubu üst üste iki kez çalışılmaz.",
   "workoutHub.calendar.noProgramTitle": "Henüz program yok",
   "workoutHub.calendar.noProgramMessage": "Bir antrenman programın olduğunda seansların bu takvimde görünür.",
-
   "workoutHub.reschedule.title": "Haftayı yeniden kur",
   "workoutHub.reschedule.summary": "Hiçbir seans düşmez. Kalan seansların, elindeki günlere yeniden yerleştirilir; aynı kasları çalıştıran seanslar arasında bir gün boş bırakılır.",
   "workoutHub.reschedule.summaryNoChange": "Haftan zaten iyi kurulmuş. Kalan her seans, uygun olan en iyi günde.",
@@ -3349,7 +2960,6 @@
   "workoutHub.reschedule.nothingTitle": "Taşınacak bir şey yok",
   "workoutHub.reschedule.nothingMessage": "Bu hafta yerleştirilecek seans kalmadı.",
   "workoutHub.reschedule.versionReason": "Hafta, kaçırılan bir seansa göre yeniden kuruldu.",
-
   "workoutHub.history.title": "Geçmiş",
   "workoutHub.history.loading": "Geçmişin yükleniyor",
   "workoutHub.history.searchPrompt": "Egzersize göre ara",
@@ -3362,7 +2972,6 @@
   "workoutHub.history.emptyMessage": "Bir antrenmanı bitir; kaydettiğin her setle birlikte burada görünsün.",
   "workoutHub.history.noMatchesTitle": "Eşleşen bir şey yok",
   "workoutHub.history.noMatchesMessage": "Bu tarih aralığındaki hiçbir seansta bu egzersiz yok.",
-
   "workoutHub.detail.title": "Seans",
   "workoutHub.detail.loading": "Bu seans yükleniyor",
   "workoutHub.detail.notFound": "Bu seans artık kayıtlı değil.",
@@ -3393,14 +3002,12 @@
   "workoutHub.detail.notes": "Notların",
   "workoutHub.detail.notesHint": "Bitmiş bir seansta değiştirebileceğin tek şey.",
   "workoutHub.detail.notesPlaceholder": "Nasıl geldi?",
-
   "widget.nextWorkout.displayName": "Sıradaki Antrenman",
   "widget.nextWorkout.description": "Bugünkü seansa tek bakışta göz at, doğrudan içine gir.",
   "widget.nutrition.displayName": "Beslenme",
   "widget.nutrition.description": "Bugünün kalorileri ve makroları.",
   "widget.lockScreen.displayName": "Forge Özeti",
   "widget.lockScreen.description": "Antrenmanın ve beslenmen Kilit Ekranı'nda.",
-
   "widget.start": "Başlat",
   "widget.resume": "Devam et",
   "widget.open": "Aç",
@@ -3416,14 +3023,12 @@
   "widget.focus.more": "+%lld",
   "widget.week.label": "Bu hafta",
   "widget.week.progress": "%1$lld/%2$lld",
-
   "widget.restDay.title": "Dinlenme günü",
   "widget.restDay.message": "Toparlanma da programın bir parçası.",
   "widget.noProgram.title": "Planlanmış seans yok",
   "widget.noProgram.message": "Programını oluşturmak için Forge'u aç.",
   "widget.unavailable.title": "Henüz gösterilecek bir şey yok",
   "widget.unavailable.message": "Forge'u bir kez aç, bu widget dolsun.",
-
   "widget.nutrition.today": "Bugün",
   "widget.calories.remaining": "%@ kcal kaldı",
   "widget.calories.over": "%@ kcal aşım",
@@ -3440,7 +3045,6 @@
   "widget.nutrition.disabled.message": "Bu widget'ı kullanmak için Forge'da besin takibini aç.",
   "widget.nutrition.stale.title": "Bugün henüz kaydedilmedi",
   "widget.nutrition.stale.message": "Bugünün rakamlarını güncellemek için Forge'u aç.",
-
   "widget.live.set": "Set",
   "widget.live.sets": "Set",
   "widget.live.rest": "Dinlenme",
@@ -3449,7 +3053,6 @@
   "widget.live.setValue": "%1$lld/%2$lld",
   "widget.inline.active": "Antrenman sürüyor",
   "widget.inline.next": "Sırada: %@",
-
   "widget.accessibility.startWorkout": "%@ seansını başlat",
   "widget.accessibility.resumeWorkout": "%@ seansına devam et",
   "widget.accessibility.openApp": "Forge'u aç",
@@ -3459,7 +3062,6 @@
   "widget.accessibility.calories": "Bugün %2$@ kilokalorinin %1$@ kadarı alındı",
   "widget.accessibility.weekProgress": "Bu hafta %2$lld antrenmanın %1$lld tanesi yapıldı",
   "widget.accessibility.weekCompleted": "Bu hafta %lld antrenman yapıldı",
-
   "intents.startWorkout.title": "Antrenmanı Başlat",
   "intents.startWorkout.shortTitle": "Antrenmanı Başlat",
   "intents.startWorkout.description": "Forge'u açıp bugünkü seansı başlatır ya da süren seansa devam eder.",
@@ -3482,5 +3084,65 @@
   "intents.addMeal.parameter": "Öğün",
   "intents.mealSlot.type": "Öğün",
   "intents.error.storeUnavailable": "Forge verilerine ulaşamadı. Uygulamayı bir kez aç ve tekrar dene.",
-  "intents.error.valueOutOfRange": "Bu değer, Forge'un kaydedeceği aralığın dışında."
+  "intents.error.valueOutOfRange": "Bu değer, Forge'un kaydedeceği aralığın dışında.",
+  "start.step.welcome.title": "Hoş geldin",
+  "start.step.welcome.subtitle": "Bir dakikada kur.",
+  "start.welcome.title": "Forge'a hoş geldin",
+  "start.welcome.subtitle": "Antrenman ve beslenme planın bir dakikada hazır.",
+  "start.welcome.private.title": "Hesap gerekmez",
+  "start.welcome.private.detail": "Hemen başla. Her şey cihazında kalır.",
+  "start.welcome.plan.title": "Sana özel bir plan",
+  "start.welcome.plan.detail": "Hedefine, programına ve ekipmanına uygun antrenman ve kalori.",
+  "start.welcome.adapts.title": "Seninle birlikte uyum sağlar",
+  "start.welcome.adapts.detail": "Ağırlıklar, tekrarlar ve öğünler gerçekte yaptıklarını takip eder.",
+  "start.welcome.time": "Yaklaşık bir dakika sürer. Her şeyi sonra Ayarlar'dan değiştirebilirsin.",
+  "start.step.about.title": "Senin hakkında",
+  "start.step.about.subtitle": "Planını ayarlamak için birkaç bilgi.",
+  "start.step.goal.title": "Hedefin",
+  "start.step.goal.subtitle": "Şu an en çok önem verdiğini seç.",
+  "start.step.week.title": "Haftan",
+  "start.step.week.subtitle": "Ne sıklıkla ve ne kadar antrenman yapabilirsin.",
+  "start.step.gear.title": "Ekipmanın",
+  "start.step.gear.subtitle": "Neyle antrenman yapabilirsin.",
+  "start.step.reminders.title": "Ritmini koru",
+  "start.step.reminders.subtitle": "Hangi konularda bildirim almak istediğini seç. Başka hiçbiri olmaz.",
+  "start.step.ready.title": "Planın",
+  "start.step.ready.subtitle": "Cevaplarından oluşturuldu. İstediğin zaman değiştir.",
+  "start.action.begin": "Başlayalım",
+  "start.action.enableReminders": "Hatırlatıcıları aç",
+  "start.action.notNow": "Şimdi değil",
+  "start.action.finish": "Antrenmana başla",
+  "start.hint.age": "%lld ile %lld arasında bir yaş gir.",
+  "start.hint.goalEmpty": "Devam etmek için bir hedef seç.",
+  "start.about.units": "Birimler",
+  "start.about.name.placeholder": "Adın (isteğe bağlı)",
+  "start.about.age": "Yaş",
+  "start.about.years": "yaş",
+  "start.about.why": "Yalnızca kalorini ve başlangıç ağırlıklarını tahmin etmek için kullanılır. Cihazından asla çıkmaz.",
+  "start.goal.level": "Seviyen",
+  "start.goal.nutrition": "Öğün takibini ekle",
+  "start.goal.nutrition.detail": "Hedefine göre günlük kalori ve makrolar. Ayarlar'dan kapatabilirsin.",
+  "start.week.days.hint": "Antrenman yapabileceğin günlere dokun. Planı buna göre yapacağız.",
+  "start.gear.limitations": "Kaçınılacak bir sakatlık veya hareket var mı? (isteğe bağlı)",
+  "start.gear.limitations.open": "Açık",
+  "start.gear.limitations.detail": "Forge bunları zorlayan egzersizleri dışarıda bırakır. Tıbbi tavsiye değildir.",
+  "start.reminders.training": "Antrenman günleri",
+  "start.reminders.training.detail": "Seçtiğin saatte tek bir hatırlatma, yalnızca antrenman günlerinde.",
+  "start.reminders.consent": "Açtığında iOS senden izin isteyecek.",
+  "start.reminders.later": "Bunları istediğin zaman Ayarlar'dan değiştirebilir veya kapatabilirsin.",
+  "start.reminders.deniedNote": "Forge için bildirimler iOS Ayarları'nda engellenmiş. İstediğin zaman oradan izin verebilirsin.",
+  "start.ready.footer": "Her egzersiz, set ve öğün değiştirilebilir. Forge her kararı açıklar.",
+  "tour.skip": "Atla",
+  "tour.home.title": "Bugün bir bakışta",
+  "tour.home.body": "Bugünkü antrenman, toparlanma durumun ve günlük ilerlemen. Profil düğmesi Ayarlar'ı açar.",
+  "tour.workout.title": "Tek dokunuşla antrenman",
+  "tour.workout.body": "Antrenmanı başlat ve her seti tek dokunuşla kaydet. Yıldırım düğmesi hızlı antrenman başlatır.",
+  "tour.exercises.title": "500 animasyonlu egzersiz",
+  "tour.exercises.body": "Ara, filtrele ve her hareketi izle. Makine doluysa herhangi bir egzersizi değiştir.",
+  "tour.nutrition.title": "Yediklerini kaydet",
+  "tour.nutrition.body": "Yiyecek ara, barkod tara ya da bir öğünü tekrarla. Hedeflerin amacına göre şekillenir.",
+  "tour.progress.title": "İlerlemeni gör",
+  "tour.progress.body": "Vücut ağırlığı, rekorlar ve grafikler. Kilonu kaydetmek için + düğmesine dokun.",
+  "tour.replay": "Hızlı turu göster",
+  "tour.replay.detail": "Her sekmeye kısa bir gezinti."
 }
