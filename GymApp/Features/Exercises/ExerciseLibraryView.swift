@@ -23,16 +23,20 @@ struct ExerciseLibraryView: View {
     var body: some View {
         @Bindable var viewModel = viewModel
 
-        content
-            .background(Color.appBackground)
-            .navigationTitle(L("exercises.title"))
-            .navigationBarTitleDisplayMode(.large)
-            .searchable(
+        VStack(spacing: 0) {
+            SearchField(
                 text: $viewModel.searchText,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: Text(L("exercises.searchPrompt", viewModel.catalogCount))
+                prompt: L("exercises.searchPrompt", viewModel.catalogCount),
+                accessibilityIdentifier: "exercises.searchField"
             )
-            .toolbar { toolbarContent }
+            .screenPadding()
+            .padding(.bottom, Metrics.spacing8)
+            .readableWidth()
+
+            content
+        }
+            .background(Color.appBackground)
+            .screenHeader(L("exercises.title")) { headerActions }
             .navigationDestination(for: ExerciseRoute.self) { route in
                 switch route {
                 case .detail(let exerciseID):
@@ -185,47 +189,39 @@ struct ExerciseLibraryView: View {
         .multilineTextAlignment(.center)
     }
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .topBarTrailing) {
-            Menu {
-                Picker(L("exercises.sort.label"), selection: Binding(
-                    get: { viewModel.sort },
-                    set: { viewModel.sort = $0 }
-                )) {
-                    ForEach(ExerciseSortOrder.allCases) { order in
-                        Label(L(order.localizationKey), systemImage: order.symbolName).tag(order)
-                    }
+    @ViewBuilder
+    private var headerActions: some View {
+        Menu {
+            Picker(L("exercises.sort.label"), selection: Binding(
+                get: { viewModel.sort },
+                set: { viewModel.sort = $0 }
+            )) {
+                ForEach(ExerciseSortOrder.allCases) { order in
+                    Label(L(order.localizationKey), systemImage: order.symbolName).tag(order)
                 }
-                .pickerStyle(.inline)
-            } label: {
-                Image(systemName: "arrow.up.arrow.down")
-                    .minimumTapTarget()
             }
-            .accessibilityLabel(Text(L("exercises.sort.label")))
-            .accessibilityValue(Text(L(viewModel.sort.localizationKey)))
+            .pickerStyle(.inline)
+        } label: {
+            HeaderIcon(systemImage: "arrow.up.arrow.down")
         }
+        .accessibilityLabel(Text(L("exercises.sort.label")))
+        .accessibilityValue(Text(L(viewModel.sort.localizationKey)))
 
-        ToolbarItem(placement: .topBarTrailing) {
-            Button {
-                isPresentingFilters = true
-            } label: {
-                HStack(spacing: Metrics.spacing4) {
-                    Image(systemName: viewModel.filters.isActive
-                        ? "line.3.horizontal.decrease.circle.fill"
-                        : "line.3.horizontal.decrease.circle")
-                    if viewModel.filters.isActive {
-                        Text(String(viewModel.filters.activeCount))
-                            .font(.footnote.weight(.semibold).monospacedDigit())
-                    }
-                }
-                .minimumTapTarget()
-            }
-            .accessibilityLabel(Text(L("exercises.filters.label")))
-            .accessibilityValue(Text(viewModel.filters.isActive
-                ? LPlural("exercises.filters.activeCount", viewModel.filters.activeCount)
-                : L("common.none")))
+        Button {
+            isPresentingFilters = true
+        } label: {
+            HeaderIcon(
+                systemImage: viewModel.filters.isActive
+                    ? "line.3.horizontal.decrease.circle.fill"
+                    : "line.3.horizontal.decrease.circle",
+                badge: viewModel.filters.isActive ? String(viewModel.filters.activeCount) : nil
+            )
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(L("exercises.filters.label")))
+        .accessibilityValue(Text(viewModel.filters.isActive
+            ? LPlural("exercises.filters.activeCount", viewModel.filters.activeCount)
+            : L("common.none")))
     }
 
     /// Folds the preference fields the list depends on into a single comparable value.

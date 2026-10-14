@@ -62,24 +62,18 @@ struct WorkoutHubView: View {
                 }
             }
         }
-        .navigationTitle(L("workoutHub.title"))
-        .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    router.workoutPath.append(WorkoutHubRoute.history)
-                } label: {
-                    Image(systemName: "clock.arrow.circlepath")
-                }
-                .accessibilityLabel(Text(L("workoutHub.history.title")))
+        .screenHeader(L("workoutHub.title")) {
+            HeaderIconButton(
+                systemImage: "clock.arrow.circlepath",
+                accessibilityLabel: L("workoutHub.history.title")
+            ) {
+                router.workoutPath.append(WorkoutHubRoute.history)
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    model.isPresentingQuickStart = true
-                } label: {
-                    Image(systemName: "bolt.fill")
-                }
-                .accessibilityLabel(Text(L("workoutHub.quickStart.title")))
+            HeaderIconButton(
+                systemImage: "bolt.fill",
+                accessibilityLabel: L("workoutHub.quickStart.title")
+            ) {
+                model.isPresentingQuickStart = true
             }
         }
         .navigationDestination(for: WorkoutHubRoute.self) { route in

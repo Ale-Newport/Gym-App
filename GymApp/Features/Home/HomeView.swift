@@ -39,26 +39,25 @@ struct HomeView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.appBackground)
-        // The greeting is the headline of the content, not the navigation title. A large title is
-        // a single line that clips at the tail, and the greeting is a whole sentence containing a
-        // name the user chose: "Buenas tardes, Alejandro" already overruns a 375pt iPhone, and
-        // Spanish, Italian, French and Russian all run longer here than English. In the content it
-        // wraps to as many lines as it needs.
-        .navigationTitle(L("tab.home"))
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    router.homePath.append(HomeDestination.settings)
-                } label: {
-                    Image(systemName: "person.crop.circle")
-                        .font(.title3)
-                        .minimumTapTarget()
-                }
-                .accessibilityLabel(Text(L("home.profileButton")))
+        // The greeting is the screen's title, on the same row as the profile button. A whole
+        // sentence containing a name the user chose can outgrow one line — "Buenas tardes,
+        // Alejandro" already overruns a 375pt iPhone, and Spanish, Italian, French and Russian all
+        // run longer than English — so it is allowed a second line instead of being clipped.
+        .screenHeader(
+            greeting,
+            subtitle: formatter.weekdayAndDate(Date()),
+            backTitle: L("tab.home"),
+            titleFont: .title.weight(.bold),
+            titleLineLimit: 2
+        ) {
+            HeaderIconButton(
+                systemImage: "person.crop.circle",
+                accessibilityLabel: L("home.profileButton"),
                 // The label is localised, so anything that has to find this button in an arbitrary
                 // language — the screenshot run does — needs an identifier that is not.
-                .accessibilityIdentifier(HomeAccessibility.profile)
+                accessibilityIdentifier: HomeAccessibility.profile
+            ) {
+                router.homePath.append(HomeDestination.settings)
             }
         }
         .navigationDestination(for: HomeDestination.self) { destination in
@@ -83,12 +82,6 @@ struct HomeView: View {
     private var dashboard: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: Metrics.spacing16) {
-                greetingHeader
-                Text(formatter.weekdayAndDate(Date()))
-                    .font(.subheadline)
-                    .foregroundStyle(Color.appTextSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-
                 if let failure = model.actionFailure {
                     actionFailureBanner(failure)
                 }
@@ -170,11 +163,7 @@ struct HomeView: View {
     }
 
     private var emptyState: some View {
-        VStack(alignment: .leading, spacing: Metrics.spacing16) {
-            greetingHeader
-                .screenPadding()
-            emptyStateBody
-        }
+        emptyStateBody
     }
 
     private var emptyStateBody: some View {
@@ -195,15 +184,6 @@ struct HomeView: View {
         }
         .readableWidth()
         .padding(.top, Metrics.spacing40)
-    }
-
-    /// The greeting, styled like the large title it replaced but free to wrap.
-    private var greetingHeader: some View {
-        Text(greeting)
-            .font(.largeTitle.weight(.bold))
-            .foregroundStyle(Color.appTextPrimary)
-            .fixedSize(horizontal: false, vertical: true)
-            .accessibilityAddTraits(.isHeader)
     }
 
     /// An action failed. The screen stays usable and the message offers the one thing that can help.

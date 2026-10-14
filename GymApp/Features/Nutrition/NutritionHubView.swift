@@ -37,8 +37,11 @@ struct NutritionHubView: View {
             }
         }
         .background(Color.appBackground)
-        .navigationTitle(L("tab.nutrition"))
-        .navigationBarTitleDisplayMode(.inline)
+        .screenHeader(L("tab.nutrition")) {
+            if isNutritionEnabled, let model, model.phase == .content {
+                moreMenu(model)
+            }
+        }
         .task {
             guard model == nil else { return }
             let created = NutritionDayViewModel(context: modelContext, environment: environment)
@@ -121,7 +124,6 @@ struct NutritionHubView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .refreshable { model.load() }
-        .toolbar { toolbarMenu(model) }
         .sheet(item: $addingToSlot) { slot in
             AddFoodFlowView(slot: slot, dayKey: model.dayKey)
                 .onDisappear { model.load() }
@@ -354,34 +356,30 @@ struct NutritionHubView: View {
 
     // MARK: - Toolbar
 
-    @ToolbarContentBuilder
-    private func toolbarMenu(_ model: NutritionDayViewModel) -> some ToolbarContent {
-        ToolbarItem(placement: .topBarTrailing) {
-            Menu {
-                NavigationLink { NutritionTargetsView() } label: {
-                    Label(L("nutritionLog.menu.targets"), systemImage: "target")
-                }
-                NavigationLink { MicronutrientDetailView(dayKey: model.dayKey) } label: {
-                    Label(L("nutritionLog.menu.micronutrients"), systemImage: "chart.bar.doc.horizontal")
-                }
-                NavigationLink { SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
-                    Label(L("nutritionLog.menu.savedMeals"), systemImage: "square.stack.3d.up")
-                }
-                NavigationLink { RecipeListView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
-                    Label(L("nutritionLog.menu.recipes"), systemImage: "list.bullet.rectangle")
-                }
-                Divider()
-                Button {
-                    isPresentingCopyDay = true
-                } label: {
-                    Label(L("nutritionLog.menu.copyDay"), systemImage: "doc.on.doc")
-                }
-            } label: {
-                Image(systemName: "ellipsis.circle")
-                    .minimumTapTarget()
+    private func moreMenu(_ model: NutritionDayViewModel) -> some View {
+        Menu {
+            NavigationLink { NutritionTargetsView() } label: {
+                Label(L("nutritionLog.menu.targets"), systemImage: "target")
             }
-            .accessibilityLabel(Text(L("common.more")))
+            NavigationLink { MicronutrientDetailView(dayKey: model.dayKey) } label: {
+                Label(L("nutritionLog.menu.micronutrients"), systemImage: "chart.bar.doc.horizontal")
+            }
+            NavigationLink { SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
+                Label(L("nutritionLog.menu.savedMeals"), systemImage: "square.stack.3d.up")
+            }
+            NavigationLink { RecipeListView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
+                Label(L("nutritionLog.menu.recipes"), systemImage: "list.bullet.rectangle")
+            }
+            Divider()
+            Button {
+                isPresentingCopyDay = true
+            } label: {
+                Label(L("nutritionLog.menu.copyDay"), systemImage: "doc.on.doc")
+            }
+        } label: {
+            HeaderIcon(systemImage: "ellipsis.circle")
         }
+        .accessibilityLabel(Text(L("common.more")))
     }
 
     // MARK: - Notices

@@ -37,16 +37,12 @@ struct ProgressHubView: View {
             .readableWidth()
         }
         .background(Color.appBackground)
-        .navigationTitle(L("progress.title"))
-        .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    router.isPresentingWeightEntry = true
-                } label: {
-                    Image(systemName: "plus.circle")
-                }
-                .accessibilityLabel(Text(L("progress.weight.add")))
+        .screenHeader(L("progress.title")) {
+            HeaderIconButton(
+                systemImage: "plus.circle",
+                accessibilityLabel: L("progress.weight.add")
+            ) {
+                router.isPresentingWeightEntry = true
             }
         }
         .navigationDestination(for: ProgressRoute.self) { route in

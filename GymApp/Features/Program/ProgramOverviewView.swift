@@ -22,7 +22,7 @@ struct ProgramOverviewView: View {
         content
             .background(Color.appBackground)
             .navigationTitle(L("program.title"))
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .navigationDestination(for: ProgramRoute.self) { destination(for: $0) }
             .sheet(isPresented: $isPresentingSplitPicker) {
