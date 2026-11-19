@@ -292,7 +292,7 @@ struct ActiveExerciseCard: View {
                             .font(.appOverline)
                             .foregroundStyle(Color.appTextSecondary)
                         Text(item.value)
-                            .font(.appNumeric(17))
+                            .appNumericFont(17)
                             .foregroundStyle(Color.appTextPrimary)
                             .fixedSize(horizontal: false, vertical: true)
                     }

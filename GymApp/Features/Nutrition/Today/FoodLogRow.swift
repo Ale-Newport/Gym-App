@@ -78,7 +78,7 @@ struct FoodLogRow: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(formatter.energy(entry.macrosSnapshot.kilocalories, includeUnit: false))
-                .font(.appNumeric(17))
+                .appNumericFont(17)
                 .foregroundStyle(Color.appTextPrimary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)

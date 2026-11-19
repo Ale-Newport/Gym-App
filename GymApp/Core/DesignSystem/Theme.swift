@@ -128,6 +128,8 @@ enum Metrics {
 extension Font {
     /// Numeric display face for weights, reps and timers. Monospaced digits stop the layout from
     /// twitching as values change mid-set.
+    /// The rounded, tabular-digit face used for numbers, at a fixed point size. Prefer the
+    /// `.appNumericFont(_:)` modifier in views: it uses this face but follows Dynamic Type.
     static func appNumeric(_ size: CGFloat, weight: Font.Weight = .semibold) -> Font {
         .system(size: size, weight: weight, design: .rounded).monospacedDigit()
     }
@@ -166,4 +168,34 @@ enum Haptics {
     static func success() { notification.notificationOccurred(.success) }
     static func warning() { notification.notificationOccurred(.warning) }
     static func error() { notification.notificationOccurred(.error) }
+}
+
+/// Applies `Font.appNumeric` at a size that follows the user's text size.
+///
+/// The design specifies numbers in points (a 24 pt headline figure, a 17 pt set value). At the
+/// default text size that is exactly what is drawn; at larger sizes the figure grows with the text
+/// style it sits beside, so the numbers — the most important content on most screens — are not the
+/// one thing that stays small when someone needs everything bigger.
+private struct ScaledNumericFont: ViewModifier {
+    @ScaledMetric private var size: CGFloat
+    private let weight: Font.Weight
+
+    init(size: CGFloat, weight: Font.Weight) {
+        // Large display figures scale with the large title, which grows more gently than body text,
+        // so a 56 pt timer does not outgrow the screen at the largest accessibility size.
+        let style: Font.TextStyle = size >= 28 ? .largeTitle : size >= 20 ? .title2 : .body
+        _size = ScaledMetric(wrappedValue: size, relativeTo: style)
+        self.weight = weight
+    }
+
+    func body(content: Content) -> some View {
+        content.font(.appNumeric(size, weight: weight))
+    }
+}
+
+extension View {
+    /// Rounded tabular figures at `size` points, scaled with Dynamic Type.
+    func appNumericFont(_ size: CGFloat, weight: Font.Weight = .semibold) -> some View {
+        modifier(ScaledNumericFont(size: size, weight: weight))
+    }
 }

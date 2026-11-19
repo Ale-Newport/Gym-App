@@ -146,7 +146,7 @@ struct ProgramOverviewView: View {
                     .accessibilityLabel(L("program.renameProgram"))
                 }
 
-                HStack(spacing: Metrics.spacing20) {
+                StatRow(spacing: Metrics.spacing20) {
                     StatTile(
                         value: "\(model.program?.daysPerWeek ?? 0)",
                         label: L("program.stat.daysPerWeek"),

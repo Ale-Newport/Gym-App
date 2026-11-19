@@ -237,7 +237,7 @@ struct ProgramVersionDetailView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 }
 
-                HStack(spacing: Metrics.spacing20) {
+                StatRow(spacing: Metrics.spacing20) {
                     StatTile(
                         value: "\(snapshot.daysPerWeek)",
                         label: L("program.stat.daysPerWeek"),

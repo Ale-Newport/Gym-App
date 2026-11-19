@@ -302,7 +302,7 @@ struct BodyWeightView: View {
                     .foregroundStyle(Color.appTextPrimary)
                 Spacer(minLength: Metrics.spacing8)
                 Text(formatter.weight(goalKg))
-                    .font(.appNumeric(15))
+                    .appNumericFont(15)
                     .foregroundStyle(Color.appTextSecondary)
             }
             Text(
@@ -323,7 +323,7 @@ struct BodyWeightView: View {
         HStack(spacing: Metrics.spacing12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(formatter.weight(row.weightKg))
-                    .font(.appNumeric(17))
+                    .appNumericFont(17)
                     .foregroundStyle(Color.appTextPrimary)
                 Text(formatter.weekdayAndDate(row.date))
                     .font(.caption)

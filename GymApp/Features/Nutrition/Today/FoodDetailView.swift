@@ -133,7 +133,7 @@ struct FoodDetailView: View {
                         .foregroundStyle(Color.appTextSecondary)
                     Spacer(minLength: Metrics.spacing8)
                     Text(formatter.energy(macros.kilocalories))
-                        .font(.appNumeric(24))
+                        .appNumericFont(24)
                         .foregroundStyle(Color.appNutrition)
                         .lineLimit(1)
                         .minimumScaleFactor(0.6)

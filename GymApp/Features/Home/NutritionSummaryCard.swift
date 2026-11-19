@@ -85,7 +85,7 @@ struct NutritionSummaryCard: View {
 
             VStack(alignment: .leading, spacing: Metrics.spacing2) {
                 Text(formatter.energy(abs(remaining)))
-                    .font(.appNumeric(26))
+                    .appNumericFont(26)
                     .foregroundStyle(remaining < 0 ? Color.appWarning : Color.appTextPrimary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)

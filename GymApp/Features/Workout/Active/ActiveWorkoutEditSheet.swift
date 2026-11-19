@@ -174,7 +174,7 @@ struct ActiveWorkoutEditSheet: View {
             .accessibilityLabel(Text(L("active.edit.removeSet")))
 
             Text("\(record.workingSets.count)")
-                .font(.appNumeric(17))
+                .appNumericFont(17)
                 .foregroundStyle(Color.appTextPrimary)
                 .frame(minWidth: 22)
                 .accessibilityLabel(Text(LPlural("active.edit.setCount", record.workingSets.count)))

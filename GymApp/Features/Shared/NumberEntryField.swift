@@ -35,7 +35,7 @@ struct NumberEntryField: View {
                     TextField(placeholder, text: $text)
                         .keyboardType(allowsDecimals ? .decimalPad : .numberPad)
                         .multilineTextAlignment(.center)
-                        .font(.appNumeric(24))
+                        .appNumericFont(24)
                         .foregroundStyle(Color.appTextPrimary)
                         .focused($isFocused)
                         .submitLabel(.done)

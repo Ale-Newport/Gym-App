@@ -16,6 +16,8 @@ struct ScreenHeader<Trailing: View>: View {
     var titleLineLimit: Int = 1
     @ViewBuilder var trailing: Trailing
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         HStack(alignment: .center, spacing: Metrics.spacing8) {
             VStack(alignment: .leading, spacing: Metrics.spacing2) {
@@ -31,7 +33,10 @@ struct ScreenHeader<Trailing: View>: View {
                     Text(subtitle)
                         .font(.subheadline)
                         .foregroundStyle(Color.appTextSecondary)
-                        .lineLimit(1)
+                        // One line normally; at the accessibility sizes a date like "Thursday,
+                        // November 19" no longer fits and would be cut to "Thursday, N…".
+                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : 1)
+                        .fixedSize(horizontal: false, vertical: dynamicTypeSize.isAccessibilitySize)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

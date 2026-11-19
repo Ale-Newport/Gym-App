@@ -14,6 +14,12 @@ struct ExerciseRowView: View {
     var isExcluded: Bool = false
     var trailingSystemImage: String?
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    /// At the accessibility sizes a name or detail line cut to one line loses the very words the
+    /// user enlarged the text to read, so the limits are lifted there.
+    private func lines(_ normal: Int) -> Int? { dynamicTypeSize.isAccessibilitySize ? nil : normal }
+
     var body: some View {
         HStack(spacing: Metrics.spacing12) {
             ExerciseThumbnail(url: thumbnailURL)
@@ -24,7 +30,7 @@ struct ExerciseRowView: View {
                     Text(exercise.name.localizedCapitalized)
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Color.appTextPrimary)
-                        .lineLimit(2)
+                        .lineLimit(lines(2))
                     if isFavorite {
                         Image(systemName: "heart.fill")
                             .font(.caption2)
@@ -34,12 +40,12 @@ struct ExerciseRowView: View {
                 Text(metadataLine)
                     .font(.caption)
                     .foregroundStyle(Color.appTextSecondary)
-                    .lineLimit(1)
+                    .lineLimit(lines(1))
                 if let detail {
                     Text(detail)
                         .font(.caption2)
                         .foregroundStyle(Color.appTextTertiary)
-                        .lineLimit(1)
+                        .lineLimit(lines(1))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -126,7 +126,7 @@ struct WorkoutSessionDetailView: View {
                     }
                 }
 
-                HStack(alignment: .top, spacing: Metrics.spacing12) {
+                StatRow(spacing: Metrics.spacing12) {
                     StatTile(
                         value: formatter.durationCompact(model.durationSeconds),
                         label: L("workoutHub.detail.duration"),
@@ -487,7 +487,7 @@ private struct SetRow: View {
             }
 
             Text(performedText)
-                .font(.appNumeric(15, weight: .medium))
+                .appNumericFont(15, weight: .medium)
                 .foregroundStyle(set.isCompleted ? Color.appTextPrimary : Color.appTextTertiary)
                 .fixedSize(horizontal: false, vertical: true)
 

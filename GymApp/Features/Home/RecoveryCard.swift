@@ -77,7 +77,7 @@ struct RecoveryCard: View {
                     .foregroundStyle(Color.appTextPrimary)
                 Spacer(minLength: Metrics.spacing8)
                 Text(L("home.recovery.readinessValue", Int((summary.readiness * 100).rounded())))
-                    .font(.appNumeric(18))
+                    .appNumericFont(18)
                     .foregroundStyle(Color.appTextPrimary)
             }
             ProgressBar(value: summary.readiness, total: 1, tint: .appRecovery, height: 8)

@@ -216,7 +216,7 @@ struct MealRecommendationsView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                             Spacer(minLength: Metrics.spacing8)
                             Text(portionLabel(item))
-                                .font(.appNumeric(15, weight: .medium))
+                                .appNumericFont(15, weight: .medium)
                                 .foregroundStyle(Color.appTextSecondary)
                         }
                         .accessibilityElement(children: .combine)

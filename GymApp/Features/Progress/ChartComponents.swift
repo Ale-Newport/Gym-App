@@ -471,7 +471,7 @@ struct TargetProgressRow: View {
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: Metrics.spacing8)
                 Text(valueText)
-                    .font(.appNumeric(15))
+                    .appNumericFont(15)
                     .foregroundStyle(Color.appTextSecondary)
             }
             ProgressBar(value: value, total: target, tint: tint, height: 8)

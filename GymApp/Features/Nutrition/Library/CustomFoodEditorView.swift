@@ -530,7 +530,7 @@ private struct MicronutrientValueField: View {
                 TextField("—", text: $text)
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
-                    .font(.appNumeric(17))
+                    .appNumericFont(17)
                     .focused($isFocused)
                     .frame(minWidth: 60)
                     .onChange(of: text) { _, newValue in commit(newValue) }

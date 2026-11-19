@@ -159,6 +159,23 @@ struct ToggleChip: View {
 
 // MARK: - Stats
 
+/// Lays out a few `StatTile`s side by side — or one under another at the accessibility text sizes,
+/// where three columns leave each label a few characters wide and break words letter by letter.
+struct StatRow<Content: View>: View {
+    var spacing: CGFloat = Metrics.spacing12
+    @ViewBuilder var content: Content
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        let layout =
+            dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: spacing))
+        layout { content }
+    }
+}
+
 /// A single headline number with a label. The building block of the dashboard.
 struct StatTile: View {
     let value: String
@@ -180,7 +197,7 @@ struct StatTile: View {
                     .foregroundStyle(Color.appTextSecondary)
             }
             Text(value)
-                .font(.appNumeric(24))
+                .appNumericFont(24)
                 .foregroundStyle(tint)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)

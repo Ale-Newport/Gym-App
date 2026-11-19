@@ -306,7 +306,7 @@ struct WorkoutFinishView: View {
                                 MuscleGroupBadge(group: entry.group, showsIcon: true)
                                 Spacer(minLength: Metrics.spacing8)
                                 Text(Units.formatDecimal(entry.sets, digits: 1))
-                                    .font(.appNumeric(15))
+                                    .appNumericFont(15)
                                     .foregroundStyle(Color.appTextPrimary)
                             }
                             .accessibilityElement(children: .combine)

@@ -69,7 +69,7 @@ struct MacroRingsHeader: View {
         ) {
             VStack(spacing: 2) {
                 Text(ringValue)
-                    .font(.appNumeric(24))
+                    .appNumericFont(24)
                     .foregroundStyle(Color.appTextPrimary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
@@ -119,7 +119,7 @@ struct MacroRingsHeader: View {
                 .foregroundStyle(Color.appTextSecondary)
             Spacer(minLength: Metrics.spacing4)
             Text(value)
-                .font(.appNumeric(17))
+                .appNumericFont(17)
                 .foregroundStyle(tint)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)

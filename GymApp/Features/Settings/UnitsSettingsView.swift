@@ -152,7 +152,7 @@ struct UnitsSettingsView: View {
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: Metrics.spacing8)
             Text(value)
-                .font(.appNumeric(17))
+                .appNumericFont(17)
                 .foregroundStyle(Color.appTextPrimary)
         }
         .frame(minHeight: Metrics.minimumTapTarget)

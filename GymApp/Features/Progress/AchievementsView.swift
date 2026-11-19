@@ -209,7 +209,7 @@ private struct AchievementBadgeTile: View {
                     .fixedSize(horizontal: false, vertical: true)
             } else if let progress = AchievementPresentation.progress(badge, formatter: formatter) {
                 Text(progress)
-                    .font(.appNumeric(12))
+                    .appNumericFont(12)
                     .foregroundStyle(Color.appTextTertiary)
             }
         }

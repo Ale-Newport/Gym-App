@@ -228,7 +228,7 @@ struct ExerciseHistoryView: View {
                 .foregroundStyle(Color.appTextPrimary)
                 .fixedSize(horizontal: false, vertical: true)
 
-            HStack(alignment: .top, spacing: Metrics.spacing12) {
+            StatRow(spacing: Metrics.spacing12) {
                 StatTile(
                     value: String(viewModel.entries.count),
                     label: L("exercises.history.sessions"),

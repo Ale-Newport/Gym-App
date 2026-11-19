@@ -133,7 +133,7 @@ struct AdherenceView: View {
         VStack(spacing: Metrics.spacing8) {
             ProgressRing(fraction: fraction, lineWidth: 10, tint: tint) {
                 Text(L("progress.percent", Int((fraction * 100).rounded())))
-                    .font(.appNumeric(18))
+                    .appNumericFont(18)
                     .foregroundStyle(Color.appTextPrimary)
             }
             .frame(width: 84, height: 84)

@@ -100,7 +100,7 @@ struct PersonalRecordRowView: View {
 
             VStack(alignment: .trailing, spacing: 2) {
                 Text(PersonalRecordFormatting.value(record, formatter: formatter))
-                    .font(.appNumeric(16))
+                    .appNumericFont(16)
                     .foregroundStyle(Color.appTextPrimary)
                 if let context = PersonalRecordFormatting.context(record) {
                     Text(context)

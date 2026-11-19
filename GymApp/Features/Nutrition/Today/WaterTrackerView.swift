@@ -36,7 +36,7 @@ struct WaterTrackerView: View {
                         .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: Metrics.spacing8)
                     Text(totalText)
-                        .font(.appNumeric(17))
+                        .appNumericFont(17)
                         .foregroundStyle(Color.appTextPrimary)
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)

@@ -115,7 +115,7 @@ struct TodayWorkoutView: View {
                     }
                 }
 
-                HStack(alignment: .top, spacing: Metrics.spacing12) {
+                StatRow(spacing: Metrics.spacing12) {
                     StatTile(
                         value: "\(plan.items.count)",
                         label: L("workoutHub.today.exerciseCount"),
@@ -453,7 +453,7 @@ struct HubStepperRow: View {
             .accessibilityLabel(Text(L("workoutHub.today.decrease", title)))
 
             Text(format(value))
-                .font(.appNumeric(20))
+                .appNumericFont(20)
                 .foregroundStyle(Color.appTextPrimary)
                 .frame(minWidth: 44)
                 .accessibilityHidden(true)

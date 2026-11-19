@@ -198,7 +198,7 @@ struct ReadyStepView: View {
             OnboardingSection(L("onboarding.result.nutrition")) {
                 Card {
                     VStack(alignment: .leading, spacing: Metrics.spacing12) {
-                        HStack(alignment: .top, spacing: Metrics.spacing12) {
+                        StatRow(spacing: Metrics.spacing12) {
                             StatTile(
                                 value: formatter.energy(targets.kilocalories, includeUnit: false),
                                 label: formatter.energyUnitLabel,

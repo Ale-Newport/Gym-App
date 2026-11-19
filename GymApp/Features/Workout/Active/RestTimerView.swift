@@ -36,7 +36,7 @@ struct RestTimerView: View {
             }
 
             Text(Units.formatDuration(seconds: timer.remainingSeconds))
-                .font(.appNumeric(56, weight: .bold))
+                .appNumericFont(56, weight: .bold)
                 .foregroundStyle(Color.appRecovery)
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)

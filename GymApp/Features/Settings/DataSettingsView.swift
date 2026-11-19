@@ -243,7 +243,7 @@ private struct ImportPreviewSheet: View {
                                         .fixedSize(horizontal: false, vertical: true)
                                     Spacer(minLength: Metrics.spacing8)
                                     Text(String(entry.count))
-                                        .font(.appNumeric(17))
+                                        .appNumericFont(17)
                                         .foregroundStyle(
                                             entry.count == 0 ? Color.appTextTertiary : Color.appTextPrimary)
                                 }

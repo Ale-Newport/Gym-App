@@ -77,7 +77,7 @@ struct ProgressSummaryCard: View {
                         .font(.appOverline)
                         .foregroundStyle(Color.appTextSecondary)
                     Text(formatter.weight(weight))
-                        .font(.appNumeric(24))
+                        .appNumericFont(24)
                         .foregroundStyle(Color.appTextPrimary)
                         .lineLimit(1)
                         .minimumScaleFactor(0.6)

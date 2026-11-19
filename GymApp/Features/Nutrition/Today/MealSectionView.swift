@@ -68,7 +68,7 @@ struct MealSectionView: View {
             }
             Spacer(minLength: Metrics.spacing8)
             Text(formatter.energy(subtotal.kilocalories))
-                .font(.appNumeric(17))
+                .appNumericFont(17)
                 .foregroundStyle(entries.isEmpty ? Color.appTextTertiary : Color.appTextPrimary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)

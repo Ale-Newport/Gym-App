@@ -117,7 +117,7 @@ struct SetRowView: View {
                     .font(.caption.weight(.bold))
             } else {
                 Text("\(set.setIndex + 1)")
-                    .font(.appNumeric(15, weight: .bold))
+                    .appNumericFont(15, weight: .bold)
             }
         }
         .foregroundStyle(set.isCompleted ? Color.appSuccess : Color.appTextSecondary)

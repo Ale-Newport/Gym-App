@@ -383,7 +383,7 @@ struct PortionEditorView: View {
                         .foregroundStyle(Color.appTextSecondary)
                     Spacer(minLength: Metrics.spacing8)
                     Text(formatter.energy(macros.kilocalories))
-                        .font(.appNumeric(26))
+                        .appNumericFont(26)
                         .foregroundStyle(Color.appNutrition)
                         .contentTransition(.numericText())
                         .lineLimit(1)

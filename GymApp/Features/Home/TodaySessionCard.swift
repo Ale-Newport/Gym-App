@@ -120,10 +120,19 @@ struct TodaySessionCard: View {
 
         VStack(alignment: .leading, spacing: Metrics.spacing8) {
             ProgressBar(value: Double(session.completedSets), total: Double(session.plannedSets))
-            HStack(spacing: Metrics.spacing8) {
-                Text(L("home.today.setsDone", session.completedSets, session.plannedSets))
-                Text("·")
-                Text(L("home.today.startedAt", formatter.time(session.startedAt)))
+            // Side by side normally; one under the other at the accessibility sizes, where the
+            // second half otherwise wraps mid-word ("10:09 P / M").
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: Metrics.spacing8) {
+                    Text(L("home.today.setsDone", session.completedSets, session.plannedSets))
+                    Text("·").accessibilityHidden(true)
+                    Text(L("home.today.startedAt", formatter.time(session.startedAt)))
+                }
+                .lineLimit(1)
+                VStack(alignment: .leading, spacing: Metrics.spacing4) {
+                    Text(L("home.today.setsDone", session.completedSets, session.plannedSets))
+                    Text(L("home.today.startedAt", formatter.time(session.startedAt)))
+                }
             }
             .font(.footnote)
             .foregroundStyle(Color.appTextSecondary)
@@ -155,7 +164,7 @@ struct TodaySessionCard: View {
             .foregroundStyle(Color.appTextPrimary)
             .fixedSize(horizontal: false, vertical: true)
 
-        HStack(alignment: .top, spacing: Metrics.spacing12) {
+        StatRow(spacing: Metrics.spacing12) {
             StatTile(
                 value: "\(session.completedSets)",
                 label: L("home.today.statSets"),

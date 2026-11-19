@@ -191,7 +191,7 @@ private struct MicronutrientRow: View {
                 }
                 Spacer(minLength: Metrics.spacing8)
                 Text(valueText)
-                    .font(.appNumeric(15, weight: .medium))
+                    .appNumericFont(15, weight: .medium)
                     .foregroundStyle(status.isUnknown ? Color.appTextTertiary : Color.appTextPrimary)
             }
 

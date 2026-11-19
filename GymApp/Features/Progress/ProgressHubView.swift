@@ -186,7 +186,7 @@ struct ProgressHubView: View {
                         HStack(alignment: .bottom, spacing: Metrics.spacing16) {
                             VStack(alignment: .leading, spacing: Metrics.spacing4) {
                                 Text(formatter.weight(model.weightAnalysis.currentTrendKg ?? model.latestWeightKg ?? 0))
-                                    .font(.appNumeric(26))
+                                    .appNumericFont(26)
                                     .foregroundStyle(Color.appTextPrimary)
                                 Text(L("progress.weight.trendLabel"))
                                     .font(.caption)
@@ -223,7 +223,7 @@ struct ProgressHubView: View {
                     HStack(spacing: Metrics.spacing16) {
                         ProgressRing(fraction: model.adherence.sessionRate, lineWidth: 9, tint: .appSuccess) {
                             Text(percentText(model.adherence.sessionRate))
-                                .font(.appNumeric(15))
+                                .appNumericFont(15)
                                 .foregroundStyle(Color.appTextPrimary)
                         }
                         .frame(width: 62, height: 62)

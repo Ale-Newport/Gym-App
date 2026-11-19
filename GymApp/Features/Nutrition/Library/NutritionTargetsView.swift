@@ -79,7 +79,7 @@ struct NutritionTargetsView: View {
 
                 HStack(alignment: .firstTextBaseline, spacing: Metrics.spacing8) {
                     Text(formatter.energy(model.current.kilocalories, includeUnit: false))
-                        .font(.appNumeric(40, weight: .bold))
+                        .appNumericFont(40, weight: .bold)
                         .foregroundStyle(Color.appNutrition)
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
@@ -163,7 +163,7 @@ struct NutritionTargetsView: View {
                         NutritionFormat.percent(energyShare)
                     )
                 )
-                .font(.appNumeric(15, weight: .medium))
+                .appNumericFont(15, weight: .medium)
                 .foregroundStyle(Color.appTextSecondary)
             }
             ProgressBar(value: energyShare, total: 1, tint: tint, height: 6)
