@@ -25,3 +25,26 @@ __pycache__/
 # Local Claude Code settings
 .claude/
 .xcodegen.lock/
+
+# Build products and results
+*.xcarchive
+*.xcresult
+*.app.zip
+
+# Signing material and secrets — never commit these
+*.p8
+*.p12
+*.cer
+*.certSigningRequest
+*.mobileprovision
+*.provisionprofile
+AuthKey_*.p8
+.env
+.env.*
+*.secret
+*.pem
+
+# Editors
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,20 @@
+# Normalise line endings for text files.
+* text=auto
+
+# Binary assets.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.mp4  binary
+*.ico  binary
+
+# Generated files: collapsed in GitHub diffs and left out of the language statistics.
+GymApp/Resources/Localizable.xcstrings          linguist-generated=true
+GymApp/Resources/ExerciseDataset/**             linguist-generated=true
+GymApp/Resources/FoodDatabase/foods.names.json  linguist-generated=true
+GymApp.xcodeproj/**                             linguist-generated=true
+docs/ALGORITHMS.md                              linguist-generated=true
+docs/DATASET_AUDIT.md                           linguist-generated=true
+docs/privacy.html                               linguist-generated=true

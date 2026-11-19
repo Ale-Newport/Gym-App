@@ -1,0 +1,2 @@
+# False positive: a Polish translation ("1 kulka") whose key gitleaks' generic-api-key rule matches.
+e8e4cc17932d7007b5d6001350d9071e8c1c8d62:Tools/l10n/translations/pl.json:generic-api-key:359
