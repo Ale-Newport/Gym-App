@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest something Forge does not do yet.
+labels: [enhancement, triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do that Forge makes hard or impossible today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like
+      description: How you imagine it working. Screens, flows or examples help.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you have considered
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: Fits the project
+      options:
+        - label: It works offline and needs no account, server or tracking.
+          required: true

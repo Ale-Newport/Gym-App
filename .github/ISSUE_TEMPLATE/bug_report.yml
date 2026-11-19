@@ -1,0 +1,52 @@
+name: Bug report
+description: Something in Forge does not work as it should.
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time. A clear way to reproduce the problem is the most useful thing you can give.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected to see instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the Nutrition tab
+        2. Tap + and search for "rice"
+        3. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [Training / workouts, Exercise library, Nutrition, Progress, Settings / data, Widgets / Live Activity, Localisation, Build / tooling, Other]
+    validations:
+      required: true
+  - type: input
+    id: ios
+    attributes:
+      label: iOS version and device
+      placeholder: iOS 26.1, iPhone 16 Pro (or Simulator)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Forge version or commit
+      placeholder: 1.0.0, or the commit SHA you built
+  - type: dropdown
+    id: language
+    attributes:
+      label: Interface language
+      options: [English, Español, Italiano, Türkçe, Русский, 简体中文, हिन्दी, Polski, 한국어, Français]
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots, logs or anything else

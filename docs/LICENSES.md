@@ -9,8 +9,13 @@ exercise media. Those three things are licensed **differently**, and the differe
 ## 1. Application source code
 
 Everything under `GymApp/`, `GymAppWidgets/`, `GymAppTests/`, `GymAppUITests/` and `Tools/` that was
-written for this project is the project owner's own work. Choose and apply a licence of your own
-before publishing the repository — no licence is asserted here on your behalf.
+written for this project is © 2026 Alejandro Newport Diaz and released under the **MIT Licence** —
+see [`LICENSE`](../LICENSE) at the repository root.
+
+The MIT Licence covers the **source code and documentation only**. It does **not** cover the
+exercise media (section 3), which stays the author's own with all rights reserved, nor the "Forge"
+name and app icon, which identify the author's App Store release. Forks are welcome; ship them under
+a different name and icon.
 
 ## 2. Exercise dataset (text and structure) — MIT
 

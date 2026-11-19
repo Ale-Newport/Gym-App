@@ -1,0 +1,24 @@
+name: Improvement
+description: Make something that already exists better — code, performance, accessibility, docs or tooling.
+labels: [improvement, triage]
+body:
+  - type: textarea
+    id: current
+    attributes:
+      label: What exists today
+      description: The file, screen, engine or document, and what is wrong or weak about it.
+    validations:
+      required: true
+  - type: textarea
+    id: better
+    attributes:
+      label: What would be better
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [Code quality / refactor, Performance, Accessibility, Localisation / translation, Documentation, Tests, Tooling / CI]
+    validations:
+      required: true
