@@ -231,7 +231,7 @@ xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-**914 unit tests** across 80 suites, plus the UI tests covering the flows that matter. Unit tests
+**934 unit tests** across 82 suites, plus the UI tests covering the flows that matter. Unit tests
 use **Swift Testing**; UI tests use **XCTest**. The core suites run without the UI: they build value
 types, call an engine, and check the result, so the whole unit suite finishes in about 15 seconds.
 
@@ -279,9 +279,9 @@ Three different licences apply to three different things. **Read
 
 | Component | Licence |
 |---|---|
-| This app's source | Yours to choose — none is asserted here |
+| This app's source and docs | **MIT** © 2026 Alejandro Newport Diaz — see [`LICENSE`](../LICENSE) |
 | Exercise **data** and instructions | **MIT** © 2026 Hasan Emir Yıldırım |
-| Exercise **media** (thumbnails, animations) | **The author's own** — original renders from the Gym avatar project, *not* MIT |
+| Exercise **media** (thumbnails, animations) | **The author's own, all rights reserved** — original renders from the Gym avatar project, *not* MIT |
 | Food database | USDA FoodData Central — public domain |
 | Open Food Facts (runtime, optional) | ODbL |
 

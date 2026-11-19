@@ -30,7 +30,7 @@ git clone https://github.com/Ale-Newport/Gym-App.git && cd Gym-App && open GymAp
 
 Pick the **GymApp** scheme and an iPhone simulator, then run. Simulator builds are signed ad hoc and
 need no Apple account. To start the app from a known state, pass a fixture on launch — see
-[Verifying by running it](README.md#verifying-by-running-it).
+[Verifying by running it](docs/ENGINEERING.md#verifying-by-running-it).
 
 `brew install xcodegen` too if you will add or remove files (see below).
 
