@@ -60,6 +60,7 @@
 		32FB721E194D953AF3FCB689 /* ProgramRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A83F0127E66A1FADEB63C55 /* ProgramRepository.swift */; };
 		3382FE6F36F24D0E431A30B7 /* ChartComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96656F4F05012B02F1855936 /* ChartComponents.swift */; };
 		35552365D3129282E4F2ABDB /* RemindersStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A9A0B500F9EFD30676C2B2 /* RemindersStepView.swift */; };
+		37187B459F16B836BBF7A89C /* SchemaFingerprintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAEE3931BACA7A8E6F6257B /* SchemaFingerprintTests.swift */; };
 		3803FB942DF3732E2D2A51B9 /* ExerciseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E264206957F782961D683 /* ExerciseDetailView.swift */; };
 		3C4A56309B9F93FD699D8763 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D0041513C3AA2C35D85595 /* Units.swift */; };
 		3CEE7027F8A3B104DA3824CF /* DataExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1123F8C9AA7575EB770473DC /* DataExportService.swift */; };
@@ -210,6 +211,7 @@
 		DAF258114768F01358CD0F13 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00649977B65C84E552FE5783 /* AppearanceSettingsView.swift */; };
 		DDCFD7F54643A1841066A168 /* ExerciseFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B73E0A61E4235B6DD43FCC /* ExerciseFilterSheet.swift */; };
 		DE9FF0D74200F52BADE91464 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42896DF8016DA562EC642A7C /* HomeViewModel.swift */; };
+		DF21091696EFB81FF9B9DFBD /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 06DC73FDE1CF86AB6C0423AA /* InfoPlist.xcstrings */; };
 		DF5EA2AABB53A6774D8E7839 /* AdherenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EA155E36328DB0E13129E5 /* AdherenceView.swift */; };
 		E1165B9E7042D84A06C01683 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE62C6E588CCFDD1ED1E3AD7 /* AppLanguage.swift */; };
 		E38D725C924A38B1AAEA27B2 /* ProgramVersionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A30BF6C8C6C5AFDB972426 /* ProgramVersionHistoryView.swift */; };
@@ -283,6 +285,7 @@
 		05344DF1BDC8638545C4F512 /* WeightTrendAnalyzerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightTrendAnalyzerTests.swift; sourceTree = "<group>"; };
 		057BB0AED8027E6A263EDEC0 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
 		0693E8C684BED6CD26F18BD9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		06DC73FDE1CF86AB6C0423AA /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		07B744A817107A185B499F60 /* QuickStartSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartSheet.swift; sourceTree = "<group>"; };
 		07EF1435A4D06F0A49D68551 /* ProgressionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngineTests.swift; sourceTree = "<group>"; };
 		08CB02781C5146CCBE426631 /* FoodNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNameTests.swift; sourceTree = "<group>"; };
@@ -411,6 +414,7 @@
 		860D0E945C8FCE7C36E03F01 /* WeekStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekStepView.swift; sourceTree = "<group>"; };
 		86E155FE8AC74CEAB4FD18AE /* NutritionRecommendationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionRecommendationTests.swift; sourceTree = "<group>"; };
 		8A83F0127E66A1FADEB63C55 /* ProgramRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramRepository.swift; sourceTree = "<group>"; };
+		8CAEE3931BACA7A8E6F6257B /* SchemaFingerprintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaFingerprintTests.swift; sourceTree = "<group>"; };
 		8CE9B60E70C7B4A39FF23EAD /* HealthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthService.swift; sourceTree = "<group>"; };
 		8E50F2B3EFF206EC116303C5 /* PersonalRecordDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordDetector.swift; sourceTree = "<group>"; };
 		8F1CC7DD0CB826658E1AAB2C /* PersonalRecordDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordDetectorTests.swift; sourceTree = "<group>"; };
@@ -570,6 +574,7 @@
 				07EF1435A4D06F0A49D68551 /* ProgressionEngineTests.swift */,
 				42E3A461F7C73E03C9E41D16 /* RecoveryEngineTests.swift */,
 				781882547838D0EDB16BDFAC /* RepositoryTests.swift */,
+				8CAEE3931BACA7A8E6F6257B /* SchemaFingerprintTests.swift */,
 				9201AF98EC5EC2BD4151D3DF /* UnitsTests.swift */,
 				05344DF1BDC8638545C4F512 /* WeightTrendAnalyzerTests.swift */,
 			);
@@ -717,6 +722,7 @@
 				4431A33D1D7E7A1970EEFBCE /* ExerciseDataset */,
 				F0C628B546B1AD41D9A09F65 /* ExerciseMedia */,
 				0AB7A25B9D9292681E18F169 /* FoodDatabase */,
+				06DC73FDE1CF86AB6C0423AA /* InfoPlist.xcstrings */,
 				33AE53F24DDC754A1A19FF7D /* Legal */,
 				98AC6F59D652634D8FADAF54 /* Localizable.xcstrings */,
 			);
@@ -1240,6 +1246,7 @@
 				18D02E5B91C6F715C3EA8860 /* ExerciseDataset in Resources */,
 				12B359C8CA8AA30C2928C0F2 /* ExerciseMedia in Resources */,
 				550EB7320FD1305446F358E8 /* FoodDatabase in Resources */,
+				DF21091696EFB81FF9B9DFBD /* InfoPlist.xcstrings in Resources */,
 				8776178BBD9E4704C6C07E51 /* Legal in Resources */,
 				2BA51775C2E0A858EE3BA067 /* Localizable.xcstrings in Resources */,
 				4F411FD0679504093D38EDDD /* PrivacyInfo.xcprivacy in Resources */,
@@ -1306,6 +1313,7 @@
 				0EC03481B6570DBD3F01D707 /* ProgressionEngineTests.swift in Sources */,
 				422FB5FA41E203EA48A7CF0B /* RecoveryEngineTests.swift in Sources */,
 				929769AD59FE116F399EE5E8 /* RepositoryTests.swift in Sources */,
+				37187B459F16B836BBF7A89C /* SchemaFingerprintTests.swift in Sources */,
 				4EB1FC6782586B59614B3FB8 /* TestFactories.swift in Sources */,
 				06A27EC03EB41231EA66DC09 /* UnitsTests.swift in Sources */,
 				029F13E6CBE3A905719DC17C /* WeightTrendAnalyzerTests.swift in Sources */,
@@ -1556,7 +1564,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GymAppWidgets/GymAppWidgets.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = GymAppWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1564,7 +1571,6 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alejandronewport.forge.widgets;
 				PRODUCT_NAME = ForgeWidgets;
 				SDKROOT = iphoneos;
@@ -1579,7 +1585,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GymAppWidgets/GymAppWidgets.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = GymAppWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1587,7 +1592,6 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alejandronewport.forge.widgets;
 				PRODUCT_NAME = ForgeWidgets;
 				SDKROOT = iphoneos;
@@ -1650,6 +1654,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = SM3MGV3PY8;
@@ -1672,6 +1677,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1692,20 +1698,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GymApp/App/GymApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = GymApp/App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Forge;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alejandronewport.forge;
 				PRODUCT_MODULE_NAME = GymApp;
 				PRODUCT_NAME = Forge;
@@ -1752,6 +1751,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphonesimulator*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SM3MGV3PY8;
@@ -1768,6 +1768,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1805,20 +1806,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GymApp/App/GymApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = GymApp/App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Forge;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alejandronewport.forge;
 				PRODUCT_MODULE_NAME = GymApp;
 				PRODUCT_NAME = Forge;

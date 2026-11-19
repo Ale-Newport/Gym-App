@@ -1,0 +1,204 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSCameraUsageDescription": {
+      "comment": "Permission prompt. The English source must match the value in project.yml (info.properties).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge uses the camera to scan barcodes on food packaging so you can log a product without typing its nutrition facts."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge usa la cámara para escanear el código de barras de los envases de alimentos, así puedes registrar un producto sin escribir su información nutricional."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge utilise l'appareil photo pour scanner le code-barres des emballages alimentaires, afin que tu puisses ajouter un produit sans saisir ses valeurs nutritionnelles."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge खाने के पैकेट पर बारकोड स्कैन करने के लिए कैमरे का उपयोग करता है, ताकि आप पोषण जानकारी टाइप किए बिना कोई उत्पाद दर्ज कर सकें।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge usa la fotocamera per scansionare il codice a barre delle confezioni alimentari, così puoi registrare un prodotto senza digitarne i valori nutrizionali."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge는 식품 포장의 바코드를 스캔하기 위해 카메라를 사용하므로, 영양 정보를 입력하지 않고도 제품을 기록할 수 있습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge używa aparatu do skanowania kodów kreskowych na opakowaniach żywności, dzięki czemu możesz dodać produkt bez wpisywania wartości odżywczych."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge использует камеру для сканирования штрихкодов на упаковках продуктов, чтобы вы могли записать продукт, не вводя его пищевую ценность вручную."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge, besin değerlerini yazmadan bir ürünü kaydedebilmen için gıda ambalajlarındaki barkodları taramak üzere kamerayı kullanır."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge 使用相机扫描食品包装上的条形码，这样你无需手动输入营养信息即可记录产品。"
+          }
+        }
+      }
+    },
+    "NSHealthShareUsageDescription": {
+      "comment": "Permission prompt. The English source must match the value in project.yml (info.properties).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge reads body mass, height, workouts, energy, steps and sleep so your training and nutrition targets stay in sync with the Health app. Granting access is optional — every feature works without it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge lee la masa corporal, la altura, los entrenamientos, la energía, los pasos y el sueño para que tus objetivos de entrenamiento y nutrición estén sincronizados con la app Salud. Dar acceso es opcional: todas las funciones funcionan sin él."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge lit la masse corporelle, la taille, les entraînements, l'énergie, les pas et le sommeil pour que tes objectifs d'entraînement et de nutrition restent synchronisés avec l'app Santé. L'accès est facultatif : toutes les fonctionnalités marchent sans."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge शरीर का वज़न, ऊंचाई, वर्कआउट, ऊर्जा, कदम और नींद पढ़ता है ताकि आपके ट्रेनिंग और पोषण लक्ष्य Health ऐप के साथ मेल खाते रहें। एक्सेस देना वैकल्पिक है — हर सुविधा इसके बिना भी काम करती है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge legge massa corporea, altezza, allenamenti, energia, passi e sonno per mantenere i tuoi obiettivi di allenamento e alimentazione allineati con l'app Salute. Concedere l'accesso è facoltativo: ogni funzione è disponibile anche senza."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge는 체중, 키, 운동, 에너지, 걸음 수, 수면 데이터를 읽어 운동 및 영양 목표를 건강 앱과 일치하도록 유지합니다. 접근 권한 허용은 선택 사항이며, 허용하지 않아도 모든 기능을 사용할 수 있습니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge odczytuje masę ciała, wzrost, treningi, energię, kroki i sen, aby Twoje cele treningowe i żywieniowe były zgodne z aplikacją Zdrowie. Udzielenie dostępu jest opcjonalne — każda funkcja działa także bez niego."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge считывает массу тела, рост, тренировки, энергию, шаги и сон, чтобы ваши цели по тренировкам и питанию совпадали с данными приложения «Здоровье». Давать доступ не обязательно — все функции работают и без него."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge, antrenman ve beslenme hedeflerinin Sağlık uygulamasıyla uyumlu kalması için vücut ağırlığını, boyunu, antrenmanlarını, enerjiyi, adımlarını ve uykunu okur. Erişim izni vermek isteğe bağlıdır; tüm özellikler izin olmadan da çalışır."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge 会读取体重、身高、体能训练、能量、步数和睡眠数据，使你的训练和营养目标与“健康”App 保持同步。授予访问权限是可选的——即使不授权，所有功能也都可以使用。"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription": {
+      "comment": "Permission prompt. The English source must match the value in project.yml (info.properties).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge saves the workouts you complete and the body weight you log to the Health app, so the rest of your health data stays in one place."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge guarda en la app Salud los entrenamientos que completas y el peso corporal que registras, para que el resto de tus datos de salud esté en un mismo lugar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge enregistre dans l'app Santé les entraînements que tu termines et le poids que tu notes, pour que le reste de tes données de santé soit au même endroit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge आपके पूरे किए गए वर्कआउट और दर्ज किया गया शरीर का वज़न Health ऐप में सहेजता है, ताकि आपका बाकी स्वास्थ्य डेटा एक ही जगह रहे।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge salva nell'app Salute gli allenamenti che completi e il peso corporeo che registri, così il resto dei tuoi dati sulla salute resta in un unico posto."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge는 완료한 운동과 기록한 체중을 건강 앱에 저장하여 다른 건강 데이터와 한곳에서 볼 수 있게 합니다."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge zapisuje w aplikacji Zdrowie ukończone treningi i zapisaną masę ciała, aby pozostałe dane o zdrowiu były w jednym miejscu."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge сохраняет в приложение «Здоровье» завершённые тренировки и записанный вес тела, чтобы все ваши данные о здоровье были в одном месте."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge, diğer sağlık verilerinle bir arada durması için tamamladığın antrenmanları ve kaydettiğin vücut ağırlığını Sağlık uygulamasına kaydeder."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forge 会将你完成的训练和记录的体重保存到“健康”App，让你的其他健康数据集中在一处。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

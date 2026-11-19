@@ -61,7 +61,6 @@
   "home.recovery.title": "Recovery",
   "home.recovery.readiness": "Readiness",
   "home.recovery.readinessValue": "%lld%%",
-  "home.recovery.readyGroups": "Ready to train",
   "home.recovery.loadedGroups": "Still recovering",
   "home.recovery.disclaimer": "An estimate from the training you logged, not a medical measurement.",
   "home.recovery.checkInPrompt": "How are you feeling today?",

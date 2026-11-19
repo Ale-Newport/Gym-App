@@ -49,6 +49,5 @@
 
   "reset.title": "Reset all data",
   "reset.message": "This deletes your profile, programs, training history and nutrition log from this device. Export a backup first if you want to keep any of it.",
-  "reset.confirm": "Delete everything",
-  "reset.done": "All data has been deleted."
+  "reset.confirm": "Delete everything"
 }

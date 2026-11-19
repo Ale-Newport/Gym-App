@@ -73,6 +73,11 @@ final class AppEnvironment {
         }
         GuidedTourStore.clearPending()
         activeWorkoutID = nil
+        // A reset deletes the bundled food database along with everything else, and a "Replace"
+        // restore brings back only the bundled foods the backup referenced. Rebuild it now rather
+        // than on the next cold launch, so the food search is complete straight away.
+        let container = modelContainer
+        Task { await AppBootstrap.importFoodDatabase(container: container, force: true) }
         snapshotWriter.refresh(context: context, catalog: catalog)
     }
 

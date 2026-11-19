@@ -267,8 +267,28 @@ struct DataImportService {
         }
 
         // Custom foods, then anything referring to them.
-        let existingFoodIDs = Set(try context.fetch(FetchDescriptor<FoodItem>()).map(\.id))
+        let existingFoods = try context.fetch(FetchDescriptor<FoodItem>())
+        let existingFoodIDs = Set(existingFoods.map(\.id))
+        // Bundled foods get a fresh random id on every device, so a backup's bundled food is matched
+        // to this store's copy by `catalogID`, and every reference to it is rewritten to the local
+        // id. Without this a restored saved meal or recipe would point at a food that does not
+        // exist here and silently lose that ingredient's calories.
+        var localByCatalogID: [String: FoodItem] = [:]
+        for food in existingFoods {
+            guard let catalogID = food.catalogID, !catalogID.isEmpty else { continue }
+            if localByCatalogID[catalogID] == nil { localByCatalogID[catalogID] = food }
+        }
+        var foodIDRemap: [UUID: UUID] = [:]
+        func resolvedFoodID(_ id: UUID?) -> UUID? { id.map { foodIDRemap[$0] ?? $0 } }
+
         for export in document.customFoods where !existingFoodIDs.contains(export.id) {
+            if let catalogID = export.catalogID, !catalogID.isEmpty,
+                let local = localByCatalogID[catalogID]
+            {
+                foodIDRemap[export.id] = local.id
+                if export.isFavorite { local.isFavorite = true }
+                continue
+            }
             let food = FoodItem()
             food.id = export.id
             food.catalogID = export.catalogID
@@ -305,7 +325,7 @@ struct DataImportService {
             entry.loggedAt = export.loggedAt
             entry.mealSlot = export.mealSlot
             entry.orderIndex = export.orderIndex
-            entry.foodID = export.foodID
+            entry.foodID = resolvedFoodID(export.foodID)
             entry.foodNameSnapshot = export.foodNameSnapshot
             entry.brandSnapshot = export.brandSnapshot
             entry.quantity = export.quantity
@@ -329,7 +349,7 @@ struct DataImportService {
             context.insert(meal)
             for itemExport in export.items {
                 let item = SavedMealItem()
-                item.foodID = itemExport.foodID
+                item.foodID = resolvedFoodID(itemExport.foodID)
                 item.foodNameSnapshot = itemExport.foodNameSnapshot
                 item.quantity = itemExport.quantity
                 item.unit = itemExport.unit
@@ -355,7 +375,7 @@ struct DataImportService {
             context.insert(recipe)
             for ingredientExport in export.ingredients {
                 let ingredient = RecipeIngredient()
-                ingredient.foodID = ingredientExport.foodID
+                ingredient.foodID = resolvedFoodID(ingredientExport.foodID)
                 ingredient.foodNameSnapshot = ingredientExport.foodNameSnapshot
                 ingredient.quantity = ingredientExport.quantity
                 ingredient.unit = ingredientExport.unit

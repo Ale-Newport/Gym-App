@@ -107,7 +107,9 @@ actor OpenFoodFactsProvider: FoodDataProvider {
         var host: String = "world.openfoodfacts.org"
         /// Open Food Facts asks that clients identify themselves; see their API terms.
         var appName: String = "Forge"
-        var contactURL: String = "https://openfoodfacts.org"
+        /// Where Open Food Facts can reach the developer — their terms ask for the client's own
+        /// contact, not theirs. This is Forge's public support page.
+        var contactURL: String = "https://ale-newport.github.io/Gym-App/"
         /// 8 s: long enough for a slow mobile connection, short enough that a barcode scan that
         /// is going nowhere returns to the local fallback before the user gives up.
         var timeout: TimeInterval = 8

@@ -202,6 +202,24 @@ struct DataExportService {
         return try Self.encoder.encode(payload)
     }
 
+    /// The foods a backup must carry so that everything pointing at a food still resolves after a
+    /// restore.
+    ///
+    /// Every food the user created or fetched (anything that is not part of the bundled database)
+    /// is included. Bundled foods are re-created by the food importer on any device, but with a new
+    /// random id, so a bundled food is also included whenever a saved meal, a recipe or a log entry
+    /// refers to it by id, or the user marked it as a favourite. On import those rows are matched
+    /// back to the local copy by `catalogID` (see `DataImportService.restore`).
+    func foodsForBackup() throws -> [FoodItem] {
+        var referenced = Set<UUID>()
+        referenced.formUnion(try context.fetch(FetchDescriptor<SavedMealItem>()).compactMap(\.foodID))
+        referenced.formUnion(try context.fetch(FetchDescriptor<RecipeIngredient>()).compactMap(\.foodID))
+        referenced.formUnion(try context.fetch(FetchDescriptor<FoodLogEntry>()).compactMap(\.foodID))
+        return try context.fetch(FetchDescriptor<FoodItem>()).filter { food in
+            food.source != .builtIn || food.isFavorite || referenced.contains(food.id)
+        }
+    }
+
     func fullBackup() throws -> Data {
         let backup = BackupDocument(
             schemaVersion: Self.backupSchemaVersion,
@@ -217,9 +235,7 @@ struct DataExportService {
             bodyWeights: try context.fetch(FetchDescriptor<BodyWeightEntry>()).map(BodyWeightExport.init),
             recoveryEntries: try context.fetch(FetchDescriptor<RecoveryEntry>()).map(RecoveryExport.init),
             progressionStates: try context.fetch(FetchDescriptor<ProgressionState>()).map(ProgressionStateExport.init),
-            customFoods: try context.fetch(FetchDescriptor<FoodItem>())
-                .filter { $0.source == .custom }
-                .map(FoodExport.init),
+            customFoods: try foodsForBackup().map(FoodExport.init),
             foodLog: try context.fetch(FetchDescriptor<FoodLogEntry>()).map(FoodLogExport.init),
             savedMeals: try context.fetch(FetchDescriptor<SavedMeal>()).map(SavedMealExport.init),
             recipes: try context.fetch(FetchDescriptor<Recipe>()).map(RecipeExport.init),

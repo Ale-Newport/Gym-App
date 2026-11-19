@@ -1,13 +1,7 @@
 {
-  "explain.deloadApplied": "Applied a deload week: less volume and slightly lighter loads.",
-  "explain.equipmentChanged": "Rebuilt the program around the equipment you now have.",
-  "explain.exerciseReplaced": "Replaced %@ with %@ because %@.",
-  "explain.goalChanged": "Rebuilt the program for your new goal.",
   "explain.manualEdit": "You edited this program by hand.",
   "explain.programCreated": "Program created from your goals, schedule and equipment.",
-  "explain.scheduleChanged": "Rebuilt the week around your new training days.",
   "explain.volumeIncreased": "Increased %@ volume based on your recovery and recent performance.",
-  "explain.volumeReduced": "Reduced %@ volume because recent sessions and recovery feedback suggested it was too much.",
   "programming.balance": "Push and pull volume are balanced across the week.",
   "programming.cardio.afterLifting": "%@ conditioning block(s) a week, placed after your lifting as you asked.",
   "programming.cardio.separate": "%@ conditioning session(s) a week, kept separate from your lifting as you asked.",

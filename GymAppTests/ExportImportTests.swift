@@ -1012,3 +1012,113 @@ struct StoreReplacementSideEffectTests {
         }
     }
 }
+
+// MARK: - Bundled foods referenced by meals and recipes
+
+/// A bundled food gets a fresh random id on every device, so a backup that only carried the
+/// user's own foods restored saved meals and recipes whose ingredients pointed at nothing — their
+/// calories silently disappeared. These pin the fix: referenced bundled foods travel with the
+/// backup and are matched back to the local copy by `catalogID`.
+@MainActor
+@Suite("Bundled foods in a backup")
+struct BackupBundledFoodTests {
+
+    private static func makeBundledFood(in context: ModelContext, catalogID: String) -> FoodItem {
+        let food = StoreTestSupport.makeFood(
+            in: context, name: "Chicken breast", kcal: 165, protein: 31, carbs: 0, fat: 3.6, fiber: 0
+        )
+        food.source = .builtIn
+        food.catalogID = catalogID
+        return food
+    }
+
+    /// A store with one bundled food used by a saved meal and a recipe, and one unused bundled food.
+    private static func populate(_ context: ModelContext) throws -> FoodItem {
+        let chicken = makeBundledFood(in: context, catalogID: "usda-171077")
+        _ = makeBundledFood(in: context, catalogID: "usda-unused")
+
+        let meal = SavedMeal()
+        meal.name = "Lunch"
+        context.insert(meal)
+        let item = SavedMealItem()
+        item.foodID = chicken.id
+        item.foodNameSnapshot = chicken.name
+        item.quantity = 150
+        item.meal = meal
+        context.insert(item)
+
+        let recipe = Recipe()
+        recipe.name = "Chicken bowl"
+        recipe.servingsCount = 1
+        context.insert(recipe)
+        let ingredient = RecipeIngredient()
+        ingredient.foodID = chicken.id
+        ingredient.foodNameSnapshot = chicken.name
+        ingredient.quantity = 200
+        ingredient.recipe = recipe
+        context.insert(ingredient)
+
+        try context.save()
+        return chicken
+    }
+
+    private static func backup(of context: ModelContext) throws -> BackupDocument {
+        try DataExportService.decoder.decode(
+            BackupDocument.self, from: try DataExportService(context: context).fullBackup()
+        )
+    }
+
+    @Test("A bundled food used by a meal or recipe is exported; an unused one is not")
+    func referencedBundledFoodsAreExported() throws {
+        let context = try StoreTestSupport.makeContext()
+        let chicken = try Self.populate(context)
+        let document = try Self.backup(of: context)
+
+        #expect(document.customFoods.map(\.catalogID) == ["usda-171077"])
+        #expect(document.customFoods.first?.id == chicken.id)
+    }
+
+    @Test("After a replace restore, meal items and ingredients still resolve to their food")
+    func replaceRestoreKeepsReferencesResolvable() throws {
+        let context = try StoreTestSupport.makeContext()
+        _ = try Self.populate(context)
+        let document = try Self.backup(of: context)
+
+        let importer = DataImportService(context: context)
+        try importer.resetAllData()
+        _ = try importer.restore(document, strategy: .replace)
+        try context.save()
+
+        let foods = try context.fetch(FetchDescriptor<FoodItem>())
+        let ids = Set(foods.map(\.id))
+        let items = try context.fetch(FetchDescriptor<SavedMealItem>())
+        let ingredients = try context.fetch(FetchDescriptor<RecipeIngredient>())
+        #expect(items.count == 1 && ingredients.count == 1)
+        #expect(items.allSatisfy { $0.foodID.map(ids.contains) == true })
+        #expect(ingredients.allSatisfy { $0.foodID.map(ids.contains) == true })
+        #expect(foods.first { $0.id == items.first?.foodID }?.catalogID == "usda-171077")
+    }
+
+    @Test("Restoring onto a device whose bundled food has another id re-points references to it")
+    func mergeRemapsToTheLocalBundledFood() throws {
+        let source = try StoreTestSupport.makeContext()
+        _ = try Self.populate(source)
+        let document = try Self.backup(of: source)
+
+        // A second device: the same bundled food, imported there under its own random id.
+        let device = try StoreTestSupport.makeContext()
+        let local = Self.makeBundledFood(in: device, catalogID: "usda-171077")
+        try device.save()
+
+        let report = try DataImportService(context: device).restore(document, strategy: .merge)
+        try device.save()
+
+        let foods = try device.fetch(FetchDescriptor<FoodItem>())
+        #expect(foods.filter { $0.catalogID == "usda-171077" }.count == 1, "the bundled food was duplicated")
+        #expect(report.customFoodsImported == 0)
+        let item = try #require(try device.fetch(FetchDescriptor<SavedMealItem>()).first)
+        let ingredient = try #require(try device.fetch(FetchDescriptor<RecipeIngredient>()).first)
+        #expect(item.foodID == local.id)
+        #expect(ingredient.foodID == local.id)
+    }
+}

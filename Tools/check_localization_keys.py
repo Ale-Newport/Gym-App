@@ -10,6 +10,7 @@ dead strings get pruned.
 
     python3 Tools/check_localization_keys.py            # report
     python3 Tools/check_localization_keys.py --strict   # non-zero exit when keys are missing
+    python3 Tools/check_localization_keys.py --strict --fail-on-unused   # …or look unused (CI)
 """
 
 from __future__ import annotations
@@ -80,18 +81,43 @@ def referenced_keys() -> dict[str, list[str]]:
     return found
 
 
+# Any string literal in the app. A defined key that appears as a literal anywhere — passed as a
+# `detailKey:`, stored in a table, returned from a computed property — is in use even though no
+# localisation call wraps it at that spot.
+STRING_LITERAL = re.compile(r'"([A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+)"')
+
+# The fixed part of a key built by interpolation, e.g. "home.greeting.\(period.rawValue)".
+INTERPOLATED_PREFIX = re.compile(r'"([A-Za-z][A-Za-z0-9_.]*\.)\\\(')
+
+
+def app_sources() -> str:
+    chunks = []
+    for root in ("GymApp", "GymAppWidgets"):
+        for path in glob.glob(os.path.join(REPO_ROOT, root, "**", "*.swift"), recursive=True):
+            with open(path, encoding="utf-8") as fh:
+                chunks.append(fh.read())
+    return "\n".join(chunks)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--strict", action="store_true")
+    parser.add_argument("--strict", action="store_true", help="exit non-zero when keys are missing")
+    parser.add_argument(
+        "--fail-on-unused", action="store_true", help="also exit non-zero when a key looks unused"
+    )
+    parser.add_argument("--all", action="store_true", help="list every possibly unused key")
     args = parser.parse_args()
 
     defined = catalogue_keys()
     used = referenced_keys()
+    source = app_sources()
+    literals = set(STRING_LITERAL.findall(source))
+    prefixes = DYNAMIC_PREFIXES + tuple(sorted(set(INTERPOLATED_PREFIX.findall(source))))
 
     missing = {key: files for key, files in used.items() if key not in defined}
     unused = sorted(
         key for key in defined
-        if key not in used and not key.startswith(DYNAMIC_PREFIXES)
+        if key not in used and key not in literals and not key.startswith(prefixes)
     )
 
     print(f"catalogue keys: {len(defined)}")
@@ -100,12 +126,17 @@ def main() -> int:
     for key in sorted(missing):
         print(f"  - {key}   <- {', '.join(sorted(set(missing[key]))[:3])}")
     print(f"possibly unused: {len(unused)}")
-    for key in unused[:40]:
+    shown = unused if args.all else unused[:40]
+    for key in shown:
         print(f"  · {key}")
-    if len(unused) > 40:
-        print(f"  … and {len(unused) - 40} more")
+    if len(unused) > len(shown):
+        print(f"  … and {len(unused) - len(shown)} more (--all lists them)")
 
-    return 1 if (args.strict and missing) else 0
+    if args.strict and missing:
+        return 1
+    if args.fail_on_unused and unused:
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

@@ -42,8 +42,19 @@ enum SchemaV1: VersionedSchema {
     }
 }
 
-/// Migration stages are appended here as schema versions are added. Declaring the plan now means a
-/// future `SchemaV2` only needs a stage, never a store reset.
+/// Migration stages are appended here as schema versions are added.
+///
+/// IMPORTANT — `SchemaV1.models` lists the live `@Model` classes. SwiftData identifies a store's
+/// version by a hash of those definitions, so the moment any model changes, V1 no longer describes
+/// the stores that 1.0 wrote; they then fail to open and the app falls back to the blocking
+/// `StoreFailureView`. Before the first change to any `@Model` type:
+///
+/// 1. Copy every model exactly as released (`git show v1.0.0:<file>`) into
+///    `extension SchemaV1 { @Model final class … }` and point `SchemaV1.models` at those copies.
+/// 2. Add `SchemaV2` listing the live classes, append it to `schemas`, and add a
+///    `MigrationStage.lightweight(fromVersion: SchemaV1.self, toVersion: SchemaV2.self)` (or a
+///    custom stage) to `stages`.
+/// 3. Update the fingerprint in `SchemaFingerprintTests`, which fails until this has been done.
 enum GymAppMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] { [SchemaV1.self] }
     static var stages: [MigrationStage] { [] }
@@ -65,6 +76,10 @@ enum PersistenceController {
     /// `cloudKitDatabase` is `.none` for the same reason: the entitlement's presence must not
     /// switch on sync that has not been designed or tested.
     static func makeContainer() throws -> ModelContainer {
+        // On a fresh install Application Support does not exist yet. Core Data creates it, but only
+        // after logging a burst of "Failed to stat path" errors; creating it first keeps the first
+        // launch quiet and removes one way for the very first open to go wrong.
+        try? FileManager.default.createDirectory(at: .applicationSupportDirectory, withIntermediateDirectories: true)
         let configuration = ModelConfiguration(
             "GymApp",
             schema: schema,

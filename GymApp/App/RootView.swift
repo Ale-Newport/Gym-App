@@ -28,6 +28,19 @@ struct RootView: View {
 
     @ViewBuilder
     private var content: some View {
+        if environment.isRunningOnFallbackStore {
+            // The on-disk store could not be opened and the app is running on an empty in-memory
+            // one. Anything entered now would vanish at the next launch, and onboarding would look
+            // like a fresh install, so block instead. Nothing below runs: no bootstrap, no widget
+            // or reminder refresh, no App Intent draining into a store that will not persist.
+            StoreFailureView()
+        } else {
+            appContent
+        }
+    }
+
+    @ViewBuilder
+    private var appContent: some View {
         Group {
             switch environment.catalog.state {
             case .idle, .loading:
@@ -145,6 +158,46 @@ struct CatalogFailureView: View {
     }
 }
 
+/// Shown when the saved data could not be opened at launch.
+///
+/// The store on disk is left untouched (it may be recoverable after a relaunch or once storage is
+/// freed), so the honest message is: nothing was deleted, nothing new would be kept, restart.
+struct StoreFailureView: View {
+    static let supportURL = URL(string: "https://ale-newport.github.io/Gym-App/")
+
+    var body: some View {
+        ZStack {
+            Color.appBackground.ignoresSafeArea()
+            ScrollView {
+                VStack(spacing: Metrics.spacing16) {
+                    Image(systemName: "externaldrive.badge.exclamationmark")
+                        .font(.largeTitle)
+                        .foregroundStyle(Color.appWarning)
+                        .accessibilityHidden(true)
+                    Text(L("storeFailure.title"))
+                        .font(.title3.weight(.semibold))
+                        .multilineTextAlignment(.center)
+                        .accessibilityAddTraits(.isHeader)
+                        .accessibilityIdentifier("storeFailure.title")
+                    Text(L("storeFailure.body"))
+                        .font(.subheadline)
+                        .foregroundStyle(Color.appTextSecondary)
+                        .multilineTextAlignment(.center)
+                    if let url = Self.supportURL {
+                        Link(L("storeFailure.support"), destination: url)
+                            .buttonStyle(SecondaryButtonStyle())
+                            .frame(maxWidth: 260)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(Metrics.spacing24)
+                .readableWidth()
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+    }
+}
+
 /// Creates the single-row records the rest of the app assumes exist.
 enum AppBootstrap {
     @MainActor
@@ -176,13 +229,16 @@ enum AppBootstrap {
     /// The importer is idempotent and version-checked, so this is a cheap no-op on every launch
     /// after the first, and a failure is logged rather than surfaced: the app is entirely usable
     /// with only the user's own foods.
-    static func importFoodDatabase(container: ModelContainer) async {
+    /// - Parameter force: re-runs the import even when the stored version and language match.
+    ///   Used after a reset or a "Replace" restore, which can leave only the handful of bundled
+    ///   foods the backup carried — enough to defeat the importer's empty-database check.
+    static func importFoodDatabase(container: ModelContainer, force: Bool = false) async {
         let importer = FoodDatabaseImporter(modelContainer: container)
         // Food names are written in the interface language, so a change of language re-imports. The
         // importer compares against the language it last wrote and does nothing when it is the same.
         let language = await MainActor.run { LocalizationManager.shared.current.datasetCode }
         do {
-            let summary = try await importer.importIfNeeded(language: language)
+            let summary = try await importer.importIfNeeded(language: language, force: force)
             if summary.didRun {
                 AppLog.nutrition.info(
                     "Food database imported: version \(summary.version, privacy: .public), \(summary.inserted) added, \(summary.updated) updated, \(summary.removed) removed"
