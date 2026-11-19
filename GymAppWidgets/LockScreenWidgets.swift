@@ -1,5 +1,5 @@
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 /// The Lock Screen and StandBy family.
 ///
@@ -56,7 +56,8 @@ enum LockScreenSubject {
         guard entry.isLive else { return .none }
         let weekIsCurrent = snapshot.coversWeek(of: entry.date)
         if weekIsCurrent, snapshot.plannedWorkoutsThisWeek > 0,
-           snapshot.completedWorkoutsThisWeek < snapshot.plannedWorkoutsThisWeek {
+            snapshot.completedWorkoutsThisWeek < snapshot.plannedWorkoutsThisWeek
+        {
             return .training(
                 completed: snapshot.completedWorkoutsThisWeek,
                 planned: snapshot.plannedWorkoutsThisWeek
@@ -227,9 +228,10 @@ struct LockScreenRectangularView: View {
             return line.isEmpty ? (snapshot.focusLine.isEmpty ? nil : snapshot.focusLine) : line
         }
         if snapshot.hasNutritionTarget, snapshot.coversDay(of: entry.date) {
-            return L("widget.calories.consumedOfTarget",
-                     WidgetFormat.whole(snapshot.caloriesConsumed),
-                     WidgetFormat.whole(snapshot.caloriesTarget))
+            return L(
+                "widget.calories.consumedOfTarget",
+                WidgetFormat.whole(snapshot.caloriesConsumed),
+                WidgetFormat.whole(snapshot.caloriesTarget))
         }
         return nil
     }

@@ -251,8 +251,10 @@ enum GymSetupPreset: String, CaseIterable, Codable, Hashable, Sendable, Identifi
         switch self {
         case .fullGym: Equipment.fullGym
         case .limitedGym:
-            [.bodyWeight, .dumbbell, .barbell, .ezBarbell, .cable, .smithMachine,
-             .leverageMachine, .kettlebell, .band, .weighted, .assisted]
+            [
+                .bodyWeight, .dumbbell, .barbell, .ezBarbell, .cable, .smithMachine,
+                .leverageMachine, .kettlebell, .band, .weighted, .assisted,
+            ]
         case .homeGym: Equipment.typicalHomeGym
         case .bodyweightOnly: Equipment.homeMinimum
         case .custom: Equipment.typicalHomeGym

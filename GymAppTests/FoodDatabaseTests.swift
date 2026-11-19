@@ -1,6 +1,7 @@
 import Foundation
 import SwiftData
 import Testing
+
 @testable import GymApp
 
 /// The bundled food database, its provider and its importer.

@@ -26,7 +26,7 @@ struct ReadyStepView: View {
         "onboarding.generate.stage.split",
         "onboarding.generate.stage.exercises",
         "onboarding.generate.stage.fitting",
-        "onboarding.generate.stage.nutrition"
+        "onboarding.generate.stage.nutrition",
     ]
 
     var body: some View {
@@ -101,7 +101,8 @@ struct ReadyStepView: View {
         VStack(alignment: .leading, spacing: Metrics.spacing20) {
             headline(result)
             if result.isManual {
-                ExplanationNote(text: L("onboarding.generate.manualExplanation"), systemImage: "hand.raised", tint: .appWarning)
+                ExplanationNote(
+                    text: L("onboarding.generate.manualExplanation"), systemImage: "hand.raised", tint: .appWarning)
             } else {
                 weekSection(result)
             }
@@ -168,10 +169,12 @@ struct ReadyStepView: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.appTextPrimary)
                     .fixedSize(horizontal: false, vertical: true)
-                Text(L(
-                    "onboarding.result.sessionDetail",
-                    session.exercises.count, session.totalSets, session.estimatedMinutes
-                ))
+                Text(
+                    L(
+                        "onboarding.result.sessionDetail",
+                        session.exercises.count, session.totalSets, session.estimatedMinutes
+                    )
+                )
                 .font(.caption)
                 .foregroundStyle(Color.appTextSecondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -202,8 +205,11 @@ struct ReadyStepView: View {
                                 tint: .appNutrition,
                                 systemImage: "flame"
                             )
-                            StatTile(value: Units.formatMacro(grams: targets.proteinG), label: L("onboarding.result.protein"))
-                            StatTile(value: Units.formatMacro(grams: targets.carbsG), label: L("onboarding.result.carbs"))
+                            StatTile(
+                                value: Units.formatMacro(grams: targets.proteinG), label: L("onboarding.result.protein")
+                            )
+                            StatTile(
+                                value: Units.formatMacro(grams: targets.carbsG), label: L("onboarding.result.carbs"))
                             StatTile(value: Units.formatMacro(grams: targets.fatG), label: L("onboarding.result.fat"))
                         }
                         if let reason = targets.explanations.first {

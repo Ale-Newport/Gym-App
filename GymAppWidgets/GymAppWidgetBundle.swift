@@ -1,5 +1,5 @@
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 /// Everything this extension offers: two Home Screen widgets, the Lock Screen family, and the
 /// in-workout Live Activity.

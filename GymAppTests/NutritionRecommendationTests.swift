@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behavioural tests for `NutritionRecommendationEngine`.
@@ -90,8 +91,9 @@ struct NutritionRecommendationTests {
     func missingAgeIsExplained() {
         let targets = NutritionRecommendationEngine.targets(for: Self.profile(age: nil))
         #expect(Self.keys(targets).contains("nutrition.energy.bmrDefaultAge"))
-        #expect(!Self.keys(NutritionRecommendationEngine.targets(for: Self.profile(age: 30)))
-            .contains("nutrition.energy.bmrDefaultAge"))
+        #expect(
+            !Self.keys(NutritionRecommendationEngine.targets(for: Self.profile(age: 30)))
+                .contains("nutrition.energy.bmrDefaultAge"))
     }
 
     @Test("An unspecified sex is named in the explanations")
@@ -105,20 +107,20 @@ struct NutritionRecommendationTests {
         // Age below 14 and above 100 clamp to the documented bounds.
         #expect(
             NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(age: 2))
-            == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(age: 14))
+                == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(age: 14))
         )
         #expect(
             NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(age: 250))
-            == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(age: 100))
+                == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(age: 100))
         )
         // Mass clamps at 30–300 kg, height at 120–230 cm.
         #expect(
             NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(weightKg: 900))
-            == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(weightKg: 300))
+                == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(weightKg: 300))
         )
         #expect(
             NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(heightCm: 5))
-            == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(heightCm: 120))
+                == NutritionRecommendationEngine.basalMetabolicRate(profile: Self.profile(heightCm: 120))
         )
         // And never dips under the documented 800 kcal guard.
         let tiny = NutritionRecommendationEngine.basalMetabolicRate(
@@ -176,7 +178,7 @@ struct NutritionRecommendationTests {
         #expect(NutritionRecommendationEngine.resolvedDirection(for: neutral) == .maintenance)
 
         var wantsToLose = Self.profile(goals: [.generalFitness])
-        wantsToLose.targetWeightKg = 72   // 8 kg below 80
+        wantsToLose.targetWeightKg = 72  // 8 kg below 80
         #expect(NutritionRecommendationEngine.resolvedDirection(for: wantsToLose) == .deficit)
 
         var wantsToGain = Self.profile(goals: [.generalFitness])
@@ -184,7 +186,7 @@ struct NutritionRecommendationTests {
         #expect(NutritionRecommendationEngine.resolvedDirection(for: wantsToGain) == .surplus)
 
         var insideNoiseFloor = Self.profile(goals: [.generalFitness])
-        insideNoiseFloor.targetWeightKg = 78.5   // 1.5 kg — inside the scale's noise floor
+        insideNoiseFloor.targetWeightKg = 78.5  // 1.5 kg — inside the scale's noise floor
         #expect(NutritionRecommendationEngine.resolvedDirection(for: insideNoiseFloor) == .maintenance)
     }
 
@@ -206,7 +208,7 @@ struct NutritionRecommendationTests {
             profile: moderate, direction: .surplus
         )
         #expect(abs(fastRate - moderateRate) < 0.0001)
-        #expect(abs(fastRate - 0.4) < 0.0001)   // 0.5% of 80 kg
+        #expect(abs(fastRate - 0.4) < 0.0001)  // 0.5% of 80 kg
     }
 
     @Test("Recomposition runs at half the chosen pace")
@@ -227,9 +229,12 @@ struct NutritionRecommendationTests {
     func absoluteFloorsFollowTheDocumentedAsymmetry() {
         // A profile whose resting-energy floor cannot bind, so the absolute floor is what shows.
         let small = Self.profile(age: 80, heightCm: 150, weightKg: 45, activity: .sedentary)
-        var female = small; female.biologicalSex = .female
-        var male = small; male.biologicalSex = .male
-        var unspecified = small; unspecified.biologicalSex = .unspecified
+        var female = small
+        female.biologicalSex = .female
+        var male = small
+        male.biologicalSex = .male
+        var unspecified = small
+        unspecified.biologicalSex = .unspecified
 
         #expect(NutritionRecommendationEngine.safeMinimumKilocalories(for: female) == 1200)
         #expect(NutritionRecommendationEngine.safeMinimumKilocalories(for: male) == 1500)
@@ -264,7 +269,8 @@ struct NutritionRecommendationTests {
                         )
                         #expect(targets.kilocalories >= absolute)
                         #expect(
-                            targets.kilocalories >= NutritionRecommendationEngine
+                            targets.kilocalories
+                                >= NutritionRecommendationEngine
                                 .basalMetabolicRate(profile: profile) * 1.1
                         )
                     }
@@ -398,14 +404,16 @@ struct NutritionRecommendationTests {
         #expect(abs(deficit - 1.9) < 0.0001)
 
         let muscle = Self.profile(goals: [.buildMuscle], trainingDays: 2)
-        #expect(abs(
-            NutritionRecommendationEngine.proteinPerKilogram(profile: muscle, direction: .maintenance) - 1.8
-        ) < 0.0001)
+        #expect(
+            abs(
+                NutritionRecommendationEngine.proteinPerKilogram(profile: muscle, direction: .maintenance) - 1.8
+            ) < 0.0001)
 
         let heavyLoad = Self.profile(goals: [.buildMuscle], trainingDays: 5)
-        #expect(abs(
-            NutritionRecommendationEngine.proteinPerKilogram(profile: heavyLoad, direction: .maintenance) - 1.9
-        ) < 0.0001)
+        #expect(
+            abs(
+                NutritionRecommendationEngine.proteinPerKilogram(profile: heavyLoad, direction: .maintenance) - 1.9
+            ) < 0.0001)
 
         // Everything at once still clamps back into the band.
         let everything = Self.profile(activity: .veryActive, goals: [.buildMuscle], trainingDays: 6)
@@ -449,7 +457,7 @@ struct NutritionRecommendationTests {
             Self.profile(sex: .male, weightKg: 80, goals: [.loseFat], pace: .fast),
             Self.profile(sex: .female, heightCm: 165, weightKg: 60, goals: [.loseFat], pace: .fast),
             Self.profile(sex: .male, weightKg: 95, goals: [.buildMuscle]),
-            Self.profile(sex: .male, weightKg: 80, goals: [.recomposition])
+            Self.profile(sex: .male, weightKg: 80, goals: [.recomposition]),
         ]
         for profile in profiles {
             let targets = NutritionRecommendationEngine.targets(for: profile)
@@ -596,7 +604,7 @@ struct NutritionRecommendationTests {
         let calcium = statuses.first { $0.nutrient == .calcium }
 
         #expect(iron?.isUnknown == false)
-        #expect(abs((iron?.fraction ?? 0) - 0.5) < 0.0001)   // 7 of the 14 mg reference
+        #expect(abs((iron?.fraction ?? 0) - 0.5) < 0.0001)  // 7 of the 14 mg reference
         #expect(calcium?.isUnknown == true)
         #expect(calcium?.fraction == nil, "an unknown nutrient must not be drawn as an empty bar")
     }

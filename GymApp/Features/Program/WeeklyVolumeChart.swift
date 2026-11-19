@@ -62,12 +62,15 @@ private struct VolumeRowView: View {
                         .font(.caption2)
                         .foregroundStyle(row.status.tint)
                 }
-                Text(L("program.volume.plannedOfTarget",
-                       ProgramFormat.sets(row.planned),
-                       ProgramFormat.sets(row.target)))
-                    .font(.caption.monospacedDigit())
-                    .foregroundStyle(Color.appTextSecondary)
-                    .lineLimit(1)
+                Text(
+                    L(
+                        "program.volume.plannedOfTarget",
+                        ProgramFormat.sets(row.planned),
+                        ProgramFormat.sets(row.target))
+                )
+                .font(.caption.monospacedDigit())
+                .foregroundStyle(Color.appTextSecondary)
+                .lineLimit(1)
             }
 
             VolumeBar(row: row, animates: !reduceMotion)
@@ -98,12 +101,13 @@ private struct VolumeRowView: View {
     }
 
     private var accessibilityLabel: String {
-        let base = L("program.volume.axLabel",
-                     L(row.group.localizationKey),
-                     ProgramFormat.sets(row.planned),
-                     ProgramFormat.sets(row.target),
-                     ProgramFormat.sets(row.minimum),
-                     ProgramFormat.sets(row.maximum))
+        let base = L(
+            "program.volume.axLabel",
+            L(row.group.localizationKey),
+            ProgramFormat.sets(row.planned),
+            ProgramFormat.sets(row.target),
+            ProgramFormat.sets(row.minimum),
+            ProgramFormat.sets(row.maximum))
         return "\(base), \(L(row.status.localizationKey))"
     }
 }

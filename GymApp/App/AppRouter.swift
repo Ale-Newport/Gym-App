@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Observation
+import SwiftUI
 
 /// Top-level tabs.
 enum AppTab: String, CaseIterable, Hashable, Identifiable {

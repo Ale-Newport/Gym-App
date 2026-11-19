@@ -127,7 +127,9 @@ struct NutritionProgressView: View {
                         .interpolationMethod(.monotone)
                         .lineStyle(StrokeStyle(lineWidth: 2.5, lineCap: .round))
                         .foregroundStyle(Color.appAccent)
-                        .accessibilityLabel(Text(L("progress.nutrition.weeklyAverage") + ", " + formatter.shortDate(point.date)))
+                        .accessibilityLabel(
+                            Text(L("progress.nutrition.weeklyAverage") + ", " + formatter.shortDate(point.date))
+                        )
                         .accessibilityValue(Text(formatter.energy(point.value)))
                     }
                     if let target = model.target, target.kilocalories > 0 {
@@ -147,21 +149,25 @@ struct NutritionProgressView: View {
                 .chartAccessibilityContainer(L("progress.nutrition.energyTitle"))
             },
             legend: {
-                ChartLegendView(keys: [
-                    ChartSeriesKey(
-                        id: "daily", label: L("progress.nutrition.dailyIntake"),
-                        color: .appNutrition, symbolName: "square.fill"
-                    ),
-                    ChartSeriesKey(
-                        id: "weekly", label: L("progress.nutrition.weeklyAverage"),
-                        color: .appAccent, symbolName: "minus"
-                    ),
-                ] + (model.target == nil ? [] : [
-                    ChartSeriesKey(
-                        id: "target", label: L("progress.nutrition.target"),
-                        color: .appTextPrimary, symbolName: "minus"
-                    ),
-                ]))
+                ChartLegendView(
+                    keys: [
+                        ChartSeriesKey(
+                            id: "daily", label: L("progress.nutrition.dailyIntake"),
+                            color: .appNutrition, symbolName: "square.fill"
+                        ),
+                        ChartSeriesKey(
+                            id: "weekly", label: L("progress.nutrition.weeklyAverage"),
+                            color: .appAccent, symbolName: "minus"
+                        ),
+                    ]
+                        + (model.target == nil
+                            ? []
+                            : [
+                                ChartSeriesKey(
+                                    id: "target", label: L("progress.nutrition.target"),
+                                    color: .appTextPrimary, symbolName: "minus"
+                                )
+                            ]))
             }
         )
     }
@@ -187,7 +193,9 @@ struct NutritionProgressView: View {
                 if let average = model.averageMacros {
                     TargetProgressRow(
                         title: L("progress.nutrition.energyTitle"),
-                        valueText: targetText(average.kilocalories, model.target?.kilocalories) { formatter.energy($0) },
+                        valueText: targetText(average.kilocalories, model.target?.kilocalories) {
+                            formatter.energy($0)
+                        },
                         value: average.kilocalories,
                         target: model.target?.kilocalories ?? average.kilocalories,
                         tint: .appNutrition
@@ -247,12 +255,13 @@ struct NutritionProgressView: View {
                 .chartAccessibilityContainer(L("progress.nutrition.macroTitle"))
             },
             legend: {
-                ChartLegendView(keys: MacroKind.allCases.map {
-                    ChartSeriesKey(
-                        id: $0.rawValue, label: L($0.localizationKey),
-                        color: $0.color, symbolName: "square.fill"
-                    )
-                })
+                ChartLegendView(
+                    keys: MacroKind.allCases.map {
+                        ChartSeriesKey(
+                            id: $0.rawValue, label: L($0.localizationKey),
+                            color: $0.color, symbolName: "square.fill"
+                        )
+                    })
             }
         )
     }

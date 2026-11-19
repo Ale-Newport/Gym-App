@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behaviour of `PersonalRecordDetector`.
@@ -115,7 +116,7 @@ struct PersonalRecordDetectorTests {
         let records = detect(
             [
                 Fixtures.set(weightKg: 100, reps: 5),
-                Fixtures.set(weightKg: 100, reps: 8)
+                Fixtures.set(weightKg: 100, reps: 8),
             ],
             exercise: loadedExercise(),
             existing: [.mostReps: 20, .estimatedOneRepMax: 500, .bestSetVolume: 5000]
@@ -138,7 +139,7 @@ struct PersonalRecordDetectorTests {
                 .heaviestWeight: 100,
                 .mostReps: 8,
                 .estimatedOneRepMax: 200,
-                .bestSetVolume: 2000
+                .bestSetVolume: 2000,
             ]
         )
         #expect(records.isEmpty)
@@ -154,7 +155,7 @@ struct PersonalRecordDetectorTests {
                 .heaviestWeight: 100,
                 .mostReps: 8,
                 .estimatedOneRepMax: 500,
-                .bestSetVolume: 5000
+                .bestSetVolume: 5000,
             ]
         )
         let reps = try #require(records.first { $0.kind == .mostReps })
@@ -182,7 +183,7 @@ struct PersonalRecordDetectorTests {
                 .heaviestWeight: 100,
                 .mostReps: 8,
                 .estimatedOneRepMax: 500,
-                .bestSetVolume: 5000
+                .bestSetVolume: 5000,
             ]
         )
         #expect(!equal.contains { $0.kind == .mostReps })
@@ -197,7 +198,7 @@ struct PersonalRecordDetectorTests {
             .heaviestWeight: 100,
             .mostReps: 5,
             .estimatedOneRepMax: 114.583_333_333_333_33,
-            .bestSetVolume: 500
+            .bestSetVolume: 500,
         ]
         #expect(detect([set], exercise: loadedExercise(), existing: existing).isEmpty)
     }
@@ -208,7 +209,7 @@ struct PersonalRecordDetectorTests {
             .heaviestWeight: 100,
             .mostReps: 20,
             .estimatedOneRepMax: 500,
-            .bestSetVolume: 5000
+            .bestSetVolume: 5000,
         ]
         for drift in [1e-9, 0.01, 0.05, 0.099] {
             let records = detect(
@@ -232,7 +233,7 @@ struct PersonalRecordDetectorTests {
                 .heaviestWeight: 100,
                 .mostReps: 20,
                 .estimatedOneRepMax: 500,
-                .bestSetVolume: 5000
+                .bestSetVolume: 5000,
             ]
         )
         let load = try #require(records.first { $0.kind == .heaviestWeight })
@@ -248,7 +249,7 @@ struct PersonalRecordDetectorTests {
                 .heaviestWeight: 500,
                 .mostReps: 20,
                 .estimatedOneRepMax: 500,
-                .bestSetVolume: 500.05
+                .bestSetVolume: 500.05,
             ]
         )
         #expect(!records.contains { $0.kind == .bestSetVolume })
@@ -262,7 +263,7 @@ struct PersonalRecordDetectorTests {
             [
                 Fixtures.set(kind: .warmup, weightKg: 500, reps: 5),
                 Fixtures.set(kind: .dropSet, weightKg: 400, reps: 5),
-                Fixtures.set(kind: .calibration, weightKg: 300, reps: 5)
+                Fixtures.set(kind: .calibration, weightKg: 300, reps: 5),
             ],
             exercise: loadedExercise()
         )
@@ -300,7 +301,7 @@ struct PersonalRecordDetectorTests {
         let records = detect(
             [
                 Fixtures.set(weightKg: 100, reps: 3),
-                Fixtures.set(weightKg: 90, reps: 8)
+                Fixtures.set(weightKg: 90, reps: 8),
             ],
             exercise: loadedExercise()
         )
@@ -331,7 +332,7 @@ struct PersonalRecordDetectorTests {
                 .heaviestWeight: 500,
                 .mostReps: 50,
                 .estimatedOneRepMax: 500,
-                .bestSetVolume: 50_000
+                .bestSetVolume: 50_000,
             ]
         )
         #expect(!lifted.contains { $0.kind == .longestDuration })
@@ -470,7 +471,7 @@ struct PersonalRecordDetectorTests {
         let sets = [
             Fixtures.set(weightKg: 100, reps: 5),
             Fixtures.set(weightKg: 90, reps: 8),
-            Fixtures.set(weightKg: 100, reps: 5)
+            Fixtures.set(weightKg: 100, reps: 5),
         ]
         let first = detect(sets, exercise: loadedExercise())
         for _ in 0..<20 {

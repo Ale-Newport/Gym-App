@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 // MARK: - Shared fixtures
@@ -208,7 +209,7 @@ enum SelectionFixture {
             ("stapleBonus", breakdown.stapleBonus),
             ("priorityBonus", breakdown.priorityBonus),
             ("recentRepetitionPenalty", breakdown.recentRepetitionPenalty),
-            ("exclusionPenalty", breakdown.exclusionPenalty)
+            ("exclusionPenalty", breakdown.exclusionPenalty),
         ]
     }
 }
@@ -222,7 +223,8 @@ enum SelectionCatalogue {
     static let exercises: [Exercise] = {
         let importer = ExerciseDatasetImporter(bundle: .main)
         guard let manifest = try? importer.loadManifest(),
-              let loaded = try? importer.loadExercises(expecting: manifest) else { return [] }
+            let loaded = try? importer.loadExercises(expecting: manifest)
+        else { return [] }
         return loaded
     }()
 
@@ -587,7 +589,7 @@ struct ExerciseScoreRangeTests {
             SelectionFixture.request(
                 target: .quads,
                 profile: SelectionFixture.profile(experience: .advanced, technique: .coached)
-            )
+            ),
         ]
 
         for exercise in catalogue {
@@ -721,7 +723,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: nil, reps: nil)],
-                [SelectionFixture.performedSet(weightKg: nil, reps: nil)]
+                [SelectionFixture.performedSet(weightKg: nil, reps: nil)],
             ]
         )
         #expect(ExerciseScoring.historicalPerformance(unusable) == 0.5)
@@ -731,7 +733,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 100, reps: 5, kind: .warmup)],
-                [SelectionFixture.performedSet(weightKg: 50, reps: 5, kind: .warmup)]
+                [SelectionFixture.performedSet(weightKg: 50, reps: 5, kind: .warmup)],
             ]
         )
         #expect(ExerciseScoring.historicalPerformance(warmupsOnly) == 0.5)
@@ -744,7 +746,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 102, reps: 5)],
-                [SelectionFixture.performedSet(weightKg: 100, reps: 5)]
+                [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
             ]
         )
         #expect(abs(ExerciseScoring.historicalPerformance(slightGain) - 0.6) < 1e-6)
@@ -753,7 +755,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 150, reps: 5)],
-                [SelectionFixture.performedSet(weightKg: 100, reps: 5)]
+                [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
             ]
         )
         #expect(abs(ExerciseScoring.historicalPerformance(bigGain) - 0.9) < 1e-6)
@@ -762,7 +764,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 96, reps: 5)],
-                [SelectionFixture.performedSet(weightKg: 100, reps: 5)]
+                [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
             ]
         )
         #expect(abs(ExerciseScoring.historicalPerformance(slightLoss) - 0.3) < 1e-6)
@@ -771,7 +773,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 50, reps: 5)],
-                [SelectionFixture.performedSet(weightKg: 100, reps: 5)]
+                [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
             ]
         )
         #expect(abs(ExerciseScoring.historicalPerformance(collapse) - 0.15) < 1e-6)
@@ -783,7 +785,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
-                [SelectionFixture.performedSet(weightKg: nil, reps: 12)]
+                [SelectionFixture.performedSet(weightKg: nil, reps: 12)],
             ]
         )
         #expect(ExerciseScoring.historicalPerformance(mixed) == 0.5)
@@ -792,7 +794,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(durationSeconds: 60)],
-                [SelectionFixture.performedSet(weightKg: nil, reps: 12)]
+                [SelectionFixture.performedSet(weightKg: nil, reps: 12)],
             ]
         )
         #expect(ExerciseScoring.historicalPerformance(secondsAgainstReps) == 0.5)
@@ -804,7 +806,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(reps: 12), SelectionFixture.performedSet(reps: 12)],
-                [SelectionFixture.performedSet(reps: 10), SelectionFixture.performedSet(reps: 10)]
+                [SelectionFixture.performedSet(reps: 10), SelectionFixture.performedSet(reps: 10)],
             ]
         )
         #expect(ExerciseScoring.historicalPerformance(reps) > 0.5)
@@ -813,7 +815,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(durationSeconds: 45)],
-                [SelectionFixture.performedSet(durationSeconds: 60)]
+                [SelectionFixture.performedSet(durationSeconds: 60)],
             ]
         )
         #expect(ExerciseScoring.historicalPerformance(seconds) < 0.5)
@@ -825,7 +827,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 100, reps: 30)],
-                [SelectionFixture.performedSet(weightKg: 100, reps: 20)]
+                [SelectionFixture.performedSet(weightKg: 100, reps: 20)],
             ]
         )
         #expect(ExerciseScoring.historicalPerformance(cappedPair) == 0.5)
@@ -837,7 +839,7 @@ struct ExerciseScoreFactorTests {
             id: "a",
             sessions: [
                 [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
-                [SelectionFixture.performedSet(weightKg: 0, reps: 0)]
+                [SelectionFixture.performedSet(weightKg: 0, reps: 0)],
             ]
         )
         let value = ExerciseScoring.historicalPerformance(zeroOldest)
@@ -856,7 +858,7 @@ struct ExerciseScoreFactorTests {
                 [SelectionFixture.performedSet(weightKg: 102, reps: 5)],
                 [SelectionFixture.performedSet(weightKg: 101, reps: 5)],
                 [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
-                [SelectionFixture.performedSet(weightKg: 10, reps: 5)]
+                [SelectionFixture.performedSet(weightKg: 10, reps: 5)],
             ]
         )
         // 104 against 100 is +4 %, not +940 %.
@@ -1371,7 +1373,7 @@ struct ExerciseScoringWeightTests {
                     id: "a",
                     sessions: [
                         [SelectionFixture.performedSet(weightKg: 102, reps: 5)],
-                        [SelectionFixture.performedSet(weightKg: 100, reps: 5)]
+                        [SelectionFixture.performedSet(weightKg: 100, reps: 5)],
                     ]
                 )
             ],

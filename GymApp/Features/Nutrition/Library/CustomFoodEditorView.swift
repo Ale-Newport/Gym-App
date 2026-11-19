@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// Creates or edits a food the user typed in themselves.
 ///
@@ -32,7 +32,9 @@ struct CustomFoodEditorView: View {
     var body: some View {
         content
             .background(Color.appBackground)
-            .navigationTitle(L(model.isExistingFood ? "nutritionLibrary.food.editTitle" : "nutritionLibrary.food.newTitle"))
+            .navigationTitle(
+                L(model.isExistingFood ? "nutritionLibrary.food.editTitle" : "nutritionLibrary.food.newTitle")
+            )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -234,11 +236,13 @@ struct CustomFoodEditorView: View {
         InsetGroup {
             VStack(alignment: .leading, spacing: Metrics.spacing12) {
                 Label {
-                    Text(L(
-                        "nutritionLibrary.food.energyMismatch",
-                        formatter.energy(warning.statedKilocalories),
-                        formatter.energy(warning.impliedKilocalories)
-                    ))
+                    Text(
+                        L(
+                            "nutritionLibrary.food.energyMismatch",
+                            formatter.energy(warning.statedKilocalories),
+                            formatter.energy(warning.impliedKilocalories)
+                        )
+                    )
                     .font(.footnote)
                     .foregroundStyle(Color.appTextSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -337,9 +341,12 @@ struct CustomFoodEditorView: View {
                     subtitle: L("nutritionLibrary.food.micronutrientsHint")
                 ) { EmptyView() }
 
-                micronutrientGroup(id: "other", titleKey: "nutritionLibrary.micros.other", nutrients: Micronutrient.otherNutrients)
-                micronutrientGroup(id: "minerals", titleKey: "nutritionLibrary.micros.minerals", nutrients: Micronutrient.minerals)
-                micronutrientGroup(id: "vitamins", titleKey: "nutritionLibrary.micros.vitamins", nutrients: Micronutrient.vitamins)
+                micronutrientGroup(
+                    id: "other", titleKey: "nutritionLibrary.micros.other", nutrients: Micronutrient.otherNutrients)
+                micronutrientGroup(
+                    id: "minerals", titleKey: "nutritionLibrary.micros.minerals", nutrients: Micronutrient.minerals)
+                micronutrientGroup(
+                    id: "vitamins", titleKey: "nutritionLibrary.micros.vitamins", nutrients: Micronutrient.vitamins)
             }
         }
     }
@@ -538,7 +545,9 @@ private struct MicronutrientValueField: View {
         .padding(.vertical, Metrics.spacing2)
         .onAppear { text = value.map { Self.format($0) } ?? "" }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text(L("nutritionLibrary.food.microFieldLabel", L(nutrient.localizationKey), nutrient.unit.rawValue)))
+        .accessibilityLabel(
+            Text(L("nutritionLibrary.food.microFieldLabel", L(nutrient.localizationKey), nutrient.unit.rawValue))
+        )
         .accessibilityValue(Text(text.isEmpty ? L("common.notSet") : text))
     }
 
@@ -549,7 +558,10 @@ private struct MicronutrientValueField: View {
             text = filtered
             return
         }
-        guard !filtered.isEmpty else { value = nil; return }
+        guard !filtered.isEmpty else {
+            value = nil
+            return
+        }
         guard let parsed = Double(filtered), parsed.isFinite else { return }
         value = max(0, parsed)
     }

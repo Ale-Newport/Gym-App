@@ -220,9 +220,9 @@ final class ExerciseDetailViewModel {
         let stored = bests[.estimatedOneRepMax]
         let derived = history.bestEstimatedOneRepMaxKg
         switch (stored, derived) {
-        case let (value?, other?): return max(value, other)
-        case let (value?, nil): return value
-        case let (nil, value?): return value
+        case (let value?, let other?): return max(value, other)
+        case (let value?, nil): return value
+        case (nil, let value?): return value
         default: return nil
         }
     }
@@ -282,9 +282,10 @@ final class ExerciseDetailViewModel {
             try repositories.preferences.setFavorite(!isFavorite, forExerciseID: exerciseID)
             isFavorite.toggle()
             Haptics.tap()
-            banner = Banner(message: isFavorite
-                ? L("exercises.action.favorited")
-                : L("exercises.action.unfavorited"))
+            banner = Banner(
+                message: isFavorite
+                    ? L("exercises.action.favorited")
+                    : L("exercises.action.unfavorited"))
         }
     }
 
@@ -315,9 +316,10 @@ final class ExerciseDetailViewModel {
             }
             isExcluded = newValue
             Haptics.tap()
-            banner = Banner(message: newValue
-                ? L("exercises.action.excluded")
-                : L("exercises.action.included"))
+            banner = Banner(
+                message: newValue
+                    ? L("exercises.action.excluded")
+                    : L("exercises.action.included"))
         }
     }
 
@@ -348,7 +350,8 @@ final class ExerciseDetailViewModel {
             }
 
             guard let program = try repositories.programs.activeProgram(),
-                  let template = Self.todaysTemplate(in: program) else {
+                let template = Self.todaysTemplate(in: program)
+            else {
                 banner = Banner(message: L("exercises.action.noPlan"), follow: .openWorkoutTab)
                 return
             }
@@ -360,11 +363,12 @@ final class ExerciseDetailViewModel {
                 restSeconds: exercise.metadata.defaultRestSeconds
             )
             Haptics.success()
-            banner = Banner(message: L(
-                "exercises.action.addedToTemplate",
-                exercise.name.localizedCapitalized,
-                Self.title(of: template)
-            ))
+            banner = Banner(
+                message: L(
+                    "exercises.action.addedToTemplate",
+                    exercise.name.localizedCapitalized,
+                    Self.title(of: template)
+                ))
         }
     }
 
@@ -406,11 +410,12 @@ final class ExerciseDetailViewModel {
                 restSeconds: exercise.metadata.defaultRestSeconds
             )
             Haptics.success()
-            banner = Banner(message: L(
-                "exercises.action.addedToTemplate",
-                exercise.name.localizedCapitalized,
-                choice.title
-            ))
+            banner = Banner(
+                message: L(
+                    "exercises.action.addedToTemplate",
+                    exercise.name.localizedCapitalized,
+                    choice.title
+                ))
         }
     }
 

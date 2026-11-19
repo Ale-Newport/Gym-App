@@ -24,7 +24,7 @@ struct ForgeAppShortcuts: AppShortcutsProvider {
                 "Start my \(.applicationName) workout",
                 "Start today's workout in \(.applicationName)",
                 "Begin my workout with \(.applicationName)",
-                "Start training in \(.applicationName)"
+                "Start training in \(.applicationName)",
             ],
             shortTitle: LocalizedStringResource("intents.startWorkout.shortTitle"),
             systemImageName: "figure.strengthtraining.traditional"
@@ -35,7 +35,7 @@ struct ForgeAppShortcuts: AppShortcutsProvider {
             phrases: [
                 "What am I training today in \(.applicationName)",
                 "Show today's workout in \(.applicationName)",
-                "Open today's session in \(.applicationName)"
+                "Open today's session in \(.applicationName)",
             ],
             shortTitle: LocalizedStringResource("intents.openToday.shortTitle"),
             systemImageName: "calendar"
@@ -46,7 +46,7 @@ struct ForgeAppShortcuts: AppShortcutsProvider {
             phrases: [
                 "Log my weight in \(.applicationName)",
                 "Record my body weight in \(.applicationName)",
-                "Add a weigh-in to \(.applicationName)"
+                "Add a weigh-in to \(.applicationName)",
             ],
             shortTitle: LocalizedStringResource("intents.logBodyWeight.shortTitle"),
             systemImageName: "scalemass"
@@ -57,7 +57,7 @@ struct ForgeAppShortcuts: AppShortcutsProvider {
             phrases: [
                 "Log water in \(.applicationName)",
                 "Add a glass of water to \(.applicationName)",
-                "Record a drink in \(.applicationName)"
+                "Record a drink in \(.applicationName)",
             ],
             shortTitle: LocalizedStringResource("intents.logWater.shortTitle"),
             systemImageName: "drop.fill"
@@ -68,7 +68,7 @@ struct ForgeAppShortcuts: AppShortcutsProvider {
             phrases: [
                 "Log a meal in \(.applicationName)",
                 "Add food to \(.applicationName)",
-                "Record what I ate in \(.applicationName)"
+                "Record what I ate in \(.applicationName)",
             ],
             shortTitle: LocalizedStringResource("intents.addMeal.shortTitle"),
             systemImageName: "fork.knife"

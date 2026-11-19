@@ -77,7 +77,8 @@ struct NutritionPortionDraft: Identifiable, Hashable {
         case .piece:
             return quantity * (gramsPerPiece ?? 100)
         case .serving:
-            let grams = servingIndex
+            let grams =
+                servingIndex
                 .flatMap { servings.indices.contains($0) ? servings[$0].grams : nil }
                 ?? servings.first?.grams
             return quantity * (grams ?? 100)
@@ -265,7 +266,8 @@ final class CustomFoodEditorViewModel {
         guard implied > 0 else { return nil }
         let difference = abs(implied - stated)
         guard difference >= Self.energyToleranceFloor,
-              difference / stated > Self.energyTolerance else { return nil }
+            difference / stated > Self.energyTolerance
+        else { return nil }
         return MacroConsistencyWarning(statedKilocalories: stated, impliedKilocalories: implied)
     }
 
@@ -342,9 +344,12 @@ final class CustomFoodEditorViewModel {
         defer { isSaving = false }
 
         // Named servings without a name are half-finished rows the user abandoned, not data.
-        let cleanedServings = servings
+        let cleanedServings =
+            servings
             .filter { !$0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-            .map { FoodServing(name: $0.name.trimmingCharacters(in: .whitespacesAndNewlines), gramsPerServing: $0.grams) }
+            .map {
+                FoodServing(name: $0.name.trimmingCharacters(in: .whitespacesAndNewlines), gramsPerServing: $0.grams)
+            }
 
         do {
             let repository = NutritionRepository(context: context)
@@ -982,7 +987,8 @@ final class MealRecommendationsViewModel {
             }.value
 
             suggestions = results
-            hasNoRoomLeft = results.isEmpty
+            hasNoRoomLeft =
+                results.isEmpty
                 && progress.remaining.kilocalories < MealRecommendationEngine.Constants.minimumRemainingKilocalories
             phase = .ready
         } catch {
@@ -997,10 +1003,12 @@ final class MealRecommendationsViewModel {
         do {
             let repository = NutritionRepository(context: modelContext)
             if let savedMealID = suggestion.savedMealID,
-               let meal = try repository.savedMeals().first(where: { $0.id == savedMealID }) {
+                let meal = try repository.savedMeals().first(where: { $0.id == savedMealID })
+            {
                 _ = try repository.logSavedMeal(meal, to: slot, dayKey: dayKey)
             } else if let recipeID = suggestion.recipeID,
-                      let recipe = try repository.recipes().first(where: { $0.id == recipeID }) {
+                let recipe = try repository.recipes().first(where: { $0.id == recipeID })
+            {
                 _ = try repository.logRecipeServing(recipe, servings: 1, to: slot, dayKey: dayKey)
             } else {
                 var logged = 0

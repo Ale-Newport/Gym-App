@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behaviour of `LoadEstimator` — the first working load for a movement with no history, and the
@@ -109,18 +110,21 @@ struct LoadEstimatorTests {
         // distinguishable from a history-derived one.
         let history = Fixtures.history(
             exerciseID: barbellBench.id,
-            performances: [Fixtures.performance(
-                exerciseID: barbellBench.id,
-                sets: Fixtures.repSets(3, weightKg: 140, reps: 5)
-            )],
+            performances: [
+                Fixtures.performance(
+                    exerciseID: barbellBench.id,
+                    sets: Fixtures.repSets(3, weightKg: 140, reps: 5)
+                )
+            ],
             totalSessions: 8
         )
-        let estimate = try #require(startingLoad(
-            for: barbellBench,
-            relatedHistories: [barbellBench.id: history],
-            catalog: [barbellBench],
-            seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 100, reps: 5)]
-        ))
+        let estimate = try #require(
+            startingLoad(
+                for: barbellBench,
+                relatedHistories: [barbellBench.id: history],
+                catalog: [barbellBench],
+                seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 100, reps: 5)]
+            ))
 
         // 100 × 5 → e1RM 114.58 → 8-rep fraction 0.7975 → × 0.95 safety → 86.8 → 87.5 on the bar.
         #expect(estimate.weightKg == 87.5)
@@ -132,21 +136,23 @@ struct LoadEstimatorTests {
     @Test("A seed the user's own numbers cannot support is clamped at four times body mass")
     func absurdSeedIsClampedBySanityCeiling() throws {
         let profile = Fixtures.profile(bodyWeightKg: 80)
-        let estimate = try #require(startingLoad(
-            for: barbellBench,
-            profile: profile,
-            seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 1_000, reps: 1)]
-        ))
+        let estimate = try #require(
+            startingLoad(
+                for: barbellBench,
+                profile: profile,
+                seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 1_000, reps: 1)]
+            ))
         #expect(estimate.weightKg <= profile.bodyWeightKg * 4)
         #expect(estimate.weightKg == 242.5)
     }
 
     @Test("A seed with an impossible rep count is ignored rather than trusted")
     func unusableSeedFallsThroughToTheNextTier() throws {
-        let estimate = try #require(startingLoad(
-            for: barbellBench,
-            seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 100, reps: 0)]
-        ))
+        let estimate = try #require(
+            startingLoad(
+                for: barbellBench,
+                seeds: [StrengthSeed(exerciseID: barbellBench.id, weightKg: 100, reps: 0)]
+            ))
         // Falls through to the body-weight ratio table, whose confidence is far lower.
         #expect(estimate.explanation.key == "loadEstimate.explain.fromBodyWeight")
     }
@@ -157,17 +163,20 @@ struct LoadEstimatorTests {
     func relatedLiftIsUsedWithATransferCoefficient() throws {
         let history = Fixtures.history(
             exerciseID: barbellBench.id,
-            performances: [Fixtures.performance(
-                exerciseID: barbellBench.id,
-                sets: Fixtures.repSets(3, weightKg: 100, reps: 5)
-            )],
+            performances: [
+                Fixtures.performance(
+                    exerciseID: barbellBench.id,
+                    sets: Fixtures.repSets(3, weightKg: 100, reps: 5)
+                )
+            ],
             totalSessions: 4
         )
-        let estimate = try #require(startingLoad(
-            for: dumbbellBench,
-            relatedHistories: [barbellBench.id: history],
-            catalog: [barbellBench, dumbbellBench]
-        ))
+        let estimate = try #require(
+            startingLoad(
+                for: dumbbellBench,
+                relatedHistories: [barbellBench.id: history],
+                catalog: [barbellBench, dumbbellBench]
+            ))
 
         // 0.62 across implements, −0.04 for different equipment, four sessions of data.
         #expect(abs(estimate.confidence - 0.58) < 1e-9)
@@ -183,17 +192,20 @@ struct LoadEstimatorTests {
     func ownHistoryIsTrustedStraightAway() throws {
         let history = Fixtures.history(
             exerciseID: barbellBench.id,
-            performances: [Fixtures.performance(
-                exerciseID: barbellBench.id,
-                sets: Fixtures.repSets(3, weightKg: 100, reps: 5)
-            )],
+            performances: [
+                Fixtures.performance(
+                    exerciseID: barbellBench.id,
+                    sets: Fixtures.repSets(3, weightKg: 100, reps: 5)
+                )
+            ],
             totalSessions: 4
         )
-        let estimate = try #require(startingLoad(
-            for: barbellBench,
-            relatedHistories: [barbellBench.id: history],
-            catalog: [barbellBench]
-        ))
+        let estimate = try #require(
+            startingLoad(
+                for: barbellBench,
+                relatedHistories: [barbellBench.id: history],
+                catalog: [barbellBench]
+            ))
         #expect(abs(estimate.confidence - 0.88) < 1e-9)
         #expect(estimate.requiresCalibration == false)
         #expect(estimate.explanation.key == "loadEstimate.explain.fromOwnHistory")
@@ -205,17 +217,21 @@ struct LoadEstimatorTests {
         func confidence(sessions: Int) throws -> Double {
             let history = Fixtures.history(
                 exerciseID: barbellBench.id,
-                performances: [Fixtures.performance(
-                    exerciseID: barbellBench.id,
-                    sets: Fixtures.repSets(1, weightKg: 100, reps: 5)
-                )],
+                performances: [
+                    Fixtures.performance(
+                        exerciseID: barbellBench.id,
+                        sets: Fixtures.repSets(1, weightKg: 100, reps: 5)
+                    )
+                ],
                 totalSessions: sessions
             )
-            return try #require(startingLoad(
-                for: barbellBench,
-                relatedHistories: [barbellBench.id: history],
-                catalog: [barbellBench]
-            )).confidence
+            return try #require(
+                startingLoad(
+                    for: barbellBench,
+                    relatedHistories: [barbellBench.id: history],
+                    catalog: [barbellBench]
+                )
+            ).confidence
         }
 
         let one = try confidence(sessions: 1)
@@ -231,17 +247,20 @@ struct LoadEstimatorTests {
     func unrelatedHistoryIsIgnored() throws {
         let squatHistory = Fixtures.history(
             exerciseID: barbellSquat.id,
-            performances: [Fixtures.performance(
-                exerciseID: barbellSquat.id,
-                sets: Fixtures.repSets(5, weightKg: 180, reps: 5)
-            )],
+            performances: [
+                Fixtures.performance(
+                    exerciseID: barbellSquat.id,
+                    sets: Fixtures.repSets(5, weightKg: 180, reps: 5)
+                )
+            ],
             totalSessions: 40
         )
-        let estimate = try #require(startingLoad(
-            for: barbellBench,
-            relatedHistories: [barbellSquat.id: squatHistory],
-            catalog: [barbellSquat, barbellBench]
-        ))
+        let estimate = try #require(
+            startingLoad(
+                for: barbellBench,
+                relatedHistories: [barbellSquat.id: squatHistory],
+                catalog: [barbellSquat, barbellBench]
+            ))
         // A 180 kg squat says nothing about a bench press, so the ratio table answers instead.
         #expect(estimate.explanation.key == "loadEstimate.explain.fromBodyWeight")
     }
@@ -253,9 +272,11 @@ struct LoadEstimatorTests {
         for id in [barbellBench.id, barbellSquat.id] {
             histories[id] = Fixtures.history(
                 exerciseID: id,
-                performances: [Fixtures.performance(
-                    exerciseID: id, sets: Fixtures.repSets(3, weightKg: 100, reps: 5)
-                )],
+                performances: [
+                    Fixtures.performance(
+                        exerciseID: id, sets: Fixtures.repSets(3, weightKg: 100, reps: 5)
+                    )
+                ],
                 totalSessions: 4
             )
         }
@@ -271,10 +292,11 @@ struct LoadEstimatorTests {
     func nothingToGoOnDemandsCalibration() throws {
         // The worked example from the spec: 80 kg beginner male, barbell bench, 8 reps.
         // 0.55 × 80 = 44 kg 1RM → × 0.7975 = 35.1 → × 0.90 = 31.6 → 32.5 kg on the bar.
-        let estimate = try #require(startingLoad(
-            for: barbellBench,
-            profile: Fixtures.profile(experience: .beginner, biologicalSex: .male, bodyWeightKg: 80)
-        ))
+        let estimate = try #require(
+            startingLoad(
+                for: barbellBench,
+                profile: Fixtures.profile(experience: .beginner, biologicalSex: .male, bodyWeightKg: 80)
+            ))
         #expect(estimate.weightKg == 32.5)
         #expect(estimate.confidence == 0.45)
         #expect(estimate.requiresCalibration)
@@ -283,12 +305,14 @@ struct LoadEstimatorTests {
 
     @Test("Population data fits a novice better than an advanced lifter, and says so")
     func ratioTableConfidenceDropsPastBeginner() throws {
-        let novice = try #require(startingLoad(
-            for: barbellBench, profile: Fixtures.profile(experience: .never)
-        ))
-        let advanced = try #require(startingLoad(
-            for: barbellBench, profile: Fixtures.profile(experience: .advanced)
-        ))
+        let novice = try #require(
+            startingLoad(
+                for: barbellBench, profile: Fixtures.profile(experience: .never)
+            ))
+        let advanced = try #require(
+            startingLoad(
+                for: barbellBench, profile: Fixtures.profile(experience: .advanced)
+            ))
         #expect(novice.confidence == 0.45)
         #expect(advanced.confidence == 0.36)
         #expect(novice.requiresCalibration)
@@ -300,10 +324,12 @@ struct LoadEstimatorTests {
     @Test("Declining to state a sex lands between the two sex-specific constants")
     func unspecifiedSexTakesTheMidpoint() throws {
         func load(_ sex: BiologicalSex) throws -> Double {
-            try #require(startingLoad(
-                for: barbellSquat,
-                profile: Fixtures.profile(experience: .beginner, biologicalSex: sex, bodyWeightKg: 80)
-            )).weightKg
+            try #require(
+                startingLoad(
+                    for: barbellSquat,
+                    profile: Fixtures.profile(experience: .beginner, biologicalSex: sex, bodyWeightKg: 80)
+                )
+            ).weightKg
         }
         let male = try load(.male)
         let female = try load(.female)
@@ -315,9 +341,11 @@ struct LoadEstimatorTests {
     @Test("A body weight outside 30–250 kg is a typo and is clamped")
     func absurdBodyWeightIsClamped() throws {
         func load(_ bodyWeightKg: Double) throws -> Double {
-            try #require(startingLoad(
-                for: barbellBench, profile: Fixtures.profile(bodyWeightKg: bodyWeightKg)
-            )).weightKg
+            try #require(
+                startingLoad(
+                    for: barbellBench, profile: Fixtures.profile(bodyWeightKg: bodyWeightKg)
+                )
+            ).weightKg
         }
         #expect(try load(500) == (try load(250)))
         #expect(try load(1) == (try load(30)))

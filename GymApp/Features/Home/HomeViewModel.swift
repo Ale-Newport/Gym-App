@@ -217,7 +217,8 @@ final class HomeViewModel {
         // One window covers both the "this week" counters and the seven-day streak dots, so the
         // dashboard never fetches the same sessions twice.
         let weekStart = ProgressRepository.weekStart(of: now, calendar: calendar) ?? calendar.startOfDay(for: now)
-        let sevenDaysAgo = calendar.date(byAdding: .day, value: -6, to: calendar.startOfDay(for: now))
+        let sevenDaysAgo =
+            calendar.date(byAdding: .day, value: -6, to: calendar.startOfDay(for: now))
             ?? calendar.startOfDay(for: now)
         let windowStart = min(weekStart, sevenDaysAgo)
         let windowEnd = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now)) ?? now
@@ -231,10 +232,12 @@ final class HomeViewModel {
             return calendar.isDate(applies, inSameDayAs: weekStart)
         }
         activeDeload = thisWeekRow.flatMap { row in
-            row.acceptedAt == nil ? nil : ActiveDeload(
-                volumeReduction: row.volumeReduction,
-                intensityReduction: row.intensityReduction
-            )
+            row.acceptedAt == nil
+                ? nil
+                : ActiveDeload(
+                    volumeReduction: row.volumeReduction,
+                    intensityReduction: row.intensityReduction
+                )
         }
 
         today = makeTodayState(
@@ -347,45 +350,48 @@ final class HomeViewModel {
         calendar: Calendar
     ) -> TodayState {
         if let activeSession {
-            return .inProgress(InProgress(
-                sessionID: activeSession.id,
-                title: activeSession.titleSnapshot,
-                completedSets: activeSession.completedSetCount,
-                plannedSets: activeSession.plannedSetCount,
-                startedAt: activeSession.startedAt
-            ))
+            return .inProgress(
+                InProgress(
+                    sessionID: activeSession.id,
+                    title: activeSession.titleSnapshot,
+                    completedSets: activeSession.completedSetCount,
+                    plannedSets: activeSession.plannedSetCount,
+                    startedAt: activeSession.startedAt
+                ))
         }
 
         // Anything finished today outranks the plan: telling somebody to start a workout they have
         // already done is the fastest way to make a dashboard feel like it is not paying attention.
         if let done = sessionsToday.max(by: { $0.startedAt < $1.startedAt }) {
-            return .completed(Completed(
-                sessionID: done.id,
-                title: done.titleSnapshot,
-                completedSets: done.completedSetCount,
-                durationSeconds: done.activeSeconds > 0 ? done.activeSeconds : done.durationSeconds,
-                volumeKg: done.totalVolumeKg
-            ))
+            return .completed(
+                Completed(
+                    sessionID: done.id,
+                    title: done.titleSnapshot,
+                    completedSets: done.completedSetCount,
+                    durationSeconds: done.activeSeconds > 0 ? done.activeSeconds : done.durationSeconds,
+                    volumeKg: done.totalVolumeKg
+                ))
         }
 
         guard let program, !program.orderedTemplates.isEmpty else { return .noProgram }
         let templates = program.orderedTemplates
 
         guard let template = todaysTemplate(in: templates, now: now, calendar: calendar),
-              !template.isRestDay
+            !template.isRestDay
         else {
             return .rest(makeRestState(templates: templates, catalog: catalog, now: now, calendar: calendar))
         }
 
-        return .scheduled(Scheduled(
-            templateID: template.id,
-            title: title(of: template),
-            focusGroups: template.focusGroups,
-            exerciseCount: template.plannedExercises.count,
-            setCount: template.totalPlannedSets,
-            estimatedMinutes: template.estimatedMinutes,
-            isEasyWeek: activeDeload != nil
-        ))
+        return .scheduled(
+            Scheduled(
+                templateID: template.id,
+                title: title(of: template),
+                focusGroups: template.focusGroups,
+                exerciseCount: template.plannedExercises.count,
+                setCount: template.totalPlannedSets,
+                estimatedMinutes: template.estimatedMinutes,
+                isEasyWeek: activeDeload != nil
+            ))
     }
 
     /// Which template belongs to today.
@@ -414,7 +420,7 @@ final class HomeViewModel {
             .first(where: { session in templates.contains { $0.id == session.templateID } })?
             .templateID
         guard let lastTemplateID,
-              let lastIndex = templates.firstIndex(where: { $0.id == lastTemplateID })
+            let lastIndex = templates.firstIndex(where: { $0.id == lastTemplateID })
         else {
             return templates.first { !$0.isRestDay }
         }
@@ -434,7 +440,8 @@ final class HomeViewModel {
         let todayWeekday = Weekday.from(now, calendar: calendar)
         let training = templates.filter { !$0.isRestDay }
         // The next pinned session after today, wrapping into next week if today is the last one.
-        let upcoming = training
+        let upcoming =
+            training
             .filter { $0.weekday != nil }
             .min { lhs, rhs in
                 distance(from: todayWeekday, to: lhs.weekday!) < distance(from: todayWeekday, to: rhs.weekday!)
@@ -569,8 +576,9 @@ final class HomeViewModel {
             let workoutRepo = WorkoutRepository(context: context)
             let profileRepo = ProfileRepository(context: context)
 
-            guard let template = try programRepo.activeProgram()?
-                .orderedTemplates.first(where: { $0.id == plan.templateID })
+            guard
+                let template = try programRepo.activeProgram()?
+                    .orderedTemplates.first(where: { $0.id == plan.templateID })
             else {
                 await refresh()
                 return nil
@@ -640,18 +648,19 @@ final class HomeViewModel {
         var targets: [String: SessionExerciseTarget] = [:]
         for slot in planned {
             guard let exercise = catalog[slot.exerciseID] else { continue }
-            let decision = ProgressionEngine.decide(ProgressionInput(
-                exercise: exercise,
-                state: states[slot.exerciseID] ?? ProgressionStateSnapshot(exerciseID: slot.exerciseID),
-                history: histories[slot.exerciseID] ?? ExerciseHistorySnapshot(exerciseID: slot.exerciseID),
-                targetRIR: targetRIR,
-                increments: increments,
-                strategy: settings.progressionStrategy,
-                bodyWeightKg: profile.currentWeightKg,
-                isDeloadWeek: easyWeek != nil,
-                experience: profile.experience,
-                goal: profile.primaryGoal
-            ))
+            let decision = ProgressionEngine.decide(
+                ProgressionInput(
+                    exercise: exercise,
+                    state: states[slot.exerciseID] ?? ProgressionStateSnapshot(exerciseID: slot.exerciseID),
+                    history: histories[slot.exerciseID] ?? ExerciseHistorySnapshot(exerciseID: slot.exerciseID),
+                    targetRIR: targetRIR,
+                    increments: increments,
+                    strategy: settings.progressionStrategy,
+                    bodyWeightKg: profile.currentWeightKg,
+                    isDeloadWeek: easyWeek != nil,
+                    experience: profile.experience,
+                    goal: profile.primaryGoal
+                ))
 
             // The engine prescribes the load; the accepted deload prescribes the volume. Applying
             // the cut here rather than inside the engine keeps "how much lighter" in one place —

@@ -173,7 +173,8 @@ enum RecoveryEngine {
         let assumedRIR = Double(profile.defaultTargetRIR)
 
         // Newest first, with the session id as a tie-break so identical timestamps never reorder.
-        let past = sessions
+        let past =
+            sessions
             .filter { $0.date <= now }
             .sorted { ($0.date, $0.sessionID.uuidString) > ($1.date, $1.sessionID.uuidString) }
 
@@ -302,7 +303,8 @@ enum RecoveryEngine {
         case 0.65..<0.85:
             return Explanation("recovery.summary.ready")
         case 0.45..<0.65:
-            return Explanation(loadedGroups > 0 ? "recovery.summary.moderate.groups" : "recovery.summary.moderate.systemic")
+            return Explanation(
+                loadedGroups > 0 ? "recovery.summary.moderate.groups" : "recovery.summary.moderate.systemic")
         default:
             return Explanation(loadedGroups > 0 ? "recovery.summary.low.groups" : "recovery.summary.low.systemic")
         }
@@ -320,7 +322,8 @@ enum RecoveryEngine {
 
     /// Cost multiplier for a set stopped `repsInReserve` short of failure.
     static func proximityFactor(repsInReserve: Double) -> Double {
-        let value = RecoveryTuning.proximityAtFailure
+        let value =
+            RecoveryTuning.proximityAtFailure
             - RecoveryTuning.proximitySlopePerRIR * max(0, repsInReserve)
         return min(RecoveryTuning.proximityCeiling, max(RecoveryTuning.proximityFloor, value))
     }

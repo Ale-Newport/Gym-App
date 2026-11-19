@@ -1,6 +1,7 @@
 import Foundation
 import SwiftData
 import Testing
+
 @testable import GymApp
 
 /// Food names in the user's language: shown, searched, and written to the store.

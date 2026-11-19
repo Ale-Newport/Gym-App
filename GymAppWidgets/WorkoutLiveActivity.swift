@@ -1,6 +1,6 @@
 import ActivityKit
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 /// The Live Activity for a session that is currently running.
 ///
@@ -127,13 +127,15 @@ struct ActivitySetCounter: View {
             Text(L("widget.live.set"))
                 .font(.widgetOverline)
                 .foregroundStyle(WidgetPalette.textSecondary)
-            Text(state.totalSets > 0
-                 ? L("widget.live.setValue", state.setNumber, state.totalSets)
-                 : WidgetFormat.whole(state.setNumber))
-                .font(.widgetNumeric(20, weight: .bold))
-                .foregroundStyle(WidgetPalette.textPrimary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+            Text(
+                state.totalSets > 0
+                    ? L("widget.live.setValue", state.setNumber, state.totalSets)
+                    : WidgetFormat.whole(state.setNumber)
+            )
+            .font(.widgetNumeric(20, weight: .bold))
+            .foregroundStyle(WidgetPalette.textPrimary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(L("widget.live.setOfTotal", state.setNumber, max(state.totalSets, state.setNumber))))
@@ -260,9 +262,12 @@ struct ActivityMinimal: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(L("widget.accessibility.setsCompleted",
-                                   state.completedSets,
-                                   max(state.plannedSets, state.completedSets))))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "widget.accessibility.setsCompleted",
+                    state.completedSets,
+                    max(state.plannedSets, state.completedSets))))
     }
 }
 

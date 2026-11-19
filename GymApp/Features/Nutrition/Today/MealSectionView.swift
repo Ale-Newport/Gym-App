@@ -89,7 +89,9 @@ struct MealSectionView: View {
                 Button {
                     model.copyYesterday(into: slot)
                 } label: {
-                    Label(L("nutritionLog.action.copyYesterdayMeal", L(slot.localizationKey)), systemImage: "clock.arrow.circlepath")
+                    Label(
+                        L("nutritionLog.action.copyYesterdayMeal", L(slot.localizationKey)),
+                        systemImage: "clock.arrow.circlepath")
                 }
             }
             if !entries.isEmpty {
@@ -153,8 +155,12 @@ private struct MealSectionPreviewHarness: View {
         ScrollView {
             if let model {
                 VStack(spacing: Metrics.spacing16) {
-                    MealSectionView(slot: .breakfast, model: model, onAddFood: { _ in }, onEditEntry: { _ in }, onShowDetails: { _ in }, onSaveAsMeal: { _ in })
-                    MealSectionView(slot: .snacks, model: model, onAddFood: { _ in }, onEditEntry: { _ in }, onShowDetails: { _ in }, onSaveAsMeal: { _ in })
+                    MealSectionView(
+                        slot: .breakfast, model: model, onAddFood: { _ in }, onEditEntry: { _ in },
+                        onShowDetails: { _ in }, onSaveAsMeal: { _ in })
+                    MealSectionView(
+                        slot: .snacks, model: model, onAddFood: { _ in }, onEditEntry: { _ in },
+                        onShowDetails: { _ in }, onSaveAsMeal: { _ in })
                 }
                 .screenPadding()
             } else {

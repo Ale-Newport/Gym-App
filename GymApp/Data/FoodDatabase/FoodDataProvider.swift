@@ -186,8 +186,9 @@ enum FoodRoleTagDeriver {
             tags.append("high_fiber")
         }
         if tags.contains("protein_source"),
-           fatGPer100 <= 10,
-           (micronutrientsPer100.saturatedFatG ?? 0) <= 4.5 {
+            fatGPer100 <= 10,
+            (micronutrientsPer100.saturatedFatG ?? 0) <= 4.5
+        {
             tags.append("lean")
         }
         if basisUnit == .milliliters {
@@ -250,7 +251,8 @@ enum FoodProviderError: LocalizedError, Hashable, Sendable {
         case .cancelled: .cancelled
         case .notConnectedToInternet, .dataNotAllowed, .internationalRoamingOff: .offline
         case .timedOut, .cannotFindHost, .cannotConnectToHost, .networkConnectionLost,
-             .dnsLookupFailed, .secureConnectionFailed: .network(urlError.code.rawValue.description)
+            .dnsLookupFailed, .secureConnectionFailed:
+            .network(urlError.code.rawValue.description)
         default: .network(urlError.code.rawValue.description)
         }
     }

@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// The first-run flow, from welcome to a working program.
 ///
@@ -136,7 +136,9 @@ struct OnboardingFlowView: View {
         .scrollDismissesKeyboard(.interactively)
         .id(model.step)
         .transition(stepTransition)
-        .animation(reduceMotion ? .easeInOut(duration: 0.15) : .spring(response: 0.38, dampingFraction: 0.86), value: model.step)
+        .animation(
+            reduceMotion ? .easeInOut(duration: 0.15) : .spring(response: 0.38, dampingFraction: 0.86),
+            value: model.step)
     }
 
     /// A horizontal push in the direction of travel, reduced to a cross-fade when the user has asked

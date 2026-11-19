@@ -148,7 +148,8 @@ enum PersonalRecordDetector {
             // Equal load with more reps is the better performance and reads better as context.
             if weight > currentWeight
                 || (abs(weight - currentWeight) < massMarginKg
-                    && (candidate.set.reps ?? 0) > (current.set.reps ?? 0)) {
+                    && (candidate.set.reps ?? 0) > (current.set.reps ?? 0))
+            {
                 best = candidate
             }
         }
@@ -223,12 +224,14 @@ enum PersonalRecordDetector {
             case .atOrAbove(let threshold):
                 if let threshold {
                     guard let weight = candidate.set.weightKg,
-                          weight >= threshold - massMarginKg else { continue }
+                        weight >= threshold - massMarginKg
+                    else { continue }
                 }
             case .atOrBelow(let threshold):
                 if let threshold {
                     guard let assistance = candidate.set.weightKg,
-                          assistance <= threshold + massMarginKg else { continue }
+                        assistance <= threshold + massMarginKg
+                    else { continue }
                 }
             }
             if best == nil || reps > (best?.set.reps ?? 0) { best = candidate }

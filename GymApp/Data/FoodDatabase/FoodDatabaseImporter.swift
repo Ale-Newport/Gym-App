@@ -147,7 +147,8 @@ actor FoodDatabaseImporter {
         // The row count is checked as well as the version: a user who reset their data would
         // otherwise be left with an empty food database because the version still "matched".
         if !force, versionStore.storedVersion == manifest.version,
-           versionStore.storedLanguage == language, !existingBuiltIns.isEmpty {
+            versionStore.storedLanguage == language, !existingBuiltIns.isEmpty
+        {
             progress(FoodImportProgress(phase: .finished, processed: 0, total: 0))
             return .upToDate(version: manifest.version)
         }

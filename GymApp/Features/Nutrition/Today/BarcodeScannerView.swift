@@ -592,7 +592,10 @@ struct BarcodeScannerView: View {
                             .foregroundStyle(Color.appTextPrimary)
                             .padding(.horizontal, Metrics.spacing12)
                             .frame(minHeight: Metrics.gymTapTarget)
-                            .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
+                            .background(
+                                Color.appFill,
+                                in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous)
+                            )
                             .focused($isCodeFieldFocused)
                             .submitLabel(.search)
                             .onSubmit { Task { await model.submitManualCode() } }

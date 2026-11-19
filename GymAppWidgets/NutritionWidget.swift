@@ -1,5 +1,5 @@
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 /// Today's food: what has been eaten, what is left, and how the three macronutrients are tracking.
 struct NutritionWidget: Widget {
@@ -116,9 +116,13 @@ struct NutritionWidgetView: View {
         .frame(width: 132, alignment: .leading)
         .frame(maxHeight: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(L("widget.accessibility.calories",
-                                   WidgetFormat.whole(snapshot.caloriesConsumed),
-                                   WidgetFormat.whole(snapshot.caloriesTarget))))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "widget.accessibility.calories",
+                    WidgetFormat.whole(snapshot.caloriesConsumed),
+                    WidgetFormat.whole(snapshot.caloriesTarget)))
+        )
         .accessibilityValue(Text(remainingText))
     }
 

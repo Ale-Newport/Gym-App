@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// The Exercises tab: the whole catalogue, searchable, filterable and browsable.
 ///
@@ -35,30 +35,30 @@ struct ExerciseLibraryView: View {
 
             content
         }
-            .background(Color.appBackground)
-            .screenHeader(L("exercises.title")) { headerActions }
-            .navigationDestination(for: ExerciseRoute.self) { route in
-                switch route {
-                case .detail(let exerciseID):
-                    ExerciseDetailView(exerciseID: exerciseID)
-                case .history(let exerciseID):
-                    ExerciseHistoryView(exerciseID: exerciseID)
-                }
+        .background(Color.appBackground)
+        .screenHeader(L("exercises.title")) { headerActions }
+        .navigationDestination(for: ExerciseRoute.self) { route in
+            switch route {
+            case .detail(let exerciseID):
+                ExerciseDetailView(exerciseID: exerciseID)
+            case .history(let exerciseID):
+                ExerciseHistoryView(exerciseID: exerciseID)
             }
-            .sheet(isPresented: $isPresentingFilters) {
-                ExerciseFilterSheet(filters: $viewModel.filters, viewModel: viewModel)
-            }
-            .task { viewModel.load(catalog: environment.catalog, preferences: preferences) }
-            // The query hands back the same row objects when a field changes, so the array itself
-            // compares equal. The revision folds the fields the list actually depends on into one
-            // value, which is what makes a favourite toggled two screens away land here.
-            .onChange(of: preferenceRevision) {
-                viewModel.load(catalog: environment.catalog, preferences: preferences)
-            }
-            .onChange(of: environment.catalog.state) {
-                viewModel.load(catalog: environment.catalog, preferences: preferences)
-            }
-            .onChange(of: viewModel.inputSignature) { viewModel.refresh() }
+        }
+        .sheet(isPresented: $isPresentingFilters) {
+            ExerciseFilterSheet(filters: $viewModel.filters, viewModel: viewModel)
+        }
+        .task { viewModel.load(catalog: environment.catalog, preferences: preferences) }
+        // The query hands back the same row objects when a field changes, so the array itself
+        // compares equal. The revision folds the fields the list actually depends on into one
+        // value, which is what makes a favourite toggled two screens away land here.
+        .onChange(of: preferenceRevision) {
+            viewModel.load(catalog: environment.catalog, preferences: preferences)
+        }
+        .onChange(of: environment.catalog.state) {
+            viewModel.load(catalog: environment.catalog, preferences: preferences)
+        }
+        .onChange(of: viewModel.inputSignature) { viewModel.refresh() }
     }
 
     // MARK: - States
@@ -192,10 +192,13 @@ struct ExerciseLibraryView: View {
     @ViewBuilder
     private var headerActions: some View {
         Menu {
-            Picker(L("exercises.sort.label"), selection: Binding(
-                get: { viewModel.sort },
-                set: { viewModel.sort = $0 }
-            )) {
+            Picker(
+                L("exercises.sort.label"),
+                selection: Binding(
+                    get: { viewModel.sort },
+                    set: { viewModel.sort = $0 }
+                )
+            ) {
                 ForEach(ExerciseSortOrder.allCases) { order in
                     Label(L(order.localizationKey), systemImage: order.symbolName).tag(order)
                 }
@@ -219,9 +222,11 @@ struct ExerciseLibraryView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(L("exercises.filters.label")))
-        .accessibilityValue(Text(viewModel.filters.isActive
-            ? LPlural("exercises.filters.activeCount", viewModel.filters.activeCount)
-            : L("common.none")))
+        .accessibilityValue(
+            Text(
+                viewModel.filters.isActive
+                    ? LPlural("exercises.filters.activeCount", viewModel.filters.activeCount)
+                    : L("common.none")))
     }
 
     /// Folds the preference fields the list depends on into a single comparable value.

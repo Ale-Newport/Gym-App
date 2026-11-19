@@ -106,10 +106,11 @@ struct ProgressRepository: Repository {
 
     /// Readings inside `[from, to)`, oldest first — the order every chart and trend wants.
     func bodyWeightEntries(from start: Date, to end: Date) throws -> [BodyWeightEntry] {
-        try fetch(FetchDescriptor<BodyWeightEntry>(
-            predicate: #Predicate { $0.date >= start && $0.date < end },
-            sortBy: [SortDescriptor(\.date, order: .forward)]
-        ))
+        try fetch(
+            FetchDescriptor<BodyWeightEntry>(
+                predicate: #Predicate { $0.date >= start && $0.date < end },
+                sortBy: [SortDescriptor(\.date, order: .forward)]
+            ))
     }
 
     /// Every reading, oldest first.
@@ -119,9 +120,10 @@ struct ProgressRepository: Repository {
 
     /// The most recent reading, whatever its source.
     func latestBodyWeight() throws -> BodyWeightEntry? {
-        try fetchFirst(FetchDescriptor<BodyWeightEntry>(
-            sortBy: [SortDescriptor(\.date, order: .reverse)]
-        ))
+        try fetchFirst(
+            FetchDescriptor<BodyWeightEntry>(
+                sortBy: [SortDescriptor(\.date, order: .reverse)]
+            ))
     }
 
     func deleteBodyWeight(_ entry: BodyWeightEntry) throws {
@@ -139,10 +141,11 @@ struct ProgressRepository: Repository {
     /// Returns the number of rows removed.
     @discardableResult
     func deduplicateSameDayManualEntries(calendar: Calendar = .current) throws -> Int {
-        let manual = try fetch(FetchDescriptor<BodyWeightEntry>(
-            predicate: #Predicate { $0.isFromHealthKit == false },
-            sortBy: [SortDescriptor(\.date, order: .forward)]
-        ))
+        let manual = try fetch(
+            FetchDescriptor<BodyWeightEntry>(
+                predicate: #Predicate { $0.isFromHealthKit == false },
+                sortBy: [SortDescriptor(\.date, order: .forward)]
+            ))
         var keeperByDay: [String: BodyWeightEntry] = [:]
         var removed = 0
         for entry in manual {
@@ -183,9 +186,10 @@ struct ProgressRepository: Repository {
 
     /// The best value stored for each record kind on one exercise.
     func bests(forExerciseID exerciseID: String) throws -> [PersonalRecordKind: Double] {
-        let records = try fetch(FetchDescriptor<PersonalRecord>(
-            predicate: #Predicate { $0.exerciseID == exerciseID }
-        ))
+        let records = try fetch(
+            FetchDescriptor<PersonalRecord>(
+                predicate: #Predicate { $0.exerciseID == exerciseID }
+            ))
         return Self.reduceToBests(records)
     }
 
@@ -193,9 +197,10 @@ struct ProgressRepository: Repository {
     func bests(forExerciseIDs exerciseIDs: [String]) throws -> [String: [PersonalRecordKind: Double]] {
         let ids = Array(Set(exerciseIDs))
         guard !ids.isEmpty else { return [:] }
-        let records = try fetch(FetchDescriptor<PersonalRecord>(
-            predicate: #Predicate { ids.contains($0.exerciseID) }
-        ))
+        let records = try fetch(
+            FetchDescriptor<PersonalRecord>(
+                predicate: #Predicate { ids.contains($0.exerciseID) }
+            ))
         return Dictionary(grouping: records, by: \.exerciseID).mapValues(Self.reduceToBests)
     }
 
@@ -246,10 +251,11 @@ struct ProgressRepository: Repository {
 
     /// Records for one exercise, newest first.
     func personalRecords(forExerciseID exerciseID: String) throws -> [PersonalRecord] {
-        try fetch(FetchDescriptor<PersonalRecord>(
-            predicate: #Predicate { $0.exerciseID == exerciseID },
-            sortBy: [SortDescriptor(\.achievedAt, order: .reverse)]
-        ))
+        try fetch(
+            FetchDescriptor<PersonalRecord>(
+                predicate: #Predicate { $0.exerciseID == exerciseID },
+                sortBy: [SortDescriptor(\.achievedAt, order: .reverse)]
+            ))
     }
 
     func deletePersonalRecord(_ record: PersonalRecord) throws {
@@ -264,10 +270,11 @@ struct ProgressRepository: Repository {
         guard let interval = calendar.dateInterval(of: .day, for: date) else { return nil }
         let start = interval.start
         let end = interval.end
-        return try fetchFirst(FetchDescriptor<RecoveryEntry>(
-            predicate: #Predicate { $0.date >= start && $0.date < end },
-            sortBy: [SortDescriptor(\.date, order: .reverse)]
-        ))
+        return try fetchFirst(
+            FetchDescriptor<RecoveryEntry>(
+                predicate: #Predicate { $0.date >= start && $0.date < end },
+                sortBy: [SortDescriptor(\.date, order: .reverse)]
+            ))
     }
 
     /// Creates or updates the check-in for a day.
@@ -351,18 +358,20 @@ struct ProgressRepository: Repository {
     /// Completed sessions inside `[from, to)`, oldest first.
     func completedSessions(from start: Date, to end: Date) throws -> [WorkoutSession] {
         let completed = PlannedSessionStatus.completed.rawValue
-        return try fetch(FetchDescriptor<WorkoutSession>(
-            predicate: #Predicate { $0.statusRaw == completed && $0.startedAt >= start && $0.startedAt < end },
-            sortBy: [SortDescriptor(\.startedAt, order: .forward)]
-        ))
+        return try fetch(
+            FetchDescriptor<WorkoutSession>(
+                predicate: #Predicate { $0.statusRaw == completed && $0.startedAt >= start && $0.startedAt < end },
+                sortBy: [SortDescriptor(\.startedAt, order: .forward)]
+            ))
     }
 
     /// How many sessions were completed inside a range.
     func sessionCount(from start: Date, to end: Date) throws -> Int {
         let completed = PlannedSessionStatus.completed.rawValue
-        return try count(FetchDescriptor<WorkoutSession>(
-            predicate: #Predicate { $0.statusRaw == completed && $0.startedAt >= start && $0.startedAt < end }
-        ))
+        return try count(
+            FetchDescriptor<WorkoutSession>(
+                predicate: #Predicate { $0.statusRaw == completed && $0.startedAt >= start && $0.startedAt < end }
+            ))
     }
 
     /// Sessions, tonnage and set counts bucketed by week, oldest week first.
@@ -457,9 +466,10 @@ struct ProgressRepository: Repository {
         expectedSessionsPerWeek: Int? = nil,
         calendar: Calendar = ProgressRepository.trainingCalendar()
     ) throws -> AdherenceSummary {
-        let allStatuses = try fetch(FetchDescriptor<WorkoutSession>(
-            predicate: #Predicate { $0.startedAt >= start && $0.startedAt < end }
-        ))
+        let allStatuses = try fetch(
+            FetchDescriptor<WorkoutSession>(
+                predicate: #Predicate { $0.startedAt >= start && $0.startedAt < end }
+            ))
         let finished = allStatuses.filter { $0.status == .completed }
         let abandoned = allStatuses.filter { $0.status == .skipped }
 
@@ -488,10 +498,11 @@ struct ProgressRepository: Repository {
         calendar: Calendar = ProgressRepository.trainingCalendar()
     ) throws -> TrainingStreaks {
         let completed = PlannedSessionStatus.completed.rawValue
-        let sessions = try fetch(FetchDescriptor<WorkoutSession>(
-            predicate: #Predicate { $0.statusRaw == completed },
-            sortBy: [SortDescriptor(\.startedAt, order: .forward)]
-        ))
+        let sessions = try fetch(
+            FetchDescriptor<WorkoutSession>(
+                predicate: #Predicate { $0.statusRaw == completed },
+                sortBy: [SortDescriptor(\.startedAt, order: .forward)]
+            ))
         guard !sessions.isEmpty else { return TrainingStreaks() }
 
         let trainedDays = Set(sessions.compactMap { calendar.dateInterval(of: .day, for: $0.startedAt)?.start })

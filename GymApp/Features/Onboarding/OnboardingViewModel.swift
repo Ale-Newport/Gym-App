@@ -285,7 +285,7 @@ final class OnboardingViewModel {
     /// Field order used to pick which of several problems to name first.
     private static let fieldOrder = [
         "heightCm", "currentWeightKg", "birthDate", "goals", "priorityGroups",
-        "availableWeekdays", "sessionMinutes", "selectedEquipment"
+        "availableWeekdays", "sessionMinutes", "selectedEquipment",
     ]
 
     /// Every problem on `step`, keyed by the field it belongs to, so a control can show its own hint
@@ -297,7 +297,9 @@ final class OnboardingViewModel {
             if let message = rangeIssue(heightCm, range: InputValidation.heightCm, unitKey: "onboarding.unit.cm") {
                 issues["heightCm"] = message
             }
-            if let message = rangeIssue(currentWeightKg, range: InputValidation.bodyMassKg, unitKey: "onboarding.unit.kg") {
+            if let message = rangeIssue(
+                currentWeightKg, range: InputValidation.bodyMassKg, unitKey: "onboarding.unit.kg")
+            {
                 issues["currentWeightKg"] = message
             }
             let years = Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year ?? -1
@@ -337,8 +339,10 @@ final class OnboardingViewModel {
         let lower: String
         let upper: String
         if unitKey == "onboarding.unit.kg" {
-            lower = Units.formatWeight(kilograms: range.lowerBound, unit: weightUnit, includeUnit: false, fractionDigits: 0)
-            upper = Units.formatWeight(kilograms: range.upperBound, unit: weightUnit, includeUnit: false, fractionDigits: 0)
+            lower = Units.formatWeight(
+                kilograms: range.lowerBound, unit: weightUnit, includeUnit: false, fractionDigits: 0)
+            upper = Units.formatWeight(
+                kilograms: range.upperBound, unit: weightUnit, includeUnit: false, fractionDigits: 0)
             return L("onboarding.hint.range", lower, upper, weightUnit.rawValue)
         }
         lower = Units.formatDecimal(range.lowerBound, digits: 0)
@@ -495,7 +499,9 @@ final class OnboardingViewModel {
             selectedPlatesKg = Set(EquipmentIncrements.default.availablePlatesKg)
             kettlebellsKg = Set(EquipmentIncrements.default.kettlebellsKg)
         }
-        AppLog.app.debug("Onboarding units changed from \(previous.rawValue, privacy: .public) to \(self.weightUnit.rawValue, privacy: .public)")
+        AppLog.app.debug(
+            "Onboarding units changed from \(previous.rawValue, privacy: .public) to \(self.weightUnit.rawValue, privacy: .public)"
+        )
     }
 
     /// Keeps the months-of-training figure and the technique answer honest when the level changes:
@@ -612,7 +618,9 @@ final class OnboardingViewModel {
             return true
         } catch {
             errorMessage = Self.message(for: error)
-            AppLog.app.error("Onboarding step \(step.rawValue, privacy: .public) failed to save: \(String(describing: error), privacy: .public)")
+            AppLog.app.error(
+                "Onboarding step \(step.rawValue, privacy: .public) failed to save: \(String(describing: error), privacy: .public)"
+            )
             return false
         }
     }
@@ -701,15 +709,16 @@ final class OnboardingViewModel {
 
             let energy = try persistNutritionTargets(context: context, profileRepository: profileRepository)
 
-            generation = .ready(OnboardingProgramResult(
-                programTitle: title,
-                splitKey: generated.splitKey,
-                daysPerWeek: generated.daysPerWeek,
-                sessions: generated.sessions,
-                weeklyVolume: generated.weeklyVolume,
-                explanations: generated.explanations,
-                energyTargets: energy
-            ))
+            generation = .ready(
+                OnboardingProgramResult(
+                    programTitle: title,
+                    splitKey: generated.splitKey,
+                    daysPerWeek: generated.daysPerWeek,
+                    sessions: generated.sessions,
+                    weeklyVolume: generated.weeklyVolume,
+                    explanations: generated.explanations,
+                    energyTargets: energy
+                ))
             needsRegeneration = false
             Haptics.success()
         } catch {
@@ -734,16 +743,17 @@ final class OnboardingViewModel {
             // Nutrition does not depend on the catalogue, so it is still worth computing here.
             let energy = try? persistNutritionTargets(context: context, profileRepository: profileRepository)
 
-            generation = .ready(OnboardingProgramResult(
-                programTitle: title,
-                splitKey: "split.custom",
-                daysPerWeek: daysPerWeek,
-                sessions: [],
-                weeklyVolume: [:],
-                explanations: [Explanation("onboarding.generate.manualExplanation")],
-                energyTargets: energy ?? nil,
-                isManual: true
-            ))
+            generation = .ready(
+                OnboardingProgramResult(
+                    programTitle: title,
+                    splitKey: "split.custom",
+                    daysPerWeek: daysPerWeek,
+                    sessions: [],
+                    weeklyVolume: [:],
+                    explanations: [Explanation("onboarding.generate.manualExplanation")],
+                    energyTargets: energy ?? nil,
+                    isManual: true
+                ))
             needsRegeneration = false
         } catch {
             generation = .failed(Self.message(for: error))

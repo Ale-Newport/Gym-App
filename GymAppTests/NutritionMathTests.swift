@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Tests for the value types the nutrition engines are built on: macro arithmetic, micronutrient
@@ -67,7 +68,7 @@ struct NutritionMathTests {
         let portions = [
             MacroNutrients(kilocalories: 248, proteinG: 46, carbsG: 0, fatG: 5.4),
             MacroNutrients(kilocalories: 260, proteinG: 5.4, carbsG: 56, fatG: 0.6),
-            MacroNutrients(kilocalories: 51, proteinG: 4.2, carbsG: 10.5, fatG: 0.6)
+            MacroNutrients(kilocalories: 51, proteinG: 4.2, carbsG: 10.5, fatG: 0.6),
         ]
         let reduced = portions.reduce(MacroNutrients.zero, +)
         let manual = portions[0] + portions[1] + portions[2]
@@ -82,7 +83,7 @@ struct NutritionMathTests {
         var micros = Micronutrients.unknown
         micros.fiberG = 3
         micros.sodiumMg = 400
-        micros.ironMg = 0          // a genuine zero, which must survive as a zero
+        micros.ironMg = 0  // a genuine zero, which must survive as a zero
 
         let doubled = micros.scaled(by: 2)
         #expect(doubled.fiberG == 6)
@@ -256,7 +257,7 @@ struct NutritionMathTests {
         bread.fatGPer100 = 3.2
         bread.servings = [
             FoodServing(name: "1 slice", gramsPerServing: 28),
-            FoodServing(name: "1 thick slice", gramsPerServing: 45)
+            FoodServing(name: "1 thick slice", gramsPerServing: 45),
         ]
 
         #expect(bread.basisQuantity(for: 2, unit: .serving, servingIndex: 0) == 56)
@@ -273,7 +274,7 @@ struct NutritionMathTests {
         bread.kilocaloriesPer100 = 265
         bread.servings = [
             FoodServing(name: "1 slice", gramsPerServing: 28),
-            FoodServing(name: "1 thick slice", gramsPerServing: 45)
+            FoodServing(name: "1 thick slice", gramsPerServing: 45),
         ]
         #expect(bread.basisQuantity(for: 1, unit: .serving) == 28)
     }

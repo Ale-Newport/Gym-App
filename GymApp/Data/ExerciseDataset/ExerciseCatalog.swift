@@ -51,7 +51,8 @@ final class ExerciseCatalog {
 
         let importer = self.importer
         do {
-            let result = try await Task.detached(priority: .userInitiated) { () -> ([Exercise], ExerciseDatasetManifest) in
+            let result = try await Task.detached(priority: .userInitiated) {
+                () -> ([Exercise], ExerciseDatasetManifest) in
                 let manifest = try importer.loadManifest()
                 let exercises = try importer.loadExercises(expecting: manifest)
                 return (exercises, manifest)
@@ -59,7 +60,9 @@ final class ExerciseCatalog {
 
             apply(exercises: result.0, manifest: result.1)
             state = .loaded
-            AppLog.catalog.info("Catalogue loaded: \(self.exercises.count) exercises, dataset \(result.1.datasetVersion, privacy: .public)")
+            AppLog.catalog.info(
+                "Catalogue loaded: \(self.exercises.count) exercises, dataset \(result.1.datasetVersion, privacy: .public)"
+            )
         } catch {
             let message = (error as? LocalizedError)?.errorDescription ?? String(describing: error)
             AppLog.catalog.error("Catalogue failed to load: \(message, privacy: .public)")

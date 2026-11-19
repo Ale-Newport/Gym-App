@@ -57,18 +57,20 @@ struct NotificationSettingsView: View {
 
     private var statusSection: some View {
         Section {
-            Toggle(isOn: Binding(
-                get: { isEnabled },
-                set: { isOn in
-                    Task {
-                        await notifications.setEnabled(
-                            isOn,
-                            service: environment.notificationService,
-                            settings: model
-                        )
+            Toggle(
+                isOn: Binding(
+                    get: { isEnabled },
+                    set: { isOn in
+                        Task {
+                            await notifications.setEnabled(
+                                isOn,
+                                service: environment.notificationService,
+                                settings: model
+                            )
+                        }
                     }
-                }
-            )) {
+                )
+            ) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L("settings.notifications.enable"))
                         .foregroundStyle(Color.appTextPrimary)
@@ -147,8 +149,9 @@ struct NotificationSettingsView: View {
     private var trainingTimeBinding: Binding<Date> {
         Binding(
             get: {
-                Self.date(hour: model.settings?.trainingReminderHour ?? 18,
-                          minute: model.settings?.trainingReminderMinute ?? 0)
+                Self.date(
+                    hour: model.settings?.trainingReminderHour ?? 18,
+                    minute: model.settings?.trainingReminderMinute ?? 0)
             },
             set: { newDate in
                 let parts = Calendar.current.dateComponents([.hour, .minute], from: newDate)
@@ -260,8 +263,11 @@ struct NotificationSettingsView: View {
                                     .minimumTapTarget()
                             }
                             .buttonStyle(.plain)
-                            .accessibilityLabel(Text(L("settings.notifications.removeMealTime",
-                                                       Self.hourLabel(hour, formatter: model.formatter))))
+                            .accessibilityLabel(
+                                Text(
+                                    L(
+                                        "settings.notifications.removeMealTime",
+                                        Self.hourLabel(hour, formatter: model.formatter))))
                         }
                         .frame(minHeight: Metrics.minimumTapTarget)
                     }

@@ -101,31 +101,37 @@ struct DataImportService {
 
         // Singletons: restore into the existing row so the rest of the app keeps its references.
         if let profileExport = document.profile {
-            let profile = try context.fetch(FetchDescriptor<UserProfile>()).first ?? {
-                let created = UserProfile()
-                context.insert(created)
-                return created
-            }()
+            let profile =
+                try context.fetch(FetchDescriptor<UserProfile>()).first
+                ?? {
+                    let created = UserProfile()
+                    context.insert(created)
+                    return created
+                }()
             profileExport.apply(to: profile)
             report.profileRestored = true
         }
 
         if let settingsExport = document.settings {
-            let settings = try context.fetch(FetchDescriptor<UserSettings>()).first ?? {
-                let created = UserSettings()
-                context.insert(created)
-                return created
-            }()
+            let settings =
+                try context.fetch(FetchDescriptor<UserSettings>()).first
+                ?? {
+                    let created = UserSettings()
+                    context.insert(created)
+                    return created
+                }()
             settingsExport.apply(to: settings)
             report.settingsRestored = true
         }
 
         if let equipmentExport = document.equipment {
-            let equipment = try context.fetch(FetchDescriptor<EquipmentProfile>()).first ?? {
-                let created = EquipmentProfile()
-                context.insert(created)
-                return created
-            }()
+            let equipment =
+                try context.fetch(FetchDescriptor<EquipmentProfile>()).first
+                ?? {
+                    let created = EquipmentProfile()
+                    context.insert(created)
+                    return created
+                }()
             equipmentExport.apply(to: equipment)
         }
 
@@ -135,11 +141,13 @@ struct DataImportService {
             uniquingKeysWith: { first, _ in first }
         )
         for export in document.preferences {
-            let preference = existingPreferences[export.exerciseID] ?? {
-                let created = ExercisePreference(exerciseID: export.exerciseID)
-                context.insert(created)
-                return created
-            }()
+            let preference =
+                existingPreferences[export.exerciseID]
+                ?? {
+                    let created = ExercisePreference(exerciseID: export.exerciseID)
+                    context.insert(created)
+                    return created
+                }()
             preference.isFavorite = export.isFavorite
             preference.feedback = export.feedback
             preference.isExcluded = export.isExcluded
@@ -178,7 +186,8 @@ struct DataImportService {
             let key = "\(export.exerciseID)|\(export.kind.rawValue)"
             // "Better" inverts for records where a lower number wins (assistance removed).
             if let existing = bestByKey[key] {
-                let backupIsBetter = export.kind.lowerIsBetter
+                let backupIsBetter =
+                    export.kind.lowerIsBetter
                     ? export.value < existing.value
                     : export.value > existing.value
                 if !backupIsBetter { continue }
@@ -238,11 +247,13 @@ struct DataImportService {
             uniquingKeysWith: { first, _ in first }
         )
         for export in document.progressionStates {
-            let state = existingStates[export.exerciseID] ?? {
-                let created = ProgressionState(exerciseID: export.exerciseID)
-                context.insert(created)
-                return created
-            }()
+            let state =
+                existingStates[export.exerciseID]
+                ?? {
+                    let created = ProgressionState(exerciseID: export.exerciseID)
+                    context.insert(created)
+                    return created
+                }()
             state.workingWeightKg = export.workingWeightKg
             state.repLower = export.repLower
             state.repUpper = export.repUpper

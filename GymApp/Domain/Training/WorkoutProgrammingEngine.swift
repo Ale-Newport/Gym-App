@@ -146,16 +146,17 @@ struct WorkoutProgrammingEngine: Sendable {
             var restRNG = SeededGenerator(
                 seed: request.randomSeed &+ 0x0000_5E5F_0000_0001 &+ UInt64(weekday.orderIndex)
             )
-            sessions.append(GeneratedSession(
-                id: deterministicUUID(&restRNG),
-                orderIndex: sessions.count,
-                titleKey: "session.title.rest",
-                weekday: weekday,
-                focusGroups: [],
-                pushPull: .neutral,
-                estimatedMinutes: 0,
-                isRestDay: true
-            ))
+            sessions.append(
+                GeneratedSession(
+                    id: deterministicUUID(&restRNG),
+                    orderIndex: sessions.count,
+                    titleKey: "session.title.rest",
+                    weekday: weekday,
+                    focusGroups: [],
+                    pushPull: .neutral,
+                    estimatedMinutes: 0,
+                    isRestDay: true
+                ))
         }
         sessions.sort { lhs, rhs in
             let left = lhs.weekday?.orderIndex ?? 99
@@ -195,7 +196,8 @@ struct WorkoutProgrammingEngine: Sendable {
             for: profile, recovery: request.recovery, isDeloadWeek: request.isDeloadWeek
         )
         let split = SplitSelector.selectSplit(profile: profile, targets: targets)
-        let blueprint = split.blueprints.first { $0.titleKey == session.titleKey }
+        let blueprint =
+            split.blueprints.first { $0.titleKey == session.titleKey }
             ?? blueprint(from: session)
 
         let lockedIDs = request.lockedExerciseIDs
@@ -330,18 +332,21 @@ struct WorkoutProgrammingEngine: Sendable {
             )
             sessionSelected.insert(exercise.id)
             context.weekSelected.insert(exercise.id)
-            filled.append(FilledSlot(
-                slot: slot, exercise: exercise,
-                prescription: prescribe(exercise: exercise, slot: slot, request: request,
-                                        orderIndex: filled.count, isLocked: true)
-            ))
+            filled.append(
+                FilledSlot(
+                    slot: slot, exercise: exercise,
+                    prescription: prescribe(
+                        exercise: exercise, slot: slot, request: request,
+                        orderIndex: filled.count, isLocked: true)
+                ))
         }
 
         // A session with nothing in it — or with nothing but a conditioning block — is a bug the
         // user experiences as a broken app.
         let hasStrengthWork = filled.contains { $0.slot.group != .cardio }
         if !hasStrengthWork, let rescue = rescueExercise(for: blueprint, request: request),
-           !sessionSelected.contains(rescue.id) {
+            !sessionSelected.contains(rescue.id)
+        {
             let slot = ExerciseSlot(
                 group: rescue.primaryGroup,
                 mechanic: rescue.metadata.mechanic,
@@ -351,11 +356,13 @@ struct WorkoutProgrammingEngine: Sendable {
             )
             context.usedBodyweightFallback = true
             // Inserted rather than appended: the lifting comes before the conditioning.
-            filled.insert(FilledSlot(
-                slot: slot, exercise: rescue,
-                prescription: prescribe(exercise: rescue, slot: slot, request: request,
-                                        orderIndex: 0, isLocked: false)
-            ), at: 0)
+            filled.insert(
+                FilledSlot(
+                    slot: slot, exercise: rescue,
+                    prescription: prescribe(
+                        exercise: rescue, slot: slot, request: request,
+                        orderIndex: 0, isLocked: false)
+                ), at: 0)
         }
 
         fitToTime(&filled, blueprint: blueprint, request: request, context: &context)
@@ -382,9 +389,11 @@ struct WorkoutProgrammingEngine: Sendable {
             weekday: weekday,
             focusGroups: focus,
             pushPull: blueprint.pushPull,
-            estimatedMinutes: Int((Double(estimatedSeconds(
-                for: filled, capSeconds: Self.capSeconds(for: request.profile)
-            )) / 60).rounded()),
+            estimatedMinutes: Int(
+                (Double(
+                    estimatedSeconds(
+                        for: filled, capSeconds: Self.capSeconds(for: request.profile)
+                    )) / 60).rounded()),
             isRestDay: false,
             exercises: exercises
         )
@@ -435,12 +444,14 @@ struct WorkoutProgrammingEngine: Sendable {
         }
 
         let ladder: [ExerciseSelectionRequest] = [
-            selection(group: slot.group, pattern: slot.preferredPattern,
-                      mechanic: slot.mechanic, avoidWeekRepeats: true),
-            selection(group: slot.group, pattern: nil,
-                      mechanic: slot.mechanic, avoidWeekRepeats: true),
+            selection(
+                group: slot.group, pattern: slot.preferredPattern,
+                mechanic: slot.mechanic, avoidWeekRepeats: true),
+            selection(
+                group: slot.group, pattern: nil,
+                mechanic: slot.mechanic, avoidWeekRepeats: true),
             selection(group: slot.group, pattern: nil, mechanic: nil, avoidWeekRepeats: true),
-            selection(group: slot.group, pattern: nil, mechanic: nil, avoidWeekRepeats: false)
+            selection(group: slot.group, pattern: nil, mechanic: nil, avoidWeekRepeats: false),
         ]
         for attempt in ladder {
             let ranked = recommender.rank(attempt, weights: .default, limit: 8)
@@ -448,8 +459,9 @@ struct WorkoutProgrammingEngine: Sendable {
         }
 
         for neighbour in relatedGroups(for: slot.group) {
-            let attempt = selection(group: neighbour, pattern: nil, mechanic: nil,
-                                    avoidWeekRepeats: false)
+            let attempt = selection(
+                group: neighbour, pattern: nil, mechanic: nil,
+                avoidWeekRepeats: false)
             let ranked = recommender.rank(attempt, weights: .default, limit: 8)
             if let picked = pick(ranked, excluding: sessionSelected, rng: &rng) {
                 context.usedGroupFallback = true
@@ -458,13 +470,17 @@ struct WorkoutProgrammingEngine: Sendable {
         }
 
         // Straight catalogue scan: anything admissible that touches the group at all.
-        if let scanned = scan(group: slot.group, request: request, excluding: sessionSelected,
-                              bodyweightOnly: false) {
+        if let scanned = scan(
+            group: slot.group, request: request, excluding: sessionSelected,
+            bodyweightOnly: false)
+        {
             context.usedGroupFallback = true
             return scanned
         }
-        if let bodyweight = scan(group: slot.group, request: request, excluding: sessionSelected,
-                                 bodyweightOnly: true) {
+        if let bodyweight = scan(
+            group: slot.group, request: request, excluding: sessionSelected,
+            bodyweightOnly: true)
+        {
             context.usedBodyweightFallback = true
             return bodyweight
         }
@@ -481,7 +497,8 @@ struct WorkoutProgrammingEngine: Sendable {
         excluding: Set<String>,
         rng: inout SeededGenerator
     ) -> Exercise? {
-        let usable = ranked
+        let usable =
+            ranked
             .filter { !$0.breakdown.isDisqualified && $0.score > 0 && !excluding.contains($0.exercise.id) }
             .sorted { lhs, rhs in
                 if abs(lhs.score - rhs.score) > 1e-9 { return lhs.score > rhs.score }
@@ -572,7 +589,8 @@ struct WorkoutProgrammingEngine: Sendable {
                 return found
             }
         }
-        return catalog
+        return
+            catalog
             .filter { $0.equipment == .bodyWeight && !$0.metadata.isStretch }
             .max { $0.metadata.stapleScore < $1.metadata.stapleScore }
     }
@@ -592,7 +610,8 @@ struct WorkoutProgrammingEngine: Sendable {
 
         var duration: Int?
         if metadata.trackingMode.usesDuration {
-            duration = slot.group == .cardio
+            duration =
+                slot.group == .cardio
                 ? cardioSeconds(goals: goals)
                 : min(120, max(20, metadata.estimatedSetSeconds))
         }
@@ -698,7 +717,8 @@ struct WorkoutProgrammingEngine: Sendable {
         }
         if slot.group.isCore { return Explanation("programming.rationale.core") }
         if VolumeAllocator.effectivePriorityGroups(request.profile).contains(slot.group),
-           !slot.isPrimary {
+            !slot.isPrimary
+        {
             return Explanation("programming.rationale.priority")
         }
         if slot.isPrimary { return Explanation("programming.rationale.primary") }
@@ -774,14 +794,23 @@ struct WorkoutProgrammingEngine: Sendable {
             iterations += 1
             // Conservative pass: everything here costs almost no stimulus.
             if shortenRest(&filled, floor: 60, includingPrimary: false) { continue }
-            if removeSet(&filled, fromPrimary: false, floor: 2) { context.trimmedSets += 1; continue }
-            if removeSet(&filled, fromPrimary: true, floor: 3) { context.trimmedSets += 1; continue }
+            if removeSet(&filled, fromPrimary: false, floor: 2) {
+                context.trimmedSets += 1
+                continue
+            }
+            if removeSet(&filled, fromPrimary: true, floor: 3) {
+                context.trimmedSets += 1
+                continue
+            }
             if dropExercise(&filled, keepingAtLeast: 3, allowPrimary: false) { continue }
             // Aggressive pass: a 30-minute session cannot hold a textbook prescription, and the
             // user's stated time wins. Rest on the main lifts is never cut below 90 seconds and no
             // exercise below two sets, so what survives is still training.
             if shortenRest(&filled, floor: 90, includingPrimary: true) { continue }
-            if removeSet(&filled, fromPrimary: true, floor: 2) { context.trimmedSets += 1; continue }
+            if removeSet(&filled, fromPrimary: true, floor: 2) {
+                context.trimmedSets += 1
+                continue
+            }
             if dropExercise(&filled, keepingAtLeast: 2, allowPrimary: false) { continue }
             if dropExercise(&filled, keepingAtLeast: 2, allowPrimary: true) { continue }
             break
@@ -894,7 +923,8 @@ struct WorkoutProgrammingEngine: Sendable {
         for (index, entry) in filled.enumerated() {
             guard entry.slot.group != .cardio else { continue }
             guard entry.prescription.sets < Self.maximumSetsPerExercise else { continue }
-            let value = entry.exercise.metadata.stimulusScore
+            let value =
+                entry.exercise.metadata.stimulusScore
                 - Double(entry.prescription.sets) * 0.05
             if value > bestValue {
                 bestValue = value
@@ -942,9 +972,10 @@ struct WorkoutProgrammingEngine: Sendable {
                 placements.slots[bestSession, default: [:]][bestSlot] = lockedID
                 taken.insert("\(bestSession).\(bestSlot)")
             } else {
-                let sessionIndex = blueprints.firstIndex {
-                    $0.focusGroups.contains(exercise.primaryGroup)
-                } ?? 0
+                let sessionIndex =
+                    blueprints.firstIndex {
+                        $0.focusGroups.contains(exercise.primaryGroup)
+                    } ?? 0
                 placements.extras[sessionIndex, default: []].append(lockedID)
             }
         }
@@ -1005,13 +1036,14 @@ struct WorkoutProgrammingEngine: Sendable {
         var slots: [ExerciseSlot] = []
         for planned in session.exercises.sorted(by: { $0.orderIndex < $1.orderIndex }) {
             guard let exercise = byID[planned.exerciseID] else { continue }
-            slots.append(ExerciseSlot(
-                group: exercise.primaryGroup,
-                mechanic: exercise.metadata.mechanic,
-                preferredPattern: exercise.metadata.movementPattern,
-                sets: planned.sets,
-                isPrimary: planned.orderIndex == 0 && exercise.metadata.mechanic == .compound
-            ))
+            slots.append(
+                ExerciseSlot(
+                    group: exercise.primaryGroup,
+                    mechanic: exercise.metadata.mechanic,
+                    preferredPattern: exercise.metadata.movementPattern,
+                    sets: planned.sets,
+                    isPrimary: planned.orderIndex == 0 && exercise.metadata.mechanic == .compound
+                ))
         }
         return SessionBlueprint(
             titleKey: session.titleKey,
@@ -1060,10 +1092,11 @@ struct WorkoutProgrammingEngine: Sendable {
         let budget = VolumeAllocator.timeBudget(for: profile)
         let targetSum = MuscleGroup.volumeTracked.reduce(0.0) { $0 + targets.target(for: $1) }
         if targetSum >= budget.creditCapacity - 0.5 {
-            explanations.append(Explanation(
-                "programming.volume.timeCapped",
-                [String(profile.daysPerWeek), String(profile.sessionMinutesCap)]
-            ))
+            explanations.append(
+                Explanation(
+                    "programming.volume.timeCapped",
+                    [String(profile.daysPerWeek), String(profile.sessionMinutesCap)]
+                ))
         }
         if request.isDeloadWeek {
             explanations.append(Explanation("programming.volume.deload"))
@@ -1081,10 +1114,11 @@ struct WorkoutProgrammingEngine: Sendable {
         }
 
         if context.trimmedSets > 0 {
-            explanations.append(Explanation(
-                "programming.trimmed",
-                [String(context.trimmedSets), String(profile.sessionMinutesCap)]
-            ))
+            explanations.append(
+                Explanation(
+                    "programming.trimmed",
+                    [String(context.trimmedSets), String(profile.sessionMinutesCap)]
+                ))
         }
         if context.addedSets > 0 {
             explanations.append(Explanation("programming.extended", [String(context.addedSets)]))
@@ -1100,7 +1134,8 @@ struct WorkoutProgrammingEngine: Sendable {
             session.exercises.contains { byID[$0.exerciseID]?.primaryGroup == .cardio }
         }.count
         if cardioSessions > 0 {
-            let key = profile.cardioPreference == .separateSessions
+            let key =
+                profile.cardioPreference == .separateSessions
                 ? "programming.cardio.separate"
                 : "programming.cardio.afterLifting"
             explanations.append(Explanation(key, [String(cardioSessions)]))
@@ -1127,11 +1162,12 @@ struct WorkoutProgrammingEngine: Sendable {
         let high = rng.next()
         let low = rng.next()
         func byte(_ value: UInt64, _ shift: UInt64) -> UInt8 { UInt8((value >> shift) & 0xFF) }
-        return UUID(uuid: (
-            byte(high, 56), byte(high, 48), byte(high, 40), byte(high, 32),
-            byte(high, 24), byte(high, 16), byte(high, 8), byte(high, 0),
-            byte(low, 56), byte(low, 48), byte(low, 40), byte(low, 32),
-            byte(low, 24), byte(low, 16), byte(low, 8), byte(low, 0)
-        ))
+        return UUID(
+            uuid: (
+                byte(high, 56), byte(high, 48), byte(high, 40), byte(high, 32),
+                byte(high, 24), byte(high, 16), byte(high, 8), byte(high, 0),
+                byte(low, 56), byte(low, 48), byte(low, 40), byte(low, 32),
+                byte(low, 24), byte(low, 16), byte(low, 8), byte(low, 0)
+            ))
     }
 }

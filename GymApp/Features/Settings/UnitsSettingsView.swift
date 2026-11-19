@@ -66,9 +66,11 @@ struct UnitsSettingsView: View {
     /// (kilograms and miles is a common combination), so it is described rather than corrected.
     private var currentSystem: UnitSystem? {
         guard let settings = model.settings else { return nil }
-        let isMetric = settings.weightUnit == .kilograms && settings.heightUnit == .centimeters
+        let isMetric =
+            settings.weightUnit == .kilograms && settings.heightUnit == .centimeters
             && settings.distanceUnit == .kilometers
-        let isImperial = settings.weightUnit == .pounds && settings.heightUnit == .feetInches
+        let isImperial =
+            settings.weightUnit == .pounds && settings.heightUnit == .feetInches
             && settings.distanceUnit == .miles
         if isMetric { return .metric }
         if isImperial { return .imperial }

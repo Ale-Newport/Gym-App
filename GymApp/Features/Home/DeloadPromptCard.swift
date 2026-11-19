@@ -94,7 +94,7 @@ struct DeloadPromptCard: View {
                         Explanation("deload.summary.recommended", ["44", "12"]),
                         Explanation("deload.reason.performanceRegression", ["3"]),
                         Explanation("deload.reason.blockLength", ["6"]),
-                        Explanation("deload.reason.effortInflationSession")
+                        Explanation("deload.reason.effortInflationSession"),
                     ]
                 ),
                 onRespond: { _ in }

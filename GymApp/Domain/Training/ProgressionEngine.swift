@@ -117,8 +117,9 @@ enum ProgressionEngine {
         var currentWeight: Double?
         if isLoadable {
             guard let weight = usableWorkingWeight(input),
-                  !input.state.needsCalibration,
-                  !input.history.performances.isEmpty else {
+                !input.state.needsCalibration,
+                !input.history.performances.isEmpty
+            else {
                 // A load we do not trust is worse than no load at all, so calibration comes first.
                 return calibrationDecision(input, targetRIR: targetRIR)
             }
@@ -172,15 +173,18 @@ enum ProgressionEngine {
         let goesUp = multiplier > 1
         var probe = 1
         while probe <= Constants.maxLoadProbes {
-            let raw = goesUp
+            let raw =
+                goesUp
                 ? attemptedWeightKg + Double(probe) * base
                 : attemptedWeightKg - Double(probe) * base
             if raw < 0 { break }
             let candidate = LoadRounding.round(
                 kilograms: raw, loadability: loadability, profile: increments
             )
-            if goesUp ? candidate > attemptedWeightKg + Constants.loadEpsilon
-                      : candidate < attemptedWeightKg - Constants.loadEpsilon {
+            if goesUp
+                ? candidate > attemptedWeightKg + Constants.loadEpsilon
+                : candidate < attemptedWeightKg - Constants.loadEpsilon
+            {
                 result = candidate
                 break
             }
@@ -209,15 +213,17 @@ enum ProgressionEngine {
         currentSets: Int? = nil
     ) -> (weightKg: Double?, sets: Int?) {
         let intensity = min(
-            max(assessment.intensityReduction > 0
-                ? assessment.intensityReduction
-                : Constants.defaultDeloadIntensityReduction, 0),
+            max(
+                assessment.intensityReduction > 0
+                    ? assessment.intensityReduction
+                    : Constants.defaultDeloadIntensityReduction, 0),
             Constants.deloadIntensityCeiling
         )
         let volume = min(
-            max(assessment.volumeReduction > 0
-                ? assessment.volumeReduction
-                : Constants.defaultDeloadVolumeReduction, 0),
+            max(
+                assessment.volumeReduction > 0
+                    ? assessment.volumeReduction
+                    : Constants.defaultDeloadVolumeReduction, 0),
             Constants.deloadVolumeCeiling
         )
 
@@ -233,10 +239,11 @@ enum ProgressionEngine {
         let base = LoadRounding.increment(for: loadability, profile: increments)
         var weight: Double?
         if loadability.carriesExternalLoad,
-           base > 0,
-           let current = state.workingWeightKg,
-           current.isFinite,
-           current > 0 || (zeroIsAWorkingLoad && current == 0) {
+            base > 0,
+            let current = state.workingWeightKg,
+            current.isFinite,
+            current > 0 || (zeroIsAWorkingLoad && current == 0)
+        {
             let inverted = loadability == .assistedBodyweight
             let target = inverted ? current * (1 + intensity) : current * (1 - intensity)
             var rounded = LoadRounding.round(
@@ -293,27 +300,33 @@ enum ProgressionEngine {
         // sits at 0 kg added and stays there — where "drops from 0 kg to 0 kg" is not a sentence
         // worth showing anyone. Those fall through to the sets-only wording.
         switch (currentWeight, prescription.weightKg, baselineSets, prescription.sets) {
-        case let (.some(old), .some(new), .some(oldSets), .some(newSets))
-            where abs(old - new) >= Constants.loadEpsilon:
-            explanation = Explanation("progression.explain.deload", [
-                input.exercise.name,
-                TrainingFormat.weight(old),
-                TrainingFormat.weight(new),
-                TrainingFormat.count(oldSets),
-                TrainingFormat.count(newSets)
-            ])
-        case let (.some(old), .some(new), _, _) where abs(old - new) >= Constants.loadEpsilon:
-            explanation = Explanation("progression.explain.deloadLoadOnly", [
-                input.exercise.name,
-                TrainingFormat.weight(old),
-                TrainingFormat.weight(new)
-            ])
-        case let (_, _, .some(oldSets), .some(newSets)):
-            explanation = Explanation("progression.explain.deloadUnloaded", [
-                input.exercise.name,
-                TrainingFormat.count(oldSets),
-                TrainingFormat.count(newSets)
-            ])
+        case (.some(let old), .some(let new), .some(let oldSets), .some(let newSets))
+        where abs(old - new) >= Constants.loadEpsilon:
+            explanation = Explanation(
+                "progression.explain.deload",
+                [
+                    input.exercise.name,
+                    TrainingFormat.weight(old),
+                    TrainingFormat.weight(new),
+                    TrainingFormat.count(oldSets),
+                    TrainingFormat.count(newSets),
+                ])
+        case (.some(let old), .some(let new), _, _) where abs(old - new) >= Constants.loadEpsilon:
+            explanation = Explanation(
+                "progression.explain.deloadLoadOnly",
+                [
+                    input.exercise.name,
+                    TrainingFormat.weight(old),
+                    TrainingFormat.weight(new),
+                ])
+        case (_, _, .some(let oldSets), .some(let newSets)):
+            explanation = Explanation(
+                "progression.explain.deloadUnloaded",
+                [
+                    input.exercise.name,
+                    TrainingFormat.count(oldSets),
+                    TrainingFormat.count(newSets),
+                ])
         default:
             explanation = Explanation("progression.explain.deloadEasy", [input.exercise.name])
         }
@@ -397,11 +410,13 @@ enum ProgressionEngine {
             return decision(
                 input, action: .maintain, weight: currentWeight, range: range, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.lighterThanPlanned", [
-                    input.exercise.name,
-                    TrainingFormat.weight(currentWeight),
-                    TrainingFormat.weight(evaluation.easiestLoggedWeightKg)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.lighterThanPlanned",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.weight(currentWeight),
+                        TrainingFormat.weight(evaluation.easiestLoggedWeightKg),
+                    ]),
                 successes: input.state.consecutiveSuccesses,
                 stalls: input.state.consecutiveStalls,
                 regressions: input.state.consecutiveRegressions,
@@ -445,12 +460,14 @@ enum ProgressionEngine {
                 return decision(
                     input, action: .addReps, weight: currentWeight, range: expanded, sets: setCount,
                     targetRIR: targetRIR,
-                    explanation: Explanation("progression.explain.extendReps", [
-                        input.exercise.name,
-                        TrainingFormat.count(expanded.lower),
-                        TrainingFormat.count(expanded.upper),
-                        TrainingFormat.count(evaluation.minReps)
-                    ]),
+                    explanation: Explanation(
+                        "progression.explain.extendReps",
+                        [
+                            input.exercise.name,
+                            TrainingFormat.count(expanded.lower),
+                            TrainingFormat.count(expanded.upper),
+                            TrainingFormat.count(evaluation.minReps),
+                        ]),
                     successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                 )
             }
@@ -484,13 +501,15 @@ enum ProgressionEngine {
                         return decision(
                             input, action: .reduceLoad, weight: reduced, range: range,
                             sets: setCount, targetRIR: targetRIR,
-                            explanation: Explanation("progression.explain.reducedLoadRIR", [
-                                input.exercise.name,
-                                TrainingFormat.weight(currentWeight),
-                                TrainingFormat.weight(reduced),
-                                TrainingFormat.count(Int(minRIR.rounded())),
-                                TrainingFormat.count(targetRIR)
-                            ]),
+                            explanation: Explanation(
+                                "progression.explain.reducedLoadRIR",
+                                [
+                                    input.exercise.name,
+                                    TrainingFormat.weight(currentWeight),
+                                    TrainingFormat.weight(reduced),
+                                    TrainingFormat.count(Int(minRIR.rounded())),
+                                    TrainingFormat.count(targetRIR),
+                                ]),
                             successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                         )
                     }
@@ -515,11 +534,13 @@ enum ProgressionEngine {
                 return decision(
                     input, action: .addReps, weight: currentWeight, range: range, sets: nextSets,
                     targetRIR: targetRIR,
-                    explanation: Explanation("progression.explain.addSet", [
-                        input.exercise.name,
-                        TrainingFormat.weight(currentWeight),
-                        TrainingFormat.count(nextSets)
-                    ]),
+                    explanation: Explanation(
+                        "progression.explain.addSet",
+                        [
+                            input.exercise.name,
+                            TrainingFormat.weight(currentWeight),
+                            TrainingFormat.count(nextSets),
+                        ]),
                     successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                 )
             }
@@ -552,18 +573,21 @@ enum ProgressionEngine {
     ) -> ProgressionDecision {
         let regressions = input.state.consecutiveRegressions + 1
         if regressions >= Constants.regressionSessionsBeforeCut,
-           let reduced = easierLoad(
-               from: currentWeight, fraction: Constants.reduceLoadFraction, input: input
-           ) {
+            let reduced = easierLoad(
+                from: currentWeight, fraction: Constants.reduceLoadFraction, input: input
+            )
+        {
             return decision(
                 input, action: .reduceLoad, weight: reduced, range: range, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.reducedLoad", [
-                    input.exercise.name,
-                    TrainingFormat.weight(currentWeight),
-                    TrainingFormat.weight(reduced),
-                    TrainingFormat.count(range.lower)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.reducedLoad",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.weight(currentWeight),
+                        TrainingFormat.weight(reduced),
+                        TrainingFormat.count(range.lower),
+                    ]),
                 successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
             )
         }
@@ -574,10 +598,12 @@ enum ProgressionEngine {
             return decision(
                 input, action: .maintain, weight: currentWeight, range: range, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.atMinimumLoad", [
-                    input.exercise.name,
-                    TrainingFormat.weight(currentWeight)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.atMinimumLoad",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.weight(currentWeight),
+                    ]),
                 successes: 0, stalls: 0, regressions: regressions, lastPerformedAt: recent.date
             )
         }
@@ -585,12 +611,14 @@ enum ProgressionEngine {
         return decision(
             input, action: .maintain, weight: currentWeight, range: range, sets: setCount,
             targetRIR: targetRIR,
-            explanation: Explanation("progression.explain.maintain", [
-                input.exercise.name,
-                TrainingFormat.weight(currentWeight),
-                TrainingFormat.count(range.lower),
-                TrainingFormat.count(range.upper)
-            ]),
+            explanation: Explanation(
+                "progression.explain.maintain",
+                [
+                    input.exercise.name,
+                    TrainingFormat.weight(currentWeight),
+                    TrainingFormat.count(range.lower),
+                    TrainingFormat.count(range.upper),
+                ]),
             successes: 0, stalls: 0, regressions: regressions, lastPerformedAt: recent.date
         )
     }
@@ -609,20 +637,23 @@ enum ProgressionEngine {
         let stalls = evaluation.improvedOnPrevious ? 0 : input.state.consecutiveStalls + 1
 
         if stalls >= Constants.stallSessionsBeforeReset,
-           let reduced = easierLoad(
-               from: currentWeight, fraction: Constants.reduceLoadFraction, input: input
-           ) {
+            let reduced = easierLoad(
+                from: currentWeight, fraction: Constants.reduceLoadFraction, input: input
+            )
+        {
             // Four sessions inside the range with no added reps and no added load is a plateau. A
             // small step back and a second run at the same load is the standard way through one.
             return decision(
                 input, action: .reduceLoad, weight: reduced, range: range, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.reducedLoadStall", [
-                    input.exercise.name,
-                    TrainingFormat.weight(currentWeight),
-                    TrainingFormat.weight(reduced),
-                    TrainingFormat.count(stalls)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.reducedLoadStall",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.weight(currentWeight),
+                        TrainingFormat.weight(reduced),
+                        TrainingFormat.count(stalls),
+                    ]),
                 successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
             )
         }
@@ -635,12 +666,14 @@ enum ProgressionEngine {
             return decision(
                 input, action: .addReps, weight: currentWeight, range: range, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.holdForMargin", [
-                    input.exercise.name,
-                    TrainingFormat.weight(currentWeight),
-                    TrainingFormat.count(evaluation.minReps),
-                    TrainingFormat.count(targetRIR)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.holdForMargin",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.weight(currentWeight),
+                        TrainingFormat.count(evaluation.minReps),
+                        TrainingFormat.count(targetRIR),
+                    ]),
                 successes: 0, stalls: stalls, regressions: 0, lastPerformedAt: recent.date
             )
         }
@@ -648,12 +681,14 @@ enum ProgressionEngine {
         return decision(
             input, action: .addReps, weight: currentWeight, range: range, sets: setCount,
             targetRIR: targetRIR,
-            explanation: Explanation("progression.explain.addReps", [
-                input.exercise.name,
-                TrainingFormat.weight(currentWeight),
-                TrainingFormat.count(range.upper),
-                TrainingFormat.count(evaluation.minReps)
-            ]),
+            explanation: Explanation(
+                "progression.explain.addReps",
+                [
+                    input.exercise.name,
+                    TrainingFormat.weight(currentWeight),
+                    TrainingFormat.count(range.upper),
+                    TrainingFormat.count(evaluation.minReps),
+                ]),
             successes: 0, stalls: stalls, regressions: 0, lastPerformedAt: recent.date
         )
     }
@@ -681,7 +716,8 @@ enum ProgressionEngine {
         }
 
         let jump = abs(next - currentWeight)
-        let cap = currentWeight > Constants.heavyLoadThresholdKg
+        let cap =
+            currentWeight > Constants.heavyLoadThresholdKg
             ? Constants.heavyIncreaseCap
             : Constants.standardIncreaseCap
         // Going from bodyweight to the first added plate has no meaningful percentage.
@@ -693,19 +729,24 @@ enum ProgressionEngine {
         let required = oversizedJump ? requiredSessions + 1 : requiredSessions
 
         guard successes >= required else {
-            let explanation = oversizedJump
-                ? Explanation("progression.explain.bankBeforeBigJump", [
-                    input.exercise.name,
-                    TrainingFormat.weight(currentWeight),
-                    TrainingFormat.weight(jump),
-                    TrainingFormat.percent(jumpFraction)
-                ])
-                : Explanation("progression.explain.bankSession", [
-                    input.exercise.name,
-                    TrainingFormat.weight(currentWeight),
-                    TrainingFormat.count(successes),
-                    TrainingFormat.count(required)
-                ])
+            let explanation =
+                oversizedJump
+                ? Explanation(
+                    "progression.explain.bankBeforeBigJump",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.weight(currentWeight),
+                        TrainingFormat.weight(jump),
+                        TrainingFormat.percent(jumpFraction),
+                    ])
+                : Explanation(
+                    "progression.explain.bankSession",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.weight(currentWeight),
+                        TrainingFormat.count(successes),
+                        TrainingFormat.count(required),
+                    ])
             return decision(
                 input, action: .addReps, weight: currentWeight, range: range, sets: setCount,
                 targetRIR: targetRIR, explanation: explanation,
@@ -715,24 +756,28 @@ enum ProgressionEngine {
 
         let explanation: Explanation
         if required <= 1 {
-            explanation = Explanation("progression.explain.increasedLoadSingle", [
-                input.exercise.name,
-                TrainingFormat.weight(currentWeight),
-                TrainingFormat.weight(next),
-                TrainingFormat.count(evaluation.setCount),
-                TrainingFormat.count(evaluation.minReps),
-                TrainingFormat.count(targetRIR)
-            ])
+            explanation = Explanation(
+                "progression.explain.increasedLoadSingle",
+                [
+                    input.exercise.name,
+                    TrainingFormat.weight(currentWeight),
+                    TrainingFormat.weight(next),
+                    TrainingFormat.count(evaluation.setCount),
+                    TrainingFormat.count(evaluation.minReps),
+                    TrainingFormat.count(targetRIR),
+                ])
         } else {
-            explanation = Explanation("progression.explain.increasedLoad", [
-                input.exercise.name,
-                TrainingFormat.weight(currentWeight),
-                TrainingFormat.weight(next),
-                TrainingFormat.count(successes),
-                TrainingFormat.count(evaluation.setCount),
-                TrainingFormat.count(evaluation.minReps),
-                TrainingFormat.count(targetRIR)
-            ])
+            explanation = Explanation(
+                "progression.explain.increasedLoad",
+                [
+                    input.exercise.name,
+                    TrainingFormat.weight(currentWeight),
+                    TrainingFormat.weight(next),
+                    TrainingFormat.count(successes),
+                    TrainingFormat.count(evaluation.setCount),
+                    TrainingFormat.count(evaluation.minReps),
+                    TrainingFormat.count(targetRIR),
+                ])
         }
 
         // The rep target resets to the bottom of the range: the new load is meant to be hard at the
@@ -758,12 +803,14 @@ enum ProgressionEngine {
             return decision(
                 input, action: .addReps, weight: currentWeight, range: expanded, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.extendReps", [
-                    input.exercise.name,
-                    TrainingFormat.count(expanded.lower),
-                    TrainingFormat.count(expanded.upper),
-                    TrainingFormat.count(evaluation.minReps)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.extendReps",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.count(expanded.lower),
+                        TrainingFormat.count(expanded.upper),
+                        TrainingFormat.count(evaluation.minReps),
+                    ]),
                 successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
             )
         }
@@ -777,12 +824,14 @@ enum ProgressionEngine {
             return decision(
                 input, action: .addReps, weight: currentWeight, range: range, sets: nextSets,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.addSetUnloaded", [
-                    input.exercise.name,
-                    TrainingFormat.count(nextSets),
-                    TrainingFormat.count(range.lower),
-                    TrainingFormat.count(range.upper)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.addSetUnloaded",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.count(nextSets),
+                        TrainingFormat.count(range.lower),
+                        TrainingFormat.count(range.upper),
+                    ]),
                 successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
             )
         }
@@ -790,11 +839,13 @@ enum ProgressionEngine {
         return decision(
             input, action: .maintain, weight: currentWeight, range: range, sets: setCount,
             targetRIR: targetRIR,
-            explanation: Explanation("progression.explain.outgrown", [
-                input.exercise.name,
-                TrainingFormat.count(setCount),
-                TrainingFormat.count(range.upper)
-            ]),
+            explanation: Explanation(
+                "progression.explain.outgrown",
+                [
+                    input.exercise.name,
+                    TrainingFormat.count(setCount),
+                    TrainingFormat.count(range.upper),
+                ]),
             successes: 0, stalls: input.state.consecutiveStalls + 1, regressions: 0,
             lastPerformedAt: recent.date
         )
@@ -814,11 +865,13 @@ enum ProgressionEngine {
             // prescription and the next decision has something to read.
             return decision(
                 input, action: .maintain, weight: nil, range: range, sets: nil, targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.startReps", [
-                    input.exercise.name,
-                    TrainingFormat.count(range.lower),
-                    TrainingFormat.count(range.upper)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.startReps",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.count(range.lower),
+                        TrainingFormat.count(range.upper),
+                    ]),
                 successes: 0, stalls: 0, regressions: 0, lastPerformedAt: input.state.lastPerformedAt
             )
         }
@@ -840,27 +893,32 @@ enum ProgressionEngine {
         if !evaluation.allMetBottom {
             let regressions = input.state.consecutiveRegressions + 1
             if regressions >= Constants.regressionSessionsBeforeCut,
-               let reduced = reducedRepWindow(range) {
+                let reduced = reducedRepWindow(range)
+            {
                 return decision(
                     input, action: .reduceLoad, weight: nil, range: reduced, sets: setCount,
                     targetRIR: targetRIR,
-                    explanation: Explanation("progression.explain.reducedReps", [
-                        input.exercise.name,
-                        TrainingFormat.count(reduced.lower),
-                        TrainingFormat.count(reduced.upper),
-                        TrainingFormat.count(evaluation.minReps)
-                    ]),
+                    explanation: Explanation(
+                        "progression.explain.reducedReps",
+                        [
+                            input.exercise.name,
+                            TrainingFormat.count(reduced.lower),
+                            TrainingFormat.count(reduced.upper),
+                            TrainingFormat.count(evaluation.minReps),
+                        ]),
                     successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                 )
             }
             return decision(
                 input, action: .maintain, weight: nil, range: range, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.maintainUnloaded", [
-                    input.exercise.name,
-                    TrainingFormat.count(range.lower),
-                    TrainingFormat.count(range.upper)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.maintainUnloaded",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.count(range.lower),
+                        TrainingFormat.count(range.upper),
+                    ]),
                 successes: 0, stalls: 0, regressions: regressions, lastPerformedAt: recent.date
             )
         }
@@ -869,11 +927,13 @@ enum ProgressionEngine {
         return decision(
             input, action: .addReps, weight: nil, range: range, sets: setCount,
             targetRIR: targetRIR,
-            explanation: Explanation("progression.explain.addRepsUnloaded", [
-                input.exercise.name,
-                TrainingFormat.count(range.upper),
-                TrainingFormat.count(evaluation.minReps)
-            ]),
+            explanation: Explanation(
+                "progression.explain.addRepsUnloaded",
+                [
+                    input.exercise.name,
+                    TrainingFormat.count(range.upper),
+                    TrainingFormat.count(evaluation.minReps),
+                ]),
             successes: 0, stalls: stalls, regressions: 0, lastPerformedAt: recent.date
         )
     }
@@ -898,11 +958,13 @@ enum ProgressionEngine {
             return decision(
                 input, action: .maintain, weight: currentWeight, range: window, sets: nil,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.startDuration", [
-                    input.exercise.name,
-                    TrainingFormat.seconds(window.lower),
-                    TrainingFormat.seconds(window.upper)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.startDuration",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.seconds(window.lower),
+                        TrainingFormat.seconds(window.upper),
+                    ]),
                 successes: 0, stalls: 0, regressions: 0, lastPerformedAt: input.state.lastPerformedAt
             )
         }
@@ -928,12 +990,14 @@ enum ProgressionEngine {
                 return decision(
                     input, action: .addReps, weight: currentWeight, range: expanded, sets: setCount,
                     targetRIR: targetRIR,
-                    explanation: Explanation("progression.explain.extendDuration", [
-                        input.exercise.name,
-                        TrainingFormat.seconds(expanded.lower),
-                        TrainingFormat.seconds(expanded.upper),
-                        TrainingFormat.seconds(shortest)
-                    ]),
+                    explanation: Explanation(
+                        "progression.explain.extendDuration",
+                        [
+                            input.exercise.name,
+                            TrainingFormat.seconds(expanded.lower),
+                            TrainingFormat.seconds(expanded.upper),
+                            TrainingFormat.seconds(shortest),
+                        ]),
                     successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                 )
             }
@@ -945,12 +1009,14 @@ enum ProgressionEngine {
                 return decision(
                     input, action: .increaseLoad, weight: next, range: reset, sets: setCount,
                     targetRIR: targetRIR,
-                    explanation: Explanation("progression.explain.increasedLoadDuration", [
-                        input.exercise.name,
-                        TrainingFormat.weight(currentWeight),
-                        TrainingFormat.weight(next),
-                        TrainingFormat.seconds(window.upper)
-                    ]),
+                    explanation: Explanation(
+                        "progression.explain.increasedLoadDuration",
+                        [
+                            input.exercise.name,
+                            TrainingFormat.weight(currentWeight),
+                            TrainingFormat.weight(next),
+                            TrainingFormat.seconds(window.upper),
+                        ]),
                     successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                 )
             }
@@ -964,12 +1030,14 @@ enum ProgressionEngine {
                 return decision(
                     input, action: .addReps, weight: currentWeight, range: window, sets: nextSets,
                     targetRIR: targetRIR,
-                    explanation: Explanation("progression.explain.addSetDuration", [
-                        input.exercise.name,
-                        TrainingFormat.count(nextSets),
-                        TrainingFormat.seconds(window.lower),
-                        TrainingFormat.seconds(window.upper)
-                    ]),
+                    explanation: Explanation(
+                        "progression.explain.addSetDuration",
+                        [
+                            input.exercise.name,
+                            TrainingFormat.count(nextSets),
+                            TrainingFormat.seconds(window.lower),
+                            TrainingFormat.seconds(window.upper),
+                        ]),
                     successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                 )
             }
@@ -977,11 +1045,13 @@ enum ProgressionEngine {
             return decision(
                 input, action: .maintain, weight: currentWeight, range: window, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.outgrownDuration", [
-                    input.exercise.name,
-                    TrainingFormat.count(setCount),
-                    TrainingFormat.seconds(window.upper)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.outgrownDuration",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.count(setCount),
+                        TrainingFormat.seconds(window.upper),
+                    ]),
                 successes: 0, stalls: input.state.consecutiveStalls + 1, regressions: 0,
                 lastPerformedAt: recent.date
             )
@@ -990,18 +1060,22 @@ enum ProgressionEngine {
         if shortest < window.lower {
             let regressions = input.state.consecutiveRegressions + 1
             if regressions >= Constants.regressionSessionsBeforeCut {
-                if let currentWeight, let reduced = easierLoad(
-                    from: currentWeight, fraction: Constants.reduceLoadFraction, input: input
-                ) {
+                if let currentWeight,
+                    let reduced = easierLoad(
+                        from: currentWeight, fraction: Constants.reduceLoadFraction, input: input
+                    )
+                {
                     return decision(
                         input, action: .reduceLoad, weight: reduced, range: window, sets: setCount,
                         targetRIR: targetRIR,
-                        explanation: Explanation("progression.explain.reducedLoadDuration", [
-                            input.exercise.name,
-                            TrainingFormat.weight(currentWeight),
-                            TrainingFormat.weight(reduced),
-                            TrainingFormat.seconds(window.lower)
-                        ]),
+                        explanation: Explanation(
+                            "progression.explain.reducedLoadDuration",
+                            [
+                                input.exercise.name,
+                                TrainingFormat.weight(currentWeight),
+                                TrainingFormat.weight(reduced),
+                                TrainingFormat.seconds(window.lower),
+                            ]),
                         successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                     )
                 }
@@ -1009,12 +1083,14 @@ enum ProgressionEngine {
                     return decision(
                         input, action: .reduceLoad, weight: currentWeight, range: shortened,
                         sets: setCount, targetRIR: targetRIR,
-                        explanation: Explanation("progression.explain.reducedDuration", [
-                            input.exercise.name,
-                            TrainingFormat.seconds(shortened.lower),
-                            TrainingFormat.seconds(shortened.upper),
-                            TrainingFormat.seconds(shortest)
-                        ]),
+                        explanation: Explanation(
+                            "progression.explain.reducedDuration",
+                            [
+                                input.exercise.name,
+                                TrainingFormat.seconds(shortened.lower),
+                                TrainingFormat.seconds(shortened.upper),
+                                TrainingFormat.seconds(shortest),
+                            ]),
                         successes: 0, stalls: 0, regressions: 0, lastPerformedAt: recent.date
                     )
                 }
@@ -1022,11 +1098,13 @@ enum ProgressionEngine {
             return decision(
                 input, action: .maintain, weight: currentWeight, range: window, sets: setCount,
                 targetRIR: targetRIR,
-                explanation: Explanation("progression.explain.maintainDuration", [
-                    input.exercise.name,
-                    TrainingFormat.seconds(window.lower),
-                    TrainingFormat.seconds(window.upper)
-                ]),
+                explanation: Explanation(
+                    "progression.explain.maintainDuration",
+                    [
+                        input.exercise.name,
+                        TrainingFormat.seconds(window.lower),
+                        TrainingFormat.seconds(window.upper),
+                    ]),
                 successes: 0, stalls: 0, regressions: regressions, lastPerformedAt: recent.date
             )
         }
@@ -1034,12 +1112,14 @@ enum ProgressionEngine {
         return decision(
             input, action: .addReps, weight: currentWeight, range: window, sets: setCount,
             targetRIR: targetRIR,
-            explanation: Explanation("progression.explain.holdDuration", [
-                input.exercise.name,
-                TrainingFormat.seconds(window.lower),
-                TrainingFormat.seconds(window.upper),
-                TrainingFormat.seconds(shortest)
-            ]),
+            explanation: Explanation(
+                "progression.explain.holdDuration",
+                [
+                    input.exercise.name,
+                    TrainingFormat.seconds(window.lower),
+                    TrainingFormat.seconds(window.upper),
+                    TrainingFormat.seconds(shortest),
+                ]),
             successes: 0, stalls: input.state.consecutiveStalls + 1, regressions: 0,
             lastPerformedAt: recent.date
         )
@@ -1235,7 +1315,8 @@ enum ProgressionEngine {
     private static func preferredStep(_ input: ProgressionInput, base: Double) -> Double {
         let meta = input.exercise.metadata
         if meta.mechanic == .compound,
-           meta.loadability == .barbell || meta.loadability == .ezBar {
+            meta.loadability == .barbell || meta.loadability == .ezBar
+        {
             return max(base, Constants.barbellCompoundStepKg)
         }
         return base
@@ -1355,15 +1436,17 @@ enum ProgressionEngine {
     /// The best one-rep max the history supports, for loaded rep work only.
     private static func bestOneRepMax(_ input: ProgressionInput) -> Double? {
         guard input.exercise.metadata.trackingMode.usesWeight,
-              input.exercise.metadata.trackingMode.usesReps,
-              input.exercise.metadata.loadability != .assistedBodyweight else { return nil }
+            input.exercise.metadata.trackingMode.usesReps,
+            input.exercise.metadata.loadability != .assistedBodyweight
+        else { return nil }
         var best = max(
             input.state.bestEstimatedOneRepMaxKg ?? 0,
             input.history.bestEstimatedOneRepMaxKg ?? 0
         )
         for performance in input.history.performances.prefix(3) {
             if let estimate = OneRepMaxCalculator.bestEstimate(from: performance.sets),
-               estimate > best {
+                estimate > best
+            {
                 best = estimate
             }
         }

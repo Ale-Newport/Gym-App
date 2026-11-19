@@ -226,12 +226,15 @@ struct ProgramVersionDetailView: View {
                         .font(.subheadline)
                         .foregroundStyle(Color.appTextSecondary)
                         .fixedSize(horizontal: false, vertical: true)
-                    Text(L("program.versions.recordedAt",
-                           formatter.mediumDate(version.createdAt),
-                           formatter.time(version.createdAt)))
-                        .font(.caption)
-                        .foregroundStyle(Color.appTextTertiary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Text(
+                        L(
+                            "program.versions.recordedAt",
+                            formatter.mediumDate(version.createdAt),
+                            formatter.time(version.createdAt))
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.appTextTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
 
                 HStack(spacing: Metrics.spacing20) {
@@ -306,12 +309,15 @@ struct ProgramVersionDetailView: View {
                     }
                 }
 
-                Text(L("program.versions.sessionSummary",
-                       template.exercises.count,
-                       template.exercises.reduce(0) { $0 + $1.targetSets }))
-                    .font(.caption)
-                    .foregroundStyle(Color.appTextSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                Text(
+                    L(
+                        "program.versions.sessionSummary",
+                        template.exercises.count,
+                        template.exercises.reduce(0) { $0 + $1.targetSets })
+                )
+                .font(.caption)
+                .foregroundStyle(Color.appTextSecondary)
+                .fixedSize(horizontal: false, vertical: true)
 
                 if template.exercises.isEmpty {
                     Text(L("program.versions.templateEmpty"))
@@ -320,8 +326,10 @@ struct ProgramVersionDetailView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 } else {
                     VStack(alignment: .leading, spacing: Metrics.spacing8) {
-                        ForEach(template.exercises.sorted { $0.orderIndex < $1.orderIndex },
-                                id: \.orderIndex) { exercise in
+                        ForEach(
+                            template.exercises.sorted { $0.orderIndex < $1.orderIndex },
+                            id: \.orderIndex
+                        ) { exercise in
                             exerciseRow(exercise)
                         }
                     }
@@ -381,9 +389,11 @@ struct ProgramVersionDetailView: View {
         if let seconds = exercise.targetDurationSeconds {
             parts.append(L("program.session.setsForTime", exercise.targetSets, seconds))
         } else {
-            parts.append(L("program.session.setsByReps",
-                           exercise.targetSets,
-                           RepRange(exercise.repLower, exercise.repUpper).description))
+            parts.append(
+                L(
+                    "program.session.setsByReps",
+                    exercise.targetSets,
+                    RepRange(exercise.repLower, exercise.repUpper).description))
         }
         parts.append(Units.formatDuration(seconds: exercise.restSeconds))
         parts.append(L("program.session.rirShort", exercise.targetRIR))

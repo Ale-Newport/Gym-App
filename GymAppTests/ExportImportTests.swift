@@ -658,7 +658,8 @@ struct ImportValidationTests {
             _ = try importer.inspect(url: url)
             Issue.record("an unrelated JSON document was accepted as a backup")
         } catch let error as ImportError {
-            if case .notABackup = error {} else {
+            if case .notABackup = error {
+            } else {
                 Issue.record("expected .notABackup, got \(error)")
             }
         }
@@ -690,7 +691,8 @@ struct ImportValidationTests {
             _ = try importer.inspect(url: url)
             Issue.record("a missing file was accepted as a backup")
         } catch let error as ImportError {
-            if case .unreadableFile = error {} else {
+            if case .unreadableFile = error {
+            } else {
                 Issue.record("expected .unreadableFile, got \(error)")
             }
         }
@@ -735,7 +737,8 @@ struct CSVExportTests {
         #expect(DataExportService.csvField(field) == "\"line one\r\nline two\"")
 
         // The consequence: the exported row splits into two rows when read back.
-        let line = [DataExportService.csvField("before"), DataExportService.csvField(field)]
+        let line =
+            [DataExportService.csvField("before"), DataExportService.csvField(field)]
             .joined(separator: ",") + "\n"
         #expect(CSVReader.rows(line).count == 1)
     }
@@ -955,7 +958,8 @@ struct StoreReplacementSideEffectTests {
     private func backup(of context: ModelContext) throws -> PendingImport {
         let data = try DataExportService(context: context).fullBackup()
         let document = try DataExportService.decoder.decode(BackupDocument.self, from: data)
-        return PendingImport(url: BackupFixture.temporaryURL("replace.json"), fileName: "replace.json", document: document)
+        return PendingImport(
+            url: BackupFixture.temporaryURL("replace.json"), fileName: "replace.json", document: document)
     }
 
     /// The widget snapshot, when this test host has an App Group container to write it to.

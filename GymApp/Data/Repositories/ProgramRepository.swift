@@ -93,9 +93,10 @@ struct ProgramRepository: Repository {
 
     /// Every program, newest first. Inactive programs are retained so their history stays readable.
     func allPrograms() throws -> [TrainingProgram] {
-        try fetch(FetchDescriptor<TrainingProgram>(
-            sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
-        ))
+        try fetch(
+            FetchDescriptor<TrainingProgram>(
+                sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
+            ))
     }
 
     func program(id: UUID) throws -> TrainingProgram? {

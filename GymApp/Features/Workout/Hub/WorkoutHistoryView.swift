@@ -218,7 +218,7 @@ private struct HistoryRow: View {
             formatter.mediumDate(summary.date),
             formatter.durationCompact(summary.durationSeconds),
             formatter.volume(summary.volumeKg),
-            L("workoutHub.history.setsOf", summary.completedSets, summary.plannedSets)
+            L("workoutHub.history.setsOf", summary.completedSets, summary.plannedSets),
         ]
         if summary.hasPersonalRecord { parts.append(L("workoutHub.history.prBadgeLong")) }
         if summary.status == .skipped { parts.append(L("sessionStatus.skipped")) }

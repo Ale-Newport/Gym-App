@@ -150,10 +150,11 @@ struct ExerciseFactsGrid: View {
             ("exercise.fact.difficulty", L(exercise.metadata.difficulty.localizationKey)),
         ]
         if !exercise.secondaryMuscles.isEmpty {
-            rows.append((
-                "exercise.fact.secondary",
-                exercise.secondaryMuscles.map { L($0.localizationKey) }.joined(separator: ", ")
-            ))
+            rows.append(
+                (
+                    "exercise.fact.secondary",
+                    exercise.secondaryMuscles.map { L($0.localizationKey) }.joined(separator: ", ")
+                ))
         }
         if exercise.metadata.trackingMode.usesReps {
             rows.append(("exercise.fact.repRange", exercise.metadata.recommendedRepRange.description))

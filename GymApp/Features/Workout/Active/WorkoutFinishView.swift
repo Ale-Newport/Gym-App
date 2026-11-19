@@ -50,11 +50,12 @@ struct WorkoutFinishView: View {
             }
             Button(L("common.cancel"), role: .cancel) {}
         } message: {
-            Text(L(
-                "active.discard.message",
-                LPlural("active.discard.sets", model.discardImpact.sets),
-                formatter.durationCompact(model.discardImpact.seconds)
-            ))
+            Text(
+                L(
+                    "active.discard.message",
+                    LPlural("active.discard.sets", model.discardImpact.sets),
+                    formatter.durationCompact(model.discardImpact.seconds)
+                ))
         }
     }
 
@@ -233,11 +234,13 @@ struct WorkoutFinishView: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.appTextPrimary)
                     .fixedSize(horizontal: false, vertical: true)
-                Text(L(
-                    "active.finish.recordDetail",
-                    L(record.kind.localizationKey),
-                    recordValue(record)
-                ))
+                Text(
+                    L(
+                        "active.finish.recordDetail",
+                        L(record.kind.localizationKey),
+                        recordValue(record)
+                    )
+                )
                 .font(.caption)
                 .foregroundStyle(Color.appTextSecondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -307,11 +310,13 @@ struct WorkoutFinishView: View {
                                     .foregroundStyle(Color.appTextPrimary)
                             }
                             .accessibilityElement(children: .combine)
-                            .accessibilityLabel(Text(L(
-                                "active.finish.groupSets",
-                                L(entry.group.localizationKey),
-                                Units.formatDecimal(entry.sets, digits: 1)
-                            )))
+                            .accessibilityLabel(
+                                Text(
+                                    L(
+                                        "active.finish.groupSets",
+                                        L(entry.group.localizationKey),
+                                        Units.formatDecimal(entry.sets, digits: 1)
+                                    )))
                         }
                     }
                 }
@@ -374,7 +379,9 @@ struct WorkoutFinishView: View {
             Spacer(minLength: Metrics.spacing8)
             Text(text)
                 .font(.subheadline.weight(.medium))
-                .foregroundStyle(isFlat ? Color.appTextSecondary : (delta > 0 ? Color.appSuccess : Color.appTextPrimary))
+                .foregroundStyle(
+                    isFlat ? Color.appTextSecondary : (delta > 0 ? Color.appSuccess : Color.appTextPrimary)
+                )
                 .multilineTextAlignment(.trailing)
                 .fixedSize(horizontal: false, vertical: true)
         }

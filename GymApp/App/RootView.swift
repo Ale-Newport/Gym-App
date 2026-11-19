@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// Decides what the user sees at launch: onboarding, the main app, or a blocking failure state.
 struct RootView: View {
@@ -58,10 +58,10 @@ struct RootView: View {
             guard !didBootstrap else { return }
             didBootstrap = true
             #if DEBUG
-            // Seeds a UI-test fixture before anything reads the store. No-op unless the launch
-            // arguments ask for it, and compiled out of Release entirely.
-            UITestLaunchSupport.prepareIfNeeded(context: modelContext)
-            if let tab = UITestLaunchSupport.initialTab { router.selectedTab = tab }
+                // Seeds a UI-test fixture before anything reads the store. No-op unless the launch
+                // arguments ask for it, and compiled out of Release entirely.
+                UITestLaunchSupport.prepareIfNeeded(context: modelContext)
+                if let tab = UITestLaunchSupport.initialTab { router.selectedTab = tab }
             #endif
             await environment.bootstrap()
             await AppBootstrap.ensureBaselineRecords(in: modelContext)

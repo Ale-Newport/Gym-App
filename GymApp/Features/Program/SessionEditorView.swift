@@ -141,13 +141,16 @@ struct SessionEditorView: View {
                         }
                     }
                 }
-                Text(L("program.session.summary",
-                       template.orderedExercises.count,
-                       template.totalPlannedSets,
-                       formatter.durationCompact(model.estimatedMinutes(of: template) * 60)))
-                    .font(.footnote)
-                    .foregroundStyle(Color.appTextSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                Text(
+                    L(
+                        "program.session.summary",
+                        template.orderedExercises.count,
+                        template.totalPlannedSets,
+                        formatter.durationCompact(model.estimatedMinutes(of: template) * 60))
+                )
+                .font(.footnote)
+                .foregroundStyle(Color.appTextSecondary)
+                .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.vertical, Metrics.spacing4)
             .accessibilityElement(children: .combine)
@@ -346,29 +349,41 @@ struct PlannedExerciseRow: View {
             summary
         }
         .contextMenu {
-            Button { onSwap() } label: {
+            Button {
+                onSwap()
+            } label: {
                 Label(L("program.session.swap"), systemImage: "arrow.triangle.2.circlepath")
             }
             if planned.substitutedFromExerciseID != nil {
-                Button { model.restoreRecommendation(for: planned) } label: {
+                Button {
+                    model.restoreRecommendation(for: planned)
+                } label: {
                     Label(L("program.session.restore"), systemImage: "arrow.uturn.backward")
                 }
             }
-            Button { model.setLocked(!planned.isLocked, on: planned) } label: {
+            Button {
+                model.setLocked(!planned.isLocked, on: planned)
+            } label: {
                 Label(
                     planned.isLocked ? L("program.session.unlock") : L("program.session.lock"),
                     systemImage: planned.isLocked ? "lock.open" : "lock"
                 )
             }
-            Button(role: .destructive) { onRemove() } label: {
+            Button(role: .destructive) {
+                onRemove()
+            } label: {
                 Label(L("common.remove"), systemImage: "trash")
             }
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            Button(role: .destructive) { onRemove() } label: {
+            Button(role: .destructive) {
+                onRemove()
+            } label: {
                 Label(L("common.remove"), systemImage: "trash")
             }
-            Button { onSwap() } label: {
+            Button {
+                onSwap()
+            } label: {
                 Label(L("program.session.swap"), systemImage: "arrow.triangle.2.circlepath")
             }
             .tint(Color.appRecovery)

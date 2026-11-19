@@ -154,11 +154,12 @@ struct TodayWorkoutView: View {
             }
             .buttonStyle(PrimaryButtonStyle())
             .disabled(model.isStarting)
-            .accessibilityLabel(Text(
-                model.inProgressSessionID != nil
-                    ? L("workoutHub.today.resume")
-                    : L("workoutHub.today.start")
-            ))
+            .accessibilityLabel(
+                Text(
+                    model.inProgressSessionID != nil
+                        ? L("workoutHub.today.resume")
+                        : L("workoutHub.today.start")
+                ))
         }
         .screenPadding()
         .padding(.vertical, Metrics.spacing12)
@@ -444,7 +445,8 @@ struct HubStepperRow: View {
                 Image(systemName: "minus")
                     .font(.subheadline.weight(.semibold))
                     .frame(width: Metrics.minimumTapTarget, height: Metrics.minimumTapTarget)
-                    .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
+                    .background(
+                        Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
             }
             .buttonStyle(.plain)
             .disabled(value <= range.lowerBound)
@@ -462,7 +464,8 @@ struct HubStepperRow: View {
                 Image(systemName: "plus")
                     .font(.subheadline.weight(.semibold))
                     .frame(width: Metrics.minimumTapTarget, height: Metrics.minimumTapTarget)
-                    .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
+                    .background(
+                        Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
             }
             .buttonStyle(.plain)
             .disabled(value >= range.upperBound)

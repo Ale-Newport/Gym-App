@@ -13,7 +13,6 @@ enum HomeAccessibility {
     static let profile = "home.profile"
 }
 
-
 /// The dashboard's centre of gravity: what the user is meant to do today, and one button to do it.
 ///
 /// Five states, one call to action each. The button is deliberately the widest, tallest thing on
@@ -70,11 +69,13 @@ struct TodaySessionCard: View {
             .accessibilityElement(children: .combine)
         }
 
-        Text(metadataLine(
-            exercises: plan.exerciseCount,
-            sets: plan.setCount,
-            minutes: plan.estimatedMinutes
-        ))
+        Text(
+            metadataLine(
+                exercises: plan.exerciseCount,
+                sets: plan.setCount,
+                minutes: plan.estimatedMinutes
+            )
+        )
         .font(.subheadline)
         .foregroundStyle(Color.appTextSecondary)
         .fixedSize(horizontal: false, vertical: true)
@@ -84,11 +85,14 @@ struct TodaySessionCard: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(isBusy)
-        .accessibilityLabel(Text(L(
-            "home.today.startAccessibility",
-            plan.title,
-            metadataLine(exercises: plan.exerciseCount, sets: plan.setCount, minutes: plan.estimatedMinutes)
-        )))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "home.today.startAccessibility",
+                    plan.title,
+                    metadataLine(exercises: plan.exerciseCount, sets: plan.setCount, minutes: plan.estimatedMinutes)
+                ))
+        )
         // The spoken label names the session ("Start Upper A. 7 exercises…"), which is what a
         // VoiceOver user wants and what makes the control unaddressable by name. The identifier is
         // the stable handle.
@@ -293,7 +297,7 @@ struct TodaySessionCard: View {
         [
             LPlural("home.today.exercises", exercises),
             LPlural("home.today.sets", sets),
-            L("duration.minutes", minutes)
+            L("duration.minutes", minutes),
         ].joined(separator: " · ")
     }
 
@@ -307,15 +311,16 @@ struct TodaySessionCard: View {
     PreviewHost(scenario: .freshProgram) {
         ScrollView {
             TodaySessionCard(
-                state: .scheduled(.init(
-                    templateID: UUID(),
-                    title: "Upper A",
-                    focusGroups: [.chest, .back, .shoulders, .triceps],
-                    exerciseCount: 6,
-                    setCount: 22,
-                    estimatedMinutes: 58,
-                    isEasyWeek: true
-                )),
+                state: .scheduled(
+                    .init(
+                        templateID: UUID(),
+                        title: "Upper A",
+                        focusGroups: [.chest, .back, .shoulders, .triceps],
+                        exerciseCount: 6,
+                        setCount: 22,
+                        estimatedMinutes: 58,
+                        isEasyWeek: true
+                    )),
                 onStart: {}, onResume: {}, onCreateProgram: {}, onViewProgram: {},
                 onViewSummary: { _ in }, onStartLight: {}, onOpenStretch: { _ in }
             )
@@ -329,12 +334,13 @@ struct TodaySessionCard: View {
     PreviewHost(scenario: .seasonedUser) {
         ScrollView {
             TodaySessionCard(
-                state: .rest(.init(
-                    nextTitle: "Lower B",
-                    nextWeekday: .thursday,
-                    stretchExerciseID: "0001",
-                    stretchName: "Standing Hamstring Stretch"
-                )),
+                state: .rest(
+                    .init(
+                        nextTitle: "Lower B",
+                        nextWeekday: .thursday,
+                        stretchExerciseID: "0001",
+                        stretchName: "Standing Hamstring Stretch"
+                    )),
                 onStart: {}, onResume: {}, onCreateProgram: {}, onViewProgram: {},
                 onViewSummary: { _ in }, onStartLight: {}, onOpenStretch: { _ in }
             )

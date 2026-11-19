@@ -98,33 +98,36 @@ struct DataExportService {
         let sessions = try context.fetch(
             FetchDescriptor<WorkoutSession>(sortBy: [SortDescriptor(\.startedAt)])
         )
-        var lines = [Self.csvRow([
-            "date", "session", "status", "exercise", "exercise_id", "set", "set_type",
-            "weight_kg", "reps", "duration_s", "distance_m", "rir", "rpe", "completed",
-            "volume_kg", "notes",
-        ])]
+        var lines = [
+            Self.csvRow([
+                "date", "session", "status", "exercise", "exercise_id", "set", "set_type",
+                "weight_kg", "reps", "duration_s", "distance_m", "rir", "rpe", "completed",
+                "volume_kg", "notes",
+            ])
+        ]
 
         for session in sessions {
             for exercise in session.orderedExercises {
                 for set in exercise.orderedSets {
-                    lines.append(Self.csvRow([
-                        Self.isoFormatter.string(from: set.completedAt ?? session.startedAt),
-                        session.titleSnapshot,
-                        session.status.rawValue,
-                        exercise.exerciseNameSnapshot,
-                        exercise.exerciseID,
-                        String(set.setIndex + 1),
-                        set.kind.rawValue,
-                        set.weightKg.map { Self.number($0) } ?? "",
-                        set.reps.map(String.init) ?? "",
-                        set.durationSeconds.map(String.init) ?? "",
-                        set.distanceMeters.map { Self.number($0) } ?? "",
-                        set.rir.map(String.init) ?? "",
-                        set.rpe.map { Self.number($0) } ?? "",
-                        set.isCompleted ? "true" : "false",
-                        Self.number(set.volumeKg),
-                        set.notes ?? "",
-                    ]))
+                    lines.append(
+                        Self.csvRow([
+                            Self.isoFormatter.string(from: set.completedAt ?? session.startedAt),
+                            session.titleSnapshot,
+                            session.status.rawValue,
+                            exercise.exerciseNameSnapshot,
+                            exercise.exerciseID,
+                            String(set.setIndex + 1),
+                            set.kind.rawValue,
+                            set.weightKg.map { Self.number($0) } ?? "",
+                            set.reps.map(String.init) ?? "",
+                            set.durationSeconds.map(String.init) ?? "",
+                            set.distanceMeters.map { Self.number($0) } ?? "",
+                            set.rir.map(String.init) ?? "",
+                            set.rpe.map { Self.number($0) } ?? "",
+                            set.isCompleted ? "true" : "false",
+                            Self.number(set.volumeKg),
+                            set.notes ?? "",
+                        ]))
                 }
             }
         }
@@ -135,27 +138,30 @@ struct DataExportService {
         let entries = try context.fetch(
             FetchDescriptor<FoodLogEntry>(sortBy: [SortDescriptor(\.loggedAt)])
         )
-        var lines = [Self.csvRow([
-            "day", "logged_at", "meal", "food", "brand", "quantity", "unit",
-            "kcal", "protein_g", "carbs_g", "fat_g", "fiber_g", "sodium_mg",
-        ])]
+        var lines = [
+            Self.csvRow([
+                "day", "logged_at", "meal", "food", "brand", "quantity", "unit",
+                "kcal", "protein_g", "carbs_g", "fat_g", "fiber_g", "sodium_mg",
+            ])
+        ]
 
         for entry in entries {
-            lines.append(Self.csvRow([
-                entry.dayKey,
-                Self.isoFormatter.string(from: entry.loggedAt),
-                entry.mealSlot.rawValue,
-                entry.foodNameSnapshot,
-                entry.brandSnapshot ?? "",
-                Self.number(entry.quantity),
-                entry.unit.rawValue,
-                Self.number(entry.macrosSnapshot.kilocalories),
-                Self.number(entry.macrosSnapshot.proteinG),
-                Self.number(entry.macrosSnapshot.carbsG),
-                Self.number(entry.macrosSnapshot.fatG),
-                entry.micronutrientsSnapshot.fiberG.map { Self.number($0) } ?? "",
-                entry.micronutrientsSnapshot.sodiumMg.map { Self.number($0) } ?? "",
-            ]))
+            lines.append(
+                Self.csvRow([
+                    entry.dayKey,
+                    Self.isoFormatter.string(from: entry.loggedAt),
+                    entry.mealSlot.rawValue,
+                    entry.foodNameSnapshot,
+                    entry.brandSnapshot ?? "",
+                    Self.number(entry.quantity),
+                    entry.unit.rawValue,
+                    Self.number(entry.macrosSnapshot.kilocalories),
+                    Self.number(entry.macrosSnapshot.proteinG),
+                    Self.number(entry.macrosSnapshot.carbsG),
+                    Self.number(entry.macrosSnapshot.fatG),
+                    entry.micronutrientsSnapshot.fiberG.map { Self.number($0) } ?? "",
+                    entry.micronutrientsSnapshot.sodiumMg.map { Self.number($0) } ?? "",
+                ]))
         }
         return lines.joined(separator: "\n") + "\n"
     }
@@ -217,7 +223,8 @@ struct DataExportService {
             foodLog: try context.fetch(FetchDescriptor<FoodLogEntry>()).map(FoodLogExport.init),
             savedMeals: try context.fetch(FetchDescriptor<SavedMeal>()).map(SavedMealExport.init),
             recipes: try context.fetch(FetchDescriptor<Recipe>()).map(RecipeExport.init),
-            nutritionTargets: try context.fetch(FetchDescriptor<DailyNutritionTarget>()).map(NutritionTargetExport.init),
+            nutritionTargets: try context.fetch(FetchDescriptor<DailyNutritionTarget>()).map(
+                NutritionTargetExport.init),
             waterLog: try context.fetch(FetchDescriptor<WaterLogEntry>()).map(WaterExport.init),
             achievements: try context.fetch(FetchDescriptor<Achievement>()).map(AchievementExport.init)
         )

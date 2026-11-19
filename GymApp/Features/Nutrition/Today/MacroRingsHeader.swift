@@ -217,22 +217,24 @@ struct MacroRingsHeader: View {
     PreviewHost(scenario: .fullNutritionDay) {
         ScrollView {
             VStack(spacing: Metrics.spacing16) {
-                MacroRingsHeader(progress: DailyNutritionProgress(
-                    dayKey: DayKey.today,
-                    target: MacroNutrients(kilocalories: 2760, proteinG: 165, carbsG: 320, fatG: 82),
-                    consumed: MacroNutrients(kilocalories: 1980, proteinG: 148, carbsG: 210, fatG: 61),
-                    remaining: MacroNutrients(kilocalories: 780, proteinG: 17, carbsG: 110, fatG: 21),
-                    energyProgress: 0.72,
-                    waterMilliliters: 1500
-                ))
-                MacroRingsHeader(progress: DailyNutritionProgress(
-                    dayKey: DayKey.today,
-                    target: MacroNutrients(kilocalories: 2200, proteinG: 150, carbsG: 220, fatG: 70),
-                    consumed: MacroNutrients(kilocalories: 2480, proteinG: 121, carbsG: 300, fatG: 88),
-                    remaining: MacroNutrients(kilocalories: -280, proteinG: 29, carbsG: -80, fatG: -18),
-                    energyProgress: 1.13,
-                    waterMilliliters: 500
-                ))
+                MacroRingsHeader(
+                    progress: DailyNutritionProgress(
+                        dayKey: DayKey.today,
+                        target: MacroNutrients(kilocalories: 2760, proteinG: 165, carbsG: 320, fatG: 82),
+                        consumed: MacroNutrients(kilocalories: 1980, proteinG: 148, carbsG: 210, fatG: 61),
+                        remaining: MacroNutrients(kilocalories: 780, proteinG: 17, carbsG: 110, fatG: 21),
+                        energyProgress: 0.72,
+                        waterMilliliters: 1500
+                    ))
+                MacroRingsHeader(
+                    progress: DailyNutritionProgress(
+                        dayKey: DayKey.today,
+                        target: MacroNutrients(kilocalories: 2200, proteinG: 150, carbsG: 220, fatG: 70),
+                        consumed: MacroNutrients(kilocalories: 2480, proteinG: 121, carbsG: 300, fatG: 88),
+                        remaining: MacroNutrients(kilocalories: -280, proteinG: 29, carbsG: -80, fatG: -18),
+                        energyProgress: 1.13,
+                        waterMilliliters: 500
+                    ))
             }
             .screenPadding()
         }

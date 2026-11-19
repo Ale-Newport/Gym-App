@@ -1,6 +1,6 @@
 import Foundation
-import UserNotifications
 import Observation
+import UserNotifications
 
 /// Local notifications. Nothing is ever scheduled without the user switching that specific
 /// reminder on, and every category can be turned off independently.
@@ -160,7 +160,8 @@ final class NotificationService {
 
     func cancel(category: Category) async {
         let pending = await center.pendingNotificationRequests()
-        let identifiers = pending
+        let identifiers =
+            pending
             .map(\.identifier)
             .filter { $0.hasPrefix(category.identifierPrefix) }
         center.removePendingNotificationRequests(withIdentifiers: identifiers)

@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 // MARK: - Helpers
@@ -53,7 +54,7 @@ struct ExerciseSearchRankingTests {
         let searchIndex = index([
             makeExercise(id: "sub", name: "barbell bench press"),
             makeExercise(id: "prefix", name: "bench press machine"),
-            makeExercise(id: "exact", name: "bench press")
+            makeExercise(id: "exact", name: "bench press"),
         ])
         #expect(searchIndex.search("bench press") == ["exact", "prefix", "sub"])
     }
@@ -64,7 +65,7 @@ struct ExerciseSearchRankingTests {
             makeExercise(id: "substring", name: "narrow grip pulldown"),
             makeExercise(id: "token", name: "barbell row"),
             makeExercise(id: "prefix", name: "rowing machine"),
-            makeExercise(id: "exact", name: "row")
+            makeExercise(id: "exact", name: "row"),
         ])
         #expect(searchIndex.search("row") == ["exact", "prefix", "token", "substring"])
     }
@@ -79,7 +80,7 @@ struct ExerciseSearchRankingTests {
             makeExercise(
                 id: "name", name: "kettlebell swing",
                 bodyPart: .upperLegs, equipment: .kettlebell, target: .glutes
-            )
+            ),
         ])
         #expect(searchIndex.search("kettlebell") == ["name", "equipment"])
     }
@@ -96,7 +97,7 @@ struct ExerciseSearchRankingTests {
     func resultsAreDrawnFromTheIndex() {
         let exercises = [
             makeExercise(id: "a", name: "barbell bench press"),
-            makeExercise(id: "b", name: "dumbbell bench press", equipment: .dumbbell)
+            makeExercise(id: "b", name: "dumbbell bench press", equipment: .dumbbell),
         ]
         let results = index(exercises).search("bench")
         #expect(Set(results).isSubset(of: Set(exercises.map(\.id))))
@@ -159,7 +160,7 @@ struct ExerciseSearchQueryTests {
         [
             makeExercise(id: "cable-incline", name: "cable incline fly", equipment: .cable),
             makeExercise(id: "cable-flat", name: "cable fly", equipment: .cable),
-            makeExercise(id: "db-incline", name: "dumbbell incline fly", equipment: .dumbbell)
+            makeExercise(id: "db-incline", name: "dumbbell incline fly", equipment: .dumbbell),
         ]
     }
 
@@ -283,7 +284,8 @@ struct ExerciseSearchCatalogueTests {
         for exercise in matches {
             let name = ExerciseNameTokenizer.normalize(exercise.name)
             for word in ["cable", "incline", "fly"] {
-                let matchedSomewhere = name.contains(word)
+                let matchedSomewhere =
+                    name.contains(word)
                     || ExerciseNameTokenizer.normalize(exercise.equipment.rawValue).contains(word)
                     || ExerciseNameTokenizer.normalize(exercise.bodyPart.rawValue).contains(word)
                     || exercise.allMuscles.contains { ExerciseNameTokenizer.normalize($0.rawValue).contains(word) }

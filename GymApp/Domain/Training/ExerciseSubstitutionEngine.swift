@@ -113,7 +113,8 @@ struct ExerciseSubstitutionEngine: Sendable {
 
         // Only computed for `dislike`, and only over the original's own tags, so this is a handful
         // of dictionary lookups rather than a scan.
-        let avoidedTags = request.reason == .dislike
+        let avoidedTags =
+            request.reason == .dislike
             ? distinctiveTags(of: original, limit: Self.dislikeTagDepth)
             : []
 
@@ -170,24 +171,30 @@ struct ExerciseSubstitutionEngine: Sendable {
         for exercise in pool {
             guard seen.insert(exercise.id).inserted else { continue }
             let preference = request.preferences[exercise.id]
-            guard ExerciseScoring.blockingReason(
-                for: exercise,
-                equipment: request.availableEquipment,
-                excludedIDs: request.profile.excludedExerciseIDs,
-                preference: preference,
-                avoidedPatterns: request.profile.avoidedPatterns,
-                limitations: request.profile.mobilityLimitations,
-                unavailableIDs: request.exercisesInSession,
-                allowsStretch: false,
-                requiresLoadableMovement: false
-            ) == nil else { continue }
+            guard
+                ExerciseScoring.blockingReason(
+                    for: exercise,
+                    equipment: request.availableEquipment,
+                    excludedIDs: request.profile.excludedExerciseIDs,
+                    preference: preference,
+                    avoidedPatterns: request.profile.avoidedPatterns,
+                    limitations: request.profile.mobilityLimitations,
+                    unavailableIDs: request.exercisesInSession,
+                    allowsStretch: false,
+                    requiresLoadableMovement: false
+                ) == nil
+            else { continue }
 
             if applyReasonFilter,
-               !passesReasonFilter(exercise, request: request, avoidedTags: avoidedTags) { continue }
+                !passesReasonFilter(exercise, request: request, avoidedTags: avoidedTags)
+            {
+                continue
+            }
 
             let history = request.histories[exercise.id]
             let resemblance = similarity(original, exercise, weights: weights)
-            let base = Self.similarityShare * resemblance
+            let base =
+                Self.similarityShare * resemblance
                 + Self.preferenceShare * ExerciseScoring.preferenceScore(preference)
                 + Self.familiarityShare * Self.familiarityScore(history, preference: preference)
 
@@ -230,7 +237,8 @@ struct ExerciseSubstitutionEngine: Sendable {
     /// Tag rarity comes from the catalogue this engine was built with, so the measure is
     /// deterministic for a given catalogue — the same pair always scores the same.
     func similarity(_ a: Exercise, _ b: Exercise, weights: SubstitutionWeights = .default) -> Double {
-        let total = weights.sameTarget + weights.samePattern + weights.secondaryOverlap
+        let total =
+            weights.sameTarget + weights.samePattern + weights.secondaryOverlap
             + weights.samePushPull + weights.sameMechanic + weights.tagOverlap
             + weights.difficultyProximity + weights.equipmentFit
         guard total > 0 else { return 0 }
@@ -243,7 +251,8 @@ struct ExerciseSubstitutionEngine: Sendable {
         // dumbbell fly does replace a bench press when the rack is taken, just imperfectly.
         sum += weights.sameMechanic * (a.metadata.mechanic == b.metadata.mechanic ? 1 : 0.3)
         sum += weights.tagOverlap * tagOverlap(a, b)
-        sum += weights.difficultyProximity
+        sum +=
+            weights.difficultyProximity
             * (1 - Double(abs(a.metadata.difficulty.rank - b.metadata.difficulty.rank)) / 2)
         sum += weights.equipmentFit * Self.equipmentAffinity(a.equipment, b.equipment)
 
@@ -553,7 +562,8 @@ struct ExerciseSubstitutionEngine: Sendable {
         }
 
         if let reason = request.reason,
-           let specific = Self.reasonKey(reason, candidate: candidate, original: original) {
+            let specific = Self.reasonKey(reason, candidate: candidate, original: original)
+        {
             add(specific)
         }
 
@@ -749,7 +759,7 @@ struct ExerciseSubstitutionEngine: Sendable {
         tags.formUnion(Mechanic.allCases.map(\.rawValue))
         tags.formUnion([
             "bilateral", "unilateral", "free_weight", "handheld", "machine", "bar", "cable",
-            "bodyweight", "band", "portable", "constant_tension"
+            "bodyweight", "band", "portable", "constant_tension",
         ])
         return tags
     }()

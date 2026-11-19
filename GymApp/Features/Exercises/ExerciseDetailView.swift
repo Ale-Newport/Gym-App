@@ -1,6 +1,6 @@
-import SwiftUI
-import SwiftData
 import Charts
+import SwiftData
+import SwiftUI
 
 /// Everything the app knows about one exercise, and everything the user can do with it.
 ///
@@ -83,7 +83,9 @@ struct ExerciseDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Metrics.spacing20) {
                     if let banner = viewModel.banner {
-                        BannerCard(banner: banner) { follow(banner.follow) } dismiss: {
+                        BannerCard(banner: banner) {
+                            follow(banner.follow)
+                        } dismiss: {
                             viewModel.banner = nil
                         }
                     }
@@ -140,9 +142,12 @@ struct ExerciseDetailView: View {
                 .foregroundStyle(viewModel.isFavorite ? Color.appAccent : Color.appTextSecondary)
                 .minimumTapTarget()
         }
-        .accessibilityLabel(Text(viewModel.isFavorite
-            ? L("exercises.action.unfavorite")
-            : L("exercises.action.favorite")))
+        .accessibilityLabel(
+            Text(
+                viewModel.isFavorite
+                    ? L("exercises.action.unfavorite")
+                    : L("exercises.action.favorite"))
+        )
         .accessibilityAddTraits(viewModel.isFavorite ? [.isButton, .isSelected] : .isButton)
     }
 
@@ -315,10 +320,13 @@ struct ExerciseDetailView: View {
         } else {
             VStack(alignment: .leading, spacing: Metrics.spacing12) {
                 if metrics.count > 1 {
-                    Picker(L("exercises.trend.label"), selection: Binding(
-                        get: { metrics.contains(viewModel.trendMetric) ? viewModel.trendMetric : metrics[0] },
-                        set: { viewModel.trendMetric = $0 }
-                    )) {
+                    Picker(
+                        L("exercises.trend.label"),
+                        selection: Binding(
+                            get: { metrics.contains(viewModel.trendMetric) ? viewModel.trendMetric : metrics[0] },
+                            set: { viewModel.trendMetric = $0 }
+                        )
+                    ) {
                         ForEach(metrics) { metric in
                             Text(L(metric.localizationKey)).tag(metric)
                         }
@@ -492,7 +500,9 @@ private struct ExerciseAlternativesSheet: View {
                         message: L("exercises.alternatives.empty.message")
                     ) {
                         Button(L("common.retry")) {
-                            Task { await viewModel.loadAlternatives(catalog: environment.catalog, context: modelContext) }
+                            Task {
+                                await viewModel.loadAlternatives(catalog: environment.catalog, context: modelContext)
+                            }
                         }
                         .buttonStyle(SecondaryButtonStyle())
                         .frame(maxWidth: 240)
@@ -529,7 +539,9 @@ private struct ExerciseAlternativesSheet: View {
                                 ExerciseRowView(
                                     exercise: candidate.exercise,
                                     thumbnailURL: environment.mediaProvider.thumbnailURL(for: candidate.exercise),
-                                    detail: L("exercises.alternatives.similarity", Int((candidate.similarity * 100).rounded())),
+                                    detail: L(
+                                        "exercises.alternatives.similarity", Int((candidate.similarity * 100).rounded())
+                                    ),
                                     trailingSystemImage: "chevron.right"
                                 )
                                 ForEach(Array(candidate.reasons.enumerated()), id: \.offset) { _, reason in
@@ -620,12 +632,14 @@ private struct TemplatePickerSheet: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(Color.appTextPrimary)
                         .fixedSize(horizontal: false, vertical: true)
-                    Text(choice.isInActiveProgram
-                        ? L("exercises.templates.activeProgram", choice.programTitle)
-                        : choice.programTitle)
-                        .font(.caption)
-                        .foregroundStyle(Color.appTextSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Text(
+                        choice.isInActiveProgram
+                            ? L("exercises.templates.activeProgram", choice.programTitle)
+                            : choice.programTitle
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.appTextSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: Metrics.spacing8)
                 Text(LPlural("exercises.templates.exerciseCount", choice.exerciseCount))

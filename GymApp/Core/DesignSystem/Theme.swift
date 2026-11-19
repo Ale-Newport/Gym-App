@@ -10,9 +10,10 @@ import UIKit
 /// catalogue so the whole palette is readable and reviewable in one place.
 extension Color {
     private static func dynamic(light: UInt32, dark: UInt32) -> Color {
-        Color(uiColor: UIColor { traits in
-            traits.userInterfaceStyle == .dark ? UIColor(hex: dark) : UIColor(hex: light)
-        })
+        Color(
+            uiColor: UIColor { traits in
+                traits.userInterfaceStyle == .dark ? UIColor(hex: dark) : UIColor(hex: light)
+            })
     }
 
     /// Primary brand accent — a warm, high-energy red-orange.

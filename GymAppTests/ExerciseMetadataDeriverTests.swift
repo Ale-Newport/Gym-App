@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 // MARK: - Helpers
@@ -57,33 +58,40 @@ private func upstreamMetadata(
 /// Upstream records the tests below classify, with the fields the dataset gives them.
 private enum Upstream {
     static func barbellFullSquat() throws -> ExerciseMetadata {  // 0043
-        try upstreamMetadata("barbell full squat", bodyPart: "upper legs", equipment: "barbell", target: "glutes",
-                             synergist: "quadriceps", secondary: ["quadriceps", "hamstrings", "calves", "core"])
+        try upstreamMetadata(
+            "barbell full squat", bodyPart: "upper legs", equipment: "barbell", target: "glutes",
+            synergist: "quadriceps", secondary: ["quadriceps", "hamstrings", "calves", "core"])
     }
     static func weightedFrontPlank() throws -> ExerciseMetadata {  // 2135
-        try upstreamMetadata("weighted front plank", bodyPart: "waist", equipment: "weighted", target: "abs",
-                             synergist: "shoulders", secondary: ["shoulders", "lower back"])
+        try upstreamMetadata(
+            "weighted front plank", bodyPart: "waist", equipment: "weighted", target: "abs",
+            synergist: "shoulders", secondary: ["shoulders", "lower back"])
     }
     static func run() throws -> ExerciseMetadata {  // 0685
-        try upstreamMetadata("run", bodyPart: "cardio", equipment: "body weight", target: "cardiovascular system",
-                             synergist: "quadriceps", secondary: ["quadriceps", "hamstrings", "calves"])
+        try upstreamMetadata(
+            "run", bodyPart: "cardio", equipment: "body weight", target: "cardiovascular system",
+            synergist: "quadriceps", secondary: ["quadriceps", "hamstrings", "calves"])
     }
     static func jumpRope() throws -> ExerciseMetadata {  // 2612
-        try upstreamMetadata("jump rope", bodyPart: "cardio", equipment: "rope", target: "cardiovascular system",
-                             synergist: "calves", secondary: ["calves", "quadriceps", "hamstrings", "glutes"])
+        try upstreamMetadata(
+            "jump rope", bodyPart: "cardio", equipment: "rope", target: "cardiovascular system",
+            synergist: "calves", secondary: ["calves", "quadriceps", "hamstrings", "glutes"])
     }
     static func bandHipThrustsOnKnees() throws -> ExerciseMetadata {  // 3236
-        try upstreamMetadata("resistance band hip thrusts on knees (female)", bodyPart: "upper legs",
-                             equipment: "resistance band", target: "glutes",
-                             synergist: "hamstrings", secondary: ["hamstrings", "quadriceps"])
+        try upstreamMetadata(
+            "resistance band hip thrusts on knees (female)", bodyPart: "upper legs",
+            equipment: "resistance band", target: "glutes",
+            synergist: "hamstrings", secondary: ["hamstrings", "quadriceps"])
     }
     static func handsBike() throws -> ExerciseMetadata {  // 2139
-        try upstreamMetadata("hands bike", bodyPart: "chest", equipment: "upper body ergometer", target: "pectorals",
-                             synergist: "triceps", secondary: ["triceps", "shoulders"])
+        try upstreamMetadata(
+            "hands bike", bodyPart: "chest", equipment: "upper body ergometer", target: "pectorals",
+            synergist: "triceps", secondary: ["triceps", "shoulders"])
     }
     static func skiErgometer() throws -> ExerciseMetadata {  // 2142
-        try upstreamMetadata("ski ergometer", bodyPart: "upper arms", equipment: "skierg machine", target: "triceps",
-                             synergist: "shoulders", secondary: ["shoulders", "forearms"])
+        try upstreamMetadata(
+            "ski ergometer", bodyPart: "upper arms", equipment: "skierg machine", target: "triceps",
+            synergist: "shoulders", secondary: ["shoulders", "forearms"])
     }
 }
 
@@ -207,11 +215,14 @@ struct ExerciseMetadataPluralTests {
         )
         #expect(
             derive("dumbbell biceps curls", bodyPart: .upperArms, equipment: .dumbbell, target: .biceps).movementPattern
-                == derive("dumbbell biceps curl", bodyPart: .upperArms, equipment: .dumbbell, target: .biceps).movementPattern
+                == derive("dumbbell biceps curl", bodyPart: .upperArms, equipment: .dumbbell, target: .biceps)
+                .movementPattern
         )
         #expect(
-            derive("dumbbell lateral raises", bodyPart: .shoulders, equipment: .dumbbell, target: .delts).movementPattern
-                == derive("dumbbell lateral raise", bodyPart: .shoulders, equipment: .dumbbell, target: .delts).movementPattern
+            derive("dumbbell lateral raises", bodyPart: .shoulders, equipment: .dumbbell, target: .delts)
+                .movementPattern
+                == derive("dumbbell lateral raise", bodyPart: .shoulders, equipment: .dumbbell, target: .delts)
+                .movementPattern
         )
     }
 
@@ -307,7 +318,8 @@ struct ExerciseTrackingModeTests {
 
     @Test("Stretches are held for time")
     func stretchIsDuration() {
-        let metadata = derive("standing hamstring stretch", bodyPart: .upperLegs, equipment: .bodyWeight, target: .hamstrings)
+        let metadata = derive(
+            "standing hamstring stretch", bodyPart: .upperLegs, equipment: .bodyWeight, target: .hamstrings)
         #expect(metadata.isStretch)
         #expect(metadata.movementPattern == .mobility)
         #expect(metadata.trackingMode == .duration)
@@ -333,7 +345,8 @@ struct ExerciseTrackingModeTests {
     @Test("Held positions are duration-tracked whatever the equipment")
     func heldPositionsAreDuration() {
         #expect(derive("dead hang", bodyPart: .back, equipment: .bodyWeight, target: .lats).trackingMode == .duration)
-        #expect(derive("wall sit", bodyPart: .upperLegs, equipment: .bodyWeight, target: .quads).trackingMode == .duration)
+        #expect(
+            derive("wall sit", bodyPart: .upperLegs, equipment: .bodyWeight, target: .quads).trackingMode == .duration)
         #expect(derive("hollow hold", bodyPart: .waist, equipment: .bodyWeight, target: .abs).trackingMode == .duration)
     }
 
@@ -363,7 +376,9 @@ struct ExerciseTrackingModeTests {
 
     @Test("Bands, balls and ropes are reps-only because their load is not a number")
     func bandsAndBallsAreRepsOnly() {
-        #expect(derive("band biceps curl", bodyPart: .upperArms, equipment: .band, target: .biceps).trackingMode == .repsOnly)
+        #expect(
+            derive("band biceps curl", bodyPart: .upperArms, equipment: .band, target: .biceps).trackingMode
+                == .repsOnly)
         #expect(
             derive("exercise ball crunch", bodyPart: .waist, equipment: .stabilityBall, target: .abs).trackingMode
                 == .repsOnly
@@ -406,14 +421,17 @@ struct ExerciseLateralityTests {
 
     @Test("Alternating work is treated as unilateral for time budgeting")
     func alternatingCountsAsTwoSides() {
-        let metadata = derive("dumbbell alternate biceps curl", bodyPart: .upperArms, equipment: .dumbbell, target: .biceps)
+        let metadata = derive(
+            "dumbbell alternate biceps curl", bodyPart: .upperArms, equipment: .dumbbell, target: .biceps)
         #expect(metadata.laterality == .alternating)
         #expect(metadata.laterality.timeMultiplier == 1.7)
     }
 
     @Test("Every lunge pattern is unilateral even without a keyword")
     func lungesAreUnilateral() {
-        #expect(derive("barbell lunge", bodyPart: .upperLegs, equipment: .barbell, target: .quads).laterality == .unilateral)
+        #expect(
+            derive("barbell lunge", bodyPart: .upperLegs, equipment: .barbell, target: .quads).laterality == .unilateral
+        )
         #expect(
             derive("bulgarian split squat", bodyPart: .upperLegs, equipment: .bodyWeight, target: .quads).laterality
                 == .unilateral
@@ -590,7 +608,8 @@ struct ExerciseVolumeContributionTests {
 
     @Test("Stretches and cardio earn no volume at all")
     func stretchesAndCardioEarnNothing() throws {
-        let stretch = derive("standing hamstring stretch", bodyPart: .upperLegs, equipment: .bodyWeight, target: .hamstrings)
+        let stretch = derive(
+            "standing hamstring stretch", bodyPart: .upperLegs, equipment: .bodyWeight, target: .hamstrings)
         let run = try Upstream.run()
         let jumpRope = try Upstream.jumpRope()
         #expect(stretch.volumeContribution.isEmpty)
@@ -616,7 +635,8 @@ struct ExerciseSubstitutionTagTests {
     func tagsAlwaysCarryPatternAndMechanic() {
         for exercise in ExerciseDatasetFixture.exercises {
             let tags = exercise.metadata.substitutionTags
-            #expect(tags.contains(exercise.metadata.movementPattern.rawValue), "\(exercise.id) is missing its pattern tag")
+            #expect(
+                tags.contains(exercise.metadata.movementPattern.rawValue), "\(exercise.id) is missing its pattern tag")
             #expect(tags.contains(exercise.metadata.mechanic.rawValue), "\(exercise.id) is missing its mechanic tag")
         }
     }
@@ -728,8 +748,12 @@ struct ExerciseMetadataTotalityTests {
     @Test("Every exercise gets a positive rest and set-time budget")
     func restAndSetTimesArePositive() {
         for exercise in exercises {
-            #expect(exercise.metadata.defaultRestSeconds >= 20, "\(exercise.id) rests for \(exercise.metadata.defaultRestSeconds)s")
-            #expect(exercise.metadata.defaultRestSeconds <= 210, "\(exercise.id) rests for \(exercise.metadata.defaultRestSeconds)s")
+            #expect(
+                exercise.metadata.defaultRestSeconds >= 20,
+                "\(exercise.id) rests for \(exercise.metadata.defaultRestSeconds)s")
+            #expect(
+                exercise.metadata.defaultRestSeconds <= 210,
+                "\(exercise.id) rests for \(exercise.metadata.defaultRestSeconds)s")
             #expect(exercise.metadata.estimatedSetSeconds > 0, "\(exercise.id) has a non-positive set time")
         }
     }
@@ -738,10 +762,12 @@ struct ExerciseMetadataTotalityTests {
     func volumeContributionIsEmptyOnlyWhereDocumented() {
         for exercise in exercises {
             let metadata = exercise.metadata
-            let shouldBeEmpty = metadata.isStretch
+            let shouldBeEmpty =
+                metadata.isStretch
                 || metadata.movementPattern == .cardio
                 || metadata.trackingMode == .distanceAndDuration
-            let detail = "\(exercise.id) '\(exercise.name)' contributes \(metadata.volumeContribution) "
+            let detail =
+                "\(exercise.id) '\(exercise.name)' contributes \(metadata.volumeContribution) "
                 + "(stretch: \(metadata.isStretch), pattern: \(metadata.movementPattern), "
                 + "tracking: \(metadata.trackingMode))"
             #expect(metadata.volumeContribution.isEmpty == shouldBeEmpty, "\(detail)")
@@ -758,7 +784,9 @@ struct ExerciseMetadataTotalityTests {
                 #expect(credit <= 1.0, "\(exercise.id) credits \(group) more than a full set: \(credit)")
             }
             if !contribution.isEmpty {
-                #expect(contribution[exercise.primaryGroup] == 1.0, "\(exercise.id) does not credit its own target a full set")
+                #expect(
+                    contribution[exercise.primaryGroup] == 1.0,
+                    "\(exercise.id) does not credit its own target a full set")
             }
         }
     }

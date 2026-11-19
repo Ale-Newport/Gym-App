@@ -174,8 +174,10 @@ enum MuscleGroup: String, CaseIterable, Codable, Hashable, Sendable, Identifiabl
 
     /// Groups a user can meaningfully choose to prioritise during onboarding.
     static var selectablePriorities: [MuscleGroup] {
-        [.chest, .back, .shoulders, .biceps, .triceps, .forearms,
-         .quads, .hamstrings, .glutes, .calves, .abs, .obliques, .traps]
+        [
+            .chest, .back, .shoulders, .biceps, .triceps, .forearms,
+            .quads, .hamstrings, .glutes, .calves, .abs, .obliques, .traps,
+        ]
     }
 
     /// Groups that carry a weekly volume budget. `cardio` and `neck` are programmed separately.
@@ -208,7 +210,8 @@ enum MuscleGroup: String, CaseIterable, Codable, Hashable, Sendable, Identifiabl
     var isSmallMuscle: Bool {
         switch self {
         case .biceps, .triceps, .forearms, .calves, .abs, .obliques, .traps,
-             .adductors, .abductors, .neck, .lowerBack: true
+            .adductors, .abductors, .neck, .lowerBack:
+            true
         case .chest, .back, .shoulders, .quads, .hamstrings, .glutes, .cardio: false
         }
     }
@@ -313,10 +316,12 @@ enum Equipment: String, CaseIterable, Codable, Hashable, Sendable, Identifiable 
     /// Equipment shown as a top-level toggle during onboarding. The long tail (tire, hammer,
     /// ergometers…) is folded into `additionalEquipment` to keep the picker usable.
     static var primarySelectable: [Equipment] {
-        [.bodyWeight, .dumbbell, .barbell, .ezBarbell, .cable, .leverageMachine,
-         .smithMachine, .kettlebell, .band, .resistanceBand, .stabilityBall, .weighted,
-         .assisted, .medicineBall, .bosuBall, .rope, .sledMachine, .trapBar,
-         .olympicBarbell, .roller, .wheelRoller]
+        [
+            .bodyWeight, .dumbbell, .barbell, .ezBarbell, .cable, .leverageMachine,
+            .smithMachine, .kettlebell, .band, .resistanceBand, .stabilityBall, .weighted,
+            .assisted, .medicineBall, .bosuBall, .rope, .sledMachine, .trapBar,
+            .olympicBarbell, .roller, .wheelRoller,
+        ]
     }
 
     static var additionalSelectable: [Equipment] {
@@ -333,8 +338,10 @@ enum Equipment: String, CaseIterable, Codable, Hashable, Sendable, Identifiable 
 
     /// A typical home setup: adjustable dumbbells, a bar, bands and a ball.
     static var typicalHomeGym: Set<Equipment> {
-        [.bodyWeight, .dumbbell, .barbell, .ezBarbell, .band, .resistanceBand,
-         .kettlebell, .stabilityBall, .weighted, .roller, .wheelRoller, .medicineBall]
+        [
+            .bodyWeight, .dumbbell, .barbell, .ezBarbell, .band, .resistanceBand,
+            .kettlebell, .stabilityBall, .weighted, .roller, .wheelRoller, .medicineBall,
+        ]
     }
 
     var symbolName: String {

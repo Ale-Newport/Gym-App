@@ -39,7 +39,8 @@ struct VolumeProgressView: View {
         await model.load(
             context: modelContext,
             range: range,
-            catalog: Dictionary(appEnvironment.catalog.exercises.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+            catalog: Dictionary(
+                appEnvironment.catalog.exercises.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         )
     }
 
@@ -103,11 +104,13 @@ struct VolumeProgressView: View {
                             .foregroundStyle(Color.forGroup(row.group))
                             .cornerRadius(3)
                             .accessibilityLabel(Text(L(row.group.localizationKey)))
-                            .accessibilityValue(Text(L(
-                                "progress.volume.setsOfTarget",
-                                Units.formatDecimal(row.sets, digits: 1),
-                                Units.formatDecimal(row.target, digits: 0)
-                            )))
+                            .accessibilityValue(
+                                Text(
+                                    L(
+                                        "progress.volume.setsOfTarget",
+                                        Units.formatDecimal(row.sets, digits: 1),
+                                        Units.formatDecimal(row.target, digits: 0)
+                                    )))
 
                             if row.target > 0 {
                                 PointMark(
@@ -147,7 +150,7 @@ struct VolumeProgressView: View {
                         ChartSeriesKey(
                             id: "target", label: L("progress.volume.legend.target"),
                             color: .appTextPrimary, symbolName: "diamond.fill"
-                        ),
+                        )
                     ])
                 }
             }
@@ -163,7 +166,8 @@ struct VolumeProgressView: View {
             title: L("progress.volume.perGroup"),
             subtitle: L("progress.volume.perGroupSubtitle"),
             footnote: target > 0
-                ? L("progress.volume.targetFootnote",
+                ? L(
+                    "progress.volume.targetFootnote",
                     Units.formatDecimal(target, digits: 0),
                     model.targets.frequency(for: model.selectedGroup))
                 : nil,
@@ -182,9 +186,11 @@ struct VolumeProgressView: View {
                             .foregroundStyle(Color.forGroup(model.selectedGroup))
                             .cornerRadius(3)
                             .accessibilityLabel(Text(L("progress.volume.weekOf", formatter.shortDate(point.date))))
-                            .accessibilityValue(Text(L(
-                                "progress.volume.setsCount", Units.formatDecimal(point.value, digits: 1)
-                            )))
+                            .accessibilityValue(
+                                Text(
+                                    L(
+                                        "progress.volume.setsCount", Units.formatDecimal(point.value, digits: 1)
+                                    )))
                         }
                         if target > 0 {
                             RuleMark(y: .value(L("progress.volume.targetAxis"), target))

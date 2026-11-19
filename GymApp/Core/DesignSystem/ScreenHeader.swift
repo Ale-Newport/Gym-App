@@ -112,7 +112,8 @@ extension View {
         @ViewBuilder trailing: () -> Trailing
     ) -> some View {
         let actions = trailing()
-        return self
+        return
+            self
             .navigationTitle(backTitle ?? title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)

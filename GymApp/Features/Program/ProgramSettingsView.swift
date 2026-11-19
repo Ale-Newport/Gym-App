@@ -108,10 +108,12 @@ struct ProgramSettingsView: View {
                 footnote(L("program.settings.noDays"), tint: .appWarning)
             }
 
-            Picker(selection: Binding(
-                get: { settings.sessionMinutes },
-                set: { settings.setSessionMinutes($0) }
-            )) {
+            Picker(
+                selection: Binding(
+                    get: { settings.sessionMinutes },
+                    set: { settings.setSessionMinutes($0) }
+                )
+            ) {
                 ForEach(settings.sessionMinuteOptions, id: \.self) { minutes in
                     Text(Units.formatDurationCompact(seconds: minutes * 60)).tag(minutes)
                 }
@@ -164,10 +166,12 @@ struct ProgramSettingsView: View {
 
     private var progressionSection: some View {
         Section {
-            Picker(selection: Binding(
-                get: { settings.progressionStrategy },
-                set: { settings.setProgressionStrategy($0) }
-            )) {
+            Picker(
+                selection: Binding(
+                    get: { settings.progressionStrategy },
+                    set: { settings.setProgressionStrategy($0) }
+                )
+            ) {
                 ForEach(ProgressionStrategy.allCases) { strategy in
                     Text(L(strategy.localizationKey)).tag(strategy)
                 }
@@ -180,30 +184,36 @@ struct ProgramSettingsView: View {
 
             footnote(L(settings.progressionStrategy.detailLocalizationKey))
 
-            Toggle(isOn: Binding(
-                get: { settings.autoProgressionEnabled },
-                set: { settings.setAutoProgression($0) }
-            )) {
+            Toggle(
+                isOn: Binding(
+                    get: { settings.autoProgressionEnabled },
+                    set: { settings.setAutoProgression($0) }
+                )
+            ) {
                 labelWithDetail(
                     L("program.settings.autoProgression"),
                     L("program.settings.autoProgression.detail")
                 )
             }
 
-            Toggle(isOn: Binding(
-                get: { settings.deloadSuggestionsEnabled },
-                set: { settings.setDeloadSuggestions($0) }
-            )) {
+            Toggle(
+                isOn: Binding(
+                    get: { settings.deloadSuggestionsEnabled },
+                    set: { settings.setDeloadSuggestions($0) }
+                )
+            ) {
                 labelWithDetail(
                     L("program.settings.deload"),
                     L("program.settings.deload.detail")
                 )
             }
 
-            Stepper(value: Binding(
-                get: { settings.mesocycleWeeks },
-                set: { settings.setMesocycleWeeks($0) }
-            ), in: InputValidation.mesocycleWeeks) {
+            Stepper(
+                value: Binding(
+                    get: { settings.mesocycleWeeks },
+                    set: { settings.setMesocycleWeeks($0) }
+                ), in: InputValidation.mesocycleWeeks
+            ) {
                 valueRow(
                     L("program.settings.blockLength"),
                     value: LPlural("program.settings.blockValue", settings.mesocycleWeeks)
@@ -223,10 +233,12 @@ struct ProgramSettingsView: View {
 
     private var effortSection: some View {
         Section {
-            Toggle(isOn: Binding(
-                get: { settings.targetRIROverride != nil },
-                set: { settings.setRIROverrideEnabled($0) }
-            )) {
+            Toggle(
+                isOn: Binding(
+                    get: { settings.targetRIROverride != nil },
+                    set: { settings.setRIROverrideEnabled($0) }
+                )
+            ) {
                 labelWithDetail(
                     L("program.settings.rirOverride"),
                     L("program.settings.rirOverride.detail")
@@ -331,7 +343,8 @@ struct ProgramSettingsView: View {
                     Divider().overlay(Color.appSeparator)
 
                     outcomeRow(L("program.settings.keepsLocked"), systemImage: "lock.fill", tint: .appAccent)
-                    outcomeRow(L("program.settings.keepsHistory"), systemImage: "clock.arrow.circlepath", tint: .appAccent)
+                    outcomeRow(
+                        L("program.settings.keepsHistory"), systemImage: "clock.arrow.circlepath", tint: .appAccent)
                     outcomeRow(L("program.settings.changesPlan"), systemImage: "wand.and.stars", tint: .appRecovery)
 
                     Button(L("program.settings.rebuildAction")) {
@@ -456,7 +469,8 @@ final class ProgramSettingsViewModel {
         self.modelContext = modelContext
         guard !isLoaded, let context = program.context else { return }
         seed(profile: context.profile, settings: program.currentSettings())
-        mesocycleWeeks = program.program?.mesocycleLengthWeeks
+        mesocycleWeeks =
+            program.program?.mesocycleLengthWeeks
             ?? InputValidation.clampedMesocycleWeeks(5)
         isLoaded = true
     }
@@ -610,7 +624,8 @@ final class ProgramSettingsViewModel {
                 changed += 1
             }
         }
-        program.notice = changed == 0
+        program.notice =
+            changed == 0
             ? L("program.settings.restUnchanged")
             : LPlural("program.settings.restApplied", changed)
     }
@@ -691,7 +706,8 @@ final class ProgramSettingsViewModel {
         do {
             try ProfileRepository(context: modelContext).updateSettings(mutate)
         } catch {
-            program?.actionError = (error as? RepositoryError)?.explanation.text
+            program?.actionError =
+                (error as? RepositoryError)?.explanation.text
                 ?? L("program.error.generic")
         }
     }

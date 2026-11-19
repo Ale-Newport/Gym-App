@@ -88,7 +88,8 @@ struct ProfileRepository: Repository {
     /// Keeps the first row and deletes any extras. Silent by design at the model layer, but logged.
     private func pruneDuplicates<T: PersistentModel>(_ rows: [T]) throws {
         guard rows.count > 1 else { return }
-        AppLog.persistence.error("Found \(rows.count) singleton rows of \(String(describing: T.self), privacy: .public); keeping the first")
+        AppLog.persistence.error(
+            "Found \(rows.count) singleton rows of \(String(describing: T.self), privacy: .public); keeping the first")
         for extra in rows.dropFirst() { context.delete(extra) }
         try persist()
     }
@@ -125,7 +126,8 @@ struct ProfileRepository: Repository {
         snapshot.bodyWeightKg = profile.currentWeightKg
         // Availability drives split selection; falling back to the snapshot's own default rather
         // than to "zero days" keeps a pre-onboarding preview sensible.
-        snapshot.availableWeekdays = profile.availableWeekdays.isEmpty
+        snapshot.availableWeekdays =
+            profile.availableWeekdays.isEmpty
             ? TrainingProfileSnapshot().availableWeekdays
             : profile.availableWeekdays.sorted()
         snapshot.sessionMinutesCap = InputValidation.clampedSessionMinutes(profile.sessionMinutesCap)
@@ -160,7 +162,8 @@ struct ProfileRepository: Repository {
     ///
     /// `trainingDaysPerWeek` comes from the user's stated availability rather than from what they
     /// actually did, because the energy target has to be set in advance of the week it covers.
-    func nutritionProfileSnapshot(now: Date = Date(), calendar: Calendar = .current) throws -> NutritionProfileSnapshot {
+    func nutritionProfileSnapshot(now: Date = Date(), calendar: Calendar = .current) throws -> NutritionProfileSnapshot
+    {
         let profile = try profile()
         var snapshot = NutritionProfileSnapshot()
         snapshot.biologicalSex = profile.biologicalSex
@@ -485,7 +488,8 @@ struct ProfileRepository: Repository {
             equipment.availablePlatesKg = try Self.validatedLadder(availablePlatesKg, field: "availablePlatesKg")
         }
         if let availableDumbbellsKg {
-            equipment.availableDumbbellsKg = try Self.validatedLadder(availableDumbbellsKg, field: "availableDumbbellsKg")
+            equipment.availableDumbbellsKg = try Self.validatedLadder(
+                availableDumbbellsKg, field: "availableDumbbellsKg")
         }
         if let kettlebellsKg {
             equipment.kettlebellsKg = try Self.validatedLadder(kettlebellsKg, field: "kettlebellsKg")

@@ -56,12 +56,14 @@ struct HealthSettingsView: View {
 
     private var connectionSection: some View {
         Section {
-            Toggle(isOn: Binding(
-                get: { isConnected },
-                set: { isOn in
-                    Task { await health.setConnected(isOn, service: service, settings: model) }
-                }
-            )) {
+            Toggle(
+                isOn: Binding(
+                    get: { isConnected },
+                    set: { isOn in
+                        Task { await health.setConnected(isOn, service: service, settings: model) }
+                    }
+                )
+            ) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L("settings.health.enable"))
                         .foregroundStyle(Color.appTextPrimary)

@@ -395,14 +395,15 @@ enum ExerciseScoring {
         // block from two months ago no longer colours today's choice.
         let window = history.performances.prefix(5)
         guard let newest = window.first.flatMap(strengthProxy),
-              let oldest = window.last.flatMap(strengthProxy),
-              // The three proxies are measured in different units — an estimated one-rep max in
-              // kilograms, a rep count, a held duration — so a ratio between two of them is
-              // meaningless. A session logged without load next to one logged with it would read as
-              // a collapse or a breakthrough that never happened, so the comparison is simply
-              // declined and the factor stays neutral.
-              newest.kind == oldest.kind,
-              oldest.value > 0 else { return neutral }
+            let oldest = window.last.flatMap(strengthProxy),
+            // The three proxies are measured in different units — an estimated one-rep max in
+            // kilograms, a rep count, a held duration — so a ratio between two of them is
+            // meaningless. A session logged without load next to one logged with it would read as
+            // a collapse or a breakthrough that never happened, so the comparison is simply
+            // declined and the factor stays neutral.
+            newest.kind == oldest.kind,
+            oldest.value > 0
+        else { return neutral }
 
         let change = (newest.value - oldest.value) / oldest.value
         // ±8 % across the window saturates the factor: past that the extra information is small and

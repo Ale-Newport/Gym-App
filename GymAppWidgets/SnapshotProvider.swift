@@ -1,5 +1,5 @@
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 // MARK: - Entry
 
@@ -69,11 +69,13 @@ struct SnapshotProvider: TimelineProvider {
     ) -> Date {
         let interval: TimeInterval = snapshot.hasActiveWorkout ? 15 * 60 : 30 * 60
         let periodic = date.addingTimeInterval(interval)
-        guard let midnight = calendar.nextDate(
-            after: date,
-            matching: DateComponents(hour: 0, minute: 0, second: 0),
-            matchingPolicy: .nextTime
-        ) else {
+        guard
+            let midnight = calendar.nextDate(
+                after: date,
+                matching: DateComponents(hour: 0, minute: 0, second: 0),
+                matchingPolicy: .nextTime
+            )
+        else {
             return periodic
         }
         return min(periodic, midnight)

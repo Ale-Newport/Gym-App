@@ -143,7 +143,8 @@ enum VolumeAllocator {
         case .biceps, .traps, .glutes: 0.50
         case .hamstrings: 0.45
         case .chest, .back, .quads, .calves, .abs, .obliques,
-             .adductors, .abductors, .neck, .cardio: 0.30
+            .adductors, .abductors, .neck, .cardio:
+            0.30
         }
     }
 

@@ -135,7 +135,8 @@ enum SplitSelector {
     /// never happens.
     static func trainingWeekdays(profile: TrainingProfileSnapshot, count: Int) -> [Weekday] {
         guard count > 0 else { return [] }
-        let declared = profile.availableWeekdays.isEmpty
+        let declared =
+            profile.availableWeekdays.isEmpty
             ? Weekday.orderedMondayFirst
             : Array(Set(profile.availableWeekdays)).sorted()
 
@@ -186,22 +187,30 @@ enum SplitSelector {
     /// The vocabulary every candidate is built from. Each entry is a *cycle*, repeated across the
     /// week rather than a fixed weekly template, so one entry covers every day count.
     private static let cycleVocabulary: [CycleTemplate] = [
-        CycleTemplate(key: "split.fullBody", reasonKey: "split.reason.fullBody",
-                      days: [.fullBody]),
-        CycleTemplate(key: "split.upperLower", reasonKey: "split.reason.upperLower",
-                      days: [.upper, .lower]),
-        CycleTemplate(key: "split.pushPullLegs", reasonKey: "split.reason.pushPullLegs",
-                      days: [.push, .pull, .legs]),
-        CycleTemplate(key: "split.upperLowerFull", reasonKey: "split.reason.upperLowerFull",
-                      days: [.upper, .lower, .fullBody]),
-        CycleTemplate(key: "split.torsoArmsLegs", reasonKey: "split.reason.torsoArmsLegs",
-                      days: [.torso, .shouldersArms, .legs]),
-        CycleTemplate(key: "split.fourWay", reasonKey: "split.reason.fourWay",
-                      days: [.upper, .lower, .push, .pull]),
-        CycleTemplate(key: "split.pplUpperLower", reasonKey: "split.reason.pplUpperLower",
-                      days: [.push, .pull, .legs, .upper, .lower]),
-        CycleTemplate(key: "split.posteriorEmphasis", reasonKey: "split.reason.posteriorEmphasis",
-                      days: [.posteriorChain, .push, .legs, .pull])
+        CycleTemplate(
+            key: "split.fullBody", reasonKey: "split.reason.fullBody",
+            days: [.fullBody]),
+        CycleTemplate(
+            key: "split.upperLower", reasonKey: "split.reason.upperLower",
+            days: [.upper, .lower]),
+        CycleTemplate(
+            key: "split.pushPullLegs", reasonKey: "split.reason.pushPullLegs",
+            days: [.push, .pull, .legs]),
+        CycleTemplate(
+            key: "split.upperLowerFull", reasonKey: "split.reason.upperLowerFull",
+            days: [.upper, .lower, .fullBody]),
+        CycleTemplate(
+            key: "split.torsoArmsLegs", reasonKey: "split.reason.torsoArmsLegs",
+            days: [.torso, .shouldersArms, .legs]),
+        CycleTemplate(
+            key: "split.fourWay", reasonKey: "split.reason.fourWay",
+            days: [.upper, .lower, .push, .pull]),
+        CycleTemplate(
+            key: "split.pplUpperLower", reasonKey: "split.reason.pplUpperLower",
+            days: [.push, .pull, .legs, .upper, .lower]),
+        CycleTemplate(
+            key: "split.posteriorEmphasis", reasonKey: "split.reason.posteriorEmphasis",
+            days: [.posteriorChain, .push, .legs, .pull]),
     ]
 
     private struct Structure {
@@ -229,11 +238,12 @@ enum SplitSelector {
         var days = expand(cycle, to: whole)
         guard days.count < count else { return days }
         let prioritySet = Set(priorities)
-        let favoured = cycle.max { lhs, rhs in
-            let left = groups(for: lhs, priorities: priorities).filter(prioritySet.contains).count
-            let right = groups(for: rhs, priorities: priorities).filter(prioritySet.contains).count
-            return left < right
-        } ?? cycle[0]
+        let favoured =
+            cycle.max { lhs, rhs in
+                let left = groups(for: lhs, priorities: priorities).filter(prioritySet.contains).count
+                let right = groups(for: rhs, priorities: priorities).filter(prioritySet.contains).count
+                return left < right
+            } ?? cycle[0]
         while days.count < count { days.append(favoured) }
         return days
     }
@@ -251,18 +261,24 @@ enum SplitSelector {
         }
 
         for cycle in cycleVocabulary {
-            add(Structure(key: cycle.key, reasonKey: cycle.reasonKey,
-                          days: expand(cycle.days, to: days)))
-            add(Structure(key: cycle.key, reasonKey: cycle.reasonKey,
-                          days: expandBiased(cycle.days, to: days, priorities: priorities)))
+            add(
+                Structure(
+                    key: cycle.key, reasonKey: cycle.reasonKey,
+                    days: expand(cycle.days, to: days)))
+            add(
+                Structure(
+                    key: cycle.key, reasonKey: cycle.reasonKey,
+                    days: expandBiased(cycle.days, to: days, priorities: priorities)))
         }
 
         // A specialisation day: the base structure over one fewer day, plus a day of priority work.
         if days >= 2 {
             for cycle in cycleVocabulary {
                 let base = expand(cycle.days, to: days - 1)
-                add(Structure(key: "split.specialisation", reasonKey: "split.reason.specialisation",
-                              days: base + [.specialisation]))
+                add(
+                    Structure(
+                        key: "split.specialisation", reasonKey: "split.reason.specialisation",
+                        days: base + [.specialisation]))
             }
         }
 
@@ -270,8 +286,10 @@ enum SplitSelector {
         if days >= 6 {
             for cycle in cycleVocabulary {
                 let base = expand(cycle.days, to: days - 1)
-                add(Structure(key: cycle.key, reasonKey: cycle.reasonKey,
-                              days: base + [.activeRecovery]))
+                add(
+                    Structure(
+                        key: cycle.key, reasonKey: cycle.reasonKey,
+                        days: base + [.activeRecovery]))
             }
         }
 
@@ -284,8 +302,10 @@ enum SplitSelector {
     static func groups(for archetype: DayArchetype, priorities: [MuscleGroup]) -> [MuscleGroup] {
         switch archetype {
         case .fullBody:
-            [.quads, .back, .chest, .hamstrings, .glutes, .shoulders, .triceps, .biceps,
-             .calves, .abs, .lowerBack]
+            [
+                .quads, .back, .chest, .hamstrings, .glutes, .shoulders, .triceps, .biceps,
+                .calves, .abs, .lowerBack,
+            ]
         case .upper:
             [.back, .chest, .shoulders, .triceps, .biceps, .traps, .forearms]
         case .lower, .legs:
@@ -474,8 +494,8 @@ enum SplitSelector {
     private static func isSingleJointPattern(_ pattern: MovementPattern?) -> Bool {
         switch pattern {
         case .chestFly, .shoulderRaise, .shrug, .elbowFlexion, .elbowExtension,
-             .wristFlexion, .wristExtension, .kneeExtension, .kneeFlexion,
-             .calfRaise, .hipAbduction, .hipAdduction, .neckMovement:
+            .wristFlexion, .wristExtension, .kneeExtension, .kneeFlexion,
+            .calfRaise, .hipAbduction, .hipAdduction, .neckMovement:
             true
         default:
             false
@@ -617,8 +637,9 @@ enum SplitSelector {
         let frequency = frequencyFit(coverage: coverage, targets: targets)
         let capacity = capacityFit(plans: plans, profile: profile)
         let experience = experienceFit(structure: structure, experience: profile.experience)
-        let priority = priorityFit(structure: structure, coverage: coverage,
-                                   targets: targets, priorities: priorities)
+        let priority = priorityFit(
+            structure: structure, coverage: coverage,
+            targets: targets, priorities: priorities)
         let goal = goalFit(plans: plans, targets: targets, goals: profile.goals)
         let spacing = spacingFit(structure: structure, plans: plans)
         let balance = balanceFit(coverage: coverage, targets: targets)
@@ -667,7 +688,8 @@ enum SplitSelector {
         guard !plans.isEmpty else { return 0 }
         let capSeconds = Double(max(15, profile.sessionMinutesCap) * 60)
         let overheadSeconds = Double(VolumeAllocator.sessionOverheadMinutes * 60)
-        let secondsPerSet = VolumeAllocator.averageSetSecondsIncludingRest
+        let secondsPerSet =
+            VolumeAllocator.averageSetSecondsIncludingRest
             * VolumeAllocator.restFactor(for: profile.goals)
 
         var overflow = 0.0
@@ -877,11 +899,12 @@ enum SplitSelector {
                     guard day == index else { continue }
                     credits = plans.reduce(0.0) { $0 + ($1.credits[group] ?? 0) }
                 }
-                slots.append(contentsOf: makeSlots(
-                    for: group,
-                    credits: credits,
-                    isPriority: prioritySet.contains(group)
-                ))
+                slots.append(
+                    contentsOf: makeSlots(
+                        for: group,
+                        credits: credits,
+                        isPriority: prioritySet.contains(group)
+                    ))
             }
 
             if plan.archetype == .activeRecovery && slots.isEmpty {
@@ -892,8 +915,10 @@ enum SplitSelector {
             }
 
             if cardioDays.contains(index) {
-                slots.append(ExerciseSlot(group: .cardio, mechanic: nil,
-                                          preferredPattern: .cardio, sets: 1, isPrimary: false))
+                slots.append(
+                    ExerciseSlot(
+                        group: .cardio, mechanic: nil,
+                        preferredPattern: .cardio, sets: 1, isPrimary: false))
             }
 
             slots.sort { lhs, rhs in
@@ -916,13 +941,15 @@ enum SplitSelector {
 
             let occurrence = occurrences[plan.archetype, default: 0]
             occurrences[plan.archetype] = occurrence + 1
-            blueprints.append(SessionBlueprint(
-                titleKey: titleKey(for: plan.archetype, occurrence: occurrence,
-                                   total: totals[plan.archetype] ?? 1),
-                focusGroups: focus,
-                pushPull: pushPull(for: plan.archetype),
-                slots: slots
-            ))
+            blueprints.append(
+                SessionBlueprint(
+                    titleKey: titleKey(
+                        for: plan.archetype, occurrence: occurrence,
+                        total: totals[plan.archetype] ?? 1),
+                    focusGroups: focus,
+                    pushPull: pushPull(for: plan.archetype),
+                    slots: slots
+                ))
         }
         return blueprints
     }
@@ -1033,13 +1060,14 @@ enum SplitSelector {
             let share = Int((Double(remaining) / Double(slotsLeft)).rounded(.up))
             let assigned = max(2, min(5, share))
             let entry = vocabulary[min(index, vocabulary.count - 1)]
-            result.append(ExerciseSlot(
-                group: group,
-                mechanic: entry.mechanic,
-                preferredPattern: entry.pattern,
-                sets: assigned,
-                isPrimary: index == 0 && entry.mechanic == .compound
-            ))
+            result.append(
+                ExerciseSlot(
+                    group: group,
+                    mechanic: entry.mechanic,
+                    preferredPattern: entry.pattern,
+                    sets: assigned,
+                    isPrimary: index == 0 && entry.mechanic == .compound
+                ))
             remaining -= assigned
             if remaining < 2 { break }
         }
@@ -1106,8 +1134,10 @@ enum SplitSelector {
             .filter { targets.target(for: $0) > 0.5 }
         var slots: [ExerciseSlot] = []
         for group in MuscleGroup.volumeTracked where groups.contains(group) {
-            slots.append(contentsOf: makeSlots(for: group, credits: targets.target(for: group),
-                                               isPriority: priorities.contains(group)))
+            slots.append(
+                contentsOf: makeSlots(
+                    for: group, credits: targets.target(for: group),
+                    isPriority: priorities.contains(group)))
         }
         slots.sort { orderBucket($0) < orderBucket($1) }
         var frequency: [MuscleGroup: Int] = [:]
@@ -1115,12 +1145,14 @@ enum SplitSelector {
         return SelectedSplit(
             key: "split.fullBody",
             daysPerWeek: 1,
-            blueprints: [SessionBlueprint(
-                titleKey: titleBaseKey(for: .fullBody),
-                focusGroups: groups,
-                pushPull: .neutral,
-                slots: slots
-            )],
+            blueprints: [
+                SessionBlueprint(
+                    titleKey: titleBaseKey(for: .fullBody),
+                    focusGroups: groups,
+                    pushPull: .neutral,
+                    slots: slots
+                )
+            ],
             explanation: Explanation("split.reason.fullBody", ["1"]),
             frequency: frequency
         )

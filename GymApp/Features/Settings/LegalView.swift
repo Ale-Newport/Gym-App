@@ -337,8 +337,8 @@ struct LegalDocumentLoader: Sendable {
     /// user should wait out, and this is a case where they should be told instead.
     func text(for document: LegalDocument) throws -> String {
         guard let url = url(for: document),
-              let text = try? String(contentsOf: url, encoding: .utf8),
-              !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            let text = try? String(contentsOf: url, encoding: .utf8),
+            !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         else {
             throw LegalDocumentError.unavailable
         }

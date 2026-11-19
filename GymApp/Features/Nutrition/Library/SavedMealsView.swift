@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// `sheet(item:)` needs something `Identifiable`; a bare `UUID` is not, and conforming Foundation's
 /// type app-wide would be a surprising thing for one screen to do.
@@ -169,12 +169,14 @@ struct SavedMealsView: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(Text(L(
-            "nutritionLibrary.meals.rowLabel",
-            meal.name,
-            L(meal.slot.localizationKey),
-            macroLine(meal.macros)
-        )))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "nutritionLibrary.meals.rowLabel",
+                    meal.name,
+                    L(meal.slot.localizationKey),
+                    macroLine(meal.macros)
+                )))
     }
 
     private func actionRow(_ meal: SavedMealSummary) -> some View {
@@ -255,11 +257,13 @@ struct SavedMealsView: View {
                                 Text(L(option.slot.localizationKey))
                                     .font(.subheadline.weight(.medium))
                                     .foregroundStyle(Color.appTextPrimary)
-                                Text(L(
-                                    "nutritionLibrary.meals.fromDayDetail",
-                                    option.entryCount,
-                                    formatter.energy(option.macros.kilocalories)
-                                ))
+                                Text(
+                                    L(
+                                        "nutritionLibrary.meals.fromDayDetail",
+                                        option.entryCount,
+                                        formatter.energy(option.macros.kilocalories)
+                                    )
+                                )
                                 .font(.caption)
                                 .foregroundStyle(Color.appTextSecondary)
                                 .fixedSize(horizontal: false, vertical: true)

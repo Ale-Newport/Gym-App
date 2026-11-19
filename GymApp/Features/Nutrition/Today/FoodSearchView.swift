@@ -116,7 +116,8 @@ final class FoodSearchViewModel {
 
         if let failure = failures.values.first, fresh.isEmpty {
             remoteState = .failed(L(failure.localizationKey))
-            AppLog.nutrition.info("Remote food search degraded to local results: \(failure.localizationKey, privacy: .public)")
+            AppLog.nutrition.info(
+                "Remote food search degraded to local results: \(failure.localizationKey, privacy: .public)")
         } else {
             remoteState = .completed(fresh.count)
         }
@@ -436,12 +437,13 @@ struct FoodPickerRow: View {
         if let subtitle, !subtitle.isEmpty { parts.append(subtitle) }
         parts.append(basisUnit == .milliliters ? L("food.result.per100ml") : L("food.result.per100g"))
         parts.append(formatter.energy(macrosPer100.kilocalories))
-        parts.append(L(
-            "nutritionLog.search.macroSummary",
-            formatter.macro(macrosPer100.proteinG),
-            formatter.macro(macrosPer100.carbsG),
-            formatter.macro(macrosPer100.fatG)
-        ))
+        parts.append(
+            L(
+                "nutritionLog.search.macroSummary",
+                formatter.macro(macrosPer100.proteinG),
+                formatter.macro(macrosPer100.carbsG),
+                formatter.macro(macrosPer100.fatG)
+            ))
         return parts.joined(separator: " · ")
     }
 

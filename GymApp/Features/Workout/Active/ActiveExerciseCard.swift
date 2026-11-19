@@ -35,7 +35,8 @@ struct ActiveExerciseCard: View {
     private var activeSet: SetRecord? { model.activeSet(in: record) }
     private var focusedSet: SetRecord? {
         if let focusedSetID, let match = record.orderedSets.first(where: { $0.id == focusedSetID }),
-           !match.isCompleted {
+            !match.isCompleted
+        {
             return match
         }
         return activeSet
@@ -81,7 +82,10 @@ struct ActiveExerciseCard: View {
                 hasNextExercise: position < total,
                 onCompleted: { focusedSetID = nil },
                 onNextExercise: { model.goToNextExercise() },
-                onFinish: { model.prepareSummary(); model.presentedSheet = .finish }
+                onFinish: {
+                    model.prepareSummary()
+                    model.presentedSheet = .finish
+                }
             )
             .screenPadding()
             .padding(.top, Metrics.spacing8)
@@ -117,7 +121,8 @@ struct ActiveExerciseCard: View {
                 .fixedSize(horizontal: false, vertical: true)
 
                 if let originalID = record.substitutedFromExerciseID,
-                   let original = environment.catalog.exercise(id: originalID) {
+                    let original = environment.catalog.exercise(id: originalID)
+                {
                     Text(L("active.substitutedFrom", original.name.localizedCapitalized))
                         .font(.caption)
                         .foregroundStyle(Color.appTextTertiary)
@@ -171,7 +176,9 @@ struct ActiveExerciseCard: View {
         .foregroundStyle(Color.appTextSecondary)
         .padding(Metrics.spacing12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.appWarning.opacity(0.12), in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
+        .background(
+            Color.appWarning.opacity(0.12), in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous)
+        )
     }
 
     // MARK: - Media
@@ -305,17 +312,20 @@ struct ActiveExerciseCard: View {
             (L("active.target.sets"), "\(record.workingSets.count)")
         ]
         if plan.showsReps {
-            let range = decision?.recommendedRepRange
+            let range =
+                decision?.recommendedRepRange
                 ?? RepRange(record.orderedSets.first?.targetReps ?? 8, record.orderedSets.first?.targetReps ?? 12)
             items.append((L("active.target.reps"), range.description))
         }
         if plan.showsDuration {
-            let seconds = record.orderedSets.first?.targetDurationSeconds
+            let seconds =
+                record.orderedSets.first?.targetDurationSeconds
                 ?? (record.orderedSets.first.map { model.draft(for: $0).durationSeconds } ?? nil)
             if let seconds { items.append((L("active.target.hold"), Units.formatDuration(seconds: seconds))) }
         }
         if plan.showsWeight, let weight = recommendedWeight {
-            items.append((plan.weightLabel, plan.isAssistance ? "−" + formatter.weight(weight) : formatter.weight(weight)))
+            items.append(
+                (plan.weightLabel, plan.isAssistance ? "−" + formatter.weight(weight) : formatter.weight(weight)))
         }
         items.append((L("active.target.rest"), Units.formatDuration(seconds: record.restSeconds)))
         if plan.showsEffort {

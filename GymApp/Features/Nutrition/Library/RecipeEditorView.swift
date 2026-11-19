@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// Creates or edits a recipe: ingredients, how many servings it makes, and the per-serving
 /// nutrition that falls out of those two.
@@ -27,7 +27,9 @@ struct RecipeEditorView: View {
     var body: some View {
         content
             .background(Color.appBackground)
-            .navigationTitle(L(model.isExistingRecipe ? "nutritionLibrary.recipes.editTitle" : "nutritionLibrary.recipes.newTitle"))
+            .navigationTitle(
+                L(model.isExistingRecipe ? "nutritionLibrary.recipes.editTitle" : "nutritionLibrary.recipes.newTitle")
+            )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

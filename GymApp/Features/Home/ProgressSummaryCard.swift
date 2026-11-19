@@ -144,11 +144,13 @@ struct ProgressSummaryCard: View {
                     .font(.appOverline)
                     .foregroundStyle(Color.appTextSecondary)
                 Spacer(minLength: Metrics.spacing8)
-                Text(summary.plannedSessionsPerWeek > 0
-                     ? L("home.progress.sessionsOfPlan", summary.sessionsThisWeek, summary.plannedSessionsPerWeek)
-                     : LPlural("home.progress.sessionsDone", summary.sessionsThisWeek))
-                    .font(.subheadline.weight(.semibold).monospacedDigit())
-                    .foregroundStyle(Color.appTextPrimary)
+                Text(
+                    summary.plannedSessionsPerWeek > 0
+                        ? L("home.progress.sessionsOfPlan", summary.sessionsThisWeek, summary.plannedSessionsPerWeek)
+                        : LPlural("home.progress.sessionsDone", summary.sessionsThisWeek)
+                )
+                .font(.subheadline.weight(.semibold).monospacedDigit())
+                .foregroundStyle(Color.appTextPrimary)
             }
             if summary.plannedSessionsPerWeek > 0 {
                 ProgressBar(
@@ -177,9 +179,10 @@ struct ProgressSummaryCard: View {
                     plannedSessionsPerWeek: 4,
                     weekStreak: 6,
                     longestWeekStreak: 11,
-                    trainedDays: Set([0, -2, -4].compactMap {
-                        calendar.date(byAdding: .day, value: $0, to: today)
-                    })
+                    trainedDays: Set(
+                        [0, -2, -4].compactMap {
+                            calendar.date(byAdding: .day, value: $0, to: today)
+                        })
                 ),
                 onOpen: {}, onLogWeight: {}
             )

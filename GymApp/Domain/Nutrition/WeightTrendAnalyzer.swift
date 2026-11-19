@@ -72,7 +72,8 @@ enum WeightTrendAnalyzer {
         let movingAverage = trailingMovingAverage(daily, windowDays: window, calendar: calendar)
         let spanDays = dayCount(from: first.date, to: last.date, calendar: calendar)
         let weeksOfData = (Double(spanDays) / 7 * 100).rounded() / 100
-        let hasEnoughData = daily.count >= Constants.minimumReadings
+        let hasEnoughData =
+            daily.count >= Constants.minimumReadings
             && spanDays >= Constants.minimumSpanDays
 
         let regression = regressionSlope(daily, endingAt: last.date, calendar: calendar)
@@ -109,8 +110,9 @@ enum WeightTrendAnalyzer {
         var totals: [Date: (sum: Double, count: Double)] = [:]
         for entry in entries {
             guard entry.weightKg.isFinite,
-                  Constants.plausibleMassRangeKg.contains(entry.weightKg),
-                  entry.date <= now else { continue }
+                Constants.plausibleMassRangeKg.contains(entry.weightKg),
+                entry.date <= now
+            else { continue }
             let day = calendar.startOfDay(for: entry.date)
             let existing = totals[day] ?? (0, 0)
             totals[day] = (existing.sum + entry.weightKg, existing.count + 1)
@@ -152,7 +154,8 @@ enum WeightTrendAnalyzer {
             // window to six days for the whole week after an autumn transition — and a six-day
             // window no longer closes over exactly one of every weekday, which is the entire reason
             // the window is seven days long.
-            let cutoff = calendar.date(byAdding: .day, value: -(windowDays - 1), to: points[index].date)
+            let cutoff =
+                calendar.date(byAdding: .day, value: -(windowDays - 1), to: points[index].date)
                 ?? points[index].date.addingTimeInterval(-Double(windowDays - 1) * 86_400)
             while startIndex < index && points[startIndex].date < cutoff {
                 runningSum -= points[startIndex].weightKg
@@ -160,9 +163,10 @@ enum WeightTrendAnalyzer {
             }
             let count = Double(index - startIndex + 1)
             let mean = runningSum / count
-            result.append(WeightTrendPoint(
-                date: points[index].date, weightKg: (mean * 1_000).rounded() / 1_000
-            ))
+            result.append(
+                WeightTrendPoint(
+                    date: points[index].date, weightKg: (mean * 1_000).rounded() / 1_000
+                ))
         }
         return result
     }
@@ -190,11 +194,13 @@ enum WeightTrendAnalyzer {
         // Calendar arithmetic for the same reason as the moving average: a fixed-seconds window
         // drops the oldest day of the three weeks after an autumn daylight-saving change, which
         // costs a reading and a slice of confidence for no reason the user could ever see.
-        let start = calendar.date(byAdding: .day, value: -(Constants.regressionWindowDays - 1), to: end)
+        let start =
+            calendar.date(byAdding: .day, value: -(Constants.regressionWindowDays - 1), to: end)
             ?? end.addingTimeInterval(-Double(Constants.regressionWindowDays - 1) * 86_400)
         let window = points.filter { $0.date >= start }
         guard window.count >= Constants.minimumRegressionReadings,
-              let firstDate = window.first?.date else { return nil }
+            let firstDate = window.first?.date
+        else { return nil }
         let spanDays = dayCount(from: firstDate, to: end, calendar: calendar)
         guard spanDays >= Constants.minimumRegressionSpanDays else { return nil }
 
@@ -260,7 +266,8 @@ enum WeightTrendAnalyzer {
             // extreme, since the count and span components already reflect the sparse data.
             noiseScore = 0.5
         }
-        let blended = countScore * Constants.countWeight
+        let blended =
+            countScore * Constants.countWeight
             + noiseScore * Constants.noiseWeight
             + spanScore * Constants.spanWeight
         return (nutritionClamp01(blended) * 1_000).rounded() / 1_000

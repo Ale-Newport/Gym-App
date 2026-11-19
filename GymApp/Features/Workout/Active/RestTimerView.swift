@@ -40,7 +40,9 @@ struct RestTimerView: View {
                 .foregroundStyle(Color.appRecovery)
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
-                .accessibilityLabel(Text(L("active.rest.remaining", Units.formatDuration(seconds: timer.remainingSeconds))))
+                .accessibilityLabel(
+                    Text(L("active.rest.remaining", Units.formatDuration(seconds: timer.remainingSeconds)))
+                )
                 .accessibilityAddTraits(.updatesFrequently)
 
             ProgressBar(value: timer.elapsedFraction, total: 1, tint: .appRecovery, height: 6)
@@ -82,9 +84,10 @@ struct RestTimerView: View {
                 )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(Text(
-            delta > 0 ? L("active.rest.addSeconds", delta) : L("active.rest.removeSeconds", abs(delta))
-        ))
+        .accessibilityLabel(
+            Text(
+                delta > 0 ? L("active.rest.addSeconds", delta) : L("active.rest.removeSeconds", abs(delta))
+            ))
     }
 }
 

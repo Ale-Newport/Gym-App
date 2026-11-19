@@ -70,7 +70,8 @@ final class LocalizationManager {
 
     private static func bundle(for language: AppLanguage) -> Bundle? {
         guard let path = Bundle.main.path(forResource: language.bundleIdentifierCode, ofType: "lproj"),
-              let bundle = Bundle(path: path) else { return nil }
+            let bundle = Bundle(path: path)
+        else { return nil }
         return bundle
     }
 }
@@ -86,7 +87,9 @@ func L(_ key: String) -> String {
 /// Localises `key` and substitutes positional arguments (`%@`, `%lld`, `%.1f`, …).
 @MainActor
 func L(_ key: String, _ arguments: any CVarArg...) -> String {
-    String(format: LocalizationManager.shared.localized(key), locale: LocalizationManager.shared.current.locale, arguments: arguments)
+    String(
+        format: LocalizationManager.shared.localized(key), locale: LocalizationManager.shared.current.locale,
+        arguments: arguments)
 }
 
 /// Localises a plural-aware key. The catalogue entry must declare plural variations keyed on the

@@ -49,8 +49,10 @@ struct GoalsSettingsView: View {
                     systemImage: primary.symbolName,
                     tint: .appAccent
                 )
-                .listRowInsets(EdgeInsets(top: Metrics.spacing8, leading: Metrics.spacing16,
-                                          bottom: Metrics.spacing8, trailing: Metrics.spacing16))
+                .listRowInsets(
+                    EdgeInsets(
+                        top: Metrics.spacing8, leading: Metrics.spacing16,
+                        bottom: Metrics.spacing8, trailing: Metrics.spacing16))
             } else {
                 SettingsFootnote(text: L("settings.goals.emptyExplainer"))
             }

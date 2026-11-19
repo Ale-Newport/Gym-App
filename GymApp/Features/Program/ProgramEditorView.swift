@@ -202,10 +202,11 @@ struct ProgramEditorView: View {
 
     private func subtitle(for template: WorkoutTemplate) -> String {
         if template.isRestDay { return L("program.session.restDay") }
-        return L("program.session.summary",
-                 template.orderedExercises.count,
-                 template.totalPlannedSets,
-                 formatter.durationCompact(model.estimatedMinutes(of: template) * 60))
+        return L(
+            "program.session.summary",
+            template.orderedExercises.count,
+            template.totalPlannedSets,
+            formatter.durationCompact(model.estimatedMinutes(of: template) * 60))
     }
 
     /// Pinning a session to a weekday, or letting it float.
@@ -278,12 +279,15 @@ struct ProgramEditorView: View {
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Color.appTextPrimary)
                         .fixedSize(horizontal: false, vertical: true)
-                    Text(L("program.editor.otherProgramDetail",
-                           L(program.splitKey),
-                           program.templates.filter { !$0.isRestDay }.count))
-                        .font(.caption)
-                        .foregroundStyle(Color.appTextSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Text(
+                        L(
+                            "program.editor.otherProgramDetail",
+                            L(program.splitKey),
+                            program.templates.filter { !$0.isRestDay }.count)
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.appTextSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(.vertical, Metrics.spacing4)
                 .listRowBackground(Color.appSurface)
@@ -342,7 +346,9 @@ struct SessionRenameSheet: View {
                     .textFieldStyle(.plain)
                     .padding(Metrics.spacing12)
                     .frame(minHeight: Metrics.minimumTapTarget)
-                    .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
+                    .background(
+                        Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous)
+                    )
                     .focused($isFocused)
                     .submitLabel(.done)
                     .onSubmit(commit)

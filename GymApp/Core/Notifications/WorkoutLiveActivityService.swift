@@ -1,5 +1,5 @@
-import Foundation
 import ActivityKit
+import Foundation
 import Observation
 
 /// Drives the Lock Screen / Dynamic Island Live Activity for an active workout.

@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// Destinations pushed from Home. Settings lives behind the profile button rather than in a sixth
 /// tab, and the program and session-summary screens are reachable from the cards that mention them.

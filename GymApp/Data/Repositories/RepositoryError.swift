@@ -58,7 +58,7 @@ enum RepositoryError: Error, Hashable, Sendable {
     var diagnosticDetail: String? {
         switch self {
         case .saveFailed(let underlying), .fetchFailed(let underlying),
-             .snapshotCodingFailed(let underlying):
+            .snapshotCodingFailed(let underlying):
             return underlying
         case .notFound(let entity), .notEditable(let entity):
             return entity
@@ -156,10 +156,11 @@ enum InputValidation {
     static func height(cm value: Double, field: String = "heightCm") throws -> Double {
         try requireFinite(value, field: field)
         guard heightCm.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.height.range",
-                arguments: [format(heightCm.lowerBound), format(heightCm.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.height.range",
+                    arguments: [format(heightCm.lowerBound), format(heightCm.upperBound)]
+                ))
         }
         return value
     }
@@ -168,10 +169,11 @@ enum InputValidation {
     static func bodyMass(kg value: Double, field: String = "weightKg") throws -> Double {
         try requireFinite(value, field: field)
         guard bodyMassKg.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.bodyMass.range",
-                arguments: [format(bodyMassKg.lowerBound), format(bodyMassKg.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.bodyMass.range",
+                    arguments: [format(bodyMassKg.lowerBound), format(bodyMassKg.upperBound)]
+                ))
         }
         return value
     }
@@ -179,18 +181,21 @@ enum InputValidation {
     /// Age in whole years, usually derived from a birth date.
     static func age(years value: Int, field: String = "ageYears") throws -> Int {
         guard ageYears.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.age.range",
-                arguments: [String(ageYears.lowerBound), String(ageYears.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.age.range",
+                    arguments: [String(ageYears.lowerBound), String(ageYears.upperBound)]
+                ))
         }
         return value
     }
 
     /// A birth date is valid when the age it implies is. `now` is injected so the check is
     /// deterministic in tests.
-    static func birthDate(_ date: Date, now: Date = Date(), calendar: Calendar = .current,
-                          field: String = "birthDate") throws -> Date {
+    static func birthDate(
+        _ date: Date, now: Date = Date(), calendar: Calendar = .current,
+        field: String = "birthDate"
+    ) throws -> Date {
         let years = calendar.dateComponents([.year], from: date, to: now).year ?? -1
         _ = try age(years: years, field: field)
         return date
@@ -200,10 +205,11 @@ enum InputValidation {
     static func energy(kilocalories value: Double, field: String = "kilocalories") throws -> Double {
         try requireFinite(value, field: field)
         guard kilocalories.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.energy.range",
-                arguments: [format(kilocalories.lowerBound), format(kilocalories.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.energy.range",
+                    arguments: [format(kilocalories.lowerBound), format(kilocalories.upperBound)]
+                ))
         }
         return value
     }
@@ -215,10 +221,11 @@ enum InputValidation {
         try requireFinite(value, field: field)
         if value < loadKg.lowerBound { return loadKg.lowerBound }
         guard value <= loadKg.upperBound else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.load.range",
-                arguments: [format(loadKg.lowerBound), format(loadKg.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.load.range",
+                    arguments: [format(loadKg.lowerBound), format(loadKg.upperBound)]
+                ))
         }
         return value
     }
@@ -227,10 +234,11 @@ enum InputValidation {
     static func portion(quantity value: Double, field: String = "quantity") throws -> Double {
         try requireFinite(value, field: field)
         guard portionQuantity.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.portion.range",
-                arguments: [format(portionQuantity.lowerBound), format(portionQuantity.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.portion.range",
+                    arguments: [format(portionQuantity.lowerBound), format(portionQuantity.upperBound)]
+                ))
         }
         return value
     }
@@ -240,10 +248,11 @@ enum InputValidation {
     static func increment(kg value: Double, field: String) throws -> Double {
         try requireFinite(value, field: field)
         guard loadIncrementKg.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.equipment.incrementRange",
-                arguments: [format(loadIncrementKg.lowerBound), format(loadIncrementKg.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.equipment.incrementRange",
+                    arguments: [format(loadIncrementKg.lowerBound), format(loadIncrementKg.upperBound)]
+                ))
         }
         return value
     }
@@ -253,10 +262,11 @@ enum InputValidation {
     static func grams(_ value: Double, field: String) throws -> Double {
         try requireFinite(value, field: field)
         guard servingGrams.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.grams.range",
-                arguments: [format(servingGrams.lowerBound), format(servingGrams.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.grams.range",
+                    arguments: [format(servingGrams.lowerBound), format(servingGrams.upperBound)]
+                ))
         }
         return value
     }
@@ -265,10 +275,11 @@ enum InputValidation {
     static func energyDensity(kilocaloriesPer100 value: Double, field: String) throws -> Double {
         try requireFinite(value, field: field)
         guard energyDensityPer100.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.energyDensity.range",
-                arguments: [format(energyDensityPer100.lowerBound), format(energyDensityPer100.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.energyDensity.range",
+                    arguments: [format(energyDensityPer100.lowerBound), format(energyDensityPer100.upperBound)]
+                ))
         }
         return value
     }
@@ -276,10 +287,11 @@ enum InputValidation {
     static func servings(count value: Double, field: String = "servingsCount") throws -> Double {
         try requireFinite(value, field: field)
         guard recipeServings.contains(value) else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.servings.range",
-                arguments: [format(recipeServings.lowerBound), format(recipeServings.upperBound)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.servings.range",
+                    arguments: [format(recipeServings.lowerBound), format(recipeServings.upperBound)]
+                ))
         }
         return value
     }
@@ -291,9 +303,10 @@ enum InputValidation {
             throw RepositoryError.invalidInput(ValidationIssue(field: field, key: "validation.name.empty"))
         }
         guard trimmed.count <= nameCharacterLimit else {
-            throw RepositoryError.invalidInput(ValidationIssue(
-                field: field, key: "validation.name.tooLong", arguments: [String(nameCharacterLimit)]
-            ))
+            throw RepositoryError.invalidInput(
+                ValidationIssue(
+                    field: field, key: "validation.name.tooLong", arguments: [String(nameCharacterLimit)]
+                ))
         }
         return trimmed
     }
@@ -502,4 +515,3 @@ extension Repository {
         }
     }
 }
-

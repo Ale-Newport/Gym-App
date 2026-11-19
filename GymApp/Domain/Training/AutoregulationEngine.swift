@@ -120,21 +120,24 @@ enum AutoregulationEngine {
         )
         let alreadyLightened = Set(reductions.compactMap(\.exerciseID))
         proposals.append(contentsOf: reductions)
-        proposals.append(contentsOf: swapSuggestions(
-            outcome: outcome,
-            missShares: missShares,
-            alreadyLightened: alreadyLightened,
-            profile: profile,
-            catalog: catalog
-        ))
+        proposals.append(
+            contentsOf: swapSuggestions(
+                outcome: outcome,
+                missShares: missShares,
+                alreadyLightened: alreadyLightened,
+                profile: profile,
+                catalog: catalog
+            ))
         proposals.append(contentsOf: setRemovals(outcome: outcome, recovery: recovery, targets: targets))
         proposals.append(contentsOf: sessionTrim(outcome: outcome, profile: profile))
-        proposals.append(contentsOf: restExtensions(
-            dropOffs: dropOffs, alreadyLightened: alreadyLightened, catalog: catalog
-        ))
-        proposals.append(contentsOf: setAdditions(
-            outcome: outcome, recovery: recovery, targets: targets, profile: profile
-        ))
+        proposals.append(
+            contentsOf: restExtensions(
+                dropOffs: dropOffs, alreadyLightened: alreadyLightened, catalog: catalog
+            ))
+        proposals.append(
+            contentsOf: setAdditions(
+                outcome: outcome, recovery: recovery, targets: targets, profile: profile
+            ))
 
         guard !proposals.isEmpty else {
             return [make(.noChange, magnitude: 0, explanation: Explanation("autoreg.noChange"))]
@@ -142,7 +145,7 @@ enum AutoregulationEngine {
 
         // Safety-relevant changes first, then structural ones, then additions.
         let order: [AutoregulationAdjustment.Kind] = [
-            .reduceLoad, .increaseLoad, .removeSet, .shortenSession, .restLonger, .swapExercise, .addSet, .noChange
+            .reduceLoad, .increaseLoad, .removeSet, .shortenSession, .restLonger, .swapExercise, .addSet, .noChange,
         ]
         let sorted = proposals.enumerated().sorted { lhs, rhs in
             let left = order.firstIndex(of: lhs.element.kind) ?? order.count
@@ -224,7 +227,8 @@ enum AutoregulationEngine {
                 }
                 guard let reps = set.reps else { continue }
                 if (target - reps) >= AutoregulationTuning.badMissAbsoluteReps
-                    || Double(reps) < AutoregulationTuning.badMissRepFraction * Double(target) {
+                    || Double(reps) < AutoregulationTuning.badMissRepFraction * Double(target)
+                {
                     missed += 1
                 }
             }
@@ -248,27 +252,28 @@ enum AutoregulationEngine {
         var result: [AutoregulationAdjustment] = []
         for exerciseID in missShares.keys.sorted() {
             guard let entry = missShares[exerciseID],
-                  entry.rated >= AutoregulationTuning.minimumRatedSetsForLoadCut,
-                  entry.share >= AutoregulationTuning.moderateMissShare,
-                  // The first set hit its target and only the later ones fell away: the load is
-                  // demonstrably right, so rest gets changed instead.
-                  dropOffs[exerciseID] != true,
-                  let exercise = catalog[exerciseID],
-                  // Taking load off a movement that carries none is not a change, it is a fiction.
-                  exercise.metadata.loadability.carriesExternalLoad
+                entry.rated >= AutoregulationTuning.minimumRatedSetsForLoadCut,
+                entry.share >= AutoregulationTuning.moderateMissShare,
+                // The first set hit its target and only the later ones fell away: the load is
+                // demonstrably right, so rest gets changed instead.
+                dropOffs[exerciseID] != true,
+                let exercise = catalog[exerciseID],
+                // Taking load off a movement that carries none is not a change, it is a fiction.
+                exercise.metadata.loadability.carriesExternalLoad
             else { continue }
 
             let severe = entry.share >= AutoregulationTuning.severeMissShare
-            result.append(make(
-                .reduceLoad,
-                exerciseID: exerciseID,
-                muscleGroup: exercise.primaryGroup,
-                magnitude: severe ? AutoregulationTuning.severeLoadCut : AutoregulationTuning.moderateLoadCut,
-                explanation: Explanation(
-                    severe ? "autoreg.reduceLoad.severe" : "autoreg.reduceLoad",
-                    [exercise.name]
-                )
-            ))
+            result.append(
+                make(
+                    .reduceLoad,
+                    exerciseID: exerciseID,
+                    muscleGroup: exercise.primaryGroup,
+                    magnitude: severe ? AutoregulationTuning.severeLoadCut : AutoregulationTuning.moderateLoadCut,
+                    explanation: Explanation(
+                        severe ? "autoreg.reduceLoad.severe" : "autoreg.reduceLoad",
+                        [exercise.name]
+                    )
+                ))
         }
         return result
     }
@@ -302,35 +307,37 @@ enum AutoregulationEngine {
             // An exercise missing from the catalogue cannot be named, and the sentence would read
             // "You swapped 0025 out during the session". Silence beats a raw dataset id.
             guard let exercise = catalog[exerciseID] else { continue }
-            result.append(make(
-                .swapExercise,
-                exerciseID: exerciseID,
-                muscleGroup: exercise.primaryGroup,
-                magnitude: 0,
-                explanation: Explanation("autoreg.swap.substituted", [exercise.name])
-            ))
+            result.append(
+                make(
+                    .swapExercise,
+                    exerciseID: exerciseID,
+                    muscleGroup: exercise.primaryGroup,
+                    magnitude: 0,
+                    explanation: Explanation("autoreg.swap.substituted", [exercise.name])
+                ))
         }
 
         for exerciseID in missShares.keys.sorted() {
             guard let entry = missShares[exerciseID],
-                  entry.rated >= AutoregulationTuning.minimumRatedSetsForSwap,
-                  entry.share >= 1.0,
-                  !alreadyLightened.contains(exerciseID),
-                  let exercise = catalog[exerciseID],
-                  !result.contains(where: { $0.exerciseID == exerciseID })
+                entry.rated >= AutoregulationTuning.minimumRatedSetsForSwap,
+                entry.share >= 1.0,
+                !alreadyLightened.contains(exerciseID),
+                let exercise = catalog[exerciseID],
+                !result.contains(where: { $0.exerciseID == exerciseID })
             else { continue }
 
             let cannotLighten = !exercise.metadata.loadability.carriesExternalLoad
             let tooAdvanced = exercise.metadata.difficulty.rank > profile.experience.maximumDifficulty.rank
             guard cannotLighten || tooAdvanced else { continue }
 
-            result.append(make(
-                .swapExercise,
-                exerciseID: exerciseID,
-                muscleGroup: exercise.primaryGroup,
-                magnitude: 0,
-                explanation: Explanation("autoreg.swap.failed", [exercise.name])
-            ))
+            result.append(
+                make(
+                    .swapExercise,
+                    exerciseID: exerciseID,
+                    muscleGroup: exercise.primaryGroup,
+                    magnitude: 0,
+                    explanation: Explanation("autoreg.swap.failed", [exercise.name])
+                ))
         }
 
         return Array(result.prefix(AutoregulationTuning.maximumSwapSuggestions))
@@ -360,12 +367,14 @@ enum AutoregulationEngine {
             }
 
         guard let group = candidates.first else { return [] }
-        return [make(
-            .removeSet,
-            muscleGroup: group,
-            magnitude: 1,
-            explanation: Explanation("autoreg.removeSet.fatigue")
-        )]
+        return [
+            make(
+                .removeSet,
+                muscleGroup: group,
+                magnitude: 1,
+                explanation: Explanation("autoreg.removeSet.fatigue")
+            )
+        ]
     }
 
     /// Add a set where the session was easy, the group is below its weekly target and recovery
@@ -383,15 +392,17 @@ enum AutoregulationEngine {
         targets: VolumeTargets,
         profile: TrainingProfileSnapshot
     ) -> [AutoregulationAdjustment] {
-        let ratedEasy = outcome.averageRIR.map { $0 >= Double(profile.defaultTargetRIR) + AutoregulationTuning.easyRIRMargin } ?? false
+        let ratedEasy =
+            outcome.averageRIR.map { $0 >= Double(profile.defaultTargetRIR) + AutoregulationTuning.easyRIRMargin }
+            ?? false
         let feltEasy = outcome.effortFeedback == .easy
         // The user's own verdict outranks the inferred one. A session they called hard or
         // exhausting is never a session to add volume after, however generous the logged reps in
         // reserve happen to look — the two together mean the rating is what to trust.
         let saidDemanding = outcome.effortFeedback == .hard || outcome.effortFeedback == .exhausting
         guard !saidDemanding,
-              feltEasy || ratedEasy,
-              outcome.completionRate >= AutoregulationTuning.addSetCompletionFloor
+            feltEasy || ratedEasy,
+            outcome.completionRate >= AutoregulationTuning.addSetCompletionFloor
         else { return [] }
 
         let candidates = outcome.groupSets.keys
@@ -433,11 +444,13 @@ enum AutoregulationEngine {
         // trim is capped at `maximumTrimMinutes`, so quoting it would tell a user who ran 45 minutes
         // over that they ran 15 minutes over. `durationSeconds` is an `Int`, so the conversion back
         // to `Int` here cannot overflow.
-        return [make(
-            .shortenSession,
-            magnitude: trim,
-            explanation: Explanation("autoreg.shortenSession", [String(Int(overrunMinutes.rounded()))])
-        )]
+        return [
+            make(
+                .shortenSession,
+                magnitude: trim,
+                explanation: Explanation("autoreg.shortenSession", [String(Int(overrunMinutes.rounded()))])
+            )
+        ]
     }
 
     /// Exercises where reps fell away sharply between sets at a load that did not drop, mapped to
@@ -451,14 +464,15 @@ enum AutoregulationEngine {
         for performance in outcome.performances {
             let sets = performance.workingSets
             guard sets.count >= AutoregulationTuning.dropOffMinimumSets,
-                  let first = sets.first, let last = sets.last,
-                  let firstReps = first.reps, firstReps > 0,
-                  let lastReps = last.reps
+                let first = sets.first, let last = sets.last,
+                let firstReps = first.reps, firstReps > 0,
+                let lastReps = last.reps
             else { continue }
             // A load that fell between sets explains the reps on its own.
             guard (last.weightKg ?? 0) >= (first.weightKg ?? 0) else { continue }
 
-            let sharpDrop = Double(lastReps) < AutoregulationTuning.dropOffRepFraction * Double(firstReps)
+            let sharpDrop =
+                Double(lastReps) < AutoregulationTuning.dropOffRepFraction * Double(firstReps)
                 || (firstReps - lastReps) >= AutoregulationTuning.dropOffAbsoluteReps
             guard sharpDrop else { continue }
 
@@ -504,7 +518,7 @@ enum AutoregulationEngine {
         to session: inout GeneratedSession
     ) -> Int {
         guard let exerciseID = adjustment.exerciseID,
-              let index = session.exercises.firstIndex(where: { $0.exerciseID == exerciseID && !$0.isLocked })
+            let index = session.exercises.firstIndex(where: { $0.exerciseID == exerciseID && !$0.isLocked })
         else { return 0 }
 
         let current = session.exercises[index].restSeconds
@@ -524,12 +538,14 @@ enum AutoregulationEngine {
         let candidates = matchingIndices(adjustment, in: session, catalog: catalog)
             .filter { session.exercises[$0].sets < AutoregulationTuning.maximumSetsPerExercise }
         // Volume goes on the cheapest movement for the group: the same extra set, less systemic cost.
-        guard let index = candidates.min(by: { lhs, rhs in
-            let left = catalog[session.exercises[lhs].exerciseID]?.metadata.fatigueCost ?? 0.5
-            let right = catalog[session.exercises[rhs].exerciseID]?.metadata.fatigueCost ?? 0.5
-            if left != right { return left < right }
-            return session.exercises[lhs].orderIndex < session.exercises[rhs].orderIndex
-        }) else { return 0 }
+        guard
+            let index = candidates.min(by: { lhs, rhs in
+                let left = catalog[session.exercises[lhs].exerciseID]?.metadata.fatigueCost ?? 0.5
+                let right = catalog[session.exercises[rhs].exerciseID]?.metadata.fatigueCost ?? 0.5
+                if left != right { return left < right }
+                return session.exercises[lhs].orderIndex < session.exercises[rhs].orderIndex
+            })
+        else { return 0 }
 
         session.exercises[index].sets += 1
         return setSeconds(of: session.exercises[index], catalog: catalog)
@@ -544,12 +560,14 @@ enum AutoregulationEngine {
         let candidates = matchingIndices(adjustment, in: session, catalog: catalog)
             .filter { budget.allows($0, in: session) }
         // Take it off the most fatiguing movement, and off the back of the session on a tie.
-        guard let index = candidates.max(by: { lhs, rhs in
-            let left = catalog[session.exercises[lhs].exerciseID]?.metadata.fatigueCost ?? 0.5
-            let right = catalog[session.exercises[rhs].exerciseID]?.metadata.fatigueCost ?? 0.5
-            if left != right { return left < right }
-            return session.exercises[lhs].orderIndex < session.exercises[rhs].orderIndex
-        }) else { return 0 }
+        guard
+            let index = candidates.max(by: { lhs, rhs in
+                let left = catalog[session.exercises[lhs].exerciseID]?.metadata.fatigueCost ?? 0.5
+                let right = catalog[session.exercises[rhs].exerciseID]?.metadata.fatigueCost ?? 0.5
+                if left != right { return left < right }
+                return session.exercises[lhs].orderIndex < session.exercises[rhs].orderIndex
+            })
+        else { return 0 }
 
         let cost = setSeconds(of: session.exercises[index], catalog: catalog)
         session.exercises[index].sets -= 1
@@ -574,12 +592,14 @@ enum AutoregulationEngine {
             iterations += 1
             let candidates = session.exercises.indices.filter { budget.allows($0, in: session) }
             // Trim the most expensive slot first: fewest sets lost for the time reclaimed.
-            guard let index = candidates.max(by: { lhs, rhs in
-                let left = setSeconds(of: session.exercises[lhs], catalog: catalog)
-                let right = setSeconds(of: session.exercises[rhs], catalog: catalog)
-                if left != right { return left < right }
-                return session.exercises[lhs].orderIndex < session.exercises[rhs].orderIndex
-            }) else { break }
+            guard
+                let index = candidates.max(by: { lhs, rhs in
+                    let left = setSeconds(of: session.exercises[lhs], catalog: catalog)
+                    let right = setSeconds(of: session.exercises[rhs], catalog: catalog)
+                    if left != right { return left < right }
+                    return session.exercises[lhs].orderIndex < session.exercises[rhs].orderIndex
+                })
+            else { break }
 
             let cost = setSeconds(of: session.exercises[index], catalog: catalog)
             session.exercises[index].sets -= 1
@@ -623,7 +643,8 @@ enum AutoregulationEngine {
             guard !exercise.isLocked else { return false }
             if let exerciseID = adjustment.exerciseID { return exercise.exerciseID == exerciseID }
             guard let group = adjustment.muscleGroup,
-                  let record = catalog[exercise.exerciseID] else { return false }
+                let record = catalog[exercise.exerciseID]
+            else { return false }
             return record.metadata.volumeCredit(for: group) >= 0.5
         }
     }
@@ -641,7 +662,8 @@ enum AutoregulationEngine {
 
     /// Clock cost of one set of a planned exercise: the work itself plus the rest that follows it.
     private static func setSeconds(of exercise: GeneratedExercise, catalog: [String: Exercise]) -> Int {
-        let work = catalog[exercise.exerciseID]?.metadata.estimatedSetSeconds
+        let work =
+            catalog[exercise.exerciseID]?.metadata.estimatedSetSeconds
             ?? AutoregulationTuning.fallbackSetSeconds
         return work + exercise.restSeconds
     }
@@ -687,9 +709,10 @@ enum AutoregulationEngine {
         // Stamp the RFC 4122 version and variant bits so the value is a well-formed UUID.
         bytes[6] = (bytes[6] & 0x0F) | 0x40
         bytes[8] = (bytes[8] & 0x3F) | 0x80
-        return UUID(uuid: (
-            bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
-            bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]
-        ))
+        return UUID(
+            uuid: (
+                bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
+                bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]
+            ))
     }
 }

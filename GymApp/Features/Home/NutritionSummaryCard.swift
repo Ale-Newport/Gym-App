@@ -100,13 +100,16 @@ struct NutritionSummaryCard: View {
                 Text(L("home.nutrition.eaten"))
                     .font(.caption)
                     .foregroundStyle(Color.appTextTertiary)
-                Text(L("home.nutrition.macroValue",
-                       formatter.energy(summary.consumed.kilocalories, includeUnit: false),
-                       formatter.energy(targetKcal)))
-                    .font(.footnote.monospacedDigit())
-                    .foregroundStyle(Color.appTextPrimary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
+                Text(
+                    L(
+                        "home.nutrition.macroValue",
+                        formatter.energy(summary.consumed.kilocalories, includeUnit: false),
+                        formatter.energy(targetKcal))
+                )
+                .font(.footnote.monospacedDigit())
+                .foregroundStyle(Color.appTextPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             }
         }
     }
@@ -184,12 +187,15 @@ struct NutritionSummaryCard: View {
                         .font(.footnote.weight(.medium))
                         .foregroundStyle(Color.appTextPrimary)
                     Spacer(minLength: Metrics.spacing8)
-                    Text(L("home.nutrition.waterProgress",
-                           Int(summary.waterMilliliters.rounded()),
-                           Int(summary.waterTargetMilliliters.rounded())))
-                        .font(.caption.monospacedDigit())
-                        .foregroundStyle(Color.appTextSecondary)
-                        .lineLimit(1)
+                    Text(
+                        L(
+                            "home.nutrition.waterProgress",
+                            Int(summary.waterMilliliters.rounded()),
+                            Int(summary.waterTargetMilliliters.rounded()))
+                    )
+                    .font(.caption.monospacedDigit())
+                    .foregroundStyle(Color.appTextSecondary)
+                    .lineLimit(1)
                 }
                 ProgressBar(
                     value: summary.waterMilliliters,
@@ -209,8 +215,11 @@ struct NutritionSummaryCard: View {
             }
             .buttonStyle(.plain)
             .disabled(isBusy)
-            .accessibilityLabel(Text(L("home.nutrition.addWater",
-                                       Int(HomeViewModel.quickWaterMilliliters))))
+            .accessibilityLabel(
+                Text(
+                    L(
+                        "home.nutrition.addWater",
+                        Int(HomeViewModel.quickWaterMilliliters))))
         }
     }
 
@@ -219,13 +228,14 @@ struct NutritionSummaryCard: View {
             return "\(L("home.nutrition.title")), \(L("home.nutrition.noTargetTitle"))"
         }
         let remaining = summary.remainingKilocalories
-        let energy = remaining < 0
+        let energy =
+            remaining < 0
             ? "\(formatter.energy(-remaining)) \(L("home.nutrition.overLabel"))"
             : "\(formatter.energy(remaining)) \(L("home.nutrition.remaining"))"
         let macros = [
             "\(L("home.nutrition.protein")) \(L("home.nutrition.macroValue", formatter.macro(summary.consumed.proteinG), formatter.macro(target.proteinG)))",
             "\(L("home.nutrition.carbs")) \(L("home.nutrition.macroValue", formatter.macro(summary.consumed.carbsG), formatter.macro(target.carbsG)))",
-            "\(L("home.nutrition.fat")) \(L("home.nutrition.macroValue", formatter.macro(summary.consumed.fatG), formatter.macro(target.fatG)))"
+            "\(L("home.nutrition.fat")) \(L("home.nutrition.macroValue", formatter.macro(summary.consumed.fatG), formatter.macro(target.fatG)))",
         ].joined(separator: ", ")
         return "\(L("home.nutrition.title")), \(energy), \(macros)"
     }

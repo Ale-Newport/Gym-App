@@ -145,7 +145,6 @@ enum Units {
         "\(text)\u{00A0}\(unit)"
     }
 
-
     static func formatMacro(grams: Double, locale: Locale = .current) -> String {
         let formatter = NumberFormatter()
         formatter.locale = locale
@@ -213,7 +212,8 @@ enum DayKey {
 
     static func offset(from key: String, days: Int, calendar: Calendar = .current) -> String {
         guard let date = date(from: key, calendar: calendar),
-              let shifted = calendar.date(byAdding: .day, value: days, to: date) else { return key }
+            let shifted = calendar.date(byAdding: .day, value: days, to: date)
+        else { return key }
         return make(from: shifted, calendar: calendar)
     }
 }
@@ -313,7 +313,7 @@ struct EquipmentIncrements: Hashable, Sendable {
     var ezBarWeightKg: Double = 10
     var availablePlatesKg: [Double] = [25, 20, 15, 10, 5, 2.5, 1.25]
     var availableDumbbellsKg: [Double] = [
-        2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 45, 50
+        2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 45, 50,
     ]
     var kettlebellsKg: [Double] = [8, 12, 16, 20, 24, 28, 32]
     var machineIncrementKg: Double = 5

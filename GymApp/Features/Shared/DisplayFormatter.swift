@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// Formats values for display using the user's chosen units.
 ///
@@ -126,9 +126,11 @@ struct DisplayFormatterProvider<Content: View>: View {
 
     var body: some View {
         content
-            .environment(\.displayFormatter, DisplayFormatter(
-                settings: settings.first,
-                locale: localization.current.locale
-            ))
+            .environment(
+                \.displayFormatter,
+                DisplayFormatter(
+                    settings: settings.first,
+                    locale: localization.current.locale
+                ))
     }
 }

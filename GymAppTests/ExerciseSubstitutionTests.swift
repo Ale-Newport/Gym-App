@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 // MARK: - Fixtures
@@ -93,7 +94,8 @@ private enum SubstitutionFixture {
             tags: ["fly"],
             volume: [.chest: 1.0]
         ),
-        chestPress(id: "push-up", equipment: .bodyWeight, difficulty: .beginner, stability: 0.4, tags: ["press", "floor"]),
+        chestPress(
+            id: "push-up", equipment: .bodyWeight, difficulty: .beginner, stability: 0.4, tags: ["press", "floor"]),
         chestPress(
             id: "deficit-push-up",
             equipment: .bodyWeight,
@@ -102,8 +104,10 @@ private enum SubstitutionFixture {
             tags: ["press", "deficit"]
         ),
         chestPress(id: "weighted-dip", equipment: .weighted, difficulty: .advanced, stability: 0.7, tags: ["dip"]),
-        chestPress(id: "assisted-dip", equipment: .assisted, difficulty: .beginner, stability: 0.3, tags: ["dip", "machine"]),
-        chestPress(id: "band-press", equipment: .band, difficulty: .beginner, stability: 0.4, tags: ["press", "floor"]),
+        chestPress(
+            id: "assisted-dip", equipment: .assisted, difficulty: .beginner, stability: 0.3, tags: ["dip", "machine"]),
+        chestPress(
+            id: "band-press", equipment: .band, difficulty: .beginner, stability: 0.4, tags: ["press", "floor"]),
         chestPress(id: "ez-press", equipment: .ezBarbell, difficulty: .intermediate, tags: ["press", "flat"]),
         chestPress(
             id: "wide-machine",
@@ -146,7 +150,7 @@ private enum SubstitutionFixture {
                 volume: [.quads: 1.0, .glutes: 0.5],
                 tags: ["squat", "axial_load"]
             )
-        )
+        ),
     ]
 
     static let engine = ExerciseSubstitutionEngine(catalog: chestCatalogue)
@@ -269,8 +273,9 @@ struct SubstitutionSimilarityTests {
         doubled.equipmentFit *= 2
 
         #expect(
-            abs(engine.similarity(left, right, weights: doubled)
-                - engine.similarity(left, right, weights: .default)) < 1e-12
+            abs(
+                engine.similarity(left, right, weights: doubled)
+                    - engine.similarity(left, right, weights: .default)) < 1e-12
         )
     }
 
@@ -374,7 +379,7 @@ struct SubstitutionCandidateTests {
                 profile: SelectionFixture.profile(excludedIDs: ["db-press"]),
                 preferences: [
                     "machine-press": SelectionFixture.preference("machine-press", feedback: .neverRecommend),
-                    "cable-fly": SelectionFixture.preference("cable-fly", excluded: true)
+                    "cable-fly": SelectionFixture.preference("cable-fly", excluded: true),
                 ]
             )
         )
@@ -443,7 +448,7 @@ struct SubstitutionCandidateTests {
                     id: "0289",
                     sessions: [
                         [SelectionFixture.performedSet(weightKg: 40, reps: 8)],
-                        [SelectionFixture.performedSet(weightKg: 38, reps: 8)]
+                        [SelectionFixture.performedSet(weightKg: 38, reps: 8)],
                     ],
                     totalSessions: 6
                 )
@@ -479,7 +484,7 @@ struct SubstitutionCandidateTests {
     func aThinPoolIsToppedUpFromTheWiderIndex() {
         var catalogue: [Exercise] = [
             SubstitutionFixture.original,
-            SubstitutionFixture.chestPress(id: "db-press", equipment: .dumbbell)
+            SubstitutionFixture.chestPress(id: "db-press", equipment: .dumbbell),
         ]
         for index in 0..<3 {
             catalogue.append(
@@ -627,7 +632,8 @@ struct SubstitutionReasonTests {
     func harderPromotesMoreDemandingWork() throws {
         let result = candidates(.harder)
         let leader = try #require(result.first)
-        let raisesDifficulty = leader.exercise.metadata.difficulty.rank
+        let raisesDifficulty =
+            leader.exercise.metadata.difficulty.rank
             > SubstitutionFixture.original.metadata.difficulty.rank
         let unilateral = leader.exercise.metadata.laterality != .bilateral
         #expect(raisesDifficulty || unilateral, "leader was \(leader.id)")
@@ -691,7 +697,7 @@ struct SubstitutionReasonTests {
         let catalogue = [
             SubstitutionFixture.original,
             SubstitutionFixture.chestPress(id: "db-press", equipment: .dumbbell),
-            SubstitutionFixture.chestPress(id: "machine-press", equipment: .leverageMachine)
+            SubstitutionFixture.chestPress(id: "machine-press", equipment: .leverageMachine),
         ]
         let engine = ExerciseSubstitutionEngine(catalog: catalogue)
         let result = engine.alternatives(
@@ -708,7 +714,7 @@ struct SubstitutionReasonTests {
         let catalogue = [
             SubstitutionFixture.original,
             SubstitutionFixture.chestPress(id: "db-press", equipment: .dumbbell),
-            SubstitutionFixture.chestPress(id: "machine-press", equipment: .leverageMachine)
+            SubstitutionFixture.chestPress(id: "machine-press", equipment: .leverageMachine),
         ]
         let engine = ExerciseSubstitutionEngine(catalog: catalogue)
         let result = engine.alternatives(
@@ -732,24 +738,29 @@ struct SubstitutionReasonTests {
             engine.alternatives(for: SubstitutionFixture.request(original: bench, reason: reason, limit: 12))
         }
 
-        #expect(result(.bodyweightOnly).allSatisfy {
-            [.bodyWeight, .assisted, .weighted].contains($0.exercise.equipment)
-        })
+        #expect(
+            result(.bodyweightOnly).allSatisfy {
+                [.bodyWeight, .assisted, .weighted].contains($0.exercise.equipment)
+            })
         #expect(result(.preferDumbbell).allSatisfy { $0.exercise.equipment == .dumbbell })
         #expect(result(.preferCable).allSatisfy { $0.exercise.equipment == .cable })
-        #expect(result(.preferBarbell).allSatisfy {
-            [.barbell, .olympicBarbell, .ezBarbell, .trapBar].contains($0.exercise.equipment)
-        })
+        #expect(
+            result(.preferBarbell).allSatisfy {
+                [.barbell, .olympicBarbell, .ezBarbell, .trapBar].contains($0.exercise.equipment)
+            })
         #expect(result(.machineUnavailable).allSatisfy { $0.exercise.equipment != bench.equipment })
-        #expect(result(.jointDiscomfort).allSatisfy {
-            $0.exercise.metadata.movementPattern != bench.metadata.movementPattern
-        })
-        #expect(result(.easier).allSatisfy {
-            $0.exercise.metadata.difficulty.rank <= bench.metadata.difficulty.rank
-        })
-        #expect(result(.harder).allSatisfy {
-            $0.exercise.metadata.difficulty.rank >= bench.metadata.difficulty.rank
-        })
+        #expect(
+            result(.jointDiscomfort).allSatisfy {
+                $0.exercise.metadata.movementPattern != bench.metadata.movementPattern
+            })
+        #expect(
+            result(.easier).allSatisfy {
+                $0.exercise.metadata.difficulty.rank <= bench.metadata.difficulty.rank
+            })
+        #expect(
+            result(.harder).allSatisfy {
+                $0.exercise.metadata.difficulty.rank >= bench.metadata.difficulty.rank
+            })
     }
 }
 
@@ -786,7 +797,7 @@ struct SubstitutionPerformanceTests {
                 id: exercise.id,
                 sessions: [
                     [SelectionFixture.performedSet(weightKg: 60, reps: 8)],
-                    [SelectionFixture.performedSet(weightKg: 57.5, reps: 8)]
+                    [SelectionFixture.performedSet(weightKg: 57.5, reps: 8)],
                 ],
                 totalSessions: 5
             )
@@ -795,14 +806,15 @@ struct SubstitutionPerformanceTests {
         var produced = 0
         let elapsed = ContinuousClock().measure {
             for reason in SubstitutionReason.allCases {
-                produced += engine.alternatives(
-                    for: SubstitutionFixture.request(
-                        original: bench,
-                        reason: reason,
-                        preferences: preferences,
-                        histories: histories
-                    )
-                ).count
+                produced +=
+                    engine.alternatives(
+                        for: SubstitutionFixture.request(
+                            original: bench,
+                            reason: reason,
+                            preferences: preferences,
+                            histories: histories
+                        )
+                    ).count
             }
         }
 

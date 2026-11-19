@@ -136,7 +136,7 @@ struct NutritionRepository: Repository {
             predicate: #Predicate { $0.brand != nil },
             sortBy: [
                 SortDescriptor(\.timesLogged, order: .reverse),
-                SortDescriptor(\.name, order: .forward)
+                SortDescriptor(\.name, order: .forward),
             ]
         )
         brandDescriptor.fetchLimit = 400
@@ -165,10 +165,11 @@ struct NutritionRepository: Repository {
     }
 
     func favoriteFoods() throws -> [FoodItem] {
-        try fetch(FetchDescriptor<FoodItem>(
-            predicate: #Predicate { $0.isFavorite },
-            sortBy: [SortDescriptor(\.name, order: .forward)]
-        ))
+        try fetch(
+            FetchDescriptor<FoodItem>(
+                predicate: #Predicate { $0.isFavorite },
+                sortBy: [SortDescriptor(\.name, order: .forward)]
+            ))
     }
 
     func setFoodFavorite(_ isFavorite: Bool, on food: FoodItem, now: Date = Date()) throws {
@@ -486,10 +487,13 @@ struct NutritionRepository: Repository {
     /// The favourite flag is applied in memory because `SortDescriptor` needs a `Comparable` key and
     /// `Bool` is not one; the store still does the useful part of the ordering.
     func savedMeals() throws -> [SavedMeal] {
-        let meals = try fetch(FetchDescriptor<SavedMeal>(
-            sortBy: [SortDescriptor(\.timesUsed, order: .reverse),
-                     SortDescriptor(\.name, order: .forward)]
-        ))
+        let meals = try fetch(
+            FetchDescriptor<SavedMeal>(
+                sortBy: [
+                    SortDescriptor(\.timesUsed, order: .reverse),
+                    SortDescriptor(\.name, order: .forward),
+                ]
+            ))
         return meals.enumerated()
             .sorted { lhs, rhs in
                 if lhs.element.isFavorite != rhs.element.isFavorite { return lhs.element.isFavorite }
@@ -667,12 +671,13 @@ struct NutritionRepository: Repository {
         let foods = try foods(ids: items.compactMap(\.foodID))
         return items.reduce(NutritionTotals.zero) { totals, item in
             guard let foodID = item.foodID, let food = foods[foodID] else { return totals }
-            return totals + NutritionTotals(
-                macros: food.macros(forQuantity: item.quantity, unit: item.unit, servingIndex: item.servingIndex),
-                micronutrients: food.micronutrients(
-                    forQuantity: item.quantity, unit: item.unit, servingIndex: item.servingIndex
+            return totals
+                + NutritionTotals(
+                    macros: food.macros(forQuantity: item.quantity, unit: item.unit, servingIndex: item.servingIndex),
+                    micronutrients: food.micronutrients(
+                        forQuantity: item.quantity, unit: item.unit, servingIndex: item.servingIndex
+                    )
                 )
-            )
         }
     }
 
@@ -680,10 +685,13 @@ struct NutritionRepository: Repository {
 
     /// Recipes, favourites first and then by how often they are used.
     func recipes() throws -> [Recipe] {
-        let recipes = try fetch(FetchDescriptor<Recipe>(
-            sortBy: [SortDescriptor(\.timesUsed, order: .reverse),
-                     SortDescriptor(\.name, order: .forward)]
-        ))
+        let recipes = try fetch(
+            FetchDescriptor<Recipe>(
+                sortBy: [
+                    SortDescriptor(\.timesUsed, order: .reverse),
+                    SortDescriptor(\.name, order: .forward),
+                ]
+            ))
         return recipes.enumerated()
             .sorted { lhs, rhs in
                 if lhs.element.isFavorite != rhs.element.isFavorite { return lhs.element.isFavorite }
@@ -785,14 +793,15 @@ struct NutritionRepository: Repository {
         let foods = try foods(ids: ingredients.compactMap(\.foodID))
         let total = ingredients.reduce(NutritionTotals.zero) { totals, ingredient in
             guard let foodID = ingredient.foodID, let food = foods[foodID] else { return totals }
-            return totals + NutritionTotals(
-                macros: food.macros(
-                    forQuantity: ingredient.quantity, unit: ingredient.unit, servingIndex: ingredient.servingIndex
-                ),
-                micronutrients: food.micronutrients(
-                    forQuantity: ingredient.quantity, unit: ingredient.unit, servingIndex: ingredient.servingIndex
+            return totals
+                + NutritionTotals(
+                    macros: food.macros(
+                        forQuantity: ingredient.quantity, unit: ingredient.unit, servingIndex: ingredient.servingIndex
+                    ),
+                    micronutrients: food.micronutrients(
+                        forQuantity: ingredient.quantity, unit: ingredient.unit, servingIndex: ingredient.servingIndex
+                    )
                 )
-            )
         }
         let servings = max(0.25, recipe.servingsCount)
         return RecipeNutrition(
@@ -954,10 +963,11 @@ struct NutritionRepository: Repository {
     }
 
     func waterEntries(for dayKey: String) throws -> [WaterLogEntry] {
-        try fetch(FetchDescriptor<WaterLogEntry>(
-            predicate: #Predicate { $0.dayKey == dayKey },
-            sortBy: [SortDescriptor(\.loggedAt, order: .forward)]
-        ))
+        try fetch(
+            FetchDescriptor<WaterLogEntry>(
+                predicate: #Predicate { $0.dayKey == dayKey },
+                sortBy: [SortDescriptor(\.loggedAt, order: .forward)]
+            ))
     }
 
     func waterTotal(for dayKey: String = DayKey.today) throws -> Double {
@@ -976,11 +986,14 @@ struct NutritionRepository: Repository {
         let entries = try dayLog(for: dayKey)
         var result = DailyNutritionTotals(dayKey: dayKey)
         for entry in entries {
-            result.totals = result.totals + NutritionTotals(
-                macros: entry.macrosSnapshot,
-                micronutrients: entry.micronutrientsSnapshot
-            )
-            result.macrosBySlot[entry.mealSlot, default: .zero] = (result.macrosBySlot[entry.mealSlot] ?? .zero)
+            result.totals =
+                result.totals
+                + NutritionTotals(
+                    macros: entry.macrosSnapshot,
+                    micronutrients: entry.micronutrientsSnapshot
+                )
+            result.macrosBySlot[entry.mealSlot, default: .zero] =
+                (result.macrosBySlot[entry.mealSlot] ?? .zero)
                 + entry.macrosSnapshot
         }
         result.entryCount = entries.count
@@ -1014,8 +1027,10 @@ struct NutritionRepository: Repository {
     /// already eat. The limit exists to keep the scoring pass bounded on a large food database.
     func mealCandidateFoods(limit: Int = 400) throws -> [MealCandidateFood] {
         var descriptor = FetchDescriptor<FoodItem>(
-            sortBy: [SortDescriptor(\.timesLogged, order: .reverse),
-                     SortDescriptor(\.name, order: .forward)]
+            sortBy: [
+                SortDescriptor(\.timesLogged, order: .reverse),
+                SortDescriptor(\.name, order: .forward),
+            ]
         )
         descriptor.fetchLimit = max(0, limit)
         return try fetch(descriptor).map(Self.candidate(from:))
@@ -1060,14 +1075,15 @@ struct NutritionRepository: Repository {
                     forQuantity: item.quantity, unit: item.unit, servingIndex: item.servingIndex
                 )
                 macros = macros + itemMacros
-                portions.append(SuggestedFoodPortion(
-                    foodID: food.id,
-                    catalogID: food.catalogID,
-                    name: food.name,
-                    quantity: item.quantity,
-                    unit: item.unit,
-                    macros: itemMacros
-                ))
+                portions.append(
+                    SuggestedFoodPortion(
+                        foodID: food.id,
+                        catalogID: food.catalogID,
+                        name: food.name,
+                        quantity: item.quantity,
+                        unit: item.unit,
+                        macros: itemMacros
+                    ))
             }
             return SavedMealCandidate(
                 id: meal.id,
@@ -1090,9 +1106,11 @@ struct NutritionRepository: Repository {
             var macros = MacroNutrients.zero
             for ingredient in recipe.ingredients {
                 guard let foodID = ingredient.foodID, let food = foods[foodID] else { continue }
-                macros = macros + food.macros(
-                    forQuantity: ingredient.quantity, unit: ingredient.unit, servingIndex: ingredient.servingIndex
-                )
+                macros =
+                    macros
+                    + food.macros(
+                        forQuantity: ingredient.quantity, unit: ingredient.unit, servingIndex: ingredient.servingIndex
+                    )
             }
             let servings = max(0.25, recipe.servingsCount)
             return RecipeCandidate(
@@ -1108,15 +1126,18 @@ struct NutritionRepository: Repository {
 
     /// Ids of foods logged in the trailing `days` days, newest first. Feeds the recommender's
     /// variety penalty, which exists so the suggestions do not become a rut.
-    func recentlyLoggedFoodIDs(endingOn dayKey: String = DayKey.today, days: Int = 2, calendar: Calendar = .current) throws -> [UUID] {
+    func recentlyLoggedFoodIDs(endingOn dayKey: String = DayKey.today, days: Int = 2, calendar: Calendar = .current)
+        throws -> [UUID]
+    {
         var keys: [String] = []
         for offset in 0..<max(1, days) {
             keys.append(DayKey.offset(from: dayKey, days: -offset, calendar: calendar))
         }
-        let entries = try fetch(FetchDescriptor<FoodLogEntry>(
-            predicate: #Predicate { keys.contains($0.dayKey) },
-            sortBy: [SortDescriptor(\.loggedAt, order: .reverse)]
-        ))
+        let entries = try fetch(
+            FetchDescriptor<FoodLogEntry>(
+                predicate: #Predicate { keys.contains($0.dayKey) },
+                sortBy: [SortDescriptor(\.loggedAt, order: .reverse)]
+            ))
         var seen = Set<UUID>()
         return entries.compactMap(\.foodID).filter { seen.insert($0).inserted }
     }

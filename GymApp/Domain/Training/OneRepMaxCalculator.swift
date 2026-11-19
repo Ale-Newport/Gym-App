@@ -185,7 +185,8 @@ enum TrainingFormat {
         guard kilograms.isFinite else { return "0 kg" }
         // Loads are only ever selectable in steps of 0.5 kg or coarser, so one decimal is exact.
         let rounded = (kilograms * 10).rounded() / 10
-        let text = abs(rounded.rounded() - rounded) < 0.05
+        let text =
+            abs(rounded.rounded() - rounded) < 0.05
             ? String(format: "%.0f", rounded)
             : String(format: "%.1f", rounded)
         return "\(text) kg"

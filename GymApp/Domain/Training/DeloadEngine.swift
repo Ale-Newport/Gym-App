@@ -112,7 +112,8 @@ enum DeloadEngine {
         profile: TrainingProfileSnapshot,
         now: Date = Date()
     ) -> DeloadAssessment {
-        let past = sessions
+        let past =
+            sessions
             .filter { $0.date <= now && $0.completedSets > 0 }
             .sorted { ($0.date, $0.sessionID.uuidString) > ($1.date, $1.sessionID.uuidString) }
 
@@ -126,12 +127,13 @@ enum DeloadEngine {
             blockLengthSignal(weeksSinceLastDeload: weeksSinceLastDeload),
             effortInflationSignal(sessions: past, histories: histories, now: now),
             subjectiveSignal(wellbeing: wellbeing, now: now),
-            missedSetsSignal(sessions: past)
+            missedSetsSignal(sessions: past),
         ]
 
         let fired = signals.enumerated().filter { $0.element.hasFired }
         let severity = min(1, signals.reduce(0) { $0 + $1.contribution })
-        let shouldDeload = fired.count >= DeloadTuning.minimumCorroboratingSignals
+        let shouldDeload =
+            fired.count >= DeloadTuning.minimumCorroboratingSignals
             && severity >= DeloadTuning.severityThreshold
 
         // Strongest contribution first; the declaration index breaks ties so the order is stable
@@ -160,9 +162,11 @@ enum DeloadEngine {
         // Scale the prescription across the band between "just recommended" and "every signal
         // shouting", so a marginal call gets the gentle end of the range.
         let scaled = clamp((severity - DeloadTuning.severityThreshold) / 0.35)
-        let volumeReduction = DeloadTuning.baselineVolumeReduction
+        let volumeReduction =
+            DeloadTuning.baselineVolumeReduction
             + (DeloadTuning.maximumVolumeReduction - DeloadTuning.baselineVolumeReduction) * scaled
-        let intensityReduction = DeloadTuning.baselineIntensityReduction
+        let intensityReduction =
+            DeloadTuning.baselineIntensityReduction
             + (DeloadTuning.maximumIntensityReduction - DeloadTuning.baselineIntensityReduction) * scaled
 
         let summary = Explanation(
@@ -238,7 +242,8 @@ enum DeloadEngine {
         let readinessTerm = clamp((0.55 - recovery.systemicReadiness) / 0.35)
         let strength = max(countTerm, readinessTerm)
 
-        let explanation = elevated >= 2
+        let explanation =
+            elevated >= 2
             ? Explanation("deload.reason.elevatedFatigue", [String(elevated)])
             : Explanation("deload.reason.lowReadiness")
         return Signal(strength: strength, weight: DeloadTuning.weightElevatedFatigue, explanation: explanation)
@@ -274,7 +279,8 @@ enum DeloadEngine {
             guard recent.count >= 3 else { continue }
 
             guard let newestLoad = topWorkingLoad(of: recent[0]),
-                  let newestRIR = meanRepsInReserve(of: recent[0]) else { continue }
+                let newestRIR = meanRepsInReserve(of: recent[0])
+            else { continue }
 
             var priorLoads: [Double] = []
             var priorRIRs: [Double] = []
@@ -335,8 +341,9 @@ enum DeloadEngine {
         }
         let indices = window.compactMap { RecoveryEngine.index(of: $0) }
         guard indices.count >= DeloadTuning.minimumCheckInsForOpinion else {
-            return Signal(strength: 0, weight: DeloadTuning.weightSubjective,
-                          explanation: Explanation("deload.reason.subjective"))
+            return Signal(
+                strength: 0, weight: DeloadTuning.weightSubjective,
+                explanation: Explanation("deload.reason.subjective"))
         }
         let mean = indices.reduce(0, +) / Double(indices.count)
         // Neutral (0.5) contributes nothing; a sustained 0.2 average saturates the signal.
@@ -352,8 +359,9 @@ enum DeloadEngine {
     private static func missedSetsSignal(sessions: [SessionOutcome]) -> Signal {
         let planned = sessions.filter { $0.plannedSets > 0 }
         guard planned.count >= 3 else {
-            return Signal(strength: 0, weight: DeloadTuning.weightMissedSets,
-                          explanation: Explanation("deload.reason.missedSets", ["0"]))
+            return Signal(
+                strength: 0, weight: DeloadTuning.weightMissedSets,
+                explanation: Explanation("deload.reason.missedSets", ["0"]))
         }
 
         let recent = Array(planned.prefix(DeloadTuning.missedSetsWindow))
@@ -424,7 +432,7 @@ enum DeloadEngine {
         var best: Double?
         for set in performance.workingSets {
             guard let weight = set.weightKg, weight > 0,
-                  let reps = set.reps, reps > 0, reps <= DeloadTuning.maximumRepsForOneRepMax
+                let reps = set.reps, reps > 0, reps <= DeloadTuning.maximumRepsForOneRepMax
             else { continue }
             let estimate = weight * (1 + Double(reps) / 30)
             if estimate > (best ?? 0) { best = estimate }

@@ -1,5 +1,5 @@
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 /// The training widget: what to train next, or how long the current session has been running.
 struct NextWorkoutWidget: Widget {
@@ -110,8 +110,11 @@ struct NextWorkoutSmallView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text(L("widget.accessibility.inProgress",
-                                   snapshot.activeWorkoutTitle ?? L("widget.workout.generic"))))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "widget.accessibility.inProgress",
+                    snapshot.activeWorkoutTitle ?? L("widget.workout.generic"))))
     }
 
     // MARK: Planned
@@ -142,8 +145,11 @@ struct NextWorkoutSmallView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text(L("widget.accessibility.startWorkout",
-                                   snapshot.nextWorkoutTitle ?? L("widget.workout.generic"))))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "widget.accessibility.startWorkout",
+                    snapshot.nextWorkoutTitle ?? L("widget.workout.generic"))))
     }
 }
 
@@ -318,14 +324,17 @@ struct NextWorkoutMediumView: View {
     private var weekRing: some View {
         VStack(spacing: WidgetMetrics.spacing2) {
             WidgetRing(fraction: snapshot.weekFraction, lineWidth: 6, tint: WidgetPalette.accent) {
-                Text(L("widget.week.progress",
-                       snapshot.completedWorkoutsThisWeek,
-                       snapshot.plannedWorkoutsThisWeek))
-                    .font(.widgetNumeric(13, weight: .semibold))
-                    .foregroundStyle(WidgetPalette.textPrimary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                    .padding(2)
+                Text(
+                    L(
+                        "widget.week.progress",
+                        snapshot.completedWorkoutsThisWeek,
+                        snapshot.plannedWorkoutsThisWeek)
+                )
+                .font(.widgetNumeric(13, weight: .semibold))
+                .foregroundStyle(WidgetPalette.textPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .padding(2)
             }
             .frame(width: 52, height: 52)
 
@@ -335,9 +344,12 @@ struct NextWorkoutMediumView: View {
                 .lineLimit(1)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(L("widget.accessibility.weekProgress",
-                                   snapshot.completedWorkoutsThisWeek,
-                                   snapshot.plannedWorkoutsThisWeek)))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "widget.accessibility.weekProgress",
+                    snapshot.completedWorkoutsThisWeek,
+                    snapshot.plannedWorkoutsThisWeek)))
     }
 
     private var weekCount: some View {

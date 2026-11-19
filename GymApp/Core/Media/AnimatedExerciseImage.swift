@@ -115,7 +115,10 @@ struct ExerciseThumbnail: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
         .task(id: url) {
-            guard let url else { image = nil; return }
+            guard let url else {
+                image = nil
+                return
+            }
             image = await ThumbnailStore.shared.image(at: url)
         }
     }

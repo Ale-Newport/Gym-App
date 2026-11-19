@@ -1,6 +1,7 @@
 import Foundation
 import SwiftData
 import Testing
+
 @testable import GymApp
 
 /// The first-run flow's rules: what it asks, in what order, and — above all — what it will and will
@@ -54,8 +55,8 @@ struct OnboardingFlowTests {
     @Test("The goal step will not advance without a goal, and picking one replaces the last")
     func goalRules() throws {
         let (model, context) = try makeModel()
-        model.advance(context: context)             // welcome → about
-        model.advance(context: context)             // about → goal
+        model.advance(context: context)  // welcome → about
+        model.advance(context: context)  // about → goal
         #expect(model.step == .goal)
         #expect(!model.canAdvance)
 
@@ -68,8 +69,8 @@ struct OnboardingFlowTests {
     @Test("Focusing on a muscle group demands at least one group; any other goal clears them")
     func muscleFocusRules() throws {
         let (model, context) = try makeModel()
-        model.advance(context: context)             // welcome → about
-        model.advance(context: context)             // about → goal
+        model.advance(context: context)  // welcome → about
+        model.advance(context: context)  // about → goal
         model.selectGoal(.targetMuscleGroup)
         #expect(model.step == .goal)
         #expect(model.blockingHint != nil)

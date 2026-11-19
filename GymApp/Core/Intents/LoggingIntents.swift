@@ -50,9 +50,10 @@ struct LogBodyWeightIntent: AppIntent {
 
         // Echoed in whatever unit the user gave, which is the unit they are thinking in.
         let spoken = IntentMeasurementFormat.asGiven(weight)
-        return .result(dialog: IntentDialog(
-            LocalizedStringResource(stringLiteral: L("intents.logBodyWeight.logged", spoken))
-        ))
+        return .result(
+            dialog: IntentDialog(
+                LocalizedStringResource(stringLiteral: L("intents.logBodyWeight.logged", spoken))
+            ))
     }
 }
 
@@ -98,9 +99,10 @@ struct LogWaterIntent: AppIntent {
             Measurement<UnitVolume>(value: entry.milliliters, unit: .milliliters)
         )
         let today = IntentMeasurementFormat.naturalVolume(millilitres: total)
-        return .result(dialog: IntentDialog(
-            LocalizedStringResource(stringLiteral: L("intents.logWater.logged", logged, today))
-        ))
+        return .result(
+            dialog: IntentDialog(
+                LocalizedStringResource(stringLiteral: L("intents.logWater.logged", logged, today))
+            ))
     }
 }
 

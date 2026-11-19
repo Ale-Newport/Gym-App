@@ -152,7 +152,7 @@ struct ActiveWorkoutEditSheet: View {
     private func subtitle(for record: ExerciseSession) -> String {
         var parts = [
             LPlural("active.edit.setCount", record.workingSets.count),
-            L("active.edit.restValue", Units.formatDuration(seconds: record.restSeconds))
+            L("active.edit.restValue", Units.formatDuration(seconds: record.restSeconds)),
         ]
         if record.wasSkipped { parts.append(L("active.edit.skipped")) }
         return parts.joined(separator: " · ")
@@ -251,9 +251,10 @@ struct ActiveWorkoutEditSheet: View {
                     Image(systemName: editMode.isEditing ? "checkmark" : "arrow.up.arrow.down")
                         .minimumTapTarget()
                 }
-                .accessibilityLabel(Text(
-                    editMode.isEditing ? L("active.edit.reorderDone") : L("active.edit.reorder")
-                ))
+                .accessibilityLabel(
+                    Text(
+                        editMode.isEditing ? L("active.edit.reorderDone") : L("active.edit.reorder")
+                    ))
             }
         }
     }

@@ -106,10 +106,12 @@ struct BodyWeightView: View {
         List {
             Section {
                 chart
-                    .listRowInsets(EdgeInsets(
-                        top: Metrics.spacing16, leading: Metrics.spacing12,
-                        bottom: Metrics.spacing16, trailing: Metrics.spacing16
-                    ))
+                    .listRowInsets(
+                        EdgeInsets(
+                            top: Metrics.spacing16, leading: Metrics.spacing12,
+                            bottom: Metrics.spacing16, trailing: Metrics.spacing16
+                        )
+                    )
                     .listRowBackground(Color.appSurface)
             }
 
@@ -235,21 +237,25 @@ struct BodyWeightView: View {
             .frame(height: 220)
             .chartAccessibilityContainer(L("progress.weight.chartAccessibility"))
 
-            ChartLegendView(keys: [
-                ChartSeriesKey(
-                    id: "average", label: L("progress.weight.legend.average"),
-                    color: .appRecovery, symbolName: "minus"
-                ),
-                ChartSeriesKey(
-                    id: "readings", label: L("progress.weight.legend.readings"),
-                    color: .appTextTertiary, symbolName: "circle.fill"
-                ),
-            ] + (model.goalWeightKg == nil ? [] : [
-                ChartSeriesKey(
-                    id: "goal", label: L("progress.weight.legend.goal"),
-                    color: .appSuccess, symbolName: "minus"
-                ),
-            ]))
+            ChartLegendView(
+                keys: [
+                    ChartSeriesKey(
+                        id: "average", label: L("progress.weight.legend.average"),
+                        color: .appRecovery, symbolName: "minus"
+                    ),
+                    ChartSeriesKey(
+                        id: "readings", label: L("progress.weight.legend.readings"),
+                        color: .appTextTertiary, symbolName: "circle.fill"
+                    ),
+                ]
+                    + (model.goalWeightKg == nil
+                        ? []
+                        : [
+                            ChartSeriesKey(
+                                id: "goal", label: L("progress.weight.legend.goal"),
+                                color: .appSuccess, symbolName: "minus"
+                            )
+                        ]))
         }
     }
 
@@ -299,12 +305,14 @@ struct BodyWeightView: View {
                     .font(.appNumeric(15))
                     .foregroundStyle(Color.appTextSecondary)
             }
-            Text(abs(remaining) < 0.1
-                 ? L("progress.weight.goalReached")
-                 : L("progress.weight.goalRemaining", formatter.weight(abs(remaining))))
-                .font(.caption)
-                .foregroundStyle(Color.appTextSecondary)
-                .fixedSize(horizontal: false, vertical: true)
+            Text(
+                abs(remaining) < 0.1
+                    ? L("progress.weight.goalReached")
+                    : L("progress.weight.goalRemaining", formatter.weight(abs(remaining)))
+            )
+            .font(.caption)
+            .foregroundStyle(Color.appTextSecondary)
+            .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityElement(children: .combine)
     }
@@ -344,12 +352,14 @@ struct BodyWeightView: View {
         }
         .frame(minHeight: Metrics.minimumTapTarget)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text([
-            formatter.weight(row.weightKg),
-            formatter.weekdayAndDate(row.date),
-            row.isFromHealthKit ? L("progress.weight.source.health") : nil,
-            row.note,
-        ].compactMap { $0 }.joined(separator: ", ")))
+        .accessibilityLabel(
+            Text(
+                [
+                    formatter.weight(row.weightKg),
+                    formatter.weekdayAndDate(row.date),
+                    row.isFromHealthKit ? L("progress.weight.source.health") : nil,
+                    row.note,
+                ].compactMap { $0 }.joined(separator: ", ")))
     }
 
     private var healthImportButton: some View {

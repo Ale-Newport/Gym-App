@@ -1,6 +1,7 @@
 import Foundation
 import ImageIO
 import Testing
+
 @testable import GymApp
 
 // MARK: - Shared fixture
@@ -37,8 +38,10 @@ enum ExerciseDatasetFixture {
         var candidates: [Bundle] = [.main, Bundle(for: ExerciseDatasetTestAnchor.self)]
         candidates.append(contentsOf: Bundle.allBundles)
         for bundle in candidates
-        where bundle.url(forResource: "dataset-manifest.json", withExtension: nil, subdirectory: "ExerciseDataset") != nil
-            || bundle.url(forResource: "dataset-manifest.json", withExtension: nil) != nil {
+        where bundle.url(forResource: "dataset-manifest.json", withExtension: nil, subdirectory: "ExerciseDataset")
+            != nil
+            || bundle.url(forResource: "dataset-manifest.json", withExtension: nil) != nil
+        {
             return bundle
         }
         return .main
@@ -54,7 +57,8 @@ enum ExerciseDatasetFixture {
     }()
 
     static let rows: [Row] = {
-        let url = appBundle.url(forResource: "exercises.core.json", withExtension: nil, subdirectory: "ExerciseDataset")
+        let url =
+            appBundle.url(forResource: "exercises.core.json", withExtension: nil, subdirectory: "ExerciseDataset")
             ?? appBundle.url(forResource: "exercises.core.json", withExtension: nil)
         guard let url, let data = try? Data(contentsOf: url) else { return [] }
         return (try? JSONDecoder().decode([Row].self, from: data)) ?? []
@@ -313,8 +317,9 @@ struct ExerciseMediaIntegrityTests {
         let provider = ExerciseDatasetFixture.mediaProvider
         let broken = ExerciseDatasetFixture.exercises.filter { exercise in
             guard let url = provider.animationURL(for: exercise),
-                  let source = CGImageSourceCreateWithURL(url as CFURL, nil),
-                  let type = CGImageSourceGetType(source) as String? else { return true }
+                let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+                let type = CGImageSourceGetType(source) as String?
+            else { return true }
             return type != "org.webmproject.webp" || CGImageSourceGetCount(source) < 2
         }.map(\.id)
         #expect(broken.isEmpty, "\(broken.count) animations are not multi-frame WebP: \(broken.prefix(10))")

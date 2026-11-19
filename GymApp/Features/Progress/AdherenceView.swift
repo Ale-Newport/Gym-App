@@ -198,17 +198,21 @@ struct AdherenceView: View {
                 .chartAccessibilityContainer(L("progress.adherence.weekly"))
             },
             legend: {
-                ChartLegendView(keys: [
-                    ChartSeriesKey(
-                        id: "done", label: L("progress.adherence.completed"),
-                        color: .appSuccess, symbolName: "square.fill"
-                    ),
-                ] + (planned == nil ? [] : [
-                    ChartSeriesKey(
-                        id: "plan", label: L("progress.adherence.plan"),
-                        color: .appRecovery, symbolName: "minus"
-                    ),
-                ]))
+                ChartLegendView(
+                    keys: [
+                        ChartSeriesKey(
+                            id: "done", label: L("progress.adherence.completed"),
+                            color: .appSuccess, symbolName: "square.fill"
+                        )
+                    ]
+                        + (planned == nil
+                            ? []
+                            : [
+                                ChartSeriesKey(
+                                    id: "plan", label: L("progress.adherence.plan"),
+                                    color: .appRecovery, symbolName: "minus"
+                                )
+                            ]))
             }
         )
     }

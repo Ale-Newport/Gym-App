@@ -1,6 +1,6 @@
+import AudioToolbox
 import Foundation
 import Observation
-import AudioToolbox
 
 // MARK: - Rest timer
 

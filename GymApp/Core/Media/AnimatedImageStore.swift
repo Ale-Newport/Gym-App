@@ -130,10 +130,12 @@ actor AnimatedImageStore {
         }
         let delay: Double?
         if let webP = properties[kCGImagePropertyWebPDictionary] as? [CFString: Any] {
-            delay = webP[kCGImagePropertyWebPUnclampedDelayTime] as? Double
+            delay =
+                webP[kCGImagePropertyWebPUnclampedDelayTime] as? Double
                 ?? webP[kCGImagePropertyWebPDelayTime] as? Double
         } else if let gif = properties[kCGImagePropertyGIFDictionary] as? [CFString: Any] {
-            delay = gif[kCGImagePropertyGIFUnclampedDelayTime] as? Double
+            delay =
+                gif[kCGImagePropertyGIFUnclampedDelayTime] as? Double
                 ?? gif[kCGImagePropertyGIFDelayTime] as? Double
         } else {
             delay = nil
@@ -165,7 +167,8 @@ actor ThumbnailStore {
 
         let task = Task.detached(priority: .utility) { () -> UIImage? in
             guard let data = try? Data(contentsOf: url, options: .mappedIfSafe),
-                  let image = UIImage(data: data)?.preparingForDisplay() else { return nil }
+                let image = UIImage(data: data)?.preparingForDisplay()
+            else { return nil }
             return image
         }
         inFlight[url.path] = task

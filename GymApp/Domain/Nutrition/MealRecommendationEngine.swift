@@ -199,7 +199,8 @@ struct MealRecommendationEngine: Sendable {
     /// capped at what one sitting can sensibly hold. When the remainder is already smaller than
     /// that share, it is taken whole: this is the last meal of the day.
     private func mealTarget(for request: MealRecommendationRequest) -> MacroNutrients {
-        let cap = request.slot == .snacks
+        let cap =
+            request.slot == .snacks
             ? Constants.snackKilocalorieCap
             : Constants.mainMealKilocalorieCap
         let share = request.profile.energyShare(of: request.slot)
@@ -282,7 +283,8 @@ struct MealRecommendationEngine: Sendable {
         }
         let fibre = food.micronutrientsPer100.fiberG ?? 0
         if !tags.isDisjoint(with: Self.vegetableTags)
-            || (food.effectiveKilocaloriesPer100 < 80 && fibre >= 1.5) {
+            || (food.effectiveKilocaloriesPer100 < 80 && fibre >= 1.5)
+        {
             roles.insert(.vegetable)
         }
         if !tags.isDisjoint(with: Self.fatTags) || (fatShare >= 0.55 && macros.fatG >= 10) {
@@ -294,10 +296,10 @@ struct MealRecommendationEngine: Sendable {
 
     private static let proteinTags: Set<String> = ["protein_source", "protein", "lean_protein"]
     private static let carbTags: Set<String> = [
-        "carb_source", "carb", "carbohydrate", "grain", "starch", "cereal"
+        "carb_source", "carb", "carbohydrate", "grain", "starch", "cereal",
     ]
     private static let vegetableTags: Set<String> = [
-        "vegetable", "veg", "vegetables", "fruit", "salad", "produce"
+        "vegetable", "veg", "vegetables", "fruit", "salad", "produce",
     ]
     private static let fatTags: Set<String> = ["fat_source", "fat", "oil", "nut", "nuts", "seed", "seeds"]
 
@@ -334,7 +336,7 @@ struct MealRecommendationEngine: Sendable {
     }
 
     private static let allSlotTags: Set<String> = [
-        "breakfast", "morning", "lunch", "dinner", "main", "meal", "snack", "quick", "portable"
+        "breakfast", "morning", "lunch", "dinner", "main", "meal", "snack", "quick", "portable",
     ]
 
     /// Fibre per 100 g as a rough proxy for micronutrient density, used only for ranking which
@@ -355,7 +357,7 @@ struct MealRecommendationEngine: Sendable {
         [.protein, .vegetable],
         [.carbohydrate, .vegetable],
         [.carbohydrate, .fat],
-        [.protein]
+        [.protein],
     ]
 
     /// Snacks are one or two items. Nobody plates a snack.
@@ -365,7 +367,7 @@ struct MealRecommendationEngine: Sendable {
         [.protein, .fat],
         [.carbohydrate],
         [.vegetable],
-        [.fat]
+        [.fat],
     ]
 
     /// Last resort, tried only when every named pattern came back empty.
@@ -376,7 +378,7 @@ struct MealRecommendationEngine: Sendable {
     /// shown nothing at all, which is a worse answer than an unglamorous one.
     private static let fallbackPatterns: [[FoodRole]] = [
         [.other, .other],
-        [.other]
+        [.other],
     ]
 
     private func combinationSuggestions(_ context: Context) -> [MealSuggestion] {
@@ -385,7 +387,8 @@ struct MealRecommendationEngine: Sendable {
 
         var byRole: [FoodRole: [RankedFood]] = [:]
         for role in FoodRole.allCases {
-            byRole[role] = ranked
+            byRole[role] =
+                ranked
                 .filter { $0.roles.contains(role) }
                 .sorted(by: Self.rankOrder)
         }
@@ -487,9 +490,10 @@ struct MealRecommendationEngine: Sendable {
                 unit: rounded.unit,
                 macros: normalisedMacros(macros, food: foods[index].food, grams: rounded.grams)
             )
-            built.append(BuiltPortion(
-                ranked: foods[index], role: roles[index], grams: rounded.grams, portion: portion
-            ))
+            built.append(
+                BuiltPortion(
+                    ranked: foods[index], role: roles[index], grams: rounded.grams, portion: portion
+                ))
         }
         guard !built.isEmpty else { return nil }
 
@@ -517,7 +521,9 @@ struct MealRecommendationEngine: Sendable {
         )
 
         let title = built.map { $0.portion.name }.joined(separator: " + ")
-        let signature = "combo:" + built
+        let signature =
+            "combo:"
+            + built
             .map { "\($0.portion.identityKey)@\(Int($0.grams))" }
             .sorted()
             .joined(separator: "|")
@@ -631,12 +637,12 @@ struct MealRecommendationEngine: Sendable {
         // relative error and dominate the objective.
         let scales: [Double] = [
             max(target.proteinG, 20), max(target.carbsG, 30),
-            max(target.fatG, 10), max(target.kilocalories, 200)
+            max(target.fatG, 10), max(target.kilocalories, 200),
         ]
         let macroWeights: [Double] = [1.0, 0.6, 0.6, 1.2]
         let targets: [Double] = [
             target.proteinG / scales[0], target.carbsG / scales[1],
-            target.fatG / scales[2], target.kilocalories / scales[3]
+            target.fatG / scales[2], target.kilocalories / scales[3],
         ]
 
         // b[i][m] — food i's contribution to macro m per 100 g, in scaled units.
@@ -645,7 +651,7 @@ struct MealRecommendationEngine: Sendable {
         for food in solverFoods {
             coefficients.append([
                 food.per100.protein / scales[0], food.per100.carbs / scales[1],
-                food.per100.fat / scales[2], food.per100.energy / scales[3]
+                food.per100.fat / scales[2], food.per100.energy / scales[3],
             ])
         }
 
@@ -742,11 +748,14 @@ struct MealRecommendationEngine: Sendable {
         let forbiddenIDs = excludedFoodIDs(context)
         return context.request.savedMeals.compactMap { meal -> MealSuggestion? in
             guard !meal.items.isEmpty else { return nil }
-            guard !meal.items.contains(where: { item in
-                item.foodID.map { forbiddenIDs.contains($0) } ?? false
-            }) else { return nil }
+            guard
+                !meal.items.contains(where: { item in
+                    item.foodID.map { forbiddenIDs.contains($0) } ?? false
+                })
+            else { return nil }
 
-            let macros = meal.macros.kilocalories > 0
+            let macros =
+                meal.macros.kilocalories > 0
                 ? meal.macros
                 : meal.items.reduce(MacroNutrients.zero) { $0 + $1.macros }
             guard macros.kilocalories > 0 else { return nil }
@@ -811,7 +820,8 @@ struct MealRecommendationEngine: Sendable {
             let servings: Double
             let macros: MacroNutrients
             if double.kilocalories <= context.target.kilocalories * 1.1
-                && single.kilocalories < context.target.kilocalories * 0.55 {
+                && single.kilocalories < context.target.kilocalories * 0.55
+            {
                 servings = 2
                 macros = double
             } else {
@@ -823,7 +833,8 @@ struct MealRecommendationEngine: Sendable {
             components.macroFit = macroFit(macros, target: context.target)
             components.calorieFit = calorieFit(macros, target: context.target)
             let usage = nutritionClamp01(log(1 + Double(max(0, recipe.timesUsed))) / log(11))
-            let slotMatch = tags.isDisjoint(with: Self.allSlotTags)
+            let slotMatch =
+                tags.isDisjoint(with: Self.allSlotTags)
                 ? 0.5
                 : (tags.isDisjoint(with: Self.slotTags(for: context.request.slot)) ? 0.15 : 1.0)
             components.preferenceFit = nutritionClamp01(0.6 * usage + 0.4 * slotMatch)
@@ -890,7 +901,8 @@ struct MealRecommendationEngine: Sendable {
     private func calorieFit(_ macros: MacroNutrients, target: MacroNutrients) -> Double {
         let scale = max(target.kilocalories, 150)
         let difference = macros.kilocalories - target.kilocalories
-        let penalty = difference >= 0
+        let penalty =
+            difference >= 0
             ? Constants.calorieOvershootPenaltyFactor * difference / scale
             : -difference / scale
         return nutritionClamp01(1 - penalty)
@@ -900,7 +912,7 @@ struct MealRecommendationEngine: Sendable {
     /// Deliberately a short list: this is a nudge towards vegetables and whole foods, not a claim
     /// about anybody's nutritional status.
     private static let priorityMicronutrients: [Micronutrient] = [
-        .fiber, .potassium, .calcium, .iron, .vitaminC
+        .fiber, .potassium, .calcium, .iron, .vitaminC,
     ]
     private static let limitingMicronutrients: [Micronutrient] = [.sodium, .saturatedFat]
 
@@ -914,7 +926,8 @@ struct MealRecommendationEngine: Sendable {
         var coverageCount: Double = 0
         for nutrient in Self.priorityMicronutrients {
             guard let value = micros[nutrient], let reference = nutrient.referenceDailyIntake,
-                  reference > 0 else { continue }
+                reference > 0
+            else { continue }
             coverageTotal += nutritionClamp01(value / (reference * Constants.micronutrientMealShare))
             coverageCount += 1
         }
@@ -984,19 +997,25 @@ struct MealRecommendationEngine: Sendable {
             }
         }
 
-        reasons.append(Explanation("meal.reason.macros", [
-            NutritionFormat.whole(macros.proteinG),
-            NutritionFormat.whole(macros.carbsG),
-            NutritionFormat.whole(macros.fatG)
-        ]))
+        reasons.append(
+            Explanation(
+                "meal.reason.macros",
+                [
+                    NutritionFormat.whole(macros.proteinG),
+                    NutritionFormat.whole(macros.carbsG),
+                    NutritionFormat.whole(macros.fatG),
+                ]))
 
         if context.target.proteinG >= 20, macros.proteinG >= context.target.proteinG * 0.7 {
             reasons.append(Explanation("meal.reason.protein", [NutritionFormat.whole(macros.proteinG)]))
         }
-        reasons.append(Explanation("meal.reason.calories", [
-            NutritionFormat.whole(macros.kilocalories),
-            NutritionFormat.whole(context.target.kilocalories)
-        ]))
+        reasons.append(
+            Explanation(
+                "meal.reason.calories",
+                [
+                    NutritionFormat.whole(macros.kilocalories),
+                    NutritionFormat.whole(context.target.kilocalories),
+                ]))
 
         if built.contains(where: { $0.ranked.food.isFavorite }) {
             reasons.append(Explanation("meal.reason.favorite"))
@@ -1056,7 +1075,10 @@ struct MealRecommendationEngine: Sendable {
                 let adjusted = suggestion.score - Double(repeats) * Constants.repeatedFoodDemotion
                 // Strictly greater, so an exact tie keeps the earlier — and therefore
                 // higher-scoring — entry, which is what makes the loop reproducible.
-                if adjusted > bestAdjusted { bestAdjusted = adjusted; bestIndex = index }
+                if adjusted > bestAdjusted {
+                    bestAdjusted = adjusted
+                    bestIndex = index
+                }
             }
             let chosen = pool.remove(at: bestIndex)
             usedFoods.formUnion(chosen.items.map(\.identityKey))

@@ -14,7 +14,7 @@ enum AchievementPresentation {
         case .sessions(let count):
             return count <= 1 ? L(definition.titleKey) : L(definition.titleKey, count)
         case .dayStreak(let count), .weekStreak(let count),
-             .weighIns(let count), .nutritionDays(let count):
+            .weighIns(let count), .nutritionDays(let count):
             return L(definition.titleKey, count)
         case .liftKg(let kilograms):
             return L(definition.titleKey, formatter.weight(kilograms))
@@ -30,7 +30,7 @@ enum AchievementPresentation {
         case .sessions(let count):
             return count <= 1 ? L(definition.detailKey) : L(definition.detailKey, count)
         case .dayStreak(let count), .weekStreak(let count),
-             .weighIns(let count), .nutritionDays(let count):
+            .weighIns(let count), .nutritionDays(let count):
             return L(definition.detailKey, count)
         case .liftKg(let kilograms):
             return L(definition.detailKey, formatter.weight(kilograms))
@@ -46,7 +46,7 @@ enum AchievementPresentation {
         guard !badge.isUnlocked else { return nil }
         switch badge.definition.measure {
         case .sessions(let count), .dayStreak(let count), .weekStreak(let count),
-             .weighIns(let count), .nutritionDays(let count):
+            .weighIns(let count), .nutritionDays(let count):
             return "\(Int(badge.currentValue.rounded(.down))) / \(count)"
         case .liftKg(let kilograms):
             return "\(formatter.weight(badge.currentValue)) / \(formatter.weight(kilograms))"

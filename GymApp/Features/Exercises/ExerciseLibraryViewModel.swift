@@ -224,12 +224,14 @@ final class ExerciseLibraryViewModel {
             rows.map { ($0.exerciseID, ExercisePreferenceRepository.snapshot(of: $0)) }
         ) { first, _ in first }
 
-        favoriteIDs = rows
+        favoriteIDs =
+            rows
             .filter(\.isFavorite)
             .sorted { $0.updatedAt > $1.updatedAt }
             .map(\.exerciseID)
 
-        recentIDs = rows
+        recentIDs =
+            rows
             .compactMap { row in row.lastPerformedAt.map { (row.exerciseID, $0) } }
             .sorted { $0.1 > $1.1 }
             .prefix(Self.recentSectionLimit)
@@ -332,13 +334,14 @@ final class ExerciseLibraryViewModel {
 
         let recent = recentIDs.compactMap { byID[$0] }
         if !recent.isEmpty {
-            result.append(ExerciseListSection(
-                id: "recent",
-                titleKey: "exercises.section.recent",
-                literalTitle: nil,
-                indexTitle: nil,
-                items: recent.map { makeItem($0, in: "recent") }
-            ))
+            result.append(
+                ExerciseListSection(
+                    id: "recent",
+                    titleKey: "exercises.section.recent",
+                    literalTitle: nil,
+                    indexTitle: nil,
+                    items: recent.map { makeItem($0, in: "recent") }
+                ))
         }
 
         // A favourite already listed under "recent" is not listed twice in a row: the heart on its
@@ -346,13 +349,14 @@ final class ExerciseLibraryViewModel {
         let shownRecently = Set(recent.map(\.id))
         let favorites = favoriteIDs.compactMap { byID[$0] }.filter { !shownRecently.contains($0.id) }
         if !favorites.isEmpty {
-            result.append(ExerciseListSection(
-                id: "favorites",
-                titleKey: "exercises.section.favorites",
-                literalTitle: nil,
-                indexTitle: nil,
-                items: favorites.map { makeItem($0, in: "favorites") }
-            ))
+            result.append(
+                ExerciseListSection(
+                    id: "favorites",
+                    titleKey: "exercises.section.favorites",
+                    literalTitle: nil,
+                    indexTitle: nil,
+                    items: favorites.map { makeItem($0, in: "favorites") }
+                ))
         }
 
         // The alphabetical run is the complete filtered catalogue, including anything already shown
@@ -372,13 +376,14 @@ final class ExerciseLibraryViewModel {
         // with "#" wherever a non-letter name sorts.
         for letter in letters {
             guard let bucket = buckets[letter] else { continue }
-            result.append(ExerciseListSection(
-                id: "letter-\(letter)",
-                titleKey: nil,
-                literalTitle: letter,
-                indexTitle: letter,
-                items: bucket.map { makeItem($0, in: "letter-\(letter)") }
-            ))
+            result.append(
+                ExerciseListSection(
+                    id: "letter-\(letter)",
+                    titleKey: nil,
+                    literalTitle: letter,
+                    indexTitle: letter,
+                    items: bucket.map { makeItem($0, in: "letter-\(letter)") }
+                ))
         }
         return result
     }

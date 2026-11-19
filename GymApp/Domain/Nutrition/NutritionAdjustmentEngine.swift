@@ -84,15 +84,23 @@ enum NutritionAdjustmentEngine {
 
         // 1. Is there a usable signal at all?
         guard trend.hasEnoughData, let observedWeekly = trend.weeklyChangeKg else {
-            return hold(.insufficientData, Explanation("nutrition.adjust.insufficientData", [
-                NutritionFormat.whole(Double(WeightTrendAnalyzer.Constants.minimumReadings)),
-                NutritionFormat.whole(Double(WeightTrendAnalyzer.Constants.minimumSpanDays))
-            ]))
+            return hold(
+                .insufficientData,
+                Explanation(
+                    "nutrition.adjust.insufficientData",
+                    [
+                        NutritionFormat.whole(Double(WeightTrendAnalyzer.Constants.minimumReadings)),
+                        NutritionFormat.whole(Double(WeightTrendAnalyzer.Constants.minimumSpanDays)),
+                    ]))
         }
         if isTrendStale(trend, now: now) {
-            return hold(.insufficientData, Explanation("nutrition.adjust.staleData", [
-                NutritionFormat.whole(Double(Constants.maximumTrendAgeDays))
-            ]))
+            return hold(
+                .insufficientData,
+                Explanation(
+                    "nutrition.adjust.staleData",
+                    [
+                        NutritionFormat.whole(Double(Constants.maximumTrendAgeDays))
+                    ]))
         }
         if trend.confidence < Constants.minimumConfidence {
             return hold(.hold, Explanation("nutrition.adjust.lowConfidence"))
@@ -100,17 +108,25 @@ enum NutritionAdjustmentEngine {
 
         // 2. Has enough time passed since the last change for its effect to be visible?
         if daysSinceLastAdjustment < Constants.minimumDaysBetweenAdjustments {
-            return hold(.hold, Explanation("nutrition.adjust.tooSoon", [
-                NutritionFormat.whole(Double(max(0, daysSinceLastAdjustment))),
-                NutritionFormat.whole(Double(Constants.minimumDaysBetweenAdjustments))
-            ]))
+            return hold(
+                .hold,
+                Explanation(
+                    "nutrition.adjust.tooSoon",
+                    [
+                        NutritionFormat.whole(Double(max(0, daysSinceLastAdjustment))),
+                        NutritionFormat.whole(Double(Constants.minimumDaysBetweenAdjustments)),
+                    ]))
         }
 
         // 3. Can the trend be attributed to the plan?
         if let adherence, adherence < Constants.minimumAdherence {
-            return hold(.hold, Explanation("nutrition.adjust.lowAdherence", [
-                NutritionFormat.percent(nutritionClamp01(adherence))
-            ]))
+            return hold(
+                .hold,
+                Explanation(
+                    "nutrition.adjust.lowAdherence",
+                    [
+                        NutritionFormat.percent(nutritionClamp01(adherence))
+                    ]))
         }
 
         // 4a. The floor case, which has to be handled before the comparison in 4b.
@@ -126,10 +142,15 @@ enum NutritionAdjustmentEngine {
         if current.direction == .deficit || current.direction == .slightDeficit {
             let safetyFloor = NutritionRecommendationEngine.safeMinimumKilocalories(for: profile)
             if current.kilocalories <= safetyFloor + Constants.floorProximityKilocalories,
-               observedWeekly <= 0 {
-                return hold(.hold, Explanation("nutrition.adjust.floorReached", [
-                    NutritionFormat.whole(safetyFloor)
-                ]))
+                observedWeekly <= 0
+            {
+                return hold(
+                    .hold,
+                    Explanation(
+                        "nutrition.adjust.floorReached",
+                        [
+                            NutritionFormat.whole(safetyFloor)
+                        ]))
             }
         }
 
@@ -138,10 +159,14 @@ enum NutritionAdjustmentEngine {
         let gap = targetWeekly - observedWeekly
         let tolerance = toleranceKgPerWeek(targetWeekly: targetWeekly, confidence: trend.confidence)
         if abs(gap) <= tolerance {
-            return hold(.hold, Explanation("nutrition.adjust.onTrack", [
-                NutritionFormat.signedOneDecimal(observedWeekly),
-                NutritionFormat.signedOneDecimal(targetWeekly)
-            ]))
+            return hold(
+                .hold,
+                Explanation(
+                    "nutrition.adjust.onTrack",
+                    [
+                        NutritionFormat.signedOneDecimal(observedWeekly),
+                        NutritionFormat.signedOneDecimal(targetWeekly),
+                    ]))
         }
 
         // 5. Size the correction. `gap > 0` means the user is gaining less (or losing more) than
@@ -170,7 +195,8 @@ enum NutritionAdjustmentEngine {
         // literally would both pin the ceiling at 750 kcal and report the new target as a 1.7 kg a
         // week gain. Re-estimating from the profile is what the app would have done anyway.
         let floor = NutritionRecommendationEngine.safeMinimumKilocalories(for: profile)
-        let maintenance = current.totalDailyEnergyExpenditure > 0
+        let maintenance =
+            current.totalDailyEnergyExpenditure > 0
             ? current.totalDailyEnergyExpenditure
             : NutritionRecommendationEngine.totalDailyEnergyExpenditure(profile: profile)
         let ceiling = max(
@@ -183,25 +209,37 @@ enum NutritionAdjustmentEngine {
             proposed = floor
             delta = proposed - current.kilocalories
             if abs(delta) < Constants.negligibleCorrectionKilocalories {
-                return hold(.hold, Explanation("nutrition.adjust.floorReached", [
-                    NutritionFormat.whole(floor)
-                ]))
+                return hold(
+                    .hold,
+                    Explanation(
+                        "nutrition.adjust.floorReached",
+                        [
+                            NutritionFormat.whole(floor)
+                        ]))
             }
         }
         if proposed > ceiling {
             proposed = ceiling
             delta = proposed - current.kilocalories
             if abs(delta) < Constants.negligibleCorrectionKilocalories {
-                return hold(.hold, Explanation("nutrition.adjust.ceilingReached", [
-                    NutritionFormat.whole(ceiling)
-                ]))
+                return hold(
+                    .hold,
+                    Explanation(
+                        "nutrition.adjust.ceilingReached",
+                        [
+                            NutritionFormat.whole(ceiling)
+                        ]))
             }
         }
         if abs(delta) < Constants.negligibleCorrectionKilocalories {
-            return hold(.hold, Explanation("nutrition.adjust.onTrack", [
-                NutritionFormat.signedOneDecimal(observedWeekly),
-                NutritionFormat.signedOneDecimal(targetWeekly)
-            ]))
+            return hold(
+                .hold,
+                Explanation(
+                    "nutrition.adjust.onTrack",
+                    [
+                        NutritionFormat.signedOneDecimal(observedWeekly),
+                        NutritionFormat.signedOneDecimal(targetWeekly),
+                    ]))
         }
 
         // Round to a number a person would actually aim for, then re-apply the bounds. Rounding
@@ -214,10 +252,14 @@ enum NutritionAdjustmentEngine {
 
         // Re-applying the bounds can shrink the change to nothing.
         if abs(delta) < Constants.negligibleCorrectionKilocalories {
-            return hold(.hold, Explanation("nutrition.adjust.onTrack", [
-                NutritionFormat.signedOneDecimal(observedWeekly),
-                NutritionFormat.signedOneDecimal(targetWeekly)
-            ]))
+            return hold(
+                .hold,
+                Explanation(
+                    "nutrition.adjust.onTrack",
+                    [
+                        NutritionFormat.signedOneDecimal(observedWeekly),
+                        NutritionFormat.signedOneDecimal(targetWeekly),
+                    ]))
         }
 
         let action: CalorieAdjustmentAction = delta > 0 ? .increase : .decrease
@@ -226,7 +268,7 @@ enum NutritionAdjustmentEngine {
             [
                 NutritionFormat.signedOneDecimal(observedWeekly),
                 NutritionFormat.signedOneDecimal(targetWeekly),
-                NutritionFormat.whole(abs(delta))
+                NutritionFormat.whole(abs(delta)),
             ]
         )
 
@@ -238,12 +280,16 @@ enum NutritionAdjustmentEngine {
         newTargets.carbsG = split.carbsG
         newTargets.fatG = split.fatG
         // The intent has not changed; the rate the new number implies has.
-        newTargets.weeklyBodyMassChangeKg = ((proposed - maintenance)
+        newTargets.weeklyBodyMassChangeKg =
+            ((proposed - maintenance)
             * 7 / NutritionRecommendationEngine.Constants.energyPerKilogramBodyMass * 100).rounded() / 100
-        newTargets.explanations = [headline]
+        newTargets.explanations =
+            [headline]
             + split.explanations
-            + [Explanation("nutrition.adjust.approval"),
-               Explanation("nutrition.energy.estimateDisclaimer")]
+            + [
+                Explanation("nutrition.adjust.approval"),
+                Explanation("nutrition.energy.estimateDisclaimer"),
+            ]
 
         return CalorieAdjustmentDecision(
             action: action,
@@ -321,7 +367,8 @@ enum NutritionAdjustmentEngine {
         let protein = current.proteinG
         // A protein figure of zero is a record that never carried one, not a plan to eat none of
         // it, so it is rebuilt rather than frozen in place.
-        let usable = protein > 0 && current.carbsG >= 0 && current.fatG >= 0
+        let usable =
+            protein > 0 && current.carbsG >= 0 && current.fatG >= 0
             && protein * 4 <= energy
         guard usable else {
             let rebuilt = NutritionRecommendationEngine.macros(
@@ -349,7 +396,8 @@ enum NutritionAdjustmentEngine {
         } else {
             // Nothing left to scale — the incoming split carried no carbohydrate or fat at all.
             // Fall back to the same energy share the recommendation engine would have used.
-            fatEnergy = availableEnergy
+            fatEnergy =
+                availableEnergy
                 * NutritionRecommendationEngine.fatEnergyShare(direction: current.direction)
             carbEnergy = availableEnergy - fatEnergy
         }
@@ -360,9 +408,10 @@ enum NutritionAdjustmentEngine {
         if fatEnergy < fatFloorEnergy {
             carbEnergy -= (fatFloorEnergy - fatEnergy)
             fatEnergy = fatFloorEnergy
-            explanations.append(Explanation(
-                "nutrition.macro.fatFloor", [NutritionFormat.whole(fatFloor)]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.macro.fatFloor", [NutritionFormat.whole(fatFloor)]
+                ))
         }
         // Then the carbohydrate floor at zero: whatever carbohydrate cannot absorb comes off fat,
         // down to — and if the arithmetic demands it, below — its floor, because a negative macro
@@ -370,9 +419,10 @@ enum NutritionAdjustmentEngine {
         if carbEnergy < 0 {
             fatEnergy += carbEnergy
             carbEnergy = 0
-            explanations.append(Explanation(
-                "nutrition.macro.fatCompromise", [NutritionFormat.whole(max(0, fatEnergy) / 9)]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.macro.fatCompromise", [NutritionFormat.whole(max(0, fatEnergy) / 9)]
+                ))
         }
 
         let carbs = max(0, (carbEnergy / 4 / 5).rounded() * 5)

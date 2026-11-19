@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behaviour of `ProgressionEngine`, checked against `docs/fragments/progression.md`.
@@ -237,43 +238,47 @@ struct ProgressionEngineTests {
 
     @Test("A load the engine does not trust yet is calibrated before it is progressed")
     func needsCalibrationFlagRequiresCalibration() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(needsCalibration: true, strategy: .doubleProgression),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(needsCalibration: true, strategy: .doubleProgression),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
+            ))
         #expect(decision.action == .calibrate)
         #expect(decision.recommendedWeightKg == nil)
     }
 
     @Test("A missing working load is calibrated, not invented")
     func missingWorkingWeightRequiresCalibration() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(weightKg: nil),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(weightKg: nil),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
+            ))
         #expect(decision.action == .calibrate)
         #expect(decision.recommendedWeightKg == nil)
     }
 
     @Test("Zero kilograms is not a working load on a barbell")
     func zeroIsNotAWorkingLoadOnABarbell() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(weightKg: 0),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(weightKg: 0),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
+            ))
         #expect(decision.action == .calibrate)
     }
 
     @Test("Calibration clears the counters and keeps asking until it has been done")
     func calibrationResetsCounters() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 2, stalls: 3, regressions: 1, needsCalibration: true),
-            history: Fixtures.history(exerciseID: "bench")
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 2, stalls: 3, regressions: 1, needsCalibration: true),
+                history: Fixtures.history(exerciseID: "bench")
+            ))
         #expect(decision.updatedState.consecutiveSuccesses == 0)
         #expect(decision.updatedState.consecutiveStalls == 0)
         #expect(decision.updatedState.consecutiveRegressions == 0)
@@ -282,11 +287,12 @@ struct ProgressionEngineTests {
 
     @Test("A movement with no load has nothing to calibrate and simply starts")
     func unloadedMovementSkipsCalibration() {
-        let decision = ProgressionEngine.decide(input(
-            pushUp(),
-            state: state(exerciseID: "push-up", weightKg: nil, needsCalibration: true),
-            history: Fixtures.history(exerciseID: "push-up")
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                pushUp(),
+                state: state(exerciseID: "push-up", weightKg: nil, needsCalibration: true),
+                history: Fixtures.history(exerciseID: "push-up")
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.recommendedWeightKg == nil)
         #expect(decision.requiresCalibration == false)
@@ -297,11 +303,12 @@ struct ProgressionEngineTests {
 
     @Test("Hitting the top of the range on every set once banks the session and holds the load")
     func topOfRangeOnceBanksTheSession() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)])
+            ))
         #expect(decision.action == .addReps)
         #expect(decision.recommendedWeightKg == 60)
         #expect(decision.updatedState.consecutiveSuccesses == 1)
@@ -310,14 +317,15 @@ struct ProgressionEngineTests {
 
     @Test("Hitting the top of the range on every set twice adds load and returns to the bottom")
     func topOfRangeTwiceIncreasesLoad() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1),
-            history: history(sessions: [
-                Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2),
-                Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)
-            ])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1),
+                history: history(sessions: [
+                    Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2),
+                    Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2),
+                ])
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 62.5)
         // The window is unchanged, so the new target is its bottom: 62.5 kg is meant to be hard
@@ -331,11 +339,12 @@ struct ProgressionEngineTests {
 
     @Test("Landing inside the range keeps the load and asks for more reps")
     func insideTheRangeKeepsTheLoad() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 2)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 2)])
+            ))
         #expect(decision.action == .addReps)
         #expect(decision.recommendedWeightKg == 60)
         #expect(decision.explanation.key == "progression.explain.addReps")
@@ -345,11 +354,12 @@ struct ProgressionEngineTests {
 
     @Test("Falling short of the bottom once is noise and the load holds")
     func missingTheBottomOnceHoldsTheLoad() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 6, rir: 0)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 6, rir: 0)])
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.recommendedWeightKg == 60)
         #expect(decision.updatedState.consecutiveRegressions == 1)
@@ -357,11 +367,12 @@ struct ProgressionEngineTests {
 
     @Test("Falling short of the bottom twice takes ten percent off")
     func missingTheBottomTwiceReducesTheLoad() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(regressions: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 6, rir: 0)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(regressions: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 6, rir: 0)])
+            ))
         #expect(decision.action == .reduceLoad)
         // 60 − 10 % = 54, rounded onto the nearest pair of plates.
         #expect(decision.recommendedWeightKg == 55)
@@ -371,11 +382,12 @@ struct ProgressionEngineTests {
 
     @Test("All the reps but too close to failure holds the load until the margin comes back")
     func topOfRangeWithoutTheMarginHoldsTheLoad() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 0)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 0)])
+            ))
         #expect(decision.action == .addReps)
         #expect(decision.recommendedWeightKg == 60)
         #expect(decision.explanation.key == "progression.explain.holdForMargin")
@@ -386,31 +398,34 @@ struct ProgressionEngineTests {
     func rpeIsReadAsRepsInReserve() {
         // RIR = 10 − RPE, so RPE 10 is zero in reserve and blocks the increase.
         let sets = (0..<3).map { _ in Fixtures.set(weightKg: 60, reps: 12, rpe: 10) }
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(), state: state(successes: 1), history: history(sessions: [sets])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(), state: state(successes: 1), history: history(sessions: [sets])
+            ))
         #expect(decision.explanation.key == "progression.explain.holdForMargin")
         #expect(decision.recommendedWeightKg == 60)
     }
 
     @Test("A set with no reps in reserve recorded is missing evidence, not evidence of failure")
     func missingRIRDoesNotBlockProgress() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: nil)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: nil)])
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 62.5)
     }
 
     @Test("A session in which no set reached the planned load says nothing about it")
     func aLighterThanPlannedSessionIsSilent() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1, stalls: 2, regressions: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 50, reps: 12, rir: 2)])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1, stalls: 2, regressions: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 50, reps: 12, rir: 2)])
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.recommendedWeightKg == 60)
         #expect(decision.explanation.key == "progression.explain.lighterThanPlanned")
@@ -425,11 +440,12 @@ struct ProgressionEngineTests {
         let sets = [
             Fixtures.set(weightKg: 60, reps: 12, rir: 2),
             Fixtures.set(weightKg: 60, reps: 12, rir: 2),
-            Fixtures.set(kind: .backoff, weightKg: 50, reps: 15, rir: 1)
+            Fixtures.set(kind: .backoff, weightKg: 50, reps: 15, rir: 1),
         ]
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(), state: state(successes: 1), history: history(sessions: [sets])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(), state: state(successes: 1), history: history(sessions: [sets])
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 62.5)
         // The back-off set still counts towards the prescribed set count.
@@ -439,11 +455,12 @@ struct ProgressionEngineTests {
     @Test("Four sessions inside the range with no improvement is a plateau, and the load steps back")
     func fourStallsReduceTheLoad() {
         let session = Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 2)
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(stalls: 3),
-            history: history(sessions: [session, session])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(stalls: 3),
+                history: history(sessions: [session, session])
+            ))
         #expect(decision.action == .reduceLoad)
         #expect(decision.recommendedWeightKg == 55)
         #expect(decision.explanation.key == "progression.explain.reducedLoadStall")
@@ -456,12 +473,13 @@ struct ProgressionEngineTests {
     func compoundBarbellStepIsAPairOfSmallPlates() {
         // 0.5 kg plates give a 1 kg ladder, but half a kilogram on a bench press is noise.
         let increments = Fixtures.increments(availablePlatesKg: [25, 20, 15, 10, 5, 2.5, 1.25, 0.5])
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]),
-            increments: increments
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]),
+                increments: increments
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 63)
     }
@@ -483,15 +501,16 @@ struct ProgressionEngineTests {
                 trackingMode: .weightAndReps
             )
         )
-        let decision = ProgressionEngine.decide(input(
-            curl,
-            state: state(exerciseID: "barbell-curl", successes: 1),
-            history: history(
-                exerciseID: "barbell-curl",
-                sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]
-            ),
-            increments: increments
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                curl,
+                state: state(exerciseID: "barbell-curl", successes: 1),
+                history: history(
+                    exerciseID: "barbell-curl",
+                    sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]
+                ),
+                increments: increments
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 61)
     }
@@ -499,13 +518,14 @@ struct ProgressionEngineTests {
     @Test("A jump bigger than a tenth of the load waits for one more good session")
     func oversizedJumpBanksAnExtraSession() {
         // The 2 kg gap on a 10 kg dumbbell is a 20 % increase, so the load waits.
-        let decision = ProgressionEngine.decide(input(
-            dumbbellIsolation(),
-            state: state(exerciseID: "curl", weightKg: 10, successes: 1),
-            history: history(
-                exerciseID: "curl", sessions: [Fixtures.repSets(3, weightKg: 10, reps: 12, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                dumbbellIsolation(),
+                state: state(exerciseID: "curl", weightKg: 10, successes: 1),
+                history: history(
+                    exerciseID: "curl", sessions: [Fixtures.repSets(3, weightKg: 10, reps: 12, rir: 2)]
+                )
+            ))
         #expect(decision.action == .addReps)
         #expect(decision.recommendedWeightKg == 10)
         #expect(decision.explanation.key == "progression.explain.bankBeforeBigJump")
@@ -514,13 +534,14 @@ struct ProgressionEngineTests {
 
     @Test("Once the extra session is banked the oversized jump is taken")
     func oversizedJumpIsTakenAfterTheExtraSession() {
-        let decision = ProgressionEngine.decide(input(
-            dumbbellIsolation(),
-            state: state(exerciseID: "curl", weightKg: 10, successes: 2),
-            history: history(
-                exerciseID: "curl", sessions: [Fixtures.repSets(3, weightKg: 10, reps: 12, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                dumbbellIsolation(),
+                state: state(exerciseID: "curl", weightKg: 10, successes: 2),
+                history: history(
+                    exerciseID: "curl", sessions: [Fixtures.repSets(3, weightKg: 10, reps: 12, rir: 2)]
+                )
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 12)
     }
@@ -529,15 +550,16 @@ struct ProgressionEngineTests {
     func theCapTightensOnHeavyLoads() {
         let increments = Fixtures.increments(machineIncrementKg: 8)
         func decide(from weight: Double) -> ProgressionDecision {
-            ProgressionEngine.decide(input(
-                machineCompound(),
-                state: state(exerciseID: "leg-press", weightKg: weight, successes: 1),
-                history: history(
-                    exerciseID: "leg-press",
-                    sessions: [Fixtures.repSets(3, weightKg: weight, reps: 12, rir: 2)]
-                ),
-                increments: increments
-            ))
+            ProgressionEngine.decide(
+                input(
+                    machineCompound(),
+                    state: state(exerciseID: "leg-press", weightKg: weight, successes: 1),
+                    history: history(
+                        exerciseID: "leg-press",
+                        sessions: [Fixtures.repSets(3, weightKg: weight, reps: 12, rir: 2)]
+                    ),
+                    increments: increments
+                ))
         }
 
         // 8 kg on 96 kg is 8.3 % — inside the standard cap, so the second good session takes it.
@@ -556,14 +578,15 @@ struct ProgressionEngineTests {
 
     @Test("A bodyweight movement is never given a fabricated kilogram figure")
     func bodyweightMovementsNeverGetALoad() {
-        let decision = ProgressionEngine.decide(input(
-            pushUp(),
-            state: state(exerciseID: "push-up", weightKg: nil),
-            history: history(
-                exerciseID: "push-up",
-                sessions: [Fixtures.repSets(3, weightKg: nil, reps: 12, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                pushUp(),
+                state: state(exerciseID: "push-up", weightKg: nil),
+                history: history(
+                    exerciseID: "push-up",
+                    sessions: [Fixtures.repSets(3, weightKg: nil, reps: 12, rir: 2)]
+                )
+            ))
         #expect(decision.recommendedWeightKg == nil)
         #expect(decision.updatedState.workingWeightKg == nil)
         #expect(decision.action == .addReps)
@@ -573,28 +596,30 @@ struct ProgressionEngineTests {
 
     @Test("An implement that weighs what it weighs offers no ladder, so it gets no load either")
     func fixedImplementsNeverGetALoad() {
-        let decision = ProgressionEngine.decide(input(
-            medicineBallSlam(),
-            state: state(exerciseID: "ball-slam", weightKg: 8),
-            history: history(
-                exerciseID: "ball-slam",
-                sessions: [Fixtures.repSets(3, weightKg: 8, reps: 12, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                medicineBallSlam(),
+                state: state(exerciseID: "ball-slam", weightKg: 8),
+                history: history(
+                    exerciseID: "ball-slam",
+                    sessions: [Fixtures.repSets(3, weightKg: 8, reps: 12, rir: 2)]
+                )
+            ))
         #expect(decision.recommendedWeightKg == nil)
         #expect(decision.action == .addReps)
     }
 
     @Test("At the rep ceiling an unloaded movement gains a set rather than more reps")
     func unloadedMovementAddsASetAtTheRepCeiling() {
-        let decision = ProgressionEngine.decide(input(
-            pushUp(),
-            state: state(exerciseID: "push-up", weightKg: nil, repRange: RepRange(30, 30)),
-            history: history(
-                exerciseID: "push-up",
-                sessions: [Fixtures.repSets(3, weightKg: nil, reps: 30, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                pushUp(),
+                state: state(exerciseID: "push-up", weightKg: nil, repRange: RepRange(30, 30)),
+                history: history(
+                    exerciseID: "push-up",
+                    sessions: [Fixtures.repSets(3, weightKg: nil, reps: 30, rir: 2)]
+                )
+            ))
         #expect(decision.action == .addReps)
         #expect(decision.recommendedSets == 4)
         // The rep window deliberately stays put: thirty press-ups a set is not sent back to ten.
@@ -604,30 +629,32 @@ struct ProgressionEngineTests {
 
     @Test("At both ceilings the movement is declared outgrown rather than padded further")
     func unloadedMovementIsDeclaredOutgrown() {
-        let decision = ProgressionEngine.decide(input(
-            pushUp(),
-            state: state(exerciseID: "push-up", weightKg: nil, repRange: RepRange(30, 30)),
-            history: history(
-                exerciseID: "push-up",
-                sessions: [Fixtures.repSets(5, weightKg: nil, reps: 30, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                pushUp(),
+                state: state(exerciseID: "push-up", weightKg: nil, repRange: RepRange(30, 30)),
+                history: history(
+                    exerciseID: "push-up",
+                    sessions: [Fixtures.repSets(5, weightKg: nil, reps: 30, rir: 2)]
+                )
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.explanation.key == "progression.explain.outgrown")
     }
 
     @Test("Two short sessions on an unloaded movement shorten the rep window")
     func unloadedShortfallShortensTheWindow() {
-        let decision = ProgressionEngine.decide(input(
-            pushUp(),
-            state: state(
-                exerciseID: "push-up", weightKg: nil, repRange: RepRange(10, 14), regressions: 1
-            ),
-            history: history(
-                exerciseID: "push-up",
-                sessions: [Fixtures.repSets(3, weightKg: nil, reps: 6, rir: 0)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                pushUp(),
+                state: state(
+                    exerciseID: "push-up", weightKg: nil, repRange: RepRange(10, 14), regressions: 1
+                ),
+                history: history(
+                    exerciseID: "push-up",
+                    sessions: [Fixtures.repSets(3, weightKg: nil, reps: 6, rir: 0)]
+                )
+            ))
         #expect(decision.action == .reduceLoad)
         #expect(decision.recommendedWeightKg == nil)
         #expect(decision.recommendedRepRange == RepRange(8, 12))
@@ -638,14 +665,15 @@ struct ProgressionEngineTests {
 
     @Test("A weighted movement progresses the load added to the body, starting from zero")
     func weightedBodyweightProgressesTheAddedLoad() {
-        let decision = ProgressionEngine.decide(input(
-            weightedDip(),
-            state: state(exerciseID: "weighted-dip", weightKg: 0, successes: 1),
-            history: history(
-                exerciseID: "weighted-dip",
-                sessions: [Fixtures.repSets(3, weightKg: 0, reps: 12, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                weightedDip(),
+                state: state(exerciseID: "weighted-dip", weightKg: 0, successes: 1),
+                history: history(
+                    exerciseID: "weighted-dip",
+                    sessions: [Fixtures.repSets(3, weightKg: 0, reps: 12, rir: 2)]
+                )
+            ))
         // Bodyweight only is a real prescription, and the first added plate has no meaningful
         // percentage, so the cap cannot block it.
         #expect(decision.action == .increaseLoad)
@@ -654,42 +682,45 @@ struct ProgressionEngineTests {
 
     @Test("An assisted movement gets harder by taking assistance away")
     func assistedMovementsRemoveAssistance() {
-        let decision = ProgressionEngine.decide(input(
-            assistedPullUp(),
-            state: state(exerciseID: "assisted-pullup", weightKg: 40, successes: 1),
-            history: history(
-                exerciseID: "assisted-pullup",
-                sessions: [Fixtures.repSets(3, weightKg: 40, reps: 12, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                assistedPullUp(),
+                state: state(exerciseID: "assisted-pullup", weightKg: 40, successes: 1),
+                history: history(
+                    exerciseID: "assisted-pullup",
+                    sessions: [Fixtures.repSets(3, weightKg: 40, reps: 12, rir: 2)]
+                )
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 37.5)
     }
 
     @Test("An assisted movement backs off by adding assistance")
     func assistedShortfallAddsAssistance() {
-        let decision = ProgressionEngine.decide(input(
-            assistedPullUp(),
-            state: state(exerciseID: "assisted-pullup", weightKg: 40, regressions: 1),
-            history: history(
-                exerciseID: "assisted-pullup",
-                sessions: [Fixtures.repSets(3, weightKg: 40, reps: 6, rir: 0)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                assistedPullUp(),
+                state: state(exerciseID: "assisted-pullup", weightKg: 40, regressions: 1),
+                history: history(
+                    exerciseID: "assisted-pullup",
+                    sessions: [Fixtures.repSets(3, weightKg: 40, reps: 6, rir: 0)]
+                )
+            ))
         #expect(decision.action == .reduceLoad)
         #expect(decision.recommendedWeightKg == 45)
     }
 
     @Test("On an assisted movement more help than planned is the lighter session")
     func assistedComparisonsRunBackwards() {
-        let decision = ProgressionEngine.decide(input(
-            assistedPullUp(),
-            state: state(exerciseID: "assisted-pullup", weightKg: 40),
-            history: history(
-                exerciseID: "assisted-pullup",
-                sessions: [Fixtures.repSets(3, weightKg: 45, reps: 12, rir: 2)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                assistedPullUp(),
+                state: state(exerciseID: "assisted-pullup", weightKg: 40),
+                history: history(
+                    exerciseID: "assisted-pullup",
+                    sessions: [Fixtures.repSets(3, weightKg: 45, reps: 12, rir: 2)]
+                )
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.explanation.key == "progression.explain.lighterThanPlanned")
         #expect(decision.recommendedWeightKg == 40)
@@ -697,14 +728,15 @@ struct ProgressionEngineTests {
 
     @Test("At the floor the engine says so instead of prescribing a lighter load that does not exist")
     func atTheFloorTheEngineSaysSo() {
-        let decision = ProgressionEngine.decide(input(
-            weightedDip(),
-            state: state(exerciseID: "weighted-dip", weightKg: 0, regressions: 1),
-            history: history(
-                exerciseID: "weighted-dip",
-                sessions: [Fixtures.repSets(3, weightKg: 0, reps: 5, rir: 0)]
-            )
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                weightedDip(),
+                state: state(exerciseID: "weighted-dip", weightKg: 0, regressions: 1),
+                history: history(
+                    exerciseID: "weighted-dip",
+                    sessions: [Fixtures.repSets(3, weightKg: 0, reps: 5, rir: 0)]
+                )
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.recommendedWeightKg == 0)
         #expect(decision.explanation.key == "progression.explain.atMinimumLoad")
@@ -714,12 +746,13 @@ struct ProgressionEngineTests {
 
     @Test("A deload week lightens the load and cuts the sets")
     func deloadWeekReducesLoadAndSets() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1, stalls: 2, regressions: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 2)]),
-            isDeloadWeek: true
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1, stalls: 2, regressions: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 2)]),
+                isDeloadWeek: true
+            ))
         #expect(decision.action == .deload)
         #expect(decision.recommendedWeightKg == 55)
         #expect(decision.recommendedSets == 2)
@@ -729,12 +762,13 @@ struct ProgressionEngineTests {
 
     @Test("A deload leaves the counters and the remembered load exactly where they were")
     func deloadLeavesTheCountersAlone() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(successes: 1, stalls: 2, regressions: 1),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 2)]),
-            isDeloadWeek: true
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(successes: 1, stalls: 2, regressions: 1),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 2)]),
+                isDeloadWeek: true
+            ))
         #expect(decision.updatedState.consecutiveSuccesses == 1)
         #expect(decision.updatedState.consecutiveStalls == 2)
         #expect(decision.updatedState.consecutiveRegressions == 1)
@@ -917,13 +951,15 @@ struct ProgressionEngineTests {
     @Test("Novices keep at least two reps in reserve, everyone else at least one")
     func targetRIRIsClampedByExperience() {
         func targetRIR(_ experience: ExperienceLevel, requested: Int) -> Int {
-            ProgressionEngine.decide(input(
-                barbellCompound(),
-                state: state(),
-                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10)]),
-                targetRIR: requested,
-                experience: experience
-            )).targetRIR
+            ProgressionEngine.decide(
+                input(
+                    barbellCompound(),
+                    state: state(),
+                    history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10)]),
+                    targetRIR: requested,
+                    experience: experience
+                )
+            ).targetRIR
         }
         #expect(targetRIR(.never, requested: 0) == 2)
         #expect(targetRIR(.beginner, requested: 0) == 2)
@@ -937,12 +973,13 @@ struct ProgressionEngineTests {
 
     @Test("Linear load progression adds load on the first qualifying session")
     func loadProgressionActsOnASingleSession() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(strategy: .loadProgression),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 8, rir: 2)]),
-            strategy: .loadProgression
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(strategy: .loadProgression),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 8, rir: 2)]),
+                strategy: .loadProgression
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 62.5)
         #expect(decision.updatedState.strategy == .loadProgression)
@@ -950,12 +987,13 @@ struct ProgressionEngineTests {
 
     @Test("Rep progression shifts the window up instead of adding load")
     func repProgressionShiftsTheWindowUp() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]),
-            strategy: .repProgression
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]),
+                strategy: .repProgression
+            ))
         #expect(decision.action == .addReps)
         #expect(decision.recommendedWeightKg == 60)
         #expect(decision.recommendedRepRange == RepRange(10, 14))
@@ -963,12 +1001,13 @@ struct ProgressionEngineTests {
 
     @Test("At the rep ceiling, rep progression converts to load and resets the window")
     func repProgressionConvertsToLoadAtTheCeiling() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(repRange: RepRange(30, 30)),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 30, rir: 2)]),
-            strategy: .repProgression
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(repRange: RepRange(30, 30)),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 30, rir: 2)]),
+                strategy: .repProgression
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 62.5)
         #expect(decision.recommendedRepRange == RepRange(8, 12))
@@ -976,22 +1015,24 @@ struct ProgressionEngineTests {
 
     @Test("Volume progression adds a set, then converts to load at the set ceiling")
     func volumeProgressionAddsASetThenLoad() {
-        let growing = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]),
-            strategy: .volumeProgression
-        ))
+        let growing = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)]),
+                strategy: .volumeProgression
+            ))
         #expect(growing.action == .addReps)
         #expect(growing.recommendedSets == 4)
         #expect(growing.recommendedWeightKg == 60)
 
-        let atCeiling = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(5, weightKg: 60, reps: 12, rir: 2)]),
-            strategy: .volumeProgression
-        ))
+        let atCeiling = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(5, weightKg: 60, reps: 12, rir: 2)]),
+                strategy: .volumeProgression
+            ))
         #expect(atCeiling.action == .increaseLoad)
         #expect(atCeiling.recommendedWeightKg == 62.5)
         #expect(atCeiling.recommendedSets == 3)
@@ -999,24 +1040,26 @@ struct ProgressionEngineTests {
 
     @Test("RIR-based progression adds load when the user finished comfortably clear of failure")
     func rirBasedAddsLoadOnSpareCapacity() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 3)]),
-            strategy: .rirBased
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 3)]),
+                strategy: .rirBased
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 62.5)
     }
 
     @Test("RIR-based progression shaves five percent off after one session too close to failure")
     func rirBasedReducesLoadOnOvershoot() {
-        let decision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 0)]),
-            strategy: .rirBased
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10, rir: 0)]),
+                strategy: .rirBased
+            ))
         #expect(decision.action == .reduceLoad)
         #expect(decision.recommendedWeightKg == 57.5)
         #expect(decision.explanation.key == "progression.explain.reducedLoadRIR")
@@ -1027,11 +1070,12 @@ struct ProgressionEngineTests {
     @Test("A timed movement carries seconds in the rep range, and says so through its accessor")
     func timedMovementsCarrySeconds() throws {
         let hold = plank()
-        let decision = ProgressionEngine.decide(input(
-            hold,
-            state: state(exerciseID: "plank", weightKg: nil),
-            history: Fixtures.history(exerciseID: "plank")
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                hold,
+                state: state(exerciseID: "plank", weightKg: nil),
+                history: Fixtures.history(exerciseID: "plank")
+            ))
         // A stored window topping out at twelve cannot be seconds, so the movement's own set
         // length is used: 0.6 × 60 s rounded to five, up to 60 s.
         let seconds = try #require(ProgressionEngine.prescribedSeconds(from: decision, for: hold))
@@ -1039,22 +1083,24 @@ struct ProgressionEngineTests {
         #expect(decision.recommendedWeightKg == nil)
 
         // The same accessor refuses to reinterpret a rep range as seconds.
-        let repDecision = ProgressionEngine.decide(input(
-            barbellCompound(),
-            state: state(),
-            history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10)])
-        ))
+        let repDecision = ProgressionEngine.decide(
+            input(
+                barbellCompound(),
+                state: state(),
+                history: history(sessions: [Fixtures.repSets(3, weightKg: 60, reps: 10)])
+            ))
         #expect(ProgressionEngine.prescribedSeconds(from: repDecision, for: barbellCompound()) == nil)
     }
 
     @Test("A hold that reaches the top of its window earns more time")
     func timedMovementExtendsItsWindow() {
         let sets = (0..<3).map { _ in Fixtures.set(durationSeconds: 60) }
-        let decision = ProgressionEngine.decide(input(
-            plank(),
-            state: state(exerciseID: "plank", weightKg: nil, repRange: RepRange(35, 60)),
-            history: history(exerciseID: "plank", sessions: [sets])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                plank(),
+                state: state(exerciseID: "plank", weightKg: nil, repRange: RepRange(35, 60)),
+                history: history(exerciseID: "plank", sessions: [sets])
+            ))
         #expect(decision.action == .addReps)
         #expect(decision.recommendedRepRange == RepRange(45, 70))
     }
@@ -1062,11 +1108,12 @@ struct ProgressionEngineTests {
     @Test("A three-minute plank is outgrown, and never becomes a fourth three-minute plank")
     func holdsNeverAddASetAtTheirCeiling() {
         let sets = (0..<3).map { _ in Fixtures.set(durationSeconds: 180) }
-        let decision = ProgressionEngine.decide(input(
-            plank(),
-            state: state(exerciseID: "plank", weightKg: nil, repRange: RepRange(170, 180)),
-            history: history(exerciseID: "plank", sessions: [sets])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                plank(),
+                state: state(exerciseID: "plank", weightKg: nil, repRange: RepRange(170, 180)),
+                history: history(exerciseID: "plank", sessions: [sets])
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.recommendedSets == 3)
         #expect(decision.explanation.key == "progression.explain.outgrownDuration")
@@ -1075,11 +1122,12 @@ struct ProgressionEngineTests {
     @Test("A loaded carry at its two-minute ceiling earns weight instead of more time")
     func carryEarnsWeightAtItsCeiling() {
         let sets = (0..<3).map { _ in Fixtures.set(weightKg: 20, durationSeconds: 120) }
-        let decision = ProgressionEngine.decide(input(
-            farmersCarry(),
-            state: state(exerciseID: "carry", weightKg: 20, repRange: RepRange(110, 120)),
-            history: history(exerciseID: "carry", sessions: [sets])
-        ))
+        let decision = ProgressionEngine.decide(
+            input(
+                farmersCarry(),
+                state: state(exerciseID: "carry", weightKg: 20, repRange: RepRange(110, 120)),
+                history: history(exerciseID: "carry", sessions: [sets])
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.recommendedWeightKg == 22.5)
         // The clock restarts from the movement's own starting window.
@@ -1097,16 +1145,18 @@ struct ProgressionEngineTests {
 
         // One qualifying session banks a success.
         var current = state()
-        var decision = ProgressionEngine.decide(input(
-            exercise, state: current, history: history(sessions: [top])
-        ))
+        var decision = ProgressionEngine.decide(
+            input(
+                exercise, state: current, history: history(sessions: [top])
+            ))
         #expect(decision.updatedState.consecutiveSuccesses == 1)
 
         // The second takes the load and clears every counter.
         current = decision.updatedState
-        decision = ProgressionEngine.decide(input(
-            exercise, state: current, history: history(sessions: [top, top])
-        ))
+        decision = ProgressionEngine.decide(
+            input(
+                exercise, state: current, history: history(sessions: [top, top])
+            ))
         #expect(decision.action == .increaseLoad)
         #expect(decision.updatedState.consecutiveSuccesses == 0)
         #expect(decision.updatedState.consecutiveStalls == 0)
@@ -1115,9 +1165,10 @@ struct ProgressionEngineTests {
         // Inside the range with no improvement on the previous session is a stall, and stalls add up.
         current = decision.updatedState
         for expected in 1...3 {
-            decision = ProgressionEngine.decide(input(
-                exercise, state: current, history: history(sessions: [inside, inside])
-            ))
+            decision = ProgressionEngine.decide(
+                input(
+                    exercise, state: current, history: history(sessions: [inside, inside])
+                ))
             #expect(decision.action == .addReps)
             #expect(
                 decision.updatedState.consecutiveStalls == expected,
@@ -1127,18 +1178,20 @@ struct ProgressionEngineTests {
         }
 
         // Short of the bottom is a regression, and it does not inherit the stall count.
-        decision = ProgressionEngine.decide(input(
-            exercise, state: current, history: history(sessions: [short, inside])
-        ))
+        decision = ProgressionEngine.decide(
+            input(
+                exercise, state: current, history: history(sessions: [short, inside])
+            ))
         #expect(decision.action == .maintain)
         #expect(decision.updatedState.consecutiveRegressions == 1)
         #expect(decision.updatedState.consecutiveStalls == 0)
 
         // A second short session cuts the load and clears everything again.
         current = decision.updatedState
-        decision = ProgressionEngine.decide(input(
-            exercise, state: current, history: history(sessions: [short, short])
-        ))
+        decision = ProgressionEngine.decide(
+            input(
+                exercise, state: current, history: history(sessions: [short, short])
+            ))
         #expect(decision.action == .reduceLoad)
         #expect(decision.updatedState.consecutiveRegressions == 0)
         #expect(decision.updatedState.consecutiveSuccesses == 0)
@@ -1161,20 +1214,22 @@ struct ProgressionEngineTests {
             sets: Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)
         )
 
-        let afterOne = ProgressionEngine.decide(input(
-            bench,
-            state: state(),
-            history: Fixtures.history(exerciseID: bench.id, performances: [sessionOne])
-        ))
+        let afterOne = ProgressionEngine.decide(
+            input(
+                bench,
+                state: state(),
+                history: Fixtures.history(exerciseID: bench.id, performances: [sessionOne])
+            ))
         #expect(afterOne.action == .addReps)
         #expect(afterOne.recommendedWeightKg == 60)
         #expect(afterOne.updatedState.consecutiveSuccesses == 1)
 
-        let afterTwo = ProgressionEngine.decide(input(
-            bench,
-            state: afterOne.updatedState,
-            history: Fixtures.history(exerciseID: bench.id, performances: [sessionTwo, sessionOne])
-        ))
+        let afterTwo = ProgressionEngine.decide(
+            input(
+                bench,
+                state: afterOne.updatedState,
+                history: Fixtures.history(exerciseID: bench.id, performances: [sessionTwo, sessionOne])
+            ))
         #expect(afterTwo.action == .increaseLoad)
         #expect(afterTwo.recommendedWeightKg == 62.5)
         #expect(afterTwo.explanation.key == "progression.explain.increasedLoad")
@@ -1187,13 +1242,14 @@ struct ProgressionEngineTests {
             date: Fixtures.day(0), exerciseID: bench.id,
             sets: Fixtures.repSets(3, weightKg: 62.5, reps: 8, rir: 2)
         )
-        let afterThree = ProgressionEngine.decide(input(
-            bench,
-            state: afterTwo.updatedState,
-            history: Fixtures.history(
-                exerciseID: bench.id, performances: [sessionThree, sessionTwo, sessionOne]
-            )
-        ))
+        let afterThree = ProgressionEngine.decide(
+            input(
+                bench,
+                state: afterTwo.updatedState,
+                history: Fixtures.history(
+                    exerciseID: bench.id, performances: [sessionThree, sessionTwo, sessionOne]
+                )
+            ))
         #expect(afterThree.action == .addReps)
         #expect(afterThree.recommendedWeightKg == 62.5)
         #expect(afterThree.explanation.key == "progression.explain.addReps")
@@ -1208,7 +1264,7 @@ struct ProgressionEngineTests {
             state: state(successes: 1),
             history: history(sessions: [
                 Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2),
-                Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2)
+                Fixtures.repSets(3, weightKg: 60, reps: 12, rir: 2),
             ])
         )
         let first = ProgressionEngine.decide(request)

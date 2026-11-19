@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// The Nutrition tab: one day's food log, with everything needed to add to it.
 ///
@@ -204,7 +204,9 @@ struct NutritionHubView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color.appTextSecondary)
                     .fixedSize(horizontal: false, vertical: true)
-                NavigationLink { NutritionTargetsView() } label: {
+                NavigationLink {
+                    NutritionTargetsView()
+                } label: {
                     Text(L("nutritionLog.noTarget.action"))
                 }
                 .buttonStyle(PrimaryButtonStyle(tint: .appNutrition))
@@ -240,7 +242,9 @@ struct NutritionHubView: View {
                 }
                 .buttonStyle(SecondaryButtonStyle())
 
-                NavigationLink { SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
+                NavigationLink {
+                    SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() }
+                } label: {
                     Label(L("nutritionLog.empty.savedMeals"), systemImage: "square.stack.3d.up")
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: Metrics.minimumTapTarget)
@@ -358,16 +362,24 @@ struct NutritionHubView: View {
 
     private func moreMenu(_ model: NutritionDayViewModel) -> some View {
         Menu {
-            NavigationLink { NutritionTargetsView() } label: {
+            NavigationLink {
+                NutritionTargetsView()
+            } label: {
                 Label(L("nutritionLog.menu.targets"), systemImage: "target")
             }
-            NavigationLink { MicronutrientDetailView(dayKey: model.dayKey) } label: {
+            NavigationLink {
+                MicronutrientDetailView(dayKey: model.dayKey)
+            } label: {
                 Label(L("nutritionLog.menu.micronutrients"), systemImage: "chart.bar.doc.horizontal")
             }
-            NavigationLink { SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
+            NavigationLink {
+                SavedMealsView(dayKey: model.dayKey).onDisappear { model.load() }
+            } label: {
                 Label(L("nutritionLog.menu.savedMeals"), systemImage: "square.stack.3d.up")
             }
-            NavigationLink { RecipeListView(dayKey: model.dayKey).onDisappear { model.load() } } label: {
+            NavigationLink {
+                RecipeListView(dayKey: model.dayKey).onDisappear { model.load() }
+            } label: {
                 Label(L("nutritionLog.menu.recipes"), systemImage: "list.bullet.rectangle")
             }
             Divider()
@@ -420,7 +432,9 @@ struct NutritionHubView: View {
             title: L("nutritionLog.disabled.title"),
             message: L("nutritionLog.disabled.message")
         ) {
-            NavigationLink { NutritionSettingsView() } label: {
+            NavigationLink {
+                NutritionSettingsView()
+            } label: {
                 Text(L("nutritionLog.disabled.action"))
             }
             .buttonStyle(PrimaryButtonStyle(tint: .appNutrition))
@@ -461,9 +475,11 @@ private struct CopyDaySheet: View {
                             dismiss()
                         } label: {
                             HStack {
-                                Text(formatter.relativeDay(
-                                    DayKey.date(from: candidate.dayKey) ?? Date()
-                                ))
+                                Text(
+                                    formatter.relativeDay(
+                                        DayKey.date(from: candidate.dayKey) ?? Date()
+                                    )
+                                )
                                 .foregroundStyle(Color.appTextPrimary)
                                 Spacer()
                                 Text(LPlural("nutritionLog.copyDay.itemCount", candidate.count))

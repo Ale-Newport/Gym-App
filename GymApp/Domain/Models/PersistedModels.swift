@@ -106,7 +106,7 @@ final class EquipmentProfile {
     var availablePlatesKg: [Double] = [25, 20, 15, 10, 5, 2.5, 1.25]
     /// Dumbbells the gym stocks. Empty means "assume a continuous 2 kg ladder".
     var availableDumbbellsKg: [Double] = [
-        2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 45, 50
+        2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 45, 50,
     ]
     var machineIncrementKg: Double = 5
     var cableIncrementKg: Double = 2.5
@@ -325,7 +325,10 @@ final class PlannedExercise {
 
     var repRange: RepRange {
         get { RepRange(repLower, repUpper) }
-        set { repLower = newValue.lower; repUpper = newValue.upper }
+        set {
+            repLower = newValue.lower
+            repUpper = newValue.upper
+        }
     }
 }
 
@@ -547,7 +550,10 @@ final class ProgressionState {
 
     var repRange: RepRange {
         get { RepRange(repLower, repUpper) }
-        set { repLower = newValue.lower; repUpper = newValue.upper }
+        set {
+            repLower = newValue.lower
+            repUpper = newValue.upper
+        }
     }
 }
 
@@ -569,7 +575,6 @@ final class DeloadRecommendation {
     init() {}
 
     var isPending: Bool {
-        acceptedAt == nil && declinedAt == nil &&
-            (postponedUntil.map { $0 <= Date() } ?? true)
+        acceptedAt == nil && declinedAt == nil && (postponedUntil.map { $0 <= Date() } ?? true)
     }
 }

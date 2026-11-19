@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 // MARK: - Small purpose-built catalogues
@@ -17,7 +18,7 @@ private enum RecommendationCatalogue {
         [
             press(id: "c1"), press(id: "c2"), press(id: "c3"),
             fly(id: "f1"), fly(id: "f2"),
-            verticalPress(id: "v1")
+            verticalPress(id: "v1"),
         ]
     }
 
@@ -177,7 +178,7 @@ struct ExerciseRankingTests {
                     id: "f1",
                     sessions: [
                         [SelectionFixture.performedSet(weightKg: 30, reps: 10)],
-                        [SelectionFixture.performedSet(weightKg: 28, reps: 10)]
+                        [SelectionFixture.performedSet(weightKg: 28, reps: 10)],
                     ]
                 )
             ],
@@ -274,7 +275,7 @@ struct ExerciseRankingTests {
         let engine = ExerciseRecommendationEngine(
             catalog: [
                 RecommendationCatalogue.strongPress(id: "c1"),
-                RecommendationCatalogue.indirectTricepsWork(id: "t1")
+                RecommendationCatalogue.indirectTricepsWork(id: "t1"),
             ]
         )
         let ranked = engine.rank(SelectionFixture.request(target: .chest))
@@ -367,7 +368,7 @@ struct ExerciseRankingTests {
         let engine = ExerciseRecommendationEngine(
             catalog: [
                 RecommendationCatalogue.strongPress(id: "c1"),
-                RecommendationCatalogue.indirectTricepsWork(id: "t1")
+                RecommendationCatalogue.indirectTricepsWork(id: "t1"),
             ]
         )
         func score(_ id: String, priorities: [MuscleGroup]) -> Double {
@@ -453,7 +454,7 @@ struct ExerciseBestSelectionTests {
             catalog: [
                 RecommendationCatalogue.strongPress(id: "c1"),
                 RecommendationCatalogue.strongPress(id: "c2"),
-                RecommendationCatalogue.weakButDifferent(id: "w1")
+                RecommendationCatalogue.weakButDifferent(id: "w1"),
             ]
         )
         let chosen = engine.best(SelectionFixture.request(), count: 2)
@@ -470,7 +471,7 @@ struct ExerciseBestSelectionTests {
             catalog: [
                 RecommendationCatalogue.strongPress(id: "c1"),
                 RecommendationCatalogue.strongPress(id: "c2"),
-                RecommendationCatalogue.indirectTricepsWork(id: "t1")
+                RecommendationCatalogue.indirectTricepsWork(id: "t1"),
             ]
         )
         let request = SelectionFixture.request(target: .chest)
@@ -488,7 +489,7 @@ struct ExerciseBestSelectionTests {
         let engine = ExerciseRecommendationEngine(
             catalog: [
                 RecommendationCatalogue.strongPress(id: "c1"),
-                RecommendationCatalogue.indirectTricepsWork(id: "t1")
+                RecommendationCatalogue.indirectTricepsWork(id: "t1"),
             ]
         )
         let chosen = engine.best(SelectionFixture.request(target: .chest), count: 2)
@@ -540,7 +541,7 @@ struct WarmupSuggestionTests {
             RecommendationCatalogue.warmup(id: "chest-3", target: .pectorals, staple: 0.1),
             RecommendationCatalogue.warmup(id: "back-1", target: .lats, staple: 0.9),
             RecommendationCatalogue.warmup(id: "back-2", target: .lats, staple: 0.5),
-            RecommendationCatalogue.warmup(id: "back-3", target: .lats, staple: 0.1)
+            RecommendationCatalogue.warmup(id: "back-3", target: .lats, staple: 0.1),
         ]
     }
 
@@ -580,7 +581,7 @@ struct WarmupSuggestionTests {
         let engine = ExerciseRecommendationEngine(
             catalog: [
                 RecommendationCatalogue.warmup(id: "band-1", target: .pectorals, equipment: .band),
-                RecommendationCatalogue.warmup(id: "body-1", target: .pectorals, equipment: .bodyWeight)
+                RecommendationCatalogue.warmup(id: "body-1", target: .pectorals, equipment: .bodyWeight),
             ]
         )
         #expect(
@@ -594,7 +595,7 @@ struct WarmupSuggestionTests {
         let engine = ExerciseRecommendationEngine(
             catalog: [
                 RecommendationCatalogue.warmup(id: "jump", target: .pectorals, isPlyometric: true),
-                RecommendationCatalogue.warmup(id: "swing", target: .pectorals)
+                RecommendationCatalogue.warmup(id: "swing", target: .pectorals),
             ]
         )
         #expect(
@@ -608,7 +609,7 @@ struct WarmupSuggestionTests {
         let engine = ExerciseRecommendationEngine(
             catalog: [
                 RecommendationCatalogue.warmup(id: "stretch", target: .pectorals, isStretch: true),
-                RecommendationCatalogue.warmup(id: "dynamic", target: .pectorals)
+                RecommendationCatalogue.warmup(id: "dynamic", target: .pectorals),
             ]
         )
         let suggestions = engine.warmupSuggestions(for: [.chest], equipment: [.bodyWeight], limit: 5)
@@ -624,7 +625,7 @@ struct WarmupSuggestionTests {
                 ),
                 RecommendationCatalogue.warmup(
                     id: "cheap", target: .pectorals, isWarmupCandidate: false, fatigue: 0.0
-                )
+                ),
             ]
         )
         let suggestions = engine.warmupSuggestions(for: [.chest], equipment: [.bodyWeight], limit: 5)
@@ -643,7 +644,7 @@ struct WarmupSuggestionTests {
                 ),
                 RecommendationCatalogue.warmup(
                     id: "allowed", target: .delts, pattern: .mobility
-                )
+                ),
             ]
         )
         let profile = SelectionFixture.profile(
@@ -734,7 +735,7 @@ struct ExerciseRecommendationPerformanceTests {
                 id: exercise.id,
                 sessions: [
                     [SelectionFixture.performedSet(weightKg: 60, reps: 8)],
-                    [SelectionFixture.performedSet(weightKg: 57.5, reps: 8)]
+                    [SelectionFixture.performedSet(weightKg: 57.5, reps: 8)],
                 ]
             )
         }

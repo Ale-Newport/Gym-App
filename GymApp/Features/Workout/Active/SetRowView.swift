@@ -125,7 +125,8 @@ struct SetRowView: View {
         .background(
             Circle().fill(set.isCompleted ? Color.appSuccess.opacity(0.18) : Color.appFillSecondary)
         )
-        .accessibilityLabel(Text(set.kind == .warmup ? L("active.set.warmup") : L("active.set.number", set.setIndex + 1)))
+        .accessibilityLabel(
+            Text(set.kind == .warmup ? L("active.set.warmup") : L("active.set.number", set.setIndex + 1)))
     }
 
     /// A record is never signalled by colour alone: the trophy carries a word next to it.

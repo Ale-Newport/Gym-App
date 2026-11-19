@@ -23,9 +23,10 @@ struct ExercisePreferenceRepository: Repository {
 
     /// The stored row for an exercise, or `nil` when the user has never expressed an opinion.
     func existingPreference(for exerciseID: String) throws -> ExercisePreference? {
-        try fetchFirst(FetchDescriptor<ExercisePreference>(
-            predicate: #Predicate { $0.exerciseID == exerciseID }
-        ))
+        try fetchFirst(
+            FetchDescriptor<ExercisePreference>(
+                predicate: #Predicate { $0.exerciseID == exerciseID }
+            ))
     }
 
     /// The stored row for an exercise, created if it does not exist yet.
@@ -50,9 +51,10 @@ struct ExercisePreferenceRepository: Repository {
     func snapshots(forExerciseIDs exerciseIDs: [String]) throws -> [String: ExercisePreferenceSnapshot] {
         let ids = Array(Set(exerciseIDs))
         guard !ids.isEmpty else { return [:] }
-        let rows = try fetch(FetchDescriptor<ExercisePreference>(
-            predicate: #Predicate { ids.contains($0.exerciseID) }
-        ))
+        let rows = try fetch(
+            FetchDescriptor<ExercisePreference>(
+                predicate: #Predicate { ids.contains($0.exerciseID) }
+            ))
         return Dictionary(rows.map { ($0.exerciseID, Self.snapshot(of: $0)) }) { first, _ in first }
     }
 
@@ -73,20 +75,22 @@ struct ExercisePreferenceRepository: Repository {
 
     /// Favourited exercise ids, most recently used first so the list stays useful as it grows.
     func favoriteIDs() throws -> [String] {
-        let rows = try fetch(FetchDescriptor<ExercisePreference>(
-            predicate: #Predicate { $0.isFavorite },
-            sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
-        ))
+        let rows = try fetch(
+            FetchDescriptor<ExercisePreference>(
+                predicate: #Predicate { $0.isFavorite },
+                sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
+            ))
         return rows.map(\.exerciseID)
     }
 
     /// Exercise ids the user has excluded from automatic selection. They remain browsable in the
     /// library; exclusion is a statement about the *plan*, not about the exercise's existence.
     func excludedIDs() throws -> [String] {
-        let rows = try fetch(FetchDescriptor<ExercisePreference>(
-            predicate: #Predicate { $0.isExcluded },
-            sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
-        ))
+        let rows = try fetch(
+            FetchDescriptor<ExercisePreference>(
+                predicate: #Predicate { $0.isExcluded },
+                sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
+            ))
         return rows.map(\.exerciseID)
     }
 
@@ -113,9 +117,10 @@ struct ExercisePreferenceRepository: Repository {
 
     /// Exercises with an explicit opinion attached, for the "my exercises" screen.
     func allPreferences() throws -> [ExercisePreference] {
-        try fetch(FetchDescriptor<ExercisePreference>(
-            sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
-        ))
+        try fetch(
+            FetchDescriptor<ExercisePreference>(
+                sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
+            ))
     }
 
     // MARK: - Mutations
@@ -193,9 +198,10 @@ struct ExercisePreferenceRepository: Repository {
         let ids = Array(Set(exerciseIDs))
         guard !ids.isEmpty else { return }
 
-        let existing = try fetch(FetchDescriptor<ExercisePreference>(
-            predicate: #Predicate { ids.contains($0.exerciseID) }
-        ))
+        let existing = try fetch(
+            FetchDescriptor<ExercisePreference>(
+                predicate: #Predicate { ids.contains($0.exerciseID) }
+            ))
         var byID = Dictionary(existing.map { ($0.exerciseID, $0) }) { first, _ in first }
 
         for exerciseID in ids {
@@ -222,9 +228,10 @@ struct ExercisePreferenceRepository: Repository {
     func undoPerformed(exerciseIDs: [String], now: Date = Date()) throws {
         let ids = Array(Set(exerciseIDs))
         guard !ids.isEmpty else { return }
-        let existing = try fetch(FetchDescriptor<ExercisePreference>(
-            predicate: #Predicate { ids.contains($0.exerciseID) }
-        ))
+        let existing = try fetch(
+            FetchDescriptor<ExercisePreference>(
+                predicate: #Predicate { ids.contains($0.exerciseID) }
+            ))
         for preference in existing {
             preference.timesPerformed = max(0, preference.timesPerformed - 1)
             preference.updatedAt = now

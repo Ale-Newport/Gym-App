@@ -58,7 +58,7 @@ final class AppStoreScreenshotTests: ForgeUITestCase {
             "-uiTestDisableAnimations",
             "-AppleLanguages", "(\(language))",
             "-AppleLocale", localeIdentifier,
-            "-settings.languageOverride", language
+            "-settings.languageOverride", language,
         ]
         if let tab {
             arguments += ["-uiTestInitialTab", tab]

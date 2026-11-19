@@ -44,7 +44,7 @@ struct TrainingSettingsView: View {
             }
             .padding(.vertical, Metrics.spacing4)
 
-            if (model.profile?.availableWeekdays.isEmpty ?? true) {
+            if model.profile?.availableWeekdays.isEmpty ?? true {
                 SettingsFootnote(text: L("settings.training.noDaysExplainer"))
             }
 

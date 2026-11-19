@@ -225,13 +225,14 @@ struct FoodSearchIndex: Sendable {
                 if !normalized.isEmpty, !spellings.contains(normalized) { spellings.append(normalized) }
             }
             for normalized in spellings {
-                built.append(Entry(
-                    catalogID: record.catalogID,
-                    normalizedName: normalized,
-                    nameTokens: normalized.split(separator: " ").map(String.init),
-                    tagTerms: tagTerms,
-                    prominence: prominence
-                ))
+                built.append(
+                    Entry(
+                        catalogID: record.catalogID,
+                        normalizedName: normalized,
+                        nameTokens: normalized.split(separator: " ").map(String.init),
+                        tagTerms: tagTerms,
+                        prominence: prominence
+                    ))
             }
         }
         entries = built
@@ -272,7 +273,8 @@ struct FoodSearchIndex: Sendable {
             if entry.normalizedName == normalizedQuery {
                 worstKind = .exactName
             } else if entry.normalizedName.hasPrefix(normalizedQuery) {
-                worstKind = Self.endsAtWordBoundary(entry.normalizedName, after: normalizedQuery.count)
+                worstKind =
+                    Self.endsAtWordBoundary(entry.normalizedName, after: normalizedQuery.count)
                     ? .namePrefix : .namePartialPrefix
             } else if words.count > 1 && entry.normalizedName.contains(normalizedQuery) {
                 worstKind = .nameSubstring
@@ -507,7 +509,8 @@ struct FoodCatalogLoader: Sendable {
                 continue
             }
             guard record.kcal >= 0, record.protein >= 0, record.carbs >= 0, record.fat >= 0 else {
-                AppLog.nutrition.error("Food database: skipping \(record.catalogID, privacy: .public) with negative values")
+                AppLog.nutrition.error(
+                    "Food database: skipping \(record.catalogID, privacy: .public) with negative values")
                 continue
             }
             records.append(record)
@@ -524,7 +527,8 @@ struct FoodCatalogLoader: Sendable {
         do {
             return FoodNameTable(byLanguage: try JSONDecoder().decode([String: [String: String]].self, from: data))
         } catch {
-            AppLog.nutrition.error("Food names unreadable, using English: \(String(describing: error), privacy: .public)")
+            AppLog.nutrition.error(
+                "Food names unreadable, using English: \(String(describing: error), privacy: .public)")
             return .empty
         }
     }
@@ -685,7 +689,8 @@ actor LocalFoodDatabaseProvider: FoodDataProvider {
         return catalog.records
             .filter { $0.roleTags.contains(roleTag) }
             .sorted { lhs, rhs in
-                let lhsCurated = lhs.nameKey != nil, rhsCurated = rhs.nameKey != nil
+                let lhsCurated = lhs.nameKey != nil
+                let rhsCurated = rhs.nameKey != nil
                 if lhsCurated != rhsCurated { return lhsCurated }
                 return lhs.name < rhs.name
             }

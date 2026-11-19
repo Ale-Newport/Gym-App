@@ -68,7 +68,9 @@ final class NutritionDayViewModel {
     private let environment: AppEnvironment
     private let calendar: Calendar
 
-    init(context: ModelContext, environment: AppEnvironment, dayKey: String = DayKey.today, calendar: Calendar = .current) {
+    init(
+        context: ModelContext, environment: AppEnvironment, dayKey: String = DayKey.today, calendar: Calendar = .current
+    ) {
         self.context = context
         self.environment = environment
         self.repository = NutritionRepository(context: context)
@@ -262,7 +264,8 @@ final class NutritionDayViewModel {
     func copyYesterday(into slot: MealSlot) {
         perform {
             let created = try repository.copyYesterdayMeal(slot, to: dayKey, calendar: calendar)
-            notice = created.isEmpty
+            notice =
+                created.isEmpty
                 ? L("nutritionLog.notice.nothingToCopy")
                 : L("nutritionLog.notice.itemsAdded", created.count)
         }
@@ -271,7 +274,8 @@ final class NutritionDayViewModel {
     func copyDay(from sourceDayKey: String) {
         perform {
             let created = try repository.copyDay(from: sourceDayKey, to: dayKey)
-            notice = created.isEmpty
+            notice =
+                created.isEmpty
                 ? L("nutritionLog.notice.nothingToCopy")
                 : L("nutritionLog.notice.itemsAdded", created.count)
         }
@@ -294,7 +298,8 @@ final class NutritionDayViewModel {
             let created = try repository.logSavedMeal(meal, to: slot, dayKey: dayKey)
             // A saved meal can lose items when a food behind it is deleted; saying how many rows
             // actually landed is the only honest way to report that.
-            notice = created.count == meal.items.count
+            notice =
+                created.count == meal.items.count
                 ? L("nutritionLog.notice.itemsAdded", created.count)
                 : L("nutritionLog.notice.itemsAddedPartial", created.count, meal.items.count)
         }

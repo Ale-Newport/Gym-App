@@ -85,7 +85,9 @@ struct GoalStepView: View {
                         }
                     }
                 }
-                OnboardingInlineHint(message: L(model.experience.detailLocalizationKey), systemImage: "figure.strengthtraining.traditional")
+                OnboardingInlineHint(
+                    message: L(model.experience.detailLocalizationKey),
+                    systemImage: "figure.strengthtraining.traditional")
             }
         }
     }

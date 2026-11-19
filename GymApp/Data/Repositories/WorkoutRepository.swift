@@ -469,12 +469,13 @@ struct WorkoutRepository: Repository {
                 }
             }
 
-            performances.append(ExercisePerformance(
-                date: date,
-                exerciseID: record.exerciseID,
-                sets: record.orderedSets.map(performedSet(from:)),
-                sessionID: session.id
-            ))
+            performances.append(
+                ExercisePerformance(
+                    date: date,
+                    exerciseID: record.exerciseID,
+                    sets: record.orderedSets.map(performedSet(from:)),
+                    sessionID: session.id
+                ))
         }
 
         return SessionOutcome(
@@ -650,7 +651,8 @@ struct WorkoutRepository: Repository {
         let stored = try progressionStates(forExerciseIDs: exerciseIDs)
         var result: [String: ProgressionStateSnapshot] = [:]
         for exerciseID in Set(exerciseIDs) {
-            result[exerciseID] = stored[exerciseID].map(Self.snapshot(of:))
+            result[exerciseID] =
+                stored[exerciseID].map(Self.snapshot(of:))
                 ?? ProgressionStateSnapshot(exerciseID: exerciseID)
         }
         return result

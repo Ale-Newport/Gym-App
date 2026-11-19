@@ -217,7 +217,8 @@ struct ActiveWorkoutView: View {
     /// and the card names the exercise the user is on.
     private func segment(_ record: ExerciseSession, isCurrent: Bool) -> some View {
         let planned = max(record.workingSets.count, 1)
-        let fraction = record.wasSkipped
+        let fraction =
+            record.wasSkipped
             ? 0
             : min(1, Double(record.completedWorkingSets.count) / Double(planned))
 
@@ -254,7 +255,7 @@ struct ActiveWorkoutView: View {
         [
             L("active.progress.exercise", model.currentIndex + 1, model.orderedExercises.count),
             L("active.progress.sets", model.completedWorkingSets, model.plannedWorkingSets),
-            L("active.elapsed", Units.formatDuration(seconds: model.activeSeconds))
+            L("active.elapsed", Units.formatDuration(seconds: model.activeSeconds)),
         ].joined(separator: ", ")
     }
 
@@ -322,7 +323,9 @@ struct ActiveWorkoutView: View {
         ToolbarItem(placement: .topBarLeading) {
             // Leaving the screen does not end the workout: Home and the Workout tab both show a
             // resume banner, and the Live Activity keeps running.
-            Button { dismiss() } label: {
+            Button {
+                dismiss()
+            } label: {
                 Image(systemName: "chevron.down")
                     .minimumTapTarget()
             }

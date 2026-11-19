@@ -70,7 +70,8 @@ struct FoodDetailView: View {
                     } label: {
                         Image(systemName: isFavorite ? "heart.fill" : "heart")
                     }
-                    .accessibilityLabel(isFavorite ? L("nutritionLog.action.unfavorite") : L("nutritionLog.action.favorite"))
+                    .accessibilityLabel(
+                        isFavorite ? L("nutritionLog.action.unfavorite") : L("nutritionLog.action.favorite"))
                 }
             }
         }
@@ -243,10 +244,12 @@ struct FoodDetailView: View {
         return "\(Units.formatDecimal(value, digits: digits, locale: formatter.locale)) \(unit.rawValue)"
     }
 
-    private func micronutrientAccessibilityLabel(_ nutrient: Micronutrient, value: Double?, fraction: Double?) -> String {
+    private func micronutrientAccessibilityLabel(_ nutrient: Micronutrient, value: Double?, fraction: Double?) -> String
+    {
         let name = L(nutrient.localizationKey)
         guard let value else { return L("nutritionLog.a11y.microUnknown", name) }
-        let amount = "\(Units.formatDecimal(value, digits: value < 10 ? 1 : 0, locale: formatter.locale)) \(nutrient.unit.rawValue)"
+        let amount =
+            "\(Units.formatDecimal(value, digits: value < 10 ? 1 : 0, locale: formatter.locale)) \(nutrient.unit.rawValue)"
         guard let fraction else { return L("nutritionLog.a11y.microValue", name, amount) }
         return L("nutritionLog.a11y.microValueReference", name, amount, NutritionFormat.percent(fraction))
     }
@@ -256,7 +259,8 @@ struct FoodDetailView: View {
     }
 
     private var portionLabel: String {
-        let amount = Units.formatDecimal(portion.quantity, digits: portion.quantity < 10 ? 1 : 0, locale: formatter.locale)
+        let amount = Units.formatDecimal(
+            portion.quantity, digits: portion.quantity < 10 ? 1 : 0, locale: formatter.locale)
         return L("nutritionLog.food.perPortion", "\(amount) \(L(portion.unit.localizationKey))")
     }
 

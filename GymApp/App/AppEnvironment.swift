@@ -1,7 +1,7 @@
 import Foundation
-import SwiftUI
-import SwiftData
 import Observation
+import SwiftData
+import SwiftUI
 
 /// The app's composition root.
 ///

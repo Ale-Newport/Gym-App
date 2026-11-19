@@ -21,7 +21,8 @@ enum ProgressFailure {
     @MainActor
     static func message(_ error: Error) -> String {
         if let repositoryError = error as? RepositoryError {
-            AppLog.persistence.error("Progress load failed: \(repositoryError.diagnosticDetail ?? "-", privacy: .public)")
+            AppLog.persistence.error(
+                "Progress load failed: \(repositoryError.diagnosticDetail ?? "-", privacy: .public)")
             return repositoryError.explanation.text
         }
         AppLog.app.error("Progress load failed: \(String(describing: error), privacy: .public)")
@@ -240,7 +241,8 @@ final class BodyWeightViewModel {
             let points = all.map { WeightTrendPoint(date: $0.date, weightKg: $0.weightKg) }
             analysis = await ProgressHubViewModel.analyze(points, now: now)
 
-            rows = all
+            rows =
+                all
                 .filter { interval.contains($0.date) }
                 .map {
                     BodyWeightRow(
@@ -315,7 +317,8 @@ final class BodyWeightViewModel {
                 try progress.addBodyWeight(kg: sample.kilograms, on: sample.date, isFromHealthKit: true)
                 imported += 1
             }
-            importSummary = imported > 0
+            importSummary =
+                imported > 0
                 ? L("progress.weight.health.imported", imported)
                 : L("progress.weight.health.upToDate")
             await load(context: context, range: range, now: now)
@@ -406,7 +409,8 @@ final class StrengthProgressViewModel {
             for session in sessions {
                 for record in session.exercises where !record.wasSkipped {
                     guard record.completedWorkingSets.isEmpty == false else { continue }
-                    var entry = counts[record.exerciseID]
+                    var entry =
+                        counts[record.exerciseID]
                         ?? (record.exerciseNameSnapshot, [], session.startedAt)
                     entry.sessions.insert(session.id)
                     entry.last = max(entry.last, session.startedAt)
@@ -414,8 +418,13 @@ final class StrengthProgressViewModel {
                     counts[record.exerciseID] = entry
                 }
             }
-            trainedExercises = counts
-                .map { TrainedExercise(id: $0.key, name: $0.value.name, sessionCount: $0.value.sessions.count, lastPerformed: $0.value.last) }
+            trainedExercises =
+                counts
+                .map {
+                    TrainedExercise(
+                        id: $0.key, name: $0.value.name, sessionCount: $0.value.sessions.count,
+                        lastPerformed: $0.value.last)
+                }
                 .sorted { lhs, rhs in
                     if lhs.sessionCount != rhs.sessionCount { return lhs.sessionCount > rhs.sessionCount }
                     return lhs.name < rhs.name
@@ -545,7 +554,8 @@ final class VolumeProgressViewModel {
 
             if let last = weeklyGroupVolume.last {
                 latestWeekStart = last.weekStart
-                latestWeek = trainedGroups
+                latestWeek =
+                    trainedGroups
                     .map { ($0, last.sets(for: $0), targets.target(for: $0)) }
                     .sorted { lhs, rhs in
                         let lhsShortfall = lhs.1 - lhs.2
@@ -865,7 +875,7 @@ enum AchievementMeasure: Hashable, Sendable {
     var threshold: Double {
         switch self {
         case .sessions(let value), .dayStreak(let value), .weekStreak(let value),
-             .weighIns(let value), .nutritionDays(let value):
+            .weighIns(let value), .nutritionDays(let value):
             Double(value)
         case .liftKg(let value), .tonnageKg(let value):
             value

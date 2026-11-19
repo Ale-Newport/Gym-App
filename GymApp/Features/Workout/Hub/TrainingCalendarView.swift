@@ -526,11 +526,13 @@ private struct RescheduleSheet: View {
                                 Card {
                                     VStack(alignment: .leading, spacing: Metrics.spacing8) {
                                         HStack(spacing: Metrics.spacing8) {
-                                            Image(systemName: move.waitsForNextWeek
-                                                  ? "arrow.turn.down.right"
-                                                  : (move.changesSchedule ? "arrow.right" : "checkmark"))
-                                                .font(.footnote.weight(.semibold))
-                                                .foregroundStyle(move.changesSchedule ? Color.appAccent : Color.appSuccess)
+                                            Image(
+                                                systemName: move.waitsForNextWeek
+                                                    ? "arrow.turn.down.right"
+                                                    : (move.changesSchedule ? "arrow.right" : "checkmark")
+                                            )
+                                            .font(.footnote.weight(.semibold))
+                                            .foregroundStyle(move.changesSchedule ? Color.appAccent : Color.appSuccess)
                                             Text(move.title)
                                                 .font(.subheadline.weight(.semibold))
                                                 .foregroundStyle(Color.appTextPrimary)

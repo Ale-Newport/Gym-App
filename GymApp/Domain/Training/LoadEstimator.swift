@@ -137,10 +137,12 @@ enum LoadEstimator {
         reps: Int
     ) -> LoadEstimate? {
         // Sorted so a duplicated id resolves the same way on every run.
-        guard let seed = seeds
-            .filter({ $0.exerciseID == exercise.id })
-            .sorted(by: { $0.weightKg > $1.weightKg })
-            .first
+        guard
+            let seed =
+                seeds
+                .filter({ $0.exerciseID == exercise.id })
+                .sorted(by: { $0.weightKg > $1.weightKg })
+                .first
         else { return nil }
         guard seed.reps >= 1, seed.weightKg.isFinite else { return nil }
 
@@ -150,27 +152,33 @@ enum LoadEstimator {
         let seedSystemKg = barbellEquivalent(
             ofStored: seed.weightKg, exercise: exercise, bodyWeightKg: bodyWeightKg
         )
-        guard let systemOneRepMax = OneRepMaxCalculator.estimate(
-            weightKg: seedSystemKg, reps: seed.reps
-        ) else { return nil }
+        guard
+            let systemOneRepMax = OneRepMaxCalculator.estimate(
+                weightKg: seedSystemKg, reps: seed.reps
+            )
+        else { return nil }
 
-        guard let stored = workingLoad(
-            systemOneRepMaxKg: systemOneRepMax, exercise: exercise, bodyWeightKg: bodyWeightKg,
-            reps: reps, safetyFactor: Constants.measuredSafetyFactor, increments: increments
-        ) else { return nil }
+        guard
+            let stored = workingLoad(
+                systemOneRepMaxKg: systemOneRepMax, exercise: exercise, bodyWeightKg: bodyWeightKg,
+                reps: reps, safetyFactor: Constants.measuredSafetyFactor, increments: increments
+            )
+        else { return nil }
 
         let confidence = 0.80
         return LoadEstimate(
             weightKg: stored,
             confidence: confidence,
             requiresCalibration: confidence < Constants.calibrationThreshold,
-            explanation: Explanation("loadEstimate.explain.fromSeed", [
-                exercise.name,
-                TrainingFormat.weight(stored),
-                TrainingFormat.count(reps),
-                TrainingFormat.weight(seed.weightKg),
-                TrainingFormat.count(seed.reps)
-            ])
+            explanation: Explanation(
+                "loadEstimate.explain.fromSeed",
+                [
+                    exercise.name,
+                    TrainingFormat.weight(stored),
+                    TrainingFormat.count(reps),
+                    TrainingFormat.weight(seed.weightKg),
+                    TrainingFormat.count(seed.reps),
+                ])
         )
     }
 
@@ -204,15 +212,19 @@ enum LoadEstimator {
             let sameTarget = source.target == exercise.target
             guard isSameExercise || (samePattern && sameTarget) else { continue }
 
-            guard let sourceSystemOneRepMax = systemOneRepMax(
-                from: history, exercise: source, bodyWeightKg: bodyWeightKg
-            ) else { continue }
+            guard
+                let sourceSystemOneRepMax = systemOneRepMax(
+                    from: history, exercise: source, bodyWeightKg: bodyWeightKg
+                )
+            else { continue }
 
-            guard let stored = workingLoad(
-                systemOneRepMaxKg: sourceSystemOneRepMax, exercise: exercise,
-                bodyWeightKg: bodyWeightKg, reps: reps,
-                safetyFactor: Constants.measuredSafetyFactor, increments: increments
-            ) else { continue }
+            guard
+                let stored = workingLoad(
+                    systemOneRepMaxKg: sourceSystemOneRepMax, exercise: exercise,
+                    bodyWeightKg: bodyWeightKg, reps: reps,
+                    safetyFactor: Constants.measuredSafetyFactor, increments: increments
+                )
+            else { continue }
 
             var confidence: Double
             if isSameExercise {
@@ -247,20 +259,24 @@ enum LoadEstimator {
 
         let explanation: Explanation
         if source.id == exercise.id {
-            explanation = Explanation("loadEstimate.explain.fromOwnHistory", [
-                exercise.name,
-                TrainingFormat.weight(stored),
-                TrainingFormat.count(reps),
-                TrainingFormat.weight(sourceStoredOneRepMax)
-            ])
+            explanation = Explanation(
+                "loadEstimate.explain.fromOwnHistory",
+                [
+                    exercise.name,
+                    TrainingFormat.weight(stored),
+                    TrainingFormat.count(reps),
+                    TrainingFormat.weight(sourceStoredOneRepMax),
+                ])
         } else {
-            explanation = Explanation("loadEstimate.explain.fromRelated", [
-                exercise.name,
-                TrainingFormat.weight(stored),
-                TrainingFormat.count(reps),
-                source.name,
-                TrainingFormat.weight(sourceStoredOneRepMax)
-            ])
+            explanation = Explanation(
+                "loadEstimate.explain.fromRelated",
+                [
+                    exercise.name,
+                    TrainingFormat.weight(stored),
+                    TrainingFormat.count(reps),
+                    source.name,
+                    TrainingFormat.weight(sourceStoredOneRepMax),
+                ])
         }
 
         return LoadEstimate(
@@ -309,7 +325,8 @@ enum LoadEstimator {
         reps: Int
     ) -> LoadEstimate? {
         let pattern = exercise.metadata.movementPattern
-        let ratio = strengthRatios(for: pattern).value(for: profile.experience)
+        let ratio =
+            strengthRatios(for: pattern).value(for: profile.experience)
             * sexFactor(profile.biologicalSex, pattern: pattern)
         guard ratio > 0 else { return nil }
 
@@ -321,10 +338,12 @@ enum LoadEstimator {
         guard referenceCoefficient > 0 else { return nil }
         let systemOneRepMaxKg = ratio * bodyWeightKg / referenceCoefficient
 
-        guard let stored = workingLoad(
-            systemOneRepMaxKg: systemOneRepMaxKg, exercise: exercise, bodyWeightKg: bodyWeightKg,
-            reps: reps, safetyFactor: Constants.populationSafetyFactor, increments: increments
-        ) else { return nil }
+        guard
+            let stored = workingLoad(
+                systemOneRepMaxKg: systemOneRepMaxKg, exercise: exercise, bodyWeightKg: bodyWeightKg,
+                reps: reps, safetyFactor: Constants.populationSafetyFactor, increments: increments
+            )
+        else { return nil }
 
         // The table is built from novice standards, so it fits a beginner better than an advanced
         // lifter, whose numbers scatter far more widely. Either way it is population data and the
@@ -334,12 +353,14 @@ enum LoadEstimator {
             weightKg: stored,
             confidence: confidence,
             requiresCalibration: confidence < Constants.calibrationThreshold,
-            explanation: Explanation("loadEstimate.explain.fromBodyWeight", [
-                exercise.name,
-                TrainingFormat.weight(stored),
-                TrainingFormat.count(reps),
-                TrainingFormat.weight(bodyWeightKg)
-            ])
+            explanation: Explanation(
+                "loadEstimate.explain.fromBodyWeight",
+                [
+                    exercise.name,
+                    TrainingFormat.weight(stored),
+                    TrainingFormat.count(reps),
+                    TrainingFormat.weight(bodyWeightKg),
+                ])
         )
     }
 
@@ -360,10 +381,12 @@ enum LoadEstimator {
             weightKg: stored,
             confidence: 0.15,
             requiresCalibration: true,
-            explanation: Explanation("loadEstimate.explain.minimum", [
-                exercise.name,
-                TrainingFormat.weight(stored)
-            ])
+            explanation: Explanation(
+                "loadEstimate.explain.minimum",
+                [
+                    exercise.name,
+                    TrainingFormat.weight(stored),
+                ])
         )
     }
 
@@ -382,9 +405,11 @@ enum LoadEstimator {
         let ceiling = bodyWeightKg * Constants.sanityCeilingBodyWeightMultiple
         let clampedOneRepMax = min(systemOneRepMaxKg, ceiling)
 
-        guard let systemWorking = OneRepMaxCalculator.weight(
-            forReps: reps, oneRepMaxKg: clampedOneRepMax
-        ) else { return nil }
+        guard
+            let systemWorking = OneRepMaxCalculator.weight(
+                forReps: reps, oneRepMaxKg: clampedOneRepMax
+            )
+        else { return nil }
 
         let stored = storedLoad(
             fromBarbellEquivalent: systemWorking * safetyFactor,
@@ -425,7 +450,8 @@ enum LoadEstimator {
         case .assistedBodyweight:
             return max(0, bodyWeightKg * bodyweightLoadFraction(for: meta.movementPattern) - stored)
         default:
-            let divisor = implementCoefficient(loadability: meta.loadability, pattern: meta.movementPattern)
+            let divisor =
+                implementCoefficient(loadability: meta.loadability, pattern: meta.movementPattern)
                 * lateralityFactor(for: meta)
             guard divisor > 0 else { return stored }
             return stored / divisor
@@ -514,7 +540,7 @@ enum LoadEstimator {
         switch pattern {
         case .verticalPull: return 0.95
         case .calfRaise: return 0.90
-        case .horizontalPush: return 0.90   // dips; push-ups derive as unloadable bodyweight
+        case .horizontalPush: return 0.90  // dips; push-ups derive as unloadable bodyweight
         case .verticalPush: return 0.85
         case .horizontalPull: return 0.65
         case .squat: return 0.65
@@ -572,32 +598,32 @@ enum LoadEstimator {
     /// while being 20 % heavy costs a failed rep on a movement the user has never performed.
     private static func strengthRatios(for pattern: MovementPattern) -> StrengthRatios {
         switch pattern {
-        case .squat:            return StrengthRatios(never: 0.55, beginner: 0.75, intermediate: 1.15, advanced: 1.55)
-        case .hinge:            return StrengthRatios(never: 0.70, beginner: 0.95, intermediate: 1.40, advanced: 1.85)
-        case .lunge:            return StrengthRatios(never: 0.35, beginner: 0.50, intermediate: 0.75, advanced: 1.00)
-        case .hipThrust:        return StrengthRatios(never: 0.60, beginner: 0.85, intermediate: 1.30, advanced: 1.75)
-        case .carry:            return StrengthRatios(never: 0.45, beginner: 0.60, intermediate: 0.90, advanced: 1.20)
-        case .horizontalPush:   return StrengthRatios(never: 0.40, beginner: 0.55, intermediate: 0.85, advanced: 1.15)
-        case .verticalPush:     return StrengthRatios(never: 0.28, beginner: 0.38, intermediate: 0.58, advanced: 0.78)
-        case .horizontalPull:   return StrengthRatios(never: 0.38, beginner: 0.52, intermediate: 0.78, advanced: 1.05)
-        case .verticalPull:     return StrengthRatios(never: 0.55, beginner: 0.75, intermediate: 1.20, advanced: 1.55)
-        case .chestFly:         return StrengthRatios(never: 0.20, beginner: 0.30, intermediate: 0.45, advanced: 0.60)
-        case .shoulderRaise:    return StrengthRatios(never: 0.10, beginner: 0.14, intermediate: 0.20, advanced: 0.26)
-        case .shrug:            return StrengthRatios(never: 0.50, beginner: 0.70, intermediate: 1.00, advanced: 1.30)
-        case .elbowFlexion:     return StrengthRatios(never: 0.18, beginner: 0.25, intermediate: 0.35, advanced: 0.45)
-        case .elbowExtension:   return StrengthRatios(never: 0.20, beginner: 0.28, intermediate: 0.40, advanced: 0.52)
-        case .kneeExtension:    return StrengthRatios(never: 0.40, beginner: 0.55, intermediate: 0.80, advanced: 1.05)
-        case .kneeFlexion:      return StrengthRatios(never: 0.28, beginner: 0.40, intermediate: 0.58, advanced: 0.75)
-        case .calfRaise:        return StrengthRatios(never: 0.60, beginner: 0.85, intermediate: 1.20, advanced: 1.55)
-        case .hipAbduction:     return StrengthRatios(never: 0.25, beginner: 0.35, intermediate: 0.50, advanced: 0.65)
-        case .hipAdduction:     return StrengthRatios(never: 0.25, beginner: 0.35, intermediate: 0.50, advanced: 0.65)
-        case .wristFlexion:     return StrengthRatios(never: 0.10, beginner: 0.14, intermediate: 0.20, advanced: 0.26)
-        case .wristExtension:   return StrengthRatios(never: 0.06, beginner: 0.09, intermediate: 0.13, advanced: 0.17)
-        case .coreFlexion:      return StrengthRatios(never: 0.25, beginner: 0.35, intermediate: 0.50, advanced: 0.65)
-        case .coreRotation:     return StrengthRatios(never: 0.12, beginner: 0.18, intermediate: 0.26, advanced: 0.34)
+        case .squat: return StrengthRatios(never: 0.55, beginner: 0.75, intermediate: 1.15, advanced: 1.55)
+        case .hinge: return StrengthRatios(never: 0.70, beginner: 0.95, intermediate: 1.40, advanced: 1.85)
+        case .lunge: return StrengthRatios(never: 0.35, beginner: 0.50, intermediate: 0.75, advanced: 1.00)
+        case .hipThrust: return StrengthRatios(never: 0.60, beginner: 0.85, intermediate: 1.30, advanced: 1.75)
+        case .carry: return StrengthRatios(never: 0.45, beginner: 0.60, intermediate: 0.90, advanced: 1.20)
+        case .horizontalPush: return StrengthRatios(never: 0.40, beginner: 0.55, intermediate: 0.85, advanced: 1.15)
+        case .verticalPush: return StrengthRatios(never: 0.28, beginner: 0.38, intermediate: 0.58, advanced: 0.78)
+        case .horizontalPull: return StrengthRatios(never: 0.38, beginner: 0.52, intermediate: 0.78, advanced: 1.05)
+        case .verticalPull: return StrengthRatios(never: 0.55, beginner: 0.75, intermediate: 1.20, advanced: 1.55)
+        case .chestFly: return StrengthRatios(never: 0.20, beginner: 0.30, intermediate: 0.45, advanced: 0.60)
+        case .shoulderRaise: return StrengthRatios(never: 0.10, beginner: 0.14, intermediate: 0.20, advanced: 0.26)
+        case .shrug: return StrengthRatios(never: 0.50, beginner: 0.70, intermediate: 1.00, advanced: 1.30)
+        case .elbowFlexion: return StrengthRatios(never: 0.18, beginner: 0.25, intermediate: 0.35, advanced: 0.45)
+        case .elbowExtension: return StrengthRatios(never: 0.20, beginner: 0.28, intermediate: 0.40, advanced: 0.52)
+        case .kneeExtension: return StrengthRatios(never: 0.40, beginner: 0.55, intermediate: 0.80, advanced: 1.05)
+        case .kneeFlexion: return StrengthRatios(never: 0.28, beginner: 0.40, intermediate: 0.58, advanced: 0.75)
+        case .calfRaise: return StrengthRatios(never: 0.60, beginner: 0.85, intermediate: 1.20, advanced: 1.55)
+        case .hipAbduction: return StrengthRatios(never: 0.25, beginner: 0.35, intermediate: 0.50, advanced: 0.65)
+        case .hipAdduction: return StrengthRatios(never: 0.25, beginner: 0.35, intermediate: 0.50, advanced: 0.65)
+        case .wristFlexion: return StrengthRatios(never: 0.10, beginner: 0.14, intermediate: 0.20, advanced: 0.26)
+        case .wristExtension: return StrengthRatios(never: 0.06, beginner: 0.09, intermediate: 0.13, advanced: 0.17)
+        case .coreFlexion: return StrengthRatios(never: 0.25, beginner: 0.35, intermediate: 0.50, advanced: 0.65)
+        case .coreRotation: return StrengthRatios(never: 0.12, beginner: 0.18, intermediate: 0.26, advanced: 0.34)
         case .coreLateralFlexion: return StrengthRatios(never: 0.15, beginner: 0.22, intermediate: 0.32, advanced: 0.42)
         case .coreAntiExtension: return StrengthRatios(never: 0.12, beginner: 0.18, intermediate: 0.25, advanced: 0.32)
-        case .neckMovement:     return StrengthRatios(never: 0.05, beginner: 0.07, intermediate: 0.10, advanced: 0.13)
+        case .neckMovement: return StrengthRatios(never: 0.05, beginner: 0.07, intermediate: 0.10, advanced: 0.13)
         case .cardio, .mobility, .other:
             return StrengthRatios(never: 0.15, beginner: 0.22, intermediate: 0.30, advanced: 0.40)
         }
@@ -607,13 +633,13 @@ enum LoadEstimator {
     private static func referenceLoadability(for pattern: MovementPattern) -> Loadability {
         switch pattern {
         case .squat, .hinge, .lunge, .hipThrust, .carry, .horizontalPush, .verticalPush,
-             .horizontalPull, .shrug, .elbowFlexion, .wristFlexion, .wristExtension:
+            .horizontalPull, .shrug, .elbowFlexion, .wristFlexion, .wristExtension:
             return .barbell
         case .verticalPull, .chestFly, .kneeExtension, .kneeFlexion, .calfRaise,
-             .hipAbduction, .hipAdduction, .neckMovement:
+            .hipAbduction, .hipAdduction, .neckMovement:
             return .machineStack
         case .shoulderRaise, .elbowExtension, .coreFlexion, .coreRotation,
-             .coreLateralFlexion, .coreAntiExtension, .cardio, .mobility, .other:
+            .coreLateralFlexion, .coreAntiExtension, .cardio, .mobility, .other:
             return .cableStack
         }
     }
@@ -636,7 +662,7 @@ enum LoadEstimator {
     private static func isLowerBodyPattern(_ pattern: MovementPattern) -> Bool {
         switch pattern {
         case .squat, .hinge, .lunge, .hipThrust, .kneeExtension, .kneeFlexion,
-             .calfRaise, .hipAbduction, .hipAdduction:
+            .calfRaise, .hipAbduction, .hipAdduction:
             return true
         default:
             return false
@@ -709,7 +735,8 @@ enum LoadEstimator {
             // Short rests early, a fuller one before the working set so the last ramp does not
             // become part of the working set's fatigue. Quantised to quarter-minutes: a rest timer
             // that says 82 seconds looks calculated rather than coached.
-            let rest = isLast
+            let rest =
+                isLast
                 ? min(120, max(60, (meta.defaultRestSeconds / 2 / 15) * 15))
                 : 45
 

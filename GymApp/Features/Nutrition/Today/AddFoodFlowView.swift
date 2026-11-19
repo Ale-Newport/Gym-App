@@ -44,12 +44,15 @@ struct FoodLookup: Repository {
     /// and must not be presented as one.
     func materialise(_ result: FoodSearchResult) throws -> FoodItem {
         if let barcode = result.barcode?.trimmingCharacters(in: .whitespaces), !barcode.isEmpty,
-           let existing = try nutrition.food(barcode: barcode) {
+            let existing = try nutrition.food(barcode: barcode)
+        {
             return existing
         }
         let catalogID: String? = result.externalID
         if result.source == .builtIn,
-           let existing = try fetchFirst(FetchDescriptor<FoodItem>(predicate: #Predicate { $0.catalogID == catalogID })) {
+            let existing = try fetchFirst(
+                FetchDescriptor<FoodItem>(predicate: #Predicate { $0.catalogID == catalogID }))
+        {
             return existing
         }
 
@@ -441,9 +444,13 @@ struct AddFoodFlowView: View {
                         onShowDetails: { path.append(AddFoodRoute.detail($0)) }
                     )
                 case .recent:
-                    foodList(model, foods: model.recentFoods, emptyTitle: L("nutritionLog.recent.emptyTitle"), emptyMessage: L("nutritionLog.recent.emptyMessage"))
+                    foodList(
+                        model, foods: model.recentFoods, emptyTitle: L("nutritionLog.recent.emptyTitle"),
+                        emptyMessage: L("nutritionLog.recent.emptyMessage"))
                 case .favorites:
-                    foodList(model, foods: model.favoriteFoods, emptyTitle: L("nutritionLog.favorites.emptyTitle"), emptyMessage: L("nutritionLog.favorites.emptyMessage"))
+                    foodList(
+                        model, foods: model.favoriteFoods, emptyTitle: L("nutritionLog.favorites.emptyTitle"),
+                        emptyMessage: L("nutritionLog.favorites.emptyMessage"))
                 case .savedMeals:
                     savedMealList(model)
                 case .recipes:
@@ -567,7 +574,10 @@ struct AddFoodFlowView: View {
                         ForEach(model.recipes, id: \.id) { recipe in
                             FoodPickerRow(
                                 title: recipe.name,
-                                subtitle: L("nutritionLog.recipes.servings", Units.formatDecimal(recipe.servingsCount, digits: recipe.servingsCount < 10 ? 1 : 0)),
+                                subtitle: L(
+                                    "nutritionLog.recipes.servings",
+                                    Units.formatDecimal(recipe.servingsCount, digits: recipe.servingsCount < 10 ? 1 : 0)
+                                ),
                                 macrosPer100: model.macrosPerServing(of: recipe),
                                 basisUnit: .grams,
                                 isFavorite: recipe.isFavorite,
@@ -755,7 +765,9 @@ struct SavedMealRow: View {
             }
             .buttonStyle(.plain)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(L("nutritionLog.a11y.savedMeal", name, itemCount, formatter.energy(macros.kilocalories)))
+            .accessibilityLabel(
+                L("nutritionLog.a11y.savedMeal", name, itemCount, formatter.energy(macros.kilocalories))
+            )
             .accessibilityHint(L("nutritionLog.a11y.savedMealHint"))
 
             Menu {
@@ -802,7 +814,6 @@ struct SavedMealRow: View {
 }
 
 // MARK: - Custom food
-
 
 #Preview("Add food") {
     PreviewHost(scenario: .seasonedUser) {

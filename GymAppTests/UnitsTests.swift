@@ -274,9 +274,10 @@ struct LoadRoundingTests {
     func kettlebellRounding() {
         #expect(LoadRounding.round(kilograms: 17, loadability: .kettlebell, profile: profile) == 16)
         #expect(LoadRounding.round(kilograms: 30, loadability: .kettlebell, profile: profile) == 28)
-        #expect(profile.kettlebellsKg.contains(
-            LoadRounding.round(kilograms: 21.3, loadability: .kettlebell, profile: profile)
-        ))
+        #expect(
+            profile.kettlebellsKg.contains(
+                LoadRounding.round(kilograms: 21.3, loadability: .kettlebell, profile: profile)
+            ))
     }
 
     @Test("Unloadable movements round onto a half-kilogram grid rather than to nothing")
@@ -398,7 +399,7 @@ struct DayKeyTests {
         return calendar
     }
 
-    private let instant = Date(timeIntervalSince1970: 1_717_405_200) // 2024-06-03 09:00 UTC
+    private let instant = Date(timeIntervalSince1970: 1_717_405_200)  // 2024-06-03 09:00 UTC
 
     @Test("A day key is the local calendar day, whatever the device language")
     func keyIsTheLocalCalendarDay() {

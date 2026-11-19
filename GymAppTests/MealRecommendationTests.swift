@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behavioural tests for `MealRecommendationEngine`.
@@ -56,67 +57,83 @@ struct MealRecommendationTests {
     }
 
     private static var chicken: MealCandidateFood {
-        food(1, "Chicken breast", kcal: 165, protein: 31, carbs: 0, fat: 3.6,
-             dietary: ["meat", "poultry"], roles: ["protein_source"], timesLogged: 12)
+        food(
+            1, "Chicken breast", kcal: 165, protein: 31, carbs: 0, fat: 3.6,
+            dietary: ["meat", "poultry"], roles: ["protein_source"], timesLogged: 12)
     }
     private static var salmon: MealCandidateFood {
-        food(2, "Salmon", kcal: 208, protein: 20, carbs: 0, fat: 13,
-             dietary: ["fish", "seafood"], roles: ["protein_source"], timesLogged: 4)
+        food(
+            2, "Salmon", kcal: 208, protein: 20, carbs: 0, fat: 13,
+            dietary: ["fish", "seafood"], roles: ["protein_source"], timesLogged: 4)
     }
     private static var eggs: MealCandidateFood {
-        food(3, "Egg", kcal: 155, protein: 13, carbs: 1.1, fat: 11,
-             dietary: ["egg"], roles: ["protein_source", "breakfast"],
-             gramsPerPiece: 50, timesLogged: 9)
+        food(
+            3, "Egg", kcal: 155, protein: 13, carbs: 1.1, fat: 11,
+            dietary: ["egg"], roles: ["protein_source", "breakfast"],
+            gramsPerPiece: 50, timesLogged: 9)
     }
     private static var greekYogurt: MealCandidateFood {
-        food(4, "Greek yoghurt", kcal: 59, protein: 10, carbs: 3.6, fat: 0.4,
-             dietary: ["dairy"], roles: ["protein_source", "breakfast"], timesLogged: 7)
+        food(
+            4, "Greek yoghurt", kcal: 59, protein: 10, carbs: 3.6, fat: 0.4,
+            dietary: ["dairy"], roles: ["protein_source", "breakfast"], timesLogged: 7)
     }
     private static var tofu: MealCandidateFood {
-        food(5, "Firm tofu", kcal: 144, protein: 15.7, carbs: 4.3, fat: 8.7,
-             dietary: ["soy"], roles: ["protein_source"], timesLogged: 6)
+        food(
+            5, "Firm tofu", kcal: 144, protein: 15.7, carbs: 4.3, fat: 8.7,
+            dietary: ["soy"], roles: ["protein_source"], timesLogged: 6)
     }
     private static var lentils: MealCandidateFood {
-        food(6, "Cooked lentils", kcal: 116, protein: 9, carbs: 20, fat: 0.4,
-             roles: ["protein_source"], fibre: 7.9, timesLogged: 3)
+        food(
+            6, "Cooked lentils", kcal: 116, protein: 9, carbs: 20, fat: 0.4,
+            roles: ["protein_source"], fibre: 7.9, timesLogged: 3)
     }
     private static var rice: MealCandidateFood {
-        food(7, "Cooked rice", kcal: 130, protein: 2.7, carbs: 28, fat: 0.3,
-             roles: ["carb_source"], timesLogged: 15)
+        food(
+            7, "Cooked rice", kcal: 130, protein: 2.7, carbs: 28, fat: 0.3,
+            roles: ["carb_source"], timesLogged: 15)
     }
     private static var potato: MealCandidateFood {
-        food(8, "Boiled potato", kcal: 87, protein: 1.9, carbs: 20, fat: 0.1,
-             roles: ["carb_source"], fibre: 1.8, timesLogged: 5)
+        food(
+            8, "Boiled potato", kcal: 87, protein: 1.9, carbs: 20, fat: 0.1,
+            roles: ["carb_source"], fibre: 1.8, timesLogged: 5)
     }
     private static var broccoli: MealCandidateFood {
-        food(9, "Broccoli", kcal: 34, protein: 2.8, carbs: 7, fat: 0.4,
-             roles: ["vegetable"], fibre: 2.6, timesLogged: 8)
+        food(
+            9, "Broccoli", kcal: 34, protein: 2.8, carbs: 7, fat: 0.4,
+            roles: ["vegetable"], fibre: 2.6, timesLogged: 8)
     }
     private static var spinach: MealCandidateFood {
-        food(10, "Spinach", kcal: 23, protein: 2.9, carbs: 3.6, fat: 0.4,
-             roles: ["vegetable"], fibre: 2.2, timesLogged: 2)
+        food(
+            10, "Spinach", kcal: 23, protein: 2.9, carbs: 3.6, fat: 0.4,
+            roles: ["vegetable"], fibre: 2.2, timesLogged: 2)
     }
     private static var oliveOil: MealCandidateFood {
-        food(11, "Olive oil", kcal: 884, protein: 0, carbs: 0, fat: 100,
-             roles: ["fat_source", "oil"], timesLogged: 10)
+        food(
+            11, "Olive oil", kcal: 884, protein: 0, carbs: 0, fat: 100,
+            roles: ["fat_source", "oil"], timesLogged: 10)
     }
     private static var peanutButter: MealCandidateFood {
-        food(12, "Peanut butter", kcal: 588, protein: 25, carbs: 20, fat: 50,
-             allergens: ["peanut"], roles: ["fat_source", "nut"], timesLogged: 6)
+        food(
+            12, "Peanut butter", kcal: 588, protein: 25, carbs: 20, fat: 50,
+            allergens: ["peanut"], roles: ["fat_source", "nut"], timesLogged: 6)
     }
     private static var beefMince: MealCandidateFood {
-        food(13, "Beef mince", kcal: 250, protein: 26, carbs: 0, fat: 15,
-             dietary: ["meat"], roles: ["protein_source"], timesLogged: 5)
+        food(
+            13, "Beef mince", kcal: 250, protein: 26, carbs: 0, fat: 15,
+            dietary: ["meat"], roles: ["protein_source"], timesLogged: 5)
     }
     /// A composite food that fits none of the named roles — the `.other` fallback case.
     private static var readyMeal: MealCandidateFood {
-        food(14, "Chicken tikka ready meal", kcal: 140, protein: 8, carbs: 14, fat: 5,
-             roles: [], timesLogged: 4)
+        food(
+            14, "Chicken tikka ready meal", kcal: 140, protein: 8, carbs: 14, fat: 5,
+            roles: [], timesLogged: 4)
     }
 
     private static var omnivoreLarder: [MealCandidateFood] {
-        [chicken, salmon, eggs, greekYogurt, tofu, lentils,
-         rice, potato, broccoli, spinach, oliveOil, peanutButter, beefMince]
+        [
+            chicken, salmon, eggs, greekYogurt, tofu, lentils,
+            rice, potato, broccoli, spinach, oliveOil, peanutButter, beefMince,
+        ]
     }
 
     // MARK: - Profile and request fixtures
@@ -387,8 +404,9 @@ struct MealRecommendationTests {
     @Test("A larder of nothing but composite foods still produces a suggestion")
     func compositeOnlyLarderFallsBackToOther() {
         let sandwich = Self.food(85, "Chicken sandwich", kcal: 220, protein: 11, carbs: 25, fat: 8)
-        let bar = Self.food(86, "Protein bar", kcal: 350, protein: 22, carbs: 40, fat: 10,
-                            gramsPerPiece: 60)
+        let bar = Self.food(
+            86, "Protein bar", kcal: 350, protein: 22, carbs: 40, fat: 10,
+            gramsPerPiece: 60)
         let suggestions = Self.engine.suggestions(
             for: Self.request(candidates: [Self.readyMeal, sandwich, bar])
         )
@@ -587,13 +605,15 @@ struct MealRecommendationTests {
 
     @Test("A suggestion costing more than twice the meal budget is dropped, not merely penalised")
     func absurdlyExpensiveSuggestionsAreDropped() {
-        let caviar = Self.food(87, "Caviar", kcal: 264, protein: 25, carbs: 4, fat: 18,
-                               roles: ["protein_source"], costPer100: 400)
-        let cheapRice = Self.food(88, "Rice", kcal: 130, protein: 2.7, carbs: 28, fat: 0.3,
-                                  roles: ["carb_source"], costPer100: 0.2)
+        let caviar = Self.food(
+            87, "Caviar", kcal: 264, protein: 25, carbs: 4, fat: 18,
+            roles: ["protein_source"], costPer100: 400)
+        let cheapRice = Self.food(
+            88, "Rice", kcal: 130, protein: 2.7, carbs: 28, fat: 0.3,
+            roles: ["carb_source"], costPer100: 0.2)
         let suggestions = Self.engine.suggestions(
             for: Self.request(
-                profile: Self.profile(weeklyFoodBudget: 40),   // ~1.43 per meal on four meals a day
+                profile: Self.profile(weeklyFoodBudget: 40),  // ~1.43 per meal on four meals a day
                 candidates: [caviar, cheapRice]
             )
         )
@@ -682,7 +702,7 @@ struct MealRecommendationTests {
                 foodID: Self.id(9), catalogID: "cat-9", name: "Broccoli",
                 quantity: 150, unit: .grams,
                 macros: MacroNutrients(kilocalories: 51, proteinG: 4, carbsG: 11, fatG: 1)
-            )
+            ),
         ]
         let meal = SavedMealCandidate(
             id: Self.id(501), name: "Usual breakfast",

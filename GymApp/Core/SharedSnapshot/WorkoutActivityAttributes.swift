@@ -1,5 +1,5 @@
-import Foundation
 import ActivityKit
+import Foundation
 
 /// Live Activity payload for an in-progress workout.
 ///

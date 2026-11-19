@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// The five-tab shell.
 ///
@@ -21,10 +21,12 @@ struct MainTabView: View {
             Tab(L(AppTab.workout.localizationKey), systemImage: AppTab.workout.symbolName, value: AppTab.workout) {
                 NavigationStack(path: $router.workoutPath) { WorkoutHubView() }
             }
-            Tab(L(AppTab.exercises.localizationKey), systemImage: AppTab.exercises.symbolName, value: AppTab.exercises) {
+            Tab(L(AppTab.exercises.localizationKey), systemImage: AppTab.exercises.symbolName, value: AppTab.exercises)
+            {
                 NavigationStack(path: $router.exercisesPath) { ExerciseLibraryView() }
             }
-            Tab(L(AppTab.nutrition.localizationKey), systemImage: AppTab.nutrition.symbolName, value: AppTab.nutrition) {
+            Tab(L(AppTab.nutrition.localizationKey), systemImage: AppTab.nutrition.symbolName, value: AppTab.nutrition)
+            {
                 NavigationStack(path: $router.nutritionPath) { NutritionHubView() }
             }
             Tab(L(AppTab.progress.localizationKey), systemImage: AppTab.progress.symbolName, value: AppTab.progress) {

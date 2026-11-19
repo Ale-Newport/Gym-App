@@ -164,7 +164,7 @@ struct QuickStartSheet: View {
     private func detail(for option: HubTemplateOption) -> String {
         var parts = [
             L("workoutHub.quickStart.templateDetail", option.exerciseCount, option.totalSets),
-            formatter.durationCompact(option.estimatedMinutes * 60)
+            formatter.durationCompact(option.estimatedMinutes * 60),
         ]
         if let weekday = option.weekday {
             parts.append(L(weekday.localizationKey))

@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// The day's micronutrients against reference intakes.
 ///
@@ -222,10 +222,12 @@ private struct MicronutrientRow: View {
 
     private var valueText: String {
         guard let consumed = status.consumed else { return "—" }
-        let amount = Units.formatDecimal(consumed, digits: consumed < 10 ? 1 : 0, locale: locale)
+        let amount =
+            Units.formatDecimal(consumed, digits: consumed < 10 ? 1 : 0, locale: locale)
             + " " + status.nutrient.unit.rawValue
         guard let reference = status.reference else { return amount }
-        let referenceText = Units.formatDecimal(reference, digits: reference < 10 ? 1 : 0, locale: locale)
+        let referenceText =
+            Units.formatDecimal(reference, digits: reference < 10 ? 1 : 0, locale: locale)
             + " " + status.nutrient.unit.rawValue
         return L("nutritionLibrary.micros.ofReference", amount, referenceText)
     }
@@ -238,7 +240,8 @@ private struct MicronutrientRow: View {
         guard let fraction = status.fraction else {
             return L("nutritionLibrary.micros.rowNoReferenceAccessibility", name, valueText)
         }
-        let key = isLimiting
+        let key =
+            isLimiting
             ? "nutritionLibrary.micros.rowLimitAccessibility"
             : "nutritionLibrary.micros.rowAccessibility"
         return L(key, name, valueText, NutritionFormat.percent(fraction))

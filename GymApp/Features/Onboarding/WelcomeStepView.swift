@@ -18,12 +18,15 @@ struct WelcomeStepView: View {
     }
 
     private let points: [Point] = [
-        Point(id: "private", symbol: "lock.shield.fill",
-              titleKey: "start.welcome.private.title", detailKey: "start.welcome.private.detail"),
-        Point(id: "plan", symbol: "square.stack.3d.up.fill",
-              titleKey: "start.welcome.plan.title", detailKey: "start.welcome.plan.detail"),
-        Point(id: "adapts", symbol: "chart.line.uptrend.xyaxis",
-              titleKey: "start.welcome.adapts.title", detailKey: "start.welcome.adapts.detail")
+        Point(
+            id: "private", symbol: "lock.shield.fill",
+            titleKey: "start.welcome.private.title", detailKey: "start.welcome.private.detail"),
+        Point(
+            id: "plan", symbol: "square.stack.3d.up.fill",
+            titleKey: "start.welcome.plan.title", detailKey: "start.welcome.plan.detail"),
+        Point(
+            id: "adapts", symbol: "chart.line.uptrend.xyaxis",
+            titleKey: "start.welcome.adapts.title", detailKey: "start.welcome.adapts.detail"),
     ]
 
     var body: some View {

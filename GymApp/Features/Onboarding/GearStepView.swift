@@ -31,7 +31,8 @@ struct GearStepView: View {
             ForEach(OnboardingSchedule.equipmentPresets) { preset in
                 OnboardingChoiceRow(
                     title: L(preset.localizationKey),
-                    detail: "\(L(preset.detailLocalizationKey)) · \(L("onboarding.equipment.unlocks", model.exerciseCount(for: preset.equipment, catalog: environment.catalog)))",
+                    detail:
+                        "\(L(preset.detailLocalizationKey)) · \(L("onboarding.equipment.unlocks", model.exerciseCount(for: preset.equipment, catalog: environment.catalog)))",
                     isSelected: model.equipmentPreset == preset
                 ) {
                     model.applyEquipmentPreset(preset)

@@ -78,7 +78,10 @@ struct DataSettingsView: View {
                             .font(.footnote.weight(.semibold))
                             .foregroundStyle(Color.appAccent)
                             .frame(width: 28, height: 28)
-                            .background(Color.appAccentMuted, in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
+                            .background(
+                                Color.appAccentMuted,
+                                in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
+                            )
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(L(format.localizationKey))
@@ -126,7 +129,10 @@ struct DataSettingsView: View {
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(Color.appRecovery)
                         .frame(width: 28, height: 28)
-                        .background(Color.appRecoveryMuted, in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
+                        .background(
+                            Color.appRecoveryMuted,
+                            in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
+                        )
                         .accessibilityHidden(true)
                     Text(L("import.chooseFile"))
                         .foregroundStyle(Color.appTextPrimary)
@@ -158,7 +164,10 @@ struct DataSettingsView: View {
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(Color.appDanger)
                         .frame(width: 28, height: 28)
-                        .background(Color.appDanger.opacity(0.14), in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
+                        .background(
+                            Color.appDanger.opacity(0.14),
+                            in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
+                        )
                         .accessibilityHidden(true)
                     Text(L("reset.title"))
                         .foregroundStyle(Color.appDanger)
@@ -197,10 +206,14 @@ private struct ImportPreviewSheet: View {
                 VStack(alignment: .leading, spacing: Metrics.spacing20) {
                     Card {
                         VStack(alignment: .leading, spacing: Metrics.spacing8) {
-                            Text(L("import.preview.exportedAt", settings.formatter.mediumDate(pending.document.exportedAt)))
-                                .font(.subheadline)
-                                .foregroundStyle(Color.appTextPrimary)
-                                .fixedSize(horizontal: false, vertical: true)
+                            Text(
+                                L(
+                                    "import.preview.exportedAt",
+                                    settings.formatter.mediumDate(pending.document.exportedAt))
+                            )
+                            .font(.subheadline)
+                            .foregroundStyle(Color.appTextPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
                             Text(L("import.preview.appVersion", pending.document.appVersion))
                                 .font(.footnote)
                                 .foregroundStyle(Color.appTextSecondary)
@@ -231,7 +244,8 @@ private struct ImportPreviewSheet: View {
                                     Spacer(minLength: Metrics.spacing8)
                                     Text(String(entry.count))
                                         .font(.appNumeric(17))
-                                        .foregroundStyle(entry.count == 0 ? Color.appTextTertiary : Color.appTextPrimary)
+                                        .foregroundStyle(
+                                            entry.count == 0 ? Color.appTextTertiary : Color.appTextPrimary)
                                 }
                                 .frame(minHeight: Metrics.minimumTapTarget)
                                 .accessibilityElement(children: .combine)
@@ -355,12 +369,13 @@ private struct ImportReportSheet: View {
                         VStack(alignment: .leading, spacing: Metrics.spacing8) {
                             line(L("import.done.sessions", report.value.sessionsImported, report.value.sessionsSkipped))
                             line(L("import.done.nutrition", report.value.foodLogEntriesImported))
-                            line(L(
-                                "import.done.other",
-                                report.value.programsImported,
-                                report.value.recordsImported,
-                                report.value.bodyWeightsImported
-                            ))
+                            line(
+                                L(
+                                    "import.done.other",
+                                    report.value.programsImported,
+                                    report.value.recordsImported,
+                                    report.value.bodyWeightsImported
+                                ))
                             line(L(report.value.strategy.localizationKey))
                         }
                     }
@@ -451,7 +466,10 @@ private struct ResetConfirmationSheet: View {
                             .font(.appBody)
                             .padding(Metrics.spacing12)
                             .frame(minHeight: Metrics.gymTapTarget)
-                            .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
+                            .background(
+                                Color.appFill,
+                                in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous)
+                            )
                             .accessibilityLabel(Text(L("settings.data.reset.typePrompt", confirmationWord)))
                     }
 

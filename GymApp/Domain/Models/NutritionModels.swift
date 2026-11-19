@@ -112,7 +112,8 @@ struct Micronutrients: Codable, Hashable, Sendable {
     static func + (lhs: Micronutrients, rhs: Micronutrients) -> Micronutrients {
         var result = Micronutrients()
         for nutrient in Micronutrient.allCases {
-            let a = lhs[nutrient], b = rhs[nutrient]
+            let a = lhs[nutrient]
+            let b = rhs[nutrient]
             if a == nil && b == nil { continue }
             result[nutrient] = (a ?? 0) + (b ?? 0)
         }
@@ -193,7 +194,8 @@ enum Micronutrient: String, CaseIterable, Codable, Hashable, Sendable, Identifia
         switch self {
         case .fiber, .sugar, .saturatedFat: .gram
         case .cholesterol, .sodium, .potassium, .calcium, .iron, .magnesium, .zinc,
-             .phosphorus, .vitaminC, .vitaminE, .thiamin, .riboflavin, .niacin, .vitaminB6: .milligram
+            .phosphorus, .vitaminC, .vitaminE, .thiamin, .riboflavin, .niacin, .vitaminB6:
+            .milligram
         case .selenium, .vitaminA, .vitaminD, .vitaminK, .folate, .vitaminB12: .microgram
         }
     }
@@ -239,8 +241,10 @@ enum Micronutrient: String, CaseIterable, Codable, Hashable, Sendable, Identifia
     }
 
     static var vitamins: [Micronutrient] {
-        [.vitaminA, .vitaminC, .vitaminD, .vitaminE, .vitaminK,
-         .thiamin, .riboflavin, .niacin, .vitaminB6, .folate, .vitaminB12]
+        [
+            .vitaminA, .vitaminC, .vitaminD, .vitaminE, .vitaminK,
+            .thiamin, .riboflavin, .niacin, .vitaminB6, .folate, .vitaminB12,
+        ]
     }
 
     static var minerals: [Micronutrient] {
@@ -345,7 +349,8 @@ final class FoodItem {
         case .piece:
             return quantity * (gramsPerPiece ?? 100)
         case .serving:
-            let serving = servingIndex.flatMap { servings.indices.contains($0) ? servings[$0] : nil }
+            let serving =
+                servingIndex.flatMap { servings.indices.contains($0) ? servings[$0] : nil }
                 ?? servings.first
             return quantity * (serving?.gramsPerServing ?? 100)
         }

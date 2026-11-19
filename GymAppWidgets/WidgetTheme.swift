@@ -40,9 +40,10 @@ func LPlural(_ key: String, _ count: Int) -> String {
 /// widget never looks like it came from a different product.
 enum WidgetPalette {
     private static func dynamic(light: UInt32, dark: UInt32) -> Color {
-        Color(uiColor: UIColor { traits in
-            traits.userInterfaceStyle == .dark ? UIColor(widgetHex: dark) : UIColor(widgetHex: light)
-        })
+        Color(
+            uiColor: UIColor { traits in
+                traits.userInterfaceStyle == .dark ? UIColor(widgetHex: dark) : UIColor(widgetHex: light)
+            })
     }
 
     /// Training accent — the app's warm red-orange.

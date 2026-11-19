@@ -230,11 +230,13 @@ struct ProgressHubView: View {
                         .accessibilityHidden(true)
 
                         VStack(alignment: .leading, spacing: Metrics.spacing4) {
-                            Text(L(
-                                "progress.adherence.sessionsDone",
-                                model.adherence.completedSessions,
-                                model.adherence.plannedSessions
-                            ))
+                            Text(
+                                L(
+                                    "progress.adherence.sessionsDone",
+                                    model.adherence.completedSessions,
+                                    model.adherence.plannedSessions
+                                )
+                            )
                             .font(.subheadline)
                             .foregroundStyle(Color.appTextPrimary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -243,10 +245,12 @@ struct ProgressHubView: View {
                                 .foregroundStyle(Color.appTextSecondary)
                                 .fixedSize(horizontal: false, vertical: true)
                             if model.daysInRange > 0 {
-                                Text(L("progress.adherence.nutritionDays", model.nutritionDaysLogged, model.daysInRange))
-                                    .font(.caption)
-                                    .foregroundStyle(Color.appTextSecondary)
-                                    .fixedSize(horizontal: false, vertical: true)
+                                Text(
+                                    L("progress.adherence.nutritionDays", model.nutritionDaysLogged, model.daysInRange)
+                                )
+                                .font(.caption)
+                                .foregroundStyle(Color.appTextSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
                             }
                         }
                     }

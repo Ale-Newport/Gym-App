@@ -34,7 +34,7 @@ private let tourStops: [TourStop] = [
     TourStop(tab: .workout, symbol: "figure.strengthtraining.traditional", tint: .appAccent),
     TourStop(tab: .exercises, symbol: "square.grid.2x2.fill", tint: .appAccent),
     TourStop(tab: .nutrition, symbol: "fork.knife", tint: .appNutrition),
-    TourStop(tab: .progress, symbol: "chart.xyaxis.line", tint: .appRecovery)
+    TourStop(tab: .progress, symbol: "chart.xyaxis.line", tint: .appRecovery),
 ]
 
 // MARK: - View
@@ -118,10 +118,13 @@ struct GuidedTourView: View {
                 }
             }
             .id(index)
-            .transition(reduceMotion ? .opacity : .asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
-            ))
+            .transition(
+                reduceMotion
+                    ? .opacity
+                    : .asymmetric(
+                        insertion: .move(edge: .trailing).combined(with: .opacity),
+                        removal: .move(edge: .leading).combined(with: .opacity)
+                    ))
 
             HStack(spacing: Metrics.spacing8) {
                 if index > 0 {
@@ -149,7 +152,9 @@ struct GuidedTourView: View {
             }
         }
         .padding(Metrics.spacing16)
-        .background(Color.appSurfaceElevated, in: RoundedRectangle(cornerRadius: Metrics.cornerXLarge, style: .continuous))
+        .background(
+            Color.appSurfaceElevated, in: RoundedRectangle(cornerRadius: Metrics.cornerXLarge, style: .continuous)
+        )
         .shadow(color: .black.opacity(0.18), radius: 24, y: 8)
     }
 

@@ -120,7 +120,8 @@ struct WaterTrackerView: View {
     /// talk about a day's intake.
     private func millilitreText(_ value: Double) -> String {
         if value >= 1000 {
-            return L("nutritionLog.water.litres", Units.formatDecimal(value / 1000, digits: 1, locale: formatter.locale))
+            return L(
+                "nutritionLog.water.litres", Units.formatDecimal(value / 1000, digits: 1, locale: formatter.locale))
         }
         return L("nutritionLog.water.millilitres", Units.formatDecimal(value, digits: 0, locale: formatter.locale))
     }

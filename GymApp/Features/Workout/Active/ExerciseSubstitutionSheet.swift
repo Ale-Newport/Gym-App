@@ -89,25 +89,27 @@ final class ExerciseSubstitutionViewModel {
 
     private func refresh() {
         guard let engine, let original else { return }
-        candidates = engine.alternatives(for: SubstitutionRequest(
-            original: original,
-            reason: reason,
-            availableEquipment: profile.availableEquipment,
-            profile: profile,
-            preferences: preferences,
-            histories: histories,
-            exercisesInSession: sessionExerciseIDs,
-            limit: Self.limit
-        ))
+        candidates = engine.alternatives(
+            for: SubstitutionRequest(
+                original: original,
+                reason: reason,
+                availableEquipment: profile.availableEquipment,
+                profile: profile,
+                preferences: preferences,
+                histories: histories,
+                exercisesInSession: sessionExerciseIDs,
+                limit: Self.limit
+            ))
     }
 
     /// The implement worth offering to remove from the user's gym, or `nil` when there is nothing
     /// sensible to remove — body weight cannot go missing, and neither can kit they never listed.
     var removableEquipment: Equipment? {
         guard let original,
-              original.equipment != .bodyWeight,
-              original.equipment != .other,
-              ownedEquipment.contains(original.equipment) else { return nil }
+            original.equipment != .bodyWeight,
+            original.equipment != .other,
+            ownedEquipment.contains(original.equipment)
+        else { return nil }
         return original.equipment
     }
 

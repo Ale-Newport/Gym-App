@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 // MARK: - Links
 
@@ -80,7 +80,8 @@ enum ForgeDeepLink: Hashable, Sendable {
     init?(url: URL) {
         guard url.scheme?.lowercased() == Self.scheme else { return nil }
         let host = (url.host ?? "").lowercased()
-        let action = url.pathComponents
+        let action =
+            url.pathComponents
             .filter { $0 != "/" }
             .first?
             .lowercased() ?? ""

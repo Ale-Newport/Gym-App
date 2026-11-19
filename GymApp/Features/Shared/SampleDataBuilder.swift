@@ -106,7 +106,8 @@ enum SampleDataBuilder {
         profile.dietType = .omnivore
         profile.mealsPerDay = 4
         profile.nutritionPace = .moderate
-        profile.onboardingCompletedAt = onboarded
+        profile.onboardingCompletedAt =
+            onboarded
             ? Calendar.current.date(byAdding: .day, value: -92, to: Date())
             : nil
         context.insert(profile)
@@ -238,9 +239,10 @@ enum SampleDataBuilder {
         for version in 1...3 {
             let record = ProgramVersion()
             record.versionNumber = version
-            record.createdAt = Calendar.current.date(
-                byAdding: .day, value: -92 + (version - 1) * 28, to: Date()
-            ) ?? Date()
+            record.createdAt =
+                Calendar.current.date(
+                    byAdding: .day, value: -92 + (version - 1) * 28, to: Date()
+                ) ?? Date()
             record.reasonKey = version == 1 ? "explain.programCreated" : "explain.volumeIncreased"
             record.reasonArguments = version == 1 ? [] : ["Chest"]
             record.program = program
@@ -256,14 +258,14 @@ enum SampleDataBuilder {
     private static func makeHistory(_ context: ModelContext, program: TrainingProgram, weeks: Int) {
         let calendar = Calendar.current
         let specs = templateSpecs
-        var seed: UInt64 = 0x9E3779B97F4A7C15
+        var seed: UInt64 = 0x9E37_79B9_7F4A_7C15
 
         func next() -> Double {
             // SplitMix64 — deterministic so previews and UI tests are stable run to run.
-            seed &+= 0x9E3779B97F4A7C15
+            seed &+= 0x9E37_79B9_7F4A_7C15
             var z = seed
-            z = (z ^ (z >> 30)) &* 0xBF58476D1CE4E5B9
-            z = (z ^ (z >> 27)) &* 0x94D049BB133111EB
+            z = (z ^ (z >> 30)) &* 0xBF58_476D_1CE4_E5B9
+            z = (z ^ (z >> 27)) &* 0x94D0_49BB_1331_11EB
             z = z ^ (z >> 31)
             return Double(z % 1000) / 1000.0
         }
@@ -446,12 +448,12 @@ enum SampleDataBuilder {
     // MARK: - Body metrics
 
     private static func makeBodyWeightHistory(_ context: ModelContext, days: Int) {
-        var seed: UInt64 = 0x243F6A8885A308D3
+        var seed: UInt64 = 0x243F_6A88_85A3_08D3
         func noise() -> Double {
-            seed &+= 0x9E3779B97F4A7C15
+            seed &+= 0x9E37_79B9_7F4A_7C15
             var z = seed
-            z = (z ^ (z >> 30)) &* 0xBF58476D1CE4E5B9
-            z = (z ^ (z >> 27)) &* 0x94D049BB133111EB
+            z = (z ^ (z >> 30)) &* 0xBF58_476D_1CE4_E5B9
+            z = (z ^ (z >> 27)) &* 0x94D0_49BB_1331_11EB
             return (Double((z ^ (z >> 31)) % 1000) / 1000.0 - 0.5) * 1.4
         }
         for dayOffset in stride(from: days, through: 0, by: -1) {
@@ -525,7 +527,8 @@ enum SampleDataBuilder {
     }
 
     private static let sampleFoods: [SampleFood] = [
-        SampleFood(name: "Chicken breast, cooked", kcal: 165, protein: 31, carbs: 0, fat: 3.6, tags: ["meat", "poultry"]),
+        SampleFood(
+            name: "Chicken breast, cooked", kcal: 165, protein: 31, carbs: 0, fat: 3.6, tags: ["meat", "poultry"]),
         SampleFood(name: "White rice, cooked", kcal: 130, protein: 2.7, carbs: 28, fat: 0.3, tags: []),
         SampleFood(name: "Rolled oats, dry", kcal: 379, protein: 13.2, carbs: 67.7, fat: 6.5, tags: []),
         SampleFood(name: "Whole egg", kcal: 143, protein: 12.6, carbs: 0.7, fat: 9.5, tags: ["egg"]),
@@ -541,7 +544,9 @@ enum SampleDataBuilder {
         for sample in sampleFoods {
             let food = FoodItem()
             food.name = sample.name
-            food.catalogID = "sample_" + sample.name.lowercased()
+            food.catalogID =
+                "sample_"
+                + sample.name.lowercased()
                 .replacingOccurrences(of: "[^a-z0-9]+", with: "_", options: .regularExpression)
             food.source = .builtIn
             food.kilocaloriesPer100 = sample.kcal
@@ -573,9 +578,10 @@ enum SampleDataBuilder {
                     guard let food = foods.first(where: { $0.name == item.0 }) else { continue }
                     let entry = FoodLogEntry()
                     entry.dayKey = dayKey
-                    entry.loggedAt = Calendar.current.date(
-                        bySettingHour: 8 + slot.sortIndex * 4, minute: order * 5, second: 0, of: date
-                    ) ?? date
+                    entry.loggedAt =
+                        Calendar.current.date(
+                            bySettingHour: 8 + slot.sortIndex * 4, minute: order * 5, second: 0, of: date
+                        ) ?? date
                     entry.mealSlot = slot
                     entry.orderIndex = order
                     entry.foodID = food.id

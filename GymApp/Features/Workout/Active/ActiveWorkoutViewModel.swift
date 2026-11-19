@@ -209,8 +209,9 @@ final class ActiveWorkoutViewModel {
     /// set genuinely is the better warm-up.
     func warmupRamp(for record: ExerciseSession) -> [WarmupSet] {
         guard let exercise = catalogByID[record.exerciseID],
-              let firstWorking = record.orderedSets.first(where: { $0.kind.countsAsWorkingSet }),
-              let weight = draft(for: firstWorking).weightKg, weight > 0 else { return [] }
+            let firstWorking = record.orderedSets.first(where: { $0.kind.countsAsWorkingSet }),
+            let weight = draft(for: firstWorking).weightKg, weight > 0
+        else { return [] }
         return LoadEstimator.warmupSets(
             workingWeightKg: weight, exercise: exercise, increments: increments
         )
@@ -288,21 +289,22 @@ final class ActiveWorkoutViewModel {
 
             for record in found.orderedExercises {
                 guard let exercise = catalogByID[record.exerciseID] else { continue }
-                let decision = ProgressionEngine.decide(ProgressionInput(
-                    exercise: exercise,
-                    state: states[record.exerciseID] ?? ProgressionStateSnapshot(exerciseID: record.exerciseID),
-                    history: histories[record.exerciseID] ?? ExerciseHistorySnapshot(exerciseID: record.exerciseID),
-                    targetRIR: record.targetRIR,
-                    increments: increments,
-                    strategy: settings.progressionStrategy,
-                    bodyWeightKg: profile.currentWeightKg,
-                    // A deload is applied when the program is generated, so a session that has
-                    // already started is carrying deloaded targets. Cutting again here would take
-                    // the load down twice for the same reason.
-                    isDeloadWeek: false,
-                    experience: profileSnapshot.experience,
-                    goal: profileSnapshot.primaryGoal
-                ))
+                let decision = ProgressionEngine.decide(
+                    ProgressionInput(
+                        exercise: exercise,
+                        state: states[record.exerciseID] ?? ProgressionStateSnapshot(exerciseID: record.exerciseID),
+                        history: histories[record.exerciseID] ?? ExerciseHistorySnapshot(exerciseID: record.exerciseID),
+                        targetRIR: record.targetRIR,
+                        increments: increments,
+                        strategy: settings.progressionStrategy,
+                        bodyWeightKg: profile.currentWeightKg,
+                        // A deload is applied when the program is generated, so a session that has
+                        // already started is carrying deloaded targets. Cutting again here would take
+                        // the load down twice for the same reason.
+                        isDeloadWeek: false,
+                        experience: profileSnapshot.experience,
+                        goal: profileSnapshot.primaryGoal
+                    ))
                 decisions[record.exerciseID] = decision
 
                 if decision.requiresCalibration {
@@ -440,14 +442,16 @@ final class ActiveWorkoutViewModel {
         var draft = SetDraft()
 
         if mode.usesWeight {
-            draft.weightKg = set.weightKg
+            draft.weightKg =
+                set.weightKg
                 ?? set.targetWeightKg
                 ?? decision?.recommendedWeightKg
                 ?? estimates[record.exerciseID]?.weightKg
                 ?? previousTop?.weightKg
         }
         if mode.usesReps {
-            draft.reps = set.reps
+            draft.reps =
+                set.reps
                 ?? set.targetReps
                 ?? decision?.recommendedRepRange.upper
                 ?? previousTop?.reps
@@ -457,7 +461,8 @@ final class ActiveWorkoutViewModel {
                 guard let exercise = catalogByID[record.exerciseID] else { return nil }
                 return ProgressionEngine.prescribedSeconds(from: decisionValue, for: exercise)?.upper
             }
-            draft.durationSeconds = set.durationSeconds
+            draft.durationSeconds =
+                set.durationSeconds
                 ?? set.targetDurationSeconds
                 ?? prescribed
                 ?? previousTop?.durationSeconds
@@ -559,9 +564,10 @@ final class ActiveWorkoutViewModel {
 
     func undoLastCompletion() {
         guard let context,
-              let setID = lastCompletedSetID,
-              let set = orderedExercises.flatMap(\.orderedSets).first(where: { $0.id == setID }),
-              set.isCompleted else { return }
+            let setID = lastCompletedSetID,
+            let set = orderedExercises.flatMap(\.orderedSets).first(where: { $0.id == setID }),
+            set.isCompleted
+        else { return }
         let repository = WorkoutRepository(context: context)
         guard perform("active.error.save", { try repository.uncompleteSet(set) }) else { return }
         try? repository.setAchievedRecords([], on: set)
@@ -586,9 +592,13 @@ final class ActiveWorkoutViewModel {
         guard let context else { return }
         let repository = WorkoutRepository(context: context)
         var created: SetRecord?
-        guard perform("active.error.save", {
-            created = try repository.addSet(to: record, kind: kind)
-        }) else { return }
+        guard
+            perform(
+                "active.error.save",
+                {
+                    created = try repository.addSet(to: record, kind: kind)
+                })
+        else { return }
         if let created { seedDraft(for: created, in: record) }
         Haptics.tap()
         updateLiveActivity()
@@ -681,15 +691,18 @@ final class ActiveWorkoutViewModel {
     /// rest is over even with the phone in a pocket.
     private func scheduleRestNotificationIfNeeded() {
         guard restTimer.isRunning,
-              let context = restContext,
-              let settings, settings.notificationsEnabled, settings.restTimerNotificationEnabled,
-              let service = environment?.notificationService else { return }
+            let context = restContext,
+            let settings, settings.notificationsEnabled, settings.restTimerNotificationEnabled,
+            let service = environment?.notificationService
+        else { return }
         let remaining = TimeInterval(restTimer.remainingSeconds)
-        Task { await service.scheduleRestTimerCompletion(
-            in: remaining,
-            exerciseName: context.exerciseName,
-            setNumber: context.setNumber
-        ) }
+        Task {
+            await service.scheduleRestTimerCompletion(
+                in: remaining,
+                exerciseName: context.exerciseName,
+                setNumber: context.setNumber
+            )
+        }
     }
 
     private func cancelRestNotification() {
@@ -709,7 +722,8 @@ final class ActiveWorkoutViewModel {
         awaitingCalibration.remove(record.exerciseID)
         guard let exercise = catalogByID[record.exerciseID] else { return }
 
-        let attempted = record.orderedSets.last(where: { $0.isCompleted })?.weightKg
+        let attempted =
+            record.orderedSets.last(where: { $0.isCompleted })?.weightKg
             ?? record.orderedSets.first.map { draft(for: $0).weightKg } ?? nil
 
         guard exercise.metadata.loadability.carriesExternalLoad, let attempted, attempted > 0 else {
@@ -755,9 +769,10 @@ final class ActiveWorkoutViewModel {
     /// than only the adjective. `nil` for movements with no selectable load.
     func previewCalibration(_ feedback: CalibrationFeedback, for record: ExerciseSession) -> Double? {
         guard let exercise = catalogByID[record.exerciseID],
-              exercise.metadata.loadability.carriesExternalLoad,
-              let attempted = record.orderedSets.last(where: { $0.isCompleted })?.weightKg,
-              attempted > 0 else { return nil }
+            exercise.metadata.loadability.carriesExternalLoad,
+            let attempted = record.orderedSets.last(where: { $0.isCompleted })?.weightKg,
+            attempted > 0
+        else { return nil }
         return ProgressionEngine.applyCalibration(
             feedback,
             attemptedWeightKg: attempted,
@@ -779,9 +794,13 @@ final class ActiveWorkoutViewModel {
         let repository = WorkoutRepository(context: context)
         let removedIDs = record.orderedSets.map(\.id)
 
-        guard perform("active.error.save", {
-            try repository.substitute(record, with: exercise, reason: reason)
-        }) else { return }
+        guard
+            perform(
+                "active.error.save",
+                {
+                    try repository.substitute(record, with: exercise, reason: reason)
+                })
+        else { return }
 
         // The new movement's numbers have nothing to do with the old one's, so every cached
         // decision, target and draft for this slot is rebuilt from scratch.
@@ -799,23 +818,26 @@ final class ActiveWorkoutViewModel {
         guard let context, let exercise = catalogByID[record.exerciseID] else { return }
         let repository = WorkoutRepository(context: context)
         let progressRepository = ProgressRepository(context: context)
-        let history = (try? repository.history(forExerciseID: record.exerciseID))
+        let history =
+            (try? repository.history(forExerciseID: record.exerciseID))
             ?? ExerciseHistorySnapshot(exerciseID: record.exerciseID)
-        let state = (try? repository.progressionSnapshots(forExerciseIDs: [record.exerciseID]))?[record.exerciseID]
+        let state =
+            (try? repository.progressionSnapshots(forExerciseIDs: [record.exerciseID]))?[record.exerciseID]
             ?? ProgressionStateSnapshot(exerciseID: record.exerciseID)
 
-        let decision = ProgressionEngine.decide(ProgressionInput(
-            exercise: exercise,
-            state: state,
-            history: history,
-            targetRIR: record.targetRIR,
-            increments: increments,
-            strategy: settings?.progressionStrategy ?? .doubleProgression,
-            bodyWeightKg: bodyWeightKg,
-            isDeloadWeek: false,
-            experience: profileSnapshot.experience,
-            goal: profileSnapshot.primaryGoal
-        ))
+        let decision = ProgressionEngine.decide(
+            ProgressionInput(
+                exercise: exercise,
+                state: state,
+                history: history,
+                targetRIR: record.targetRIR,
+                increments: increments,
+                strategy: settings?.progressionStrategy ?? .doubleProgression,
+                bodyWeightKg: bodyWeightKg,
+                isDeloadWeek: false,
+                experience: profileSnapshot.experience,
+                goal: profileSnapshot.primaryGoal
+            ))
         decisions[record.exerciseID] = decision
         previousPerformance[record.exerciseID] = history.mostRecent
         bests[record.exerciseID] = (try? progressRepository.bests(forExerciseID: record.exerciseID)) ?? [:]
@@ -846,9 +868,13 @@ final class ActiveWorkoutViewModel {
     func moveExercises(from source: IndexSet, to destination: Int) {
         guard let context, let session else { return }
         let repository = WorkoutRepository(context: context)
-        guard perform("active.error.save", {
-            try repository.moveExercises(in: session, fromOffsets: source, toOffset: destination)
-        }) else { return }
+        guard
+            perform(
+                "active.error.save",
+                {
+                    try repository.moveExercises(in: session, fromOffsets: source, toOffset: destination)
+                })
+        else { return }
         currentIndex = min(currentIndex, max(0, orderedExercises.count - 1))
         persistResumeIndex()
         Haptics.selectionChanged()
@@ -861,16 +887,20 @@ final class ActiveWorkoutViewModel {
         let decision = decisions[exercise.id]
         let targetRIR = profileSnapshot.defaultTargetRIR
         var created: ExerciseSession?
-        guard perform("active.error.save", {
-            created = try repository.addExercise(
-                exercise,
-                to: session,
-                sets: decision?.recommendedSets ?? 3,
-                repRange: exercise.metadata.recommendedRepRange,
-                restSeconds: exercise.metadata.defaultRestSeconds,
-                targetRIR: targetRIR
-            )
-        }) else { return nil }
+        guard
+            perform(
+                "active.error.save",
+                {
+                    created = try repository.addExercise(
+                        exercise,
+                        to: session,
+                        sets: decision?.recommendedSets ?? 3,
+                        repRange: exercise.metadata.recommendedRepRange,
+                        restSeconds: exercise.metadata.defaultRestSeconds,
+                        targetRIR: targetRIR
+                    )
+                })
+        else { return nil }
         catalogByID[exercise.id] = exercise
         if let created { refreshPlan(for: created) }
         Haptics.success()
@@ -882,9 +912,13 @@ final class ActiveWorkoutViewModel {
         guard let context, let session else { return }
         let repository = WorkoutRepository(context: context)
         let removedIDs = record.orderedSets.map(\.id)
-        guard perform("active.error.save", {
-            try repository.removeExercise(record, from: session)
-        }) else { return }
+        guard
+            perform(
+                "active.error.save",
+                {
+                    try repository.removeExercise(record, from: session)
+                })
+        else { return }
         for id in removedIDs { drafts[id] = nil }
         currentIndex = min(currentIndex, max(0, orderedExercises.count - 1))
         persistResumeIndex()
@@ -902,7 +936,8 @@ final class ActiveWorkoutViewModel {
         let programRepository = ProgramRepository(context: context)
         _ = perform("active.error.save") {
             guard let program = try programRepository.activeProgram(),
-                  let template = program.templates.first(where: { $0.id == templateID }) else { return }
+                let template = program.templates.first(where: { $0.id == templateID })
+            else { return }
             switch change {
             case .addExercise(let exerciseID, let sets, let repRange, let restSeconds, let targetRIR):
                 _ = try programRepository.addExercise(
@@ -985,14 +1020,15 @@ final class ActiveWorkoutViewModel {
                 exercise: exercise,
                 existing: bests[record.exerciseID] ?? [:]
             ) {
-                records.append(SessionRecordSummary(
-                    exerciseID: record.exerciseID,
-                    exerciseName: record.exerciseNameSnapshot,
-                    kind: detected.kind,
-                    value: detected.value,
-                    repsContext: detected.repsContext,
-                    previousValue: detected.previousValue
-                ))
+                records.append(
+                    SessionRecordSummary(
+                        exerciseID: record.exerciseID,
+                        exerciseName: record.exerciseNameSnapshot,
+                        kind: detected.kind,
+                        value: detected.value,
+                        repsContext: detected.repsContext,
+                        previousValue: detected.previousValue
+                    ))
             }
         }
 
@@ -1021,11 +1057,13 @@ final class ActiveWorkoutViewModel {
         sets: Int,
         repository: WorkoutRepository
     ) -> SessionComparison? {
-        guard let previous = (try? repository.recentSessions(limit: 40))?.first(where: { candidate in
-            guard candidate.id != session.id else { return false }
-            if let templateID = session.templateID { return candidate.templateID == templateID }
-            return candidate.titleSnapshot == session.titleSnapshot
-        }) else { return nil }
+        guard
+            let previous = (try? repository.recentSessions(limit: 40))?.first(where: { candidate in
+                guard candidate.id != session.id else { return false }
+                if let templateID = session.templateID { return candidate.templateID == templateID }
+                return candidate.titleSnapshot == session.titleSnapshot
+            })
+        else { return nil }
 
         return SessionComparison(
             previousDate: previous.endedAt ?? previous.startedAt,
@@ -1047,9 +1085,13 @@ final class ActiveWorkoutViewModel {
         let progressRepository = ProgressRepository(context: context)
         let preferenceRepository = ExercisePreferenceRepository(context: context)
 
-        guard perform("active.error.finish", {
-            try repository.finish(session, effort: effort, activeSeconds: session.activeSeconds)
-        }) else { return [] }
+        guard
+            perform(
+                "active.error.finish",
+                {
+                    try repository.finish(session, effort: effort, activeSeconds: session.activeSeconds)
+                })
+        else { return [] }
 
         // Records first: they are the part of the session the user cares most about keeping.
         for record in summary?.records ?? [] {
@@ -1105,18 +1147,19 @@ final class ActiveWorkoutViewModel {
 
         for exerciseID in Set(exerciseIDs) {
             guard let exercise = catalogByID[exerciseID] else { continue }
-            let decision = ProgressionEngine.decide(ProgressionInput(
-                exercise: exercise,
-                state: states[exerciseID] ?? ProgressionStateSnapshot(exerciseID: exerciseID),
-                history: histories[exerciseID] ?? ExerciseHistorySnapshot(exerciseID: exerciseID),
-                targetRIR: profileSnapshot.defaultTargetRIR,
-                increments: increments,
-                strategy: settings?.progressionStrategy ?? .doubleProgression,
-                bodyWeightKg: bodyWeightKg,
-                isDeloadWeek: false,
-                experience: profileSnapshot.experience,
-                goal: profileSnapshot.primaryGoal
-            ))
+            let decision = ProgressionEngine.decide(
+                ProgressionInput(
+                    exercise: exercise,
+                    state: states[exerciseID] ?? ProgressionStateSnapshot(exerciseID: exerciseID),
+                    history: histories[exerciseID] ?? ExerciseHistorySnapshot(exerciseID: exerciseID),
+                    targetRIR: profileSnapshot.defaultTargetRIR,
+                    increments: increments,
+                    strategy: settings?.progressionStrategy ?? .doubleProgression,
+                    bodyWeightKg: bodyWeightKg,
+                    isDeloadWeek: false,
+                    experience: profileSnapshot.experience,
+                    goal: profileSnapshot.primaryGoal
+                ))
             try? repository.apply(decision.updatedState, decision: decision.explanation)
         }
     }
@@ -1129,7 +1172,8 @@ final class ActiveWorkoutViewModel {
         guard settings?.autoRegulationEnabled ?? true else { return [] }
 
         let recent = (try? repository.recentSessions(limit: 12)) ?? []
-        var outcomes = recent
+        var outcomes =
+            recent
             .filter { $0.id != outcome.sessionID }
             .map { repository.sessionOutcome(for: $0, catalog: catalogByID) }
         outcomes.append(outcome)
@@ -1153,11 +1197,13 @@ final class ActiveWorkoutViewModel {
     /// `updateProgressionStates` has already brought up to date.
     private func persistAdjustments(_ adjustments: [AutoregulationAdjustment]) {
         guard !adjustments.isEmpty,
-              let context,
-              let templateID = session?.templateID else { return }
+            let context,
+            let templateID = session?.templateID
+        else { return }
         let programRepository = ProgramRepository(context: context)
         guard let program = try? programRepository.activeProgram(),
-              let template = program.templates.first(where: { $0.id == templateID }) else { return }
+            let template = program.templates.first(where: { $0.id == templateID })
+        else { return }
 
         let planned = programRepository.generatedSession(from: template)
         let adjusted = AutoregulationEngine.apply(adjustments, to: planned, catalog: catalogByID)
@@ -1165,7 +1211,8 @@ final class ActiveWorkoutViewModel {
 
         for slot in adjusted.exercises {
             guard let row = template.orderedExercises.first(where: { $0.orderIndex == slot.orderIndex }),
-                  row.targetSets != slot.sets || row.restSeconds != slot.restSeconds else { continue }
+                row.targetSets != slot.sets || row.restSeconds != slot.restSeconds
+            else { continue }
             try? programRepository.updatePrescription(of: row, sets: slot.sets, restSeconds: slot.restSeconds)
             changed = true
         }

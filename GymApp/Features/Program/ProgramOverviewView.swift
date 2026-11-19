@@ -271,17 +271,20 @@ struct ProgramOverviewView: View {
             SectionHeader(L("program.manage.title"))
             Card(padding: Metrics.spacing8) {
                 VStack(spacing: 0) {
-                    manageRow(.settings, systemImage: "slider.horizontal.3",
-                              title: L("program.settings.title"),
-                              detail: L("program.manage.settingsDetail"))
+                    manageRow(
+                        .settings, systemImage: "slider.horizontal.3",
+                        title: L("program.settings.title"),
+                        detail: L("program.manage.settingsDetail"))
                     Divider().overlay(Color.appSeparator)
-                    manageRow(.templates, systemImage: "square.on.square",
-                              title: L("program.templates.title"),
-                              detail: L("program.manage.templatesDetail"))
+                    manageRow(
+                        .templates, systemImage: "square.on.square",
+                        title: L("program.templates.title"),
+                        detail: L("program.manage.templatesDetail"))
                     Divider().overlay(Color.appSeparator)
-                    manageRow(.versions, systemImage: "clock.arrow.circlepath",
-                              title: L("program.versions.title"),
-                              detail: L("program.manage.versionsDetail", model.versions.count))
+                    manageRow(
+                        .versions, systemImage: "clock.arrow.circlepath",
+                        title: L("program.versions.title"),
+                        detail: L("program.manage.versionsDetail", model.versions.count))
                 }
             }
         }
@@ -442,13 +445,16 @@ struct SessionSummaryCard: View {
                         }
                     }
 
-                    Text(L("program.session.summary",
-                           template.orderedExercises.count,
-                           template.totalPlannedSets,
-                           formatter.durationCompact(model.estimatedMinutes(of: template) * 60)))
-                        .font(.caption)
-                        .foregroundStyle(Color.appTextSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Text(
+                        L(
+                            "program.session.summary",
+                            template.orderedExercises.count,
+                            template.totalPlannedSets,
+                            formatter.durationCompact(model.estimatedMinutes(of: template) * 60))
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.appTextSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
 
                     if !exerciseNames.isEmpty {
                         Text(exerciseNames)
@@ -578,12 +584,15 @@ struct SplitPickerSheet: View {
                         .foregroundStyle(Color.appTextSecondary)
                         .fixedSize(horizontal: false, vertical: true)
 
-                    Text(L("program.split.structure",
-                           split.daysPerWeek,
-                           split.blueprints.map { L($0.titleKey) }.joined(separator: " · ")))
-                        .font(.caption2)
-                        .foregroundStyle(Color.appTextTertiary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Text(
+                        L(
+                            "program.split.structure",
+                            split.daysPerWeek,
+                            split.blueprints.map { L($0.titleKey) }.joined(separator: " · "))
+                    )
+                    .font(.caption2)
+                    .foregroundStyle(Color.appTextTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
             }
         }
@@ -637,7 +646,9 @@ struct NameEntrySheet: View {
                     .font(.body)
                     .padding(Metrics.spacing12)
                     .frame(minHeight: Metrics.minimumTapTarget)
-                    .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
+                    .background(
+                        Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous)
+                    )
                     .focused($isFocused)
                     .submitLabel(.done)
                     .onSubmit(commit)

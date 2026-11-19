@@ -350,7 +350,8 @@ private struct DeltaRow: View {
                     Text(deltaText)
                         .font(.caption2)
                 }
-                .foregroundStyle(isUnchanged ? Color.appTextTertiary : (isImprovement ? Color.appSuccess : Color.appWarning))
+                .foregroundStyle(
+                    isUnchanged ? Color.appTextTertiary : (isImprovement ? Color.appSuccess : Color.appWarning))
             }
         }
         .accessibilityElement(children: .combine)
@@ -391,11 +392,13 @@ private struct ExerciseHistoryCard: View {
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(Color.appTextPrimary)
                             .fixedSize(horizontal: false, vertical: true)
-                        Text(L(
-                            "workoutHub.detail.exerciseSummary",
-                            exercise.sets.filter(\.isCompleted).count,
-                            formatter.volume(exercise.volumeKg)
-                        ))
+                        Text(
+                            L(
+                                "workoutHub.detail.exerciseSummary",
+                                exercise.sets.filter(\.isCompleted).count,
+                                formatter.volume(exercise.volumeKg)
+                            )
+                        )
                         .font(.caption)
                         .foregroundStyle(Color.appTextSecondary)
                     }

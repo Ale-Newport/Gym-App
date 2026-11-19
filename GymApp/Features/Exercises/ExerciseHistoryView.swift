@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 // MARK: - View model
 
@@ -114,30 +114,32 @@ final class ExerciseHistoryViewModel {
             if let note = slot.notes, !note.isEmpty { notes.append(note) }
 
             for set in slot.orderedSets {
-                lines.append(SetLine(
-                    id: set.id.uuidString,
-                    index: lines.count + 1,
-                    kind: set.kind,
-                    weightKg: set.weightKg,
-                    reps: set.reps,
-                    durationSeconds: set.durationSeconds,
-                    distanceMeters: set.distanceMeters,
-                    rir: set.rir,
-                    isCompleted: set.isCompleted,
-                    records: set.achievedRecordKinds
-                ))
-                performed.append(PerformedSet(
-                    kind: set.kind,
-                    weightKg: set.weightKg,
-                    reps: set.reps,
-                    rir: set.rir,
-                    rpe: set.rpe,
-                    durationSeconds: set.durationSeconds,
-                    distanceMeters: set.distanceMeters,
-                    targetReps: set.targetReps,
-                    targetWeightKg: set.targetWeightKg,
-                    isCompleted: set.isCompleted
-                ))
+                lines.append(
+                    SetLine(
+                        id: set.id.uuidString,
+                        index: lines.count + 1,
+                        kind: set.kind,
+                        weightKg: set.weightKg,
+                        reps: set.reps,
+                        durationSeconds: set.durationSeconds,
+                        distanceMeters: set.distanceMeters,
+                        rir: set.rir,
+                        isCompleted: set.isCompleted,
+                        records: set.achievedRecordKinds
+                    ))
+                performed.append(
+                    PerformedSet(
+                        kind: set.kind,
+                        weightKg: set.weightKg,
+                        reps: set.reps,
+                        rir: set.rir,
+                        rpe: set.rpe,
+                        durationSeconds: set.durationSeconds,
+                        distanceMeters: set.distanceMeters,
+                        targetReps: set.targetReps,
+                        targetWeightKg: set.targetWeightKg,
+                        isCompleted: set.isCompleted
+                    ))
                 if slot.trackingMode.contributesToTonnage, set.isCompleted, set.kind.countsAsWorkingSet {
                     volume += set.volumeKg
                 }
@@ -294,7 +296,8 @@ struct ExerciseHistoryView: View {
                 .accessibilityElement(children: .combine)
 
                 if let substituted = entry.substitutedFromName,
-                   let original = environment.catalog.exercise(id: substituted) {
+                    let original = environment.catalog.exercise(id: substituted)
+                {
                     ExplanationNote(
                         text: L("exercises.history.substitutedFor", original.name.localizedCapitalized),
                         systemImage: "arrow.triangle.2.circlepath"

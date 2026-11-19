@@ -109,7 +109,8 @@ struct PortionBasis: Hashable, Sendable {
         case .piece:
             return portion.quantity * (gramsPerPiece ?? 100)
         case .serving:
-            let serving = portion.servingIndex
+            let serving =
+                portion.servingIndex
                 .flatMap { servings.indices.contains($0) ? servings[$0] : nil } ?? servings.first
             return portion.quantity * (serving?.gramsPerServing ?? 100)
         }
@@ -295,10 +296,14 @@ struct PortionEditorView: View {
                 }
 
                 if unit == .serving, let grams = servingGrams {
-                    Text(L("nutritionLog.portion.servingWeight", basis.servingName(at: servingIndex) ?? "", Units.formatMacro(grams: grams, locale: formatter.locale)))
-                        .font(.caption)
-                        .foregroundStyle(Color.appTextTertiary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Text(
+                        L(
+                            "nutritionLog.portion.servingWeight", basis.servingName(at: servingIndex) ?? "",
+                            Units.formatMacro(grams: grams, locale: formatter.locale))
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.appTextTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
 
                 quickAmounts
@@ -317,7 +322,9 @@ struct PortionEditorView: View {
                         servingIndex = index
                         Haptics.selectionChanged()
                     } label: {
-                        Text("\(PortionBasis.name(of: serving)) · \(Units.formatMacro(grams: serving.gramsPerServing, locale: formatter.locale))")
+                        Text(
+                            "\(PortionBasis.name(of: serving)) · \(Units.formatMacro(grams: serving.gramsPerServing, locale: formatter.locale))"
+                        )
                     }
                 }
             } label: {
@@ -353,7 +360,8 @@ struct PortionEditorView: View {
                         Haptics.tap()
                     } label: {
                         Chip(
-                            title: "\(Units.formatDecimal(value, digits: value < 10 ? 1 : 0, locale: formatter.locale)) \(unitLabel)",
+                            title:
+                                "\(Units.formatDecimal(value, digits: value < 10 ? 1 : 0, locale: formatter.locale)) \(unitLabel)",
                             isSelected: quantity == value,
                             tint: .appNutrition
                         )
@@ -386,13 +394,14 @@ struct PortionEditorView: View {
             .animation(.easeOut(duration: 0.2), value: macros)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(L(
-            "nutritionLog.a11y.portionMacros",
-            formatter.energy(macros.kilocalories),
-            formatter.macro(macros.proteinG),
-            formatter.macro(macros.carbsG),
-            formatter.macro(macros.fatG)
-        ))
+        .accessibilityLabel(
+            L(
+                "nutritionLog.a11y.portionMacros",
+                formatter.energy(macros.kilocalories),
+                formatter.macro(macros.proteinG),
+                formatter.macro(macros.carbsG),
+                formatter.macro(macros.fatG)
+            ))
     }
 
     private var mealPicker: some View {
@@ -418,7 +427,8 @@ struct PortionEditorView: View {
                     .padding(.horizontal, Metrics.spacing12)
                     .frame(minHeight: Metrics.minimumTapTarget)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
+                    .background(
+                        Color.appFill, in: RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
                 }
                 .accessibilityLabel(L("nutritionLog.portion.meal"))
             } else {
@@ -476,7 +486,8 @@ struct PortionEditorView: View {
 
     private var servingGrams: Double? {
         guard unit == .serving else { return nil }
-        let serving = servingIndex.flatMap { basis.servings.indices.contains($0) ? basis.servings[$0] : nil }
+        let serving =
+            servingIndex.flatMap { basis.servings.indices.contains($0) ? basis.servings[$0] : nil }
             ?? basis.servings.first
         return serving?.gramsPerServing
     }
@@ -499,12 +510,13 @@ struct MacroSummaryLine: View {
             component(L("nutritionLog.macro.fatShort"), macros.fatG, .appWarning)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(L(
-            "nutritionLog.a11y.macros",
-            formatter.macro(macros.proteinG),
-            formatter.macro(macros.carbsG),
-            formatter.macro(macros.fatG)
-        ))
+        .accessibilityLabel(
+            L(
+                "nutritionLog.a11y.macros",
+                formatter.macro(macros.proteinG),
+                formatter.macro(macros.carbsG),
+                formatter.macro(macros.fatG)
+            ))
     }
 
     private func component(_ label: String, _ grams: Double, _ tint: Color) -> some View {

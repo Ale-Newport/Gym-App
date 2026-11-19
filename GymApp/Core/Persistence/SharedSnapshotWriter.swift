@@ -67,9 +67,10 @@ final class SharedSnapshotWriter {
         // Nutrition.
         if snapshot.nutritionEnabled {
             let dayKey = DayKey.today
-            let entries = (try? context.fetch(
-                FetchDescriptor<FoodLogEntry>(predicate: #Predicate { $0.dayKey == dayKey })
-            )) ?? []
+            let entries =
+                (try? context.fetch(
+                    FetchDescriptor<FoodLogEntry>(predicate: #Predicate { $0.dayKey == dayKey })
+                )) ?? []
             let totals = entries.reduce(MacroNutrients.zero) { $0 + $1.macrosSnapshot }
             snapshot.caloriesConsumed = totals.kilocalories
             snapshot.proteinConsumedG = totals.proteinG
@@ -77,7 +78,8 @@ final class SharedSnapshotWriter {
             snapshot.fatConsumedG = totals.fatG
 
             if let target = (try? context.fetch(FetchDescriptor<DailyNutritionTarget>()))?
-                .first(where: { $0.isActive }) {
+                .first(where: { $0.isActive })
+            {
                 snapshot.caloriesTarget = target.kilocalories
                 snapshot.proteinTargetG = target.proteinG
                 snapshot.carbsTargetG = target.carbsG

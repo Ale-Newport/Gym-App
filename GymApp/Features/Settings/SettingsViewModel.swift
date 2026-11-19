@@ -211,8 +211,11 @@ final class SettingsViewModel {
         }
     }
 
-    func updateRestrictions(mobilityLimitations: [MobilityLimitation]? = nil, avoidedPatterns: [MovementPattern]? = nil) {
-        perform { try $0.updateRestrictions(mobilityLimitations: mobilityLimitations, avoidedPatterns: avoidedPatterns) }
+    func updateRestrictions(mobilityLimitations: [MobilityLimitation]? = nil, avoidedPatterns: [MovementPattern]? = nil)
+    {
+        perform {
+            try $0.updateRestrictions(mobilityLimitations: mobilityLimitations, avoidedPatterns: avoidedPatterns)
+        }
     }
 
     func updateNutritionPreferences(
@@ -408,7 +411,9 @@ struct SettingsNavigationRow: View {
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(tint)
                 .frame(width: 28, height: 28)
-                .background(tint.opacity(0.14), in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous))
+                .background(
+                    tint.opacity(0.14), in: RoundedRectangle(cornerRadius: Metrics.cornerSmall, style: .continuous)
+                )
                 .accessibilityHidden(true)
             Text(title)
                 .foregroundStyle(Color.appTextPrimary)

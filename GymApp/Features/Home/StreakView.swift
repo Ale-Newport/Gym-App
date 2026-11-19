@@ -102,9 +102,10 @@ struct StreakView: View {
         StreakView(
             weekStreak: 6,
             longestWeekStreak: 11,
-            trainedDays: Set([0, -1, -3, -5].compactMap {
-                calendar.date(byAdding: .day, value: $0, to: today)
-            })
+            trainedDays: Set(
+                [0, -1, -3, -5].compactMap {
+                    calendar.date(byAdding: .day, value: $0, to: today)
+                })
         )
         .padding(Metrics.screenPadding)
         .background(Color.appBackground)

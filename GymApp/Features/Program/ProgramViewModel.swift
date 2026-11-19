@@ -224,10 +224,11 @@ struct SplitProgramBuilder: Sendable {
                 // no longer the session's main lift, and must not inherit the primary treatment.
                 var effective = slot
                 if effective.isPrimary && exercise.metadata.mechanic == .isolation { effective.isPrimary = false }
-                exercises.append(prescribe(
-                    exercise, slot: effective, profile: profile,
-                    orderIndex: exercises.count, isLocked: isLocked
-                ))
+                exercises.append(
+                    prescribe(
+                        exercise, slot: effective, profile: profile,
+                        orderIndex: exercises.count, isLocked: isLocked
+                    ))
             }
 
             for lockedID in extras[sessionIndex] ?? [] {
@@ -241,10 +242,11 @@ struct SplitProgramBuilder: Sendable {
                     sets: 3,
                     isPrimary: false
                 )
-                exercises.append(prescribe(
-                    exercise, slot: slot, profile: profile,
-                    orderIndex: exercises.count, isLocked: true
-                ))
+                exercises.append(
+                    prescribe(
+                        exercise, slot: slot, profile: profile,
+                        orderIndex: exercises.count, isLocked: true
+                    ))
             }
 
             var focus: [MuscleGroup] = []
@@ -253,31 +255,33 @@ struct SplitProgramBuilder: Sendable {
                 if seen.insert(slot.group).inserted { focus.append(slot.group) }
             }
 
-            sessions.append(GeneratedSession(
-                orderIndex: sessionIndex,
-                titleKey: blueprint.titleKey,
-                weekday: sessionIndex < weekdays.count ? weekdays[sessionIndex] : nil,
-                focusGroups: focus.isEmpty ? blueprint.focusGroups : focus,
-                pushPull: blueprint.pushPull,
-                estimatedMinutes: estimatedMinutes(sets: exercises.reduce(0) { $0 + $1.sets }),
-                isRestDay: false,
-                exercises: exercises
-            ))
+            sessions.append(
+                GeneratedSession(
+                    orderIndex: sessionIndex,
+                    titleKey: blueprint.titleKey,
+                    weekday: sessionIndex < weekdays.count ? weekdays[sessionIndex] : nil,
+                    focusGroups: focus.isEmpty ? blueprint.focusGroups : focus,
+                    pushPull: blueprint.pushPull,
+                    estimatedMinutes: estimatedMinutes(sets: exercises.reduce(0) { $0 + $1.sets }),
+                    isRestDay: false,
+                    exercises: exercises
+                ))
         }
 
         // Everything the user is not training becomes an explicit rest day, so the week reads as a
         // week rather than as a list of four workouts floating in space.
         let used = Set(sessions.compactMap(\.weekday))
         for weekday in Weekday.orderedMondayFirst where !used.contains(weekday) {
-            sessions.append(GeneratedSession(
-                orderIndex: sessions.count,
-                titleKey: "session.title.rest",
-                weekday: weekday,
-                focusGroups: [],
-                pushPull: .neutral,
-                estimatedMinutes: 0,
-                isRestDay: true
-            ))
+            sessions.append(
+                GeneratedSession(
+                    orderIndex: sessions.count,
+                    titleKey: "session.title.rest",
+                    weekday: weekday,
+                    focusGroups: [],
+                    pushPull: .neutral,
+                    estimatedMinutes: 0,
+                    isRestDay: true
+                ))
         }
         sessions.sort { lhs, rhs in
             let left = lhs.weekday?.orderIndex ?? 99
@@ -310,7 +314,7 @@ struct SplitProgramBuilder: Sendable {
         let relaxations: [(MovementPattern?, Mechanic?)] = [
             (slot.preferredPattern, slot.mechanic),
             (nil, slot.mechanic),
-            (nil, nil)
+            (nil, nil),
         ]
         for (pattern, mechanic) in relaxations {
             var selection = ExerciseSelectionRequest(targetGroup: slot.group, profile: request.profile)
@@ -516,7 +520,10 @@ final class ProgramViewModel {
     /// Called after every edit, which is what makes "add a set and watch the chart move" true
     /// rather than a claim. Summing credits across at most a few dozen slots costs nothing.
     func recomputeVolume() {
-        guard let program, let context, let modelContext else { volumeRows = []; return }
+        guard let program, let context, let modelContext else {
+            volumeRows = []
+            return
+        }
         let repository = ProgramRepository(context: modelContext)
         let sessions = program.orderedTemplates.map(repository.generatedSession(from:))
         let planned = VolumeAllocator.weeklyVolume(of: sessions, catalog: catalogByID)
@@ -896,10 +903,12 @@ final class ProgramViewModel {
             if let program = self.program {
                 try repository.recordEngineChange(
                     to: program,
-                    reason: Explanation("program.version.exerciseSwapped", [
-                        self.catalogByID[replaced]?.name.localizedCapitalized ?? replaced,
-                        self.catalogByID[exerciseID]?.name.localizedCapitalized ?? exerciseID
-                    ])
+                    reason: Explanation(
+                        "program.version.exerciseSwapped",
+                        [
+                            self.catalogByID[replaced]?.name.localizedCapitalized ?? replaced,
+                            self.catalogByID[exerciseID]?.name.localizedCapitalized ?? exerciseID,
+                        ])
                 )
             }
         }
@@ -939,7 +948,8 @@ final class ProgramViewModel {
         perform {
             try ExercisePreferenceRepository(context: modelContext)
                 .setExcluded(isExcluded, forExerciseID: exerciseID)
-            self.notice = isExcluded
+            self.notice =
+                isExcluded
                 ? L("program.notice.excluded")
                 : L("program.notice.excludeCleared")
         }

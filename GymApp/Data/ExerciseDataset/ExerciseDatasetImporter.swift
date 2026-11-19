@@ -77,7 +77,8 @@ struct ExerciseDatasetImporter {
 
     func loadManifest() throws -> ExerciseDatasetManifest {
         guard let url = datasetURL("dataset-manifest.json"),
-              let data = try? Data(contentsOf: url) else {
+            let data = try? Data(contentsOf: url)
+        else {
             throw ExerciseDatasetError.manifestMissing
         }
         do {
@@ -91,7 +92,8 @@ struct ExerciseDatasetImporter {
     /// during launch so the UI never blocks on JSON parsing.
     func loadExercises(expecting manifest: ExerciseDatasetManifest) throws -> [Exercise] {
         guard let url = datasetURL("exercises.core.json"),
-              let data = try? Data(contentsOf: url) else {
+            let data = try? Data(contentsOf: url)
+        else {
             throw ExerciseDatasetError.coreDataMissing
         }
 
@@ -120,7 +122,8 @@ struct ExerciseDatasetImporter {
                 continue
             }
             guard let target = Muscle(datasetValue: raw.target) else {
-                AppLog.catalog.error("Skipping \(raw.id, privacy: .public): unknown target '\(raw.target, privacy: .public)'")
+                AppLog.catalog.error(
+                    "Skipping \(raw.id, privacy: .public): unknown target '\(raw.target, privacy: .public)'")
                 continue
             }
 
@@ -142,7 +145,8 @@ struct ExerciseDatasetImporter {
                 secondaryMuscles: secondary
             )
 
-            let created = formatter.date(from: raw.createdAt)
+            let created =
+                formatter.date(from: raw.createdAt)
                 ?? plainFormatter.date(from: raw.createdAt)
                 ?? Date(timeIntervalSince1970: 0)
 

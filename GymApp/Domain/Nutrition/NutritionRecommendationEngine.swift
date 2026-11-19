@@ -126,18 +126,22 @@ enum NutritionRecommendationEngine {
         var explanations: [Explanation] = []
         explanations.append(Explanation("nutrition.energy.bmr", [NutritionFormat.whole(resting)]))
         if profile.ageYears == nil {
-            explanations.append(Explanation(
-                "nutrition.energy.bmrDefaultAge",
-                [NutritionFormat.whole(Double(Constants.defaultAgeYears))]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.energy.bmrDefaultAge",
+                    [NutritionFormat.whole(Double(Constants.defaultAgeYears))]
+                ))
         }
         if profile.biologicalSex == .unspecified {
             explanations.append(Explanation("nutrition.energy.bmrUnspecifiedSex"))
         }
-        explanations.append(Explanation("nutrition.energy.tdee", [
-            NutritionFormat.whole(maintenance),
-            NutritionFormat.whole(Double(max(0, min(profile.trainingDaysPerWeek, 7))))
-        ]))
+        explanations.append(
+            Explanation(
+                "nutrition.energy.tdee",
+                [
+                    NutritionFormat.whole(maintenance),
+                    NutritionFormat.whole(Double(max(0, min(profile.trainingDaysPerWeek, 7)))),
+                ]))
 
         // Intended rate, then the energy offset it implies.
         let intendedWeeklyChange = intendedWeeklyBodyMassChangeKg(profile: profile, direction: direction)
@@ -146,13 +150,15 @@ enum NutritionRecommendationEngine {
             rawDailyOffset, -Constants.maximumDailyDeficit, Constants.maximumDailySurplus
         )
         if rawDailyOffset < -Constants.maximumDailyDeficit {
-            explanations.append(Explanation(
-                "nutrition.energy.deficitCapped", [NutritionFormat.whole(Constants.maximumDailyDeficit)]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.energy.deficitCapped", [NutritionFormat.whole(Constants.maximumDailyDeficit)]
+                ))
         } else if rawDailyOffset > Constants.maximumDailySurplus {
-            explanations.append(Explanation(
-                "nutrition.energy.surplusCapped", [NutritionFormat.whole(Constants.maximumDailySurplus)]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.energy.surplusCapped", [NutritionFormat.whole(Constants.maximumDailySurplus)]
+                ))
         }
 
         // Safety floor. A target under it is raised and the user is told why.
@@ -196,38 +202,52 @@ enum NutritionRecommendationEngine {
             floorRemovedTheDeficit ? .maintenance : direction
 
         if floorRemovedTheDeficit {
-            explanations.append(Explanation("nutrition.energy.floorAboveMaintenance", [
-                NutritionFormat.whole(kilocalories),
-                NutritionFormat.whole(maintenance)
-            ]))
+            explanations.append(
+                Explanation(
+                    "nutrition.energy.floorAboveMaintenance",
+                    [
+                        NutritionFormat.whole(kilocalories),
+                        NutritionFormat.whole(maintenance),
+                    ]))
         } else {
             switch direction {
             case .deficit:
-                explanations.append(Explanation("nutrition.energy.deficit", [
-                    NutritionFormat.oneDecimal(abs(achievedWeeklyChange)),
-                    NutritionFormat.whole(kilocalories),
-                    NutritionFormat.whole(abs(kilocalories - maintenance))
-                ]))
+                explanations.append(
+                    Explanation(
+                        "nutrition.energy.deficit",
+                        [
+                            NutritionFormat.oneDecimal(abs(achievedWeeklyChange)),
+                            NutritionFormat.whole(kilocalories),
+                            NutritionFormat.whole(abs(kilocalories - maintenance)),
+                        ]))
             case .slightDeficit:
-                explanations.append(Explanation("nutrition.energy.recomposition", [
-                    NutritionFormat.whole(abs(kilocalories - maintenance)),
-                    NutritionFormat.whole(kilocalories)
-                ]))
+                explanations.append(
+                    Explanation(
+                        "nutrition.energy.recomposition",
+                        [
+                            NutritionFormat.whole(abs(kilocalories - maintenance)),
+                            NutritionFormat.whole(kilocalories),
+                        ]))
             case .surplus:
-                explanations.append(Explanation("nutrition.energy.surplus", [
-                    NutritionFormat.oneDecimal(abs(achievedWeeklyChange)),
-                    NutritionFormat.whole(kilocalories),
-                    NutritionFormat.whole(abs(kilocalories - maintenance))
-                ]))
+                explanations.append(
+                    Explanation(
+                        "nutrition.energy.surplus",
+                        [
+                            NutritionFormat.oneDecimal(abs(achievedWeeklyChange)),
+                            NutritionFormat.whole(kilocalories),
+                            NutritionFormat.whole(abs(kilocalories - maintenance)),
+                        ]))
             case .maintenance:
-                explanations.append(Explanation(
-                    "nutrition.energy.maintenance", [NutritionFormat.whole(kilocalories)]
-                ))
+                explanations.append(
+                    Explanation(
+                        "nutrition.energy.maintenance", [NutritionFormat.whole(kilocalories)]
+                    ))
             }
             if floorApplied {
-                explanations.append(Explanation(
-                    "nutrition.energy.floorApplied", [NutritionFormat.whole(kilocalories)]
-                ))
+                explanations.append(
+                    Explanation(
+                        "nutrition.energy.floorApplied", [NutritionFormat.whole(kilocalories)]
+                    ))
             }
         }
 
@@ -379,33 +399,42 @@ enum NutritionRecommendationEngine {
 
         // Explanations, in the order the decisions were made.
         let achievedPerKg = referenceMass > 0 ? protein / referenceMass : 0
-        explanations.append(Explanation("nutrition.macro.protein", [
-            NutritionFormat.whole(protein), NutritionFormat.twoDecimals(achievedPerKg)
-        ]))
+        explanations.append(
+            Explanation(
+                "nutrition.macro.protein",
+                [
+                    NutritionFormat.whole(protein), NutritionFormat.twoDecimals(achievedPerKg),
+                ]))
         if usesAdjustedMass(profile) {
-            explanations.append(Explanation(
-                "nutrition.macro.proteinAdjustedMass", [NutritionFormat.whole(referenceMass)]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.macro.proteinAdjustedMass", [NutritionFormat.whole(referenceMass)]
+                ))
         }
         if direction == .deficit || direction == .slightDeficit {
             explanations.append(Explanation("nutrition.macro.proteinDeficit"))
         }
         if proteinTrimmed {
-            explanations.append(Explanation(
-                "nutrition.macro.proteinCompromise", [NutritionFormat.whole(protein)]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.macro.proteinCompromise", [NutritionFormat.whole(protein)]
+                ))
         }
         let achievedFatShare = energy > 0 ? fat * 9 / energy : 0
-        explanations.append(Explanation("nutrition.macro.fat", [
-            NutritionFormat.whole(fat), NutritionFormat.percent(achievedFatShare)
-        ]))
+        explanations.append(
+            Explanation(
+                "nutrition.macro.fat",
+                [
+                    NutritionFormat.whole(fat), NutritionFormat.percent(achievedFatShare),
+                ]))
         if fatFloorBound {
             explanations.append(Explanation("nutrition.macro.fatFloor", [NutritionFormat.whole(fat)]))
         }
         if fatTrimmed {
-            explanations.append(Explanation(
-                "nutrition.macro.fatCompromise", [NutritionFormat.whole(fat)]
-            ))
+            explanations.append(
+                Explanation(
+                    "nutrition.macro.fatCompromise", [NutritionFormat.whole(fat)]
+                ))
         }
         explanations.append(Explanation("nutrition.macro.carbs", [NutritionFormat.whole(carbs)]))
 
@@ -428,7 +457,8 @@ enum NutritionRecommendationEngine {
         case .loseFat: perKg += 0.1
         case .improveEndurance, .maintain, .generalFitness: break
         }
-        let isHighLoad = profile.trainingDaysPerWeek >= 5
+        let isHighLoad =
+            profile.trainingDaysPerWeek >= 5
             || profile.activityLevel == .active
             || profile.activityLevel == .veryActive
         if isHighLoad { perKg += 0.1 }

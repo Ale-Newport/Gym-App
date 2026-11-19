@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// The reusable "choose an exercise" sheet.
 ///
@@ -130,10 +130,13 @@ struct ExercisePickerSheet: View {
         }
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
-                Picker(L("exercises.sort.label"), selection: Binding(
-                    get: { viewModel.sort },
-                    set: { viewModel.sort = $0 }
-                )) {
+                Picker(
+                    L("exercises.sort.label"),
+                    selection: Binding(
+                        get: { viewModel.sort },
+                        set: { viewModel.sort = $0 }
+                    )
+                ) {
                     ForEach(ExerciseSortOrder.allCases) { order in
                         Label(L(order.localizationKey), systemImage: order.symbolName).tag(order)
                     }
@@ -149,9 +152,10 @@ struct ExercisePickerSheet: View {
                 isPresentingFilters = true
             } label: {
                 HStack(spacing: Metrics.spacing4) {
-                    Image(systemName: viewModel.filters.isActive
-                        ? "line.3.horizontal.decrease.circle.fill"
-                        : "line.3.horizontal.decrease.circle")
+                    Image(
+                        systemName: viewModel.filters.isActive
+                            ? "line.3.horizontal.decrease.circle.fill"
+                            : "line.3.horizontal.decrease.circle")
                     if viewModel.filters.isActive {
                         Text(String(viewModel.filters.activeCount))
                             .font(.footnote.weight(.semibold).monospacedDigit())

@@ -108,7 +108,10 @@ struct NumberEntryField: View {
             text = filtered
             return
         }
-        guard !filtered.isEmpty else { value = nil; return }
+        guard !filtered.isEmpty else {
+            value = nil
+            return
+        }
         guard let parsed = Double(filtered) else { return }
         value = min(max(parsed, range.lowerBound), range.upperBound)
     }

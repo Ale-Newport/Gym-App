@@ -63,7 +63,10 @@ final class HealthService {
     /// the sheet was completed.
     @discardableResult
     func requestAuthorization() async -> Bool {
-        guard let store else { availability = .unavailable; return false }
+        guard let store else {
+            availability = .unavailable
+            return false
+        }
         do {
             try await store.requestAuthorization(toShare: writeTypes, read: readTypes)
             availability = .authorized
@@ -106,7 +109,8 @@ final class HealthService {
         guard let store, let type = HKQuantityType.quantityType(forIdentifier: .height) else { return nil }
         let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
         return await withCheckedContinuation { continuation in
-            let query = HKSampleQuery(sampleType: type, predicate: nil, limit: 1, sortDescriptors: [sort]) { _, samples, _ in
+            let query = HKSampleQuery(sampleType: type, predicate: nil, limit: 1, sortDescriptors: [sort]) {
+                _, samples, _ in
                 let value = (samples?.first as? HKQuantitySample)?
                     .quantity.doubleValue(for: .meterUnit(with: .centi))
                 continuation.resume(returning: value)
@@ -154,7 +158,8 @@ final class HealthService {
         let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
 
         return await withCheckedContinuation { continuation in
-            let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: 200, sortDescriptors: nil) { _, samples, _ in
+            let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: 200, sortDescriptors: nil) {
+                _, samples, _ in
                 let asleepValues: Set<Int> = [
                     HKCategoryValueSleepAnalysis.asleepCore.rawValue,
                     HKCategoryValueSleepAnalysis.asleepDeep.rawValue,

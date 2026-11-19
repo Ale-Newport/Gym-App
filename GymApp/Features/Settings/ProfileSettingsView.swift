@@ -145,7 +145,8 @@ struct ProfileSettingsView: View {
             )
             .onChange(of: weightDraft) { _, newValue in
                 guard let kilograms = kilograms(from: newValue),
-                      InputValidation.bodyMassKg.contains(kilograms) else { return }
+                    InputValidation.bodyMassKg.contains(kilograms)
+                else { return }
                 model.commit("weight") { model.updateBodyMetrics(currentWeightKg: kilograms) }
             }
 
@@ -159,7 +160,8 @@ struct ProfileSettingsView: View {
                 )
                 .onChange(of: targetWeightDraft) { _, newValue in
                     guard let kilograms = kilograms(from: newValue),
-                          InputValidation.bodyMassKg.contains(kilograms) else { return }
+                        InputValidation.bodyMassKg.contains(kilograms)
+                    else { return }
                     model.commit("targetWeight") { model.updateBodyMetrics(targetWeightKg: .some(kilograms)) }
                 }
                 Button(role: .destructive) {

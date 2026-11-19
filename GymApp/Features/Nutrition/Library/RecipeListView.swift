@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 private struct EditingRecipe: Identifiable, Hashable {
     let id: UUID

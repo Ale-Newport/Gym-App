@@ -36,7 +36,8 @@ actor ExerciseInstructionStore {
         if let cached = cache[language] { return cached }
 
         let fileName = "instructions.\(language.datasetCode).json"
-        let url = bundle.url(forResource: fileName, withExtension: nil, subdirectory: "ExerciseDataset/instructions")
+        let url =
+            bundle.url(forResource: fileName, withExtension: nil, subdirectory: "ExerciseDataset/instructions")
             ?? bundle.url(forResource: fileName, withExtension: nil, subdirectory: "instructions")
             ?? bundle.url(forResource: fileName, withExtension: nil)
 
@@ -51,7 +52,8 @@ actor ExerciseInstructionStore {
             cache[language] = table
             return table
         } catch {
-            AppLog.catalog.error("Failed to decode \(fileName, privacy: .public): \(String(describing: error), privacy: .public)")
+            AppLog.catalog.error(
+                "Failed to decode \(fileName, privacy: .public): \(String(describing: error), privacy: .public)")
             cache[language] = [:]
             return [:]
         }

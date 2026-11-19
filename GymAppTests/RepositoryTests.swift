@@ -938,7 +938,8 @@ struct NutritionRepositoryTests {
     func savedMealNutritionIsComputedFromItsItems() throws {
         let context = try StoreTestSupport.makeContext()
         let repository = NutritionRepository(context: context)
-        let oats = StoreTestSupport.makeFood(in: context, name: "Oats", kcal: 380, protein: 13, carbs: 60, fat: 7, fiber: 10)
+        let oats = StoreTestSupport.makeFood(
+            in: context, name: "Oats", kcal: 380, protein: 13, carbs: 60, fat: 7, fiber: 10)
         let egg = StoreTestSupport.makeFood(
             in: context, name: "Egg", kcal: 140, protein: 12, carbs: 1, fat: 10, fiber: nil, gramsPerPiece: 50
         )
@@ -999,8 +1000,10 @@ struct NutritionRepositoryTests {
     func recipePerServingNutrition() throws {
         let context = try StoreTestSupport.makeContext()
         let repository = NutritionRepository(context: context)
-        let beans = StoreTestSupport.makeFood(in: context, name: "Beans", kcal: 100, protein: 6, carbs: 15, fat: 1, fiber: 6)
-        let mince = StoreTestSupport.makeFood(in: context, name: "Mince", kcal: 200, protein: 20, carbs: 0, fat: 12, fiber: 0)
+        let beans = StoreTestSupport.makeFood(
+            in: context, name: "Beans", kcal: 100, protein: 6, carbs: 15, fat: 1, fiber: 6)
+        let mince = StoreTestSupport.makeFood(
+            in: context, name: "Mince", kcal: 200, protein: 20, carbs: 0, fat: 12, fiber: 0)
         try context.save()
 
         let recipe = try repository.createRecipe(
@@ -1172,8 +1175,10 @@ struct NutritionRepositoryTests {
     func dailyTotals() throws {
         let context = try StoreTestSupport.makeContext()
         let repository = NutritionRepository(context: context)
-        let oats = StoreTestSupport.makeFood(in: context, name: "Oats", kcal: 380, protein: 13, carbs: 60, fat: 7, fiber: 10)
-        let chicken = StoreTestSupport.makeFood(in: context, name: "Chicken", kcal: 200, protein: 30, carbs: 0, fat: 8, fiber: 0)
+        let oats = StoreTestSupport.makeFood(
+            in: context, name: "Oats", kcal: 380, protein: 13, carbs: 60, fat: 7, fiber: 10)
+        let chicken = StoreTestSupport.makeFood(
+            in: context, name: "Chicken", kcal: 200, protein: 30, carbs: 0, fat: 8, fiber: 0)
         try context.save()
 
         try repository.addLogEntry(food: oats, quantity: 100, slot: .breakfast, dayKey: today, now: now)

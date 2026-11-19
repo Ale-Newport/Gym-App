@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behavioural tests for `WeightTrendAnalyzer`.
@@ -108,7 +109,7 @@ struct WeightTrendAnalyzerTests {
         let day = Self.date(daysAgo: 0)
         let entries = [
             WeightTrendPoint(date: day.addingTimeInterval(-6 * 3_600), weightKg: 80),
-            WeightTrendPoint(date: day.addingTimeInterval(-1 * 3_600), weightKg: 82)
+            WeightTrendPoint(date: day.addingTimeInterval(-1 * 3_600), weightKg: 82),
         ]
         let analysis = Self.analyze(entries)
         #expect(analysis.movingAverage.count == 1)
@@ -320,7 +321,7 @@ struct WeightTrendAnalyzerTests {
             [],
             Self.series(days: 1) { _ in 80 },
             Self.series(days: 21) { 80 - 0.05 * Double($0) },
-            Self.series(days: 60) { index in 80 + (index % 3 == 0 ? 3 : -3) }
+            Self.series(days: 60) { index in 80 + (index % 3 == 0 ? 3 : -3) },
         ]
         for entries in cases {
             let confidence = Self.analyze(entries).confidence

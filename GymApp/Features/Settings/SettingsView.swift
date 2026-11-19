@@ -20,26 +20,36 @@ struct SettingsView: View {
                 SettingsErrorBanner(model: model)
 
                 Section {
-                    NavigationLink { ProfileSettingsView() } label: { profileHeader }
+                    NavigationLink {
+                        ProfileSettingsView()
+                    } label: {
+                        profileHeader
+                    }
                 }
                 .listRowBackground(Color.appSurface)
 
                 Section(L("settings.section.training")) {
-                    NavigationLink { GoalsSettingsView() } label: {
+                    NavigationLink {
+                        GoalsSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "target",
                             title: L("settings.goals.title"),
                             value: model.primaryGoalTitle
                         )
                     }
-                    NavigationLink { TrainingSettingsView() } label: {
+                    NavigationLink {
+                        TrainingSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "calendar",
                             title: L("settings.training.title"),
                             value: model.trainingDaysSummary
                         )
                     }
-                    NavigationLink { EquipmentSettingsView() } label: {
+                    NavigationLink {
+                        EquipmentSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "dumbbell.fill",
                             title: L("settings.equipment.title"),
@@ -50,7 +60,9 @@ struct SettingsView: View {
                 .listRowBackground(Color.appSurface)
 
                 Section(L("settings.section.nutrition")) {
-                    NavigationLink { NutritionSettingsView() } label: {
+                    NavigationLink {
+                        NutritionSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "fork.knife",
                             title: L("settings.nutrition.title"),
@@ -62,7 +74,9 @@ struct SettingsView: View {
                 .listRowBackground(Color.appSurface)
 
                 Section(L("settings.section.app")) {
-                    NavigationLink { UnitsSettingsView() } label: {
+                    NavigationLink {
+                        UnitsSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "ruler",
                             title: L("settings.units.title"),
@@ -70,7 +84,9 @@ struct SettingsView: View {
                             tint: .appRecovery
                         )
                     }
-                    NavigationLink { AppearanceSettingsView() } label: {
+                    NavigationLink {
+                        AppearanceSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "circle.lefthalf.filled",
                             title: L("settings.appearance.title"),
@@ -78,7 +94,9 @@ struct SettingsView: View {
                             tint: .appRecovery
                         )
                     }
-                    NavigationLink { LanguageSettingsView() } label: {
+                    NavigationLink {
+                        LanguageSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "globe",
                             title: L("settings.language.title"),
@@ -86,7 +104,9 @@ struct SettingsView: View {
                             tint: .appRecovery
                         )
                     }
-                    NavigationLink { NotificationSettingsView() } label: {
+                    NavigationLink {
+                        NotificationSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "bell.badge",
                             title: L("settings.notifications.title"),
@@ -94,7 +114,9 @@ struct SettingsView: View {
                             tint: .appRecovery
                         )
                     }
-                    NavigationLink { HealthSettingsView() } label: {
+                    NavigationLink {
+                        HealthSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "heart.text.square",
                             title: L("settings.health.title"),
@@ -106,7 +128,9 @@ struct SettingsView: View {
                 .listRowBackground(Color.appSurface)
 
                 Section(L("settings.section.data")) {
-                    NavigationLink { DataSettingsView() } label: {
+                    NavigationLink {
+                        DataSettingsView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "externaldrive",
                             title: L("settings.data.title")
@@ -116,7 +140,9 @@ struct SettingsView: View {
                 .listRowBackground(Color.appSurface)
 
                 Section {
-                    NavigationLink { AboutView() } label: {
+                    NavigationLink {
+                        AboutView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "info.circle",
                             title: L("settings.about.title"),
@@ -124,7 +150,9 @@ struct SettingsView: View {
                             tint: .appTextSecondary
                         )
                     }
-                    NavigationLink { LegalView() } label: {
+                    NavigationLink {
+                        LegalView()
+                    } label: {
                         SettingsNavigationRow(
                             systemImage: "doc.text",
                             title: L("settings.legal.title"),

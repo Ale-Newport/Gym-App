@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// The daily energy and macro targets, with the arithmetic that produced them.
 ///
@@ -71,9 +71,10 @@ struct NutritionTargetsView: View {
             VStack(alignment: .leading, spacing: Metrics.spacing16) {
                 SectionHeader(
                     title: L("nutritionLibrary.targets.currentTitle"),
-                    subtitle: L(model.isManualOverride
-                        ? "nutritionLibrary.targets.manualSubtitle"
-                        : "nutritionLibrary.targets.automaticSubtitle")
+                    subtitle: L(
+                        model.isManualOverride
+                            ? "nutritionLibrary.targets.manualSubtitle"
+                            : "nutritionLibrary.targets.automaticSubtitle")
                 ) { EmptyView() }
 
                 HStack(alignment: .firstTextBaseline, spacing: Metrics.spacing8) {
@@ -87,10 +88,12 @@ struct NutritionTargetsView: View {
                         .foregroundStyle(Color.appTextSecondary)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel(Text(L(
-                    "nutritionLibrary.targets.energyAccessibility",
-                    formatter.energy(model.current.kilocalories)
-                )))
+                .accessibilityLabel(
+                    Text(
+                        L(
+                            "nutritionLibrary.targets.energyAccessibility",
+                            formatter.energy(model.current.kilocalories)
+                        )))
 
                 macroRow(
                     label: L("nutritionLibrary.food.protein"),
@@ -153,23 +156,27 @@ struct NutritionTargetsView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color.appTextPrimary)
                 Spacer(minLength: Metrics.spacing8)
-                Text(L(
-                    "nutritionLibrary.targets.macroValue",
-                    formatter.macro(grams),
-                    NutritionFormat.percent(energyShare)
-                ))
+                Text(
+                    L(
+                        "nutritionLibrary.targets.macroValue",
+                        formatter.macro(grams),
+                        NutritionFormat.percent(energyShare)
+                    )
+                )
                 .font(.appNumeric(15, weight: .medium))
                 .foregroundStyle(Color.appTextSecondary)
             }
             ProgressBar(value: energyShare, total: 1, tint: tint, height: 6)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text(L(
-            "nutritionLibrary.targets.macroAccessibility",
-            label,
-            formatter.macro(grams),
-            NutritionFormat.percent(energyShare)
-        )))
+        .accessibilityLabel(
+            Text(
+                L(
+                    "nutritionLibrary.targets.macroAccessibility",
+                    label,
+                    formatter.macro(grams),
+                    NutritionFormat.percent(energyShare)
+                )))
     }
 
     private var noTargetState: some View {
@@ -204,9 +211,16 @@ struct NutritionTargetsView: View {
                         maintenanceTile
                         offsetTile
                     }
-                    Grid(alignment: .leading, horizontalSpacing: Metrics.spacing12, verticalSpacing: Metrics.spacing12) {
-                        GridRow { restingTile; maintenanceTile }
-                        GridRow { offsetTile; Color.clear.frame(height: 1) }
+                    Grid(alignment: .leading, horizontalSpacing: Metrics.spacing12, verticalSpacing: Metrics.spacing12)
+                    {
+                        GridRow {
+                            restingTile
+                            maintenanceTile
+                        }
+                        GridRow {
+                            offsetTile
+                            Color.clear.frame(height: 1)
+                        }
                     }
                 }
 
@@ -216,11 +230,13 @@ struct NutritionTargetsView: View {
                     .fixedSize(horizontal: false, vertical: true)
 
                 if let trendWeight = model.trend.currentTrendKg {
-                    Text(L(
-                        "nutritionLibrary.targets.trendWeight",
-                        formatter.weight(trendWeight),
-                        NutritionFormat.signedOneDecimal(model.trend.weeklyChangeKg ?? 0)
-                    ))
+                    Text(
+                        L(
+                            "nutritionLibrary.targets.trendWeight",
+                            formatter.weight(trendWeight),
+                            NutritionFormat.signedOneDecimal(model.trend.weeklyChangeKg ?? 0)
+                        )
+                    )
                     .font(.footnote)
                     .foregroundStyle(Color.appTextSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -251,7 +267,8 @@ struct NutritionTargetsView: View {
     /// information is never in the sign alone.
     private var offsetTile: some View {
         let offset = model.energyOffset
-        let labelKey: String = offset < -1
+        let labelKey: String =
+            offset < -1
             ? "nutritionLibrary.targets.deficit"
             : (offset > 1 ? "nutritionLibrary.targets.surplus" : "nutritionLibrary.targets.balanced")
         return StatTile(
@@ -299,8 +316,10 @@ struct NutritionTargetsView: View {
                         .font(.appCardTitle)
                         .foregroundStyle(Color.appTextPrimary)
                 } icon: {
-                    Image(systemName: proposal.deltaKilocalories > 0 ? "arrow.up.circle.fill" : "arrow.down.circle.fill")
-                        .foregroundStyle(Color.appNutrition)
+                    Image(
+                        systemName: proposal.deltaKilocalories > 0 ? "arrow.up.circle.fill" : "arrow.down.circle.fill"
+                    )
+                    .foregroundStyle(Color.appNutrition)
                 }
 
                 ExplanationNote(text: proposal.explanation.text, systemImage: "chart.line.uptrend.xyaxis")
@@ -308,21 +327,25 @@ struct NutritionTargetsView: View {
                 if let proposed = proposal.newTargets {
                     InsetGroup {
                         VStack(alignment: .leading, spacing: Metrics.spacing6) {
-                            Text(L(
-                                "nutritionLibrary.targets.proposedEnergy",
-                                formatter.energy(model.current.kilocalories),
-                                formatter.energy(proposed.kilocalories)
-                            ))
+                            Text(
+                                L(
+                                    "nutritionLibrary.targets.proposedEnergy",
+                                    formatter.energy(model.current.kilocalories),
+                                    formatter.energy(proposed.kilocalories)
+                                )
+                            )
                             .font(.subheadline)
                             .foregroundStyle(Color.appTextPrimary)
                             .fixedSize(horizontal: false, vertical: true)
-                            Text(L(
-                                "nutritionLibrary.common.macroLine",
-                                formatter.energy(proposed.kilocalories),
-                                formatter.macro(proposed.proteinG),
-                                formatter.macro(proposed.carbsG),
-                                formatter.macro(proposed.fatG)
-                            ))
+                            Text(
+                                L(
+                                    "nutritionLibrary.common.macroLine",
+                                    formatter.energy(proposed.kilocalories),
+                                    formatter.macro(proposed.proteinG),
+                                    formatter.macro(proposed.carbsG),
+                                    formatter.macro(proposed.fatG)
+                                )
+                            )
                             .font(.caption)
                             .foregroundStyle(Color.appTextSecondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -393,17 +416,22 @@ struct NutritionTargetsView: View {
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(Color.appTextSecondary)
                     Spacer(minLength: Metrics.spacing8)
-                    Text(L(row.wasAutomatic
-                        ? "nutritionLibrary.targets.historyAutomatic"
-                        : "nutritionLibrary.targets.historyManual"))
-                        .font(.caption2)
-                        .foregroundStyle(Color.appTextTertiary)
+                    Text(
+                        L(
+                            row.wasAutomatic
+                                ? "nutritionLibrary.targets.historyAutomatic"
+                                : "nutritionLibrary.targets.historyManual")
+                    )
+                    .font(.caption2)
+                    .foregroundStyle(Color.appTextTertiary)
                 }
-                Text(L(
-                    "nutritionLibrary.targets.historyChange",
-                    formatter.energy(row.previous.kilocalories),
-                    formatter.energy(row.updated.kilocalories)
-                ))
+                Text(
+                    L(
+                        "nutritionLibrary.targets.historyChange",
+                        formatter.energy(row.previous.kilocalories),
+                        formatter.energy(row.updated.kilocalories)
+                    )
+                )
                 .font(.subheadline)
                 .foregroundStyle(Color.appTextPrimary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -463,7 +491,8 @@ struct NutritionTargetsView: View {
                     // Both notes warn rather than block. The user is entitled to a plan the app
                     // would not have chosen; they are not entitled to be kept in the dark about it.
                     if let entered = model.draftKilocalories, model.draftImpliedKilocalories > 0,
-                       abs(model.draftImpliedKilocalories - entered) >= 25 {
+                        abs(model.draftImpliedKilocalories - entered) >= 25
+                    {
                         ExplanationNote(
                             text: L(
                                 "nutritionLibrary.targets.macroMismatch",

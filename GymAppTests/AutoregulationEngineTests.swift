@@ -242,9 +242,11 @@ struct AutoregulationLoadReductionTests {
     func halfTheSetsMissedEarnsTheModerateCut() throws {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("bench", [
-                    makeSet(reps: 7), makeSet(reps: 7), makeSet(reps: 10), makeSet(reps: 10)
-                ])
+                makePerformance(
+                    "bench",
+                    [
+                        makeSet(reps: 7), makeSet(reps: 7), makeSet(reps: 10), makeSet(reps: 10),
+                    ])
             ]
         )
         let result = adjustments(outcome: outcome)
@@ -268,9 +270,11 @@ struct AutoregulationLoadReductionTests {
     func unfinishedSetsCountAsMissed() {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("bench", [
-                    makeSet(reps: 10), makeSet(reps: nil, completed: false), makeSet(reps: nil, completed: false)
-                ])
+                makePerformance(
+                    "bench",
+                    [
+                        makeSet(reps: 10), makeSet(reps: nil, completed: false), makeSet(reps: nil, completed: false),
+                    ])
             ]
         )
         #expect(adjustments(outcome: outcome).first?.kind == .reduceLoad)
@@ -286,9 +290,11 @@ struct AutoregulationLoadReductionTests {
     func setsWithoutATargetAreIgnored() {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("bench", [
-                    makeSet(reps: 2, target: nil), makeSet(reps: 2, target: nil), makeSet(reps: 2, target: nil)
-                ])
+                makePerformance(
+                    "bench",
+                    [
+                        makeSet(reps: 2, target: nil), makeSet(reps: 2, target: nil), makeSet(reps: 2, target: nil),
+                    ])
             ]
         )
         #expect(adjustments(outcome: outcome).map(\.kind) == [.noChange])
@@ -298,9 +304,11 @@ struct AutoregulationLoadReductionTests {
     func zeroRepTargetIsIgnored() {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("bench", [
-                    makeSet(reps: 0, target: 0), makeSet(reps: 0, target: 0), makeSet(reps: 0, target: 0)
-                ])
+                makePerformance(
+                    "bench",
+                    [
+                        makeSet(reps: 0, target: 0), makeSet(reps: 0, target: 0), makeSet(reps: 0, target: 0),
+                    ])
             ]
         )
         #expect(adjustments(outcome: outcome).map(\.kind) == [.noChange])
@@ -310,9 +318,12 @@ struct AutoregulationLoadReductionTests {
     func warmupSetsAreNotCounted() {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("bench", [
-                    makeSet(reps: 2, kind: .warmup), makeSet(reps: 2, kind: .warmup), makeSet(reps: 2, kind: .warmup)
-                ])
+                makePerformance(
+                    "bench",
+                    [
+                        makeSet(reps: 2, kind: .warmup), makeSet(reps: 2, kind: .warmup),
+                        makeSet(reps: 2, kind: .warmup),
+                    ])
             ]
         )
         #expect(adjustments(outcome: outcome).map(\.kind) == [.noChange])
@@ -322,9 +333,11 @@ struct AutoregulationLoadReductionTests {
     func bodyweightMovementsNeverGetALoadCut() throws {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("pullup", [
-                    makeSet(reps: 4, weight: nil), makeSet(reps: 4, weight: nil), makeSet(reps: 4, weight: nil)
-                ])
+                makePerformance(
+                    "pullup",
+                    [
+                        makeSet(reps: 4, weight: nil), makeSet(reps: 4, weight: nil), makeSet(reps: 4, weight: nil),
+                    ])
             ]
         )
         let result = adjustments(outcome: outcome)
@@ -349,7 +362,7 @@ struct AutoregulationLoadReductionTests {
         let outcome = makeOutcome(
             performances: [
                 makePerformance("bench", [makeSet(reps: 6), makeSet(reps: 6)]),
-                makePerformance("bench", [makeSet(reps: 6), makeSet(reps: 6)])
+                makePerformance("bench", [makeSet(reps: 6), makeSet(reps: 6)]),
             ]
         )
         #expect(adjustments(outcome: outcome).filter { $0.kind == .reduceLoad }.count == 1)
@@ -393,9 +406,11 @@ struct AutoregulationRestTests {
     func aDroppingLoadExplainsTheReps() {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("bench", [
-                    makeSet(reps: 10, weight: 100), makeSet(reps: 8, weight: 80), makeSet(reps: 4, weight: 60)
-                ])
+                makePerformance(
+                    "bench",
+                    [
+                        makeSet(reps: 10, weight: 100), makeSet(reps: 8, weight: 80), makeSet(reps: 4, weight: 60),
+                    ])
             ]
         )
         #expect(!adjustments(outcome: outcome).contains { $0.kind == .restLonger })
@@ -416,11 +431,12 @@ struct AutoregulationRestTests {
             performances: [
                 makePerformance("bench", dropOff),
                 makePerformance("fly", dropOff),
-                makePerformance("row", dropOff)
+                makePerformance("row", dropOff),
             ]
         )
-        #expect(adjustments(outcome: outcome).filter { $0.kind == .restLonger }.count
-            == AutoregulationTuning.maximumRestSuggestions)
+        #expect(
+            adjustments(outcome: outcome).filter { $0.kind == .restLonger }.count
+                == AutoregulationTuning.maximumRestSuggestions)
     }
 }
 
@@ -598,14 +614,16 @@ struct AutoregulationSetAdditionTests {
         let tired = RecoverySnapshot(fatigue: [.chest: 0.46], weeklySets: [.chest: 8])
         let targets = makeTargets(target: [.chest: 14], maximum: [.chest: 20])
 
-        #expect(adjustments(
-            outcome: makeOutcome(effort: .easy, groupSets: [.chest: 4]),
-            recovery: borderline, targets: targets
-        ).map(\.kind) == [.addSet])
-        #expect(adjustments(
-            outcome: makeOutcome(effort: .easy, groupSets: [.chest: 4]),
-            recovery: tired, targets: targets
-        ).map(\.kind) == [.noChange])
+        #expect(
+            adjustments(
+                outcome: makeOutcome(effort: .easy, groupSets: [.chest: 4]),
+                recovery: borderline, targets: targets
+            ).map(\.kind) == [.addSet])
+        #expect(
+            adjustments(
+                outcome: makeOutcome(effort: .easy, groupSets: [.chest: 4]),
+                recovery: tired, targets: targets
+            ).map(\.kind) == [.noChange])
     }
 
     @Test("A group with no weekly target never gains a set")
@@ -672,9 +690,11 @@ struct AutoregulationSwapTests {
     func failingUnloadableExerciseIsSwappedForEveryExperienceLevel() {
         let outcome = makeOutcome(
             performances: [
-                makePerformance("pullup", [
-                    makeSet(reps: 3, weight: nil), makeSet(reps: 3, weight: nil), makeSet(reps: 3, weight: nil)
-                ])
+                makePerformance(
+                    "pullup",
+                    [
+                        makeSet(reps: 3, weight: nil), makeSet(reps: 3, weight: nil), makeSet(reps: 3, weight: nil),
+                    ])
             ]
         )
         for experience in [ExperienceLevel.beginner, .advanced] {
@@ -698,8 +718,9 @@ struct AutoregulationSwapTests {
     @Test("At most two swaps are suggested from one session")
     func swapsAreCappedAtTwo() {
         let outcome = makeOutcome(substituted: ["bench": "x", "fly": "y", "row": "z", "squat": "w"])
-        #expect(adjustments(outcome: outcome).filter { $0.kind == .swapExercise }.count
-            == AutoregulationTuning.maximumSwapSuggestions)
+        #expect(
+            adjustments(outcome: outcome).filter { $0.kind == .swapExercise }.count
+                == AutoregulationTuning.maximumSwapSuggestions)
     }
 
     @Test("A substituted exercise the catalogue does not know is silently dropped")
@@ -729,9 +750,10 @@ struct AutoregulationSessionTrimTests {
 
     @Test("A session inside the fifteen per cent tolerance is left alone")
     func smallOverrunsAreToleratedAsTimingNoise() {
-        #expect(adjustments(
-            outcome: makeOutcome(durationSeconds: 4140), profile: makeProfile(sessionMinutesCap: 60)
-        ).map(\.kind) == [.noChange])
+        #expect(
+            adjustments(
+                outcome: makeOutcome(durationSeconds: 4140), profile: makeProfile(sessionMinutesCap: 60)
+            ).map(\.kind) == [.noChange])
     }
 
     @Test("A session just past the tolerance is trimmed by the overrun itself")
@@ -825,7 +847,7 @@ struct AutoregulationNoChangeTests {
             groupSets: [.chest: 6, .quads: 6],
             performances: [
                 makePerformance("bench", [makeSet(reps: 5), makeSet(reps: 5), makeSet(reps: 5)]),
-                makePerformance("fly", [makeSet(reps: 5), makeSet(reps: 5), makeSet(reps: 5)])
+                makePerformance("fly", [makeSet(reps: 5), makeSet(reps: 5), makeSet(reps: 5)]),
             ]
         )
         let recovery = RecoverySnapshot(fatigue: [.quads: 0.9], weeklySets: [.quads: 12])
@@ -834,9 +856,10 @@ struct AutoregulationNoChangeTests {
         )
 
         #expect(result.count == AutoregulationTuning.maximumAdjustments)
-        #expect(result.map(\.kind) == [
-            .reduceLoad, .reduceLoad, .removeSet, .shortenSession, .swapExercise, .swapExercise
-        ])
+        #expect(
+            result.map(\.kind) == [
+                .reduceLoad, .reduceLoad, .removeSet, .shortenSession, .swapExercise, .swapExercise,
+            ])
     }
 }
 
@@ -853,7 +876,7 @@ struct AutoregulationApplyTests {
                 makeAdjustment(.removeSet, muscleGroup: .chest, magnitude: 1),
                 makeAdjustment(.addSet, muscleGroup: .chest, magnitude: 1),
                 makeAdjustment(.restLonger, exerciseID: "bench", magnitude: 30),
-                makeAdjustment(.shortenSession, magnitude: 15)
+                makeAdjustment(.shortenSession, magnitude: 15),
             ],
             to: session,
             catalog: catalog
@@ -909,7 +932,7 @@ struct AutoregulationApplyTests {
         let result = AutoregulationEngine.apply(
             [
                 makeAdjustment(.removeSet, muscleGroup: .chest, magnitude: 1),
-                makeAdjustment(.shortenSession, magnitude: 15)
+                makeAdjustment(.shortenSession, magnitude: 15),
             ],
             to: session,
             catalog: catalog
@@ -979,7 +1002,7 @@ struct AutoregulationApplyTests {
             estimatedMinutes: 10,
             exercises: [
                 makeGeneratedExercise("bench", orderIndex: 0, sets: 4),
-                makeGeneratedExercise("fly", orderIndex: 1, sets: 4)
+                makeGeneratedExercise("fly", orderIndex: 1, sets: 4),
             ]
         )
         let removals = Array(repeating: makeAdjustment(.removeSet, muscleGroup: .chest, magnitude: 1), count: 3)
@@ -994,7 +1017,7 @@ struct AutoregulationApplyTests {
             let result = AutoregulationEngine.apply(
                 [
                     makeAdjustment(.restLonger, exerciseID: "bench", magnitude: magnitude),
-                    makeAdjustment(.shortenSession, magnitude: magnitude)
+                    makeAdjustment(.shortenSession, magnitude: magnitude),
                 ],
                 to: session,
                 catalog: catalog
@@ -1028,7 +1051,7 @@ struct AutoregulationApplyTests {
                 makeAdjustment(.reduceLoad, exerciseID: "bench", magnitude: 0.1),
                 makeAdjustment(.increaseLoad, exerciseID: "bench", magnitude: 0.1),
                 makeAdjustment(.swapExercise, exerciseID: "bench", magnitude: 0),
-                makeAdjustment(.noChange, magnitude: 0)
+                makeAdjustment(.noChange, magnitude: 0),
             ],
             to: session,
             catalog: catalog
@@ -1057,7 +1080,7 @@ struct AutoregulationApplyTests {
         let session = makeSession(
             exercises: [
                 makeGeneratedExercise("bench", orderIndex: 0, sets: 3),
-                makeGeneratedExercise("fly", orderIndex: 1, sets: 3)
+                makeGeneratedExercise("fly", orderIndex: 1, sets: 3),
             ]
         )
         let result = AutoregulationEngine.apply(
@@ -1073,7 +1096,7 @@ struct AutoregulationApplyTests {
         let session = makeSession(
             exercises: [
                 makeGeneratedExercise("bench", orderIndex: 0, sets: 3),
-                makeGeneratedExercise("fly", orderIndex: 1, sets: 3)
+                makeGeneratedExercise("fly", orderIndex: 1, sets: 3),
             ]
         )
         let result = AutoregulationEngine.apply(
@@ -1097,14 +1120,14 @@ struct AutoregulationApplyTests {
         let session = makeSession(
             exercises: [
                 makeGeneratedExercise("bench", orderIndex: 0, sets: 4),
-                makeGeneratedExercise("fly", orderIndex: 1, sets: 4)
+                makeGeneratedExercise("fly", orderIndex: 1, sets: 4),
             ]
         )
         let batch = [
             makeAdjustment(.restLonger, exerciseID: "bench", magnitude: 30),
             makeAdjustment(.addSet, muscleGroup: .chest, magnitude: 1),
             makeAdjustment(.removeSet, muscleGroup: .chest, magnitude: 1),
-            makeAdjustment(.shortenSession, magnitude: 5)
+            makeAdjustment(.shortenSession, magnitude: 5),
         ]
         #expect(
             AutoregulationEngine.apply(batch, to: session, catalog: catalog)

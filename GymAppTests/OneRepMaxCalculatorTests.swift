@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behaviour of `OneRepMaxCalculator`, checked against the published equations and against the
@@ -87,7 +88,9 @@ struct OneRepMaxCalculatorTests {
 
     // MARK: - Bounds
 
-    @Test("A single rep returns the load itself rather than being inflated by a formula", arguments: OneRepMaxCalculator.Formula.allCases)
+    @Test(
+        "A single rep returns the load itself rather than being inflated by a formula",
+        arguments: OneRepMaxCalculator.Formula.allCases)
     func singleRepReturnsTheLoadUnchanged(formula: OneRepMaxCalculator.Formula) throws {
         let value = try #require(OneRepMaxCalculator.estimate(weightKg: 142.5, reps: 1, formula: formula))
         #expect(value == 142.5)
@@ -120,9 +123,11 @@ struct OneRepMaxCalculatorTests {
         // The rep bounds must keep every caller away from it, for every formula.
         for reps in 1...200 {
             for formula in OneRepMaxCalculator.Formula.allCases {
-                guard let value = OneRepMaxCalculator.estimate(
-                    weightKg: 100, reps: reps, formula: formula
-                ) else { continue }
+                guard
+                    let value = OneRepMaxCalculator.estimate(
+                        weightKg: 100, reps: reps, formula: formula
+                    )
+                else { continue }
                 #expect(value.isFinite, "reps \(reps) with \(formula) produced a non-finite 1RM")
                 #expect(value > 0, "reps \(reps) with \(formula) produced a non-positive 1RM")
             }
@@ -200,7 +205,7 @@ struct OneRepMaxCalculatorTests {
             Fixtures.set(kind: .warmup, weightKg: 200, reps: 5),
             Fixtures.set(kind: .calibration, weightKg: 190, reps: 5),
             Fixtures.set(kind: .dropSet, weightKg: 180, reps: 5),
-            Fixtures.set(kind: .working, weightKg: 100, reps: 5)
+            Fixtures.set(kind: .working, weightKg: 100, reps: 5),
         ]
         let best = try #require(OneRepMaxCalculator.bestEstimate(from: sets))
         // 100 kg × 5 through `.average`, not 200 kg from the warm-up.
@@ -223,7 +228,7 @@ struct OneRepMaxCalculatorTests {
     func bestEstimateIgnoresIncompleteSets() throws {
         let sets = [
             Fixtures.set(weightKg: 140, reps: 5, isCompleted: false),
-            Fixtures.set(weightKg: 100, reps: 5)
+            Fixtures.set(weightKg: 100, reps: 5),
         ]
         let best = try #require(OneRepMaxCalculator.bestEstimate(from: sets))
         #expect(abs(best - 114.583_333_333_333_33) < 1e-9)
@@ -238,7 +243,7 @@ struct OneRepMaxCalculatorTests {
     func bestEstimateOfOnlyWarmupsIsNil() {
         let sets = [
             Fixtures.set(kind: .warmup, weightKg: 60, reps: 10),
-            Fixtures.set(kind: .warmup, weightKg: 80, reps: 5)
+            Fixtures.set(kind: .warmup, weightKg: 80, reps: 5),
         ]
         #expect(OneRepMaxCalculator.bestEstimate(from: sets) == nil)
     }
@@ -247,7 +252,7 @@ struct OneRepMaxCalculatorTests {
     func bestEstimateSkipsSetsWithMissingData() {
         let sets = [
             Fixtures.set(weightKg: 100, reps: nil),
-            Fixtures.set(weightKg: nil, reps: 5)
+            Fixtures.set(weightKg: nil, reps: 5),
         ]
         #expect(OneRepMaxCalculator.bestEstimate(from: sets) == nil)
     }
@@ -256,7 +261,7 @@ struct OneRepMaxCalculatorTests {
     func bestEstimateSkipsUnreliableRepCounts() throws {
         let sets = [
             Fixtures.set(weightKg: 60, reps: 25),
-            Fixtures.set(weightKg: 100, reps: 5)
+            Fixtures.set(weightKg: 100, reps: 5),
         ]
         let best = try #require(OneRepMaxCalculator.bestEstimate(from: sets))
         #expect(abs(best - 114.583_333_333_333_33) < 1e-9)
@@ -271,10 +276,11 @@ struct OneRepMaxCalculatorTests {
         let lighterEight = try #require(OneRepMaxCalculator.estimate(weightKg: 90, reps: 8))
         #expect(lighterEight > heavyTriple)
 
-        let best = try #require(OneRepMaxCalculator.bestEstimate(from: [
-            Fixtures.set(weightKg: 100, reps: 3),
-            Fixtures.set(weightKg: 90, reps: 8)
-        ]))
+        let best = try #require(
+            OneRepMaxCalculator.bestEstimate(from: [
+                Fixtures.set(weightKg: 100, reps: 3),
+                Fixtures.set(weightKg: 90, reps: 8),
+            ]))
         #expect(abs(best - lighterEight) < tolerance)
     }
 
@@ -283,7 +289,7 @@ struct OneRepMaxCalculatorTests {
         let sets = [
             Fixtures.set(weightKg: 100, reps: 5),
             Fixtures.set(weightKg: 100, reps: 5),
-            Fixtures.set(weightKg: 95, reps: 6)
+            Fixtures.set(weightKg: 95, reps: 6),
         ]
         let first = OneRepMaxCalculator.bestEstimate(from: sets)
         for _ in 0..<20 {

@@ -154,16 +154,16 @@ final class BarcodeScannerService: NSObject, @unchecked Sendable {
     /// The current state, without prompting.
     var availability: BarcodeScannerAvailability {
         #if targetEnvironment(simulator)
-        return .noCamera
+            return .noCamera
         #else
-        guard Self.hasCaptureDevice else { return .noCamera }
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized: return .ready
-        case .notDetermined: return .notDetermined
-        case .denied: return .denied
-        case .restricted: return .restricted
-        @unknown default: return .denied
-        }
+            guard Self.hasCaptureDevice else { return .noCamera }
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+            case .authorized: return .ready
+            case .notDetermined: return .notDetermined
+            case .denied: return .denied
+            case .restricted: return .restricted
+            @unknown default: return .denied
+            }
         #endif
     }
 
@@ -173,22 +173,22 @@ final class BarcodeScannerService: NSObject, @unchecked Sendable {
     /// resolves immediately from the stored decision.
     func requestAccess() async -> BarcodeScannerAvailability {
         #if targetEnvironment(simulator)
-        return .noCamera
+            return .noCamera
         #else
-        guard Self.hasCaptureDevice else { return .noCamera }
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            return .ready
-        case .notDetermined:
-            let granted = await AVCaptureDevice.requestAccess(for: .video)
-            return granted ? .ready : .denied
-        case .denied:
-            return .denied
-        case .restricted:
-            return .restricted
-        @unknown default:
-            return .denied
-        }
+            guard Self.hasCaptureDevice else { return .noCamera }
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+            case .authorized:
+                return .ready
+            case .notDetermined:
+                let granted = await AVCaptureDevice.requestAccess(for: .video)
+                return granted ? .ready : .denied
+            case .denied:
+                return .denied
+            case .restricted:
+                return .restricted
+            @unknown default:
+                return .denied
+            }
         #endif
     }
 
@@ -257,7 +257,8 @@ final class BarcodeScannerService: NSObject, @unchecked Sendable {
     func setTorch(_ on: Bool) {
         sessionQueue.async {
             guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
-                  device.hasTorch, device.isTorchAvailable else { return }
+                device.hasTorch, device.isTorchAvailable
+            else { return }
             do {
                 try device.lockForConfiguration()
                 device.torchMode = on ? .on : .off
@@ -278,58 +279,60 @@ final class BarcodeScannerService: NSObject, @unchecked Sendable {
         if alreadyConfigured { return }
 
         #if targetEnvironment(simulator)
-        throw BarcodeScannerError.unavailable(.noCamera)
-        #else
-        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
-            ?? AVCaptureDevice.default(for: .video) else {
             throw BarcodeScannerError.unavailable(.noCamera)
-        }
-
-        let input: AVCaptureDeviceInput
-        do {
-            input = try AVCaptureDeviceInput(device: device)
-        } catch {
-            throw BarcodeScannerError.configurationFailed(String(describing: error))
-        }
-
-        session.beginConfiguration()
-        defer { session.commitConfiguration() }
-
-        // `.high` rather than `.photo`: barcode metadata detection does not benefit from full
-        // photo resolution, and the lower preset keeps thermals and battery in check.
-        if session.canSetSessionPreset(.high) { session.sessionPreset = .high }
-
-        guard session.canAddInput(input) else {
-            throw BarcodeScannerError.configurationFailed("the camera input was refused")
-        }
-        session.addInput(input)
-
-        let output = AVCaptureMetadataOutput()
-        guard session.canAddOutput(output) else {
-            throw BarcodeScannerError.configurationFailed("the metadata output was refused")
-        }
-        session.addOutput(output)
-        output.setMetadataObjectsDelegate(self, queue: metadataQueue)
-        // Must be set *after* the output joins the session; before that the available types list
-        // is empty and the assignment would silently do nothing.
-        output.metadataObjectTypes = Self.supportedSymbologies.filter {
-            output.availableMetadataObjectTypes.contains($0)
-        }
-
-        // Continuous autofocus close to the lens is what makes a small EAN-13 readable at all.
-        if device.isFocusModeSupported(.continuousAutoFocus) {
-            try? device.lockForConfiguration()
-            device.focusMode = .continuousAutoFocus
-            if device.isAutoFocusRangeRestrictionSupported {
-                device.autoFocusRangeRestriction = .near
+        #else
+            guard
+                let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+                    ?? AVCaptureDevice.default(for: .video)
+            else {
+                throw BarcodeScannerError.unavailable(.noCamera)
             }
-            device.unlockForConfiguration()
-        }
 
-        lock.lock()
-        metadataOutput = output
-        isConfigured = true
-        lock.unlock()
+            let input: AVCaptureDeviceInput
+            do {
+                input = try AVCaptureDeviceInput(device: device)
+            } catch {
+                throw BarcodeScannerError.configurationFailed(String(describing: error))
+            }
+
+            session.beginConfiguration()
+            defer { session.commitConfiguration() }
+
+            // `.high` rather than `.photo`: barcode metadata detection does not benefit from full
+            // photo resolution, and the lower preset keeps thermals and battery in check.
+            if session.canSetSessionPreset(.high) { session.sessionPreset = .high }
+
+            guard session.canAddInput(input) else {
+                throw BarcodeScannerError.configurationFailed("the camera input was refused")
+            }
+            session.addInput(input)
+
+            let output = AVCaptureMetadataOutput()
+            guard session.canAddOutput(output) else {
+                throw BarcodeScannerError.configurationFailed("the metadata output was refused")
+            }
+            session.addOutput(output)
+            output.setMetadataObjectsDelegate(self, queue: metadataQueue)
+            // Must be set *after* the output joins the session; before that the available types list
+            // is empty and the assignment would silently do nothing.
+            output.metadataObjectTypes = Self.supportedSymbologies.filter {
+                output.availableMetadataObjectTypes.contains($0)
+            }
+
+            // Continuous autofocus close to the lens is what makes a small EAN-13 readable at all.
+            if device.isFocusModeSupported(.continuousAutoFocus) {
+                try? device.lockForConfiguration()
+                device.focusMode = .continuousAutoFocus
+                if device.isAutoFocusRangeRestrictionSupported {
+                    device.autoFocusRangeRestriction = .near
+                }
+                device.unlockForConfiguration()
+            }
+
+            lock.lock()
+            metadataOutput = output
+            isConfigured = true
+            lock.unlock()
         #endif
     }
 
@@ -348,8 +351,9 @@ final class BarcodeScannerService: NSObject, @unchecked Sendable {
             return false
         }
         if value == lastEmittedValue,
-           let lastEmittedAt,
-           now.timeIntervalSince(lastEmittedAt) < configuration.repeatSuppressionInterval {
+            let lastEmittedAt,
+            now.timeIntervalSince(lastEmittedAt) < configuration.repeatSuppressionInterval
+        {
             return false
         }
         lastEmittedValue = value
@@ -384,10 +388,11 @@ extension BarcodeScannerService: AVCaptureMetadataOutputObjectsDelegate {
         let now = clock()
         for object in metadataObjects {
             guard let readable = object as? AVMetadataMachineReadableCodeObject,
-                  Self.supportedSymbologies.contains(readable.type),
-                  let raw = readable.stringValue,
-                  let value = Self.sanitised(raw, symbology: readable.type),
-                  shouldEmit(value, at: now) else { continue }
+                Self.supportedSymbologies.contains(readable.type),
+                let raw = readable.stringValue,
+                let value = Self.sanitised(raw, symbology: readable.type),
+                shouldEmit(value, at: now)
+            else { continue }
 
             continuation.yield(
                 DetectedBarcode(value: value, symbology: readable.type.rawValue, detectedAt: now)

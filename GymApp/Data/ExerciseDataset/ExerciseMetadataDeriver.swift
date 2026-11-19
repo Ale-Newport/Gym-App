@@ -104,8 +104,9 @@ enum ExerciseMetadataDeriver {
     }
 
     private static func detectPlyometric(_ m: NameMatcher) -> Bool {
-        m.has("jump", "jumps", "jumping", "plyo", "plyometric", "hop", "hops",
-              "box jump", "clap", "explosive", "burpee", "skater", "bound", "leap")
+        m.has(
+            "jump", "jumps", "jumping", "plyo", "plyometric", "hop", "hops",
+            "box jump", "clap", "explosive", "burpee", "skater", "bound", "leap")
     }
 
     // MARK: - Movement pattern
@@ -142,10 +143,12 @@ enum ExerciseMetadataDeriver {
             default: break
             }
         }
-        if m.has("deadlift", "good morning", "romanian", "rdl", "hip hinge", "back extension",
-                 "hyperextension", "hyper extension", "hip extension", "pull through",
-                 "kettlebell swing", "swing", "clean", "snatch",
-                 "high pull", "rack pull", "stiff leg", "straight leg deadlift") {
+        if m.has(
+            "deadlift", "good morning", "romanian", "rdl", "hip hinge", "back extension",
+            "hyperextension", "hyper extension", "hip extension", "pull through",
+            "kettlebell swing", "swing", "clean", "snatch",
+            "high pull", "rack pull", "stiff leg", "straight leg deadlift")
+        {
             return .hinge
         }
 
@@ -182,30 +185,40 @@ enum ExerciseMetadataDeriver {
         }
 
         // Upper-body pulling.
-        if m.has("pulldown", "pull down", "pull up", "pullup", "chin up", "chinup", "lat pull",
-                 "muscle up", "climb", "pull ups") {
+        if m.has(
+            "pulldown", "pull down", "pull up", "pullup", "chin up", "chinup", "lat pull",
+            "muscle up", "climb", "pull ups")
+        {
             return .verticalPull
         }
-        if m.has("row", "rows", "rowing", "face pull", "rear delt fly", "reverse fly",
-                 "reverse pec deck", "inverted row", "pullover") {
+        if m.has(
+            "row", "rows", "rowing", "face pull", "rear delt fly", "reverse fly",
+            "reverse pec deck", "inverted row", "pullover")
+        {
             return m.has("pullover") ? .verticalPull : .horizontalPull
         }
         if m.has("shrug", "shrugs") { return .shrug }
 
         // Upper-body pushing.
-        if m.has("overhead press", "shoulder press", "military press", "arnold press",
-                 "push press", "handstand push", "z press", "landmine press", "pike push") {
+        if m.has(
+            "overhead press", "shoulder press", "military press", "arnold press",
+            "push press", "handstand push", "z press", "landmine press", "pike push")
+        {
             return .verticalPush
         }
-        if m.has("bench press", "chest press", "push up", "pushup", "push ups", "dip", "dips",
-                 "floor press", "incline press", "decline press", "svend") {
+        if m.has(
+            "bench press", "chest press", "push up", "pushup", "push ups", "dip", "dips",
+            "floor press", "incline press", "decline press", "svend")
+        {
             return .horizontalPush
         }
         if m.has("fly", "flye", "flyes", "flys", "pec deck", "crossover", "cross over", "chest cross") {
             return .chestFly
         }
-        if m.has("lateral raise", "front raise", "side raise", "raise", "upright row", "y raise",
-                 "t raise", "scaption", "external rotation", "internal rotation", "rotator") {
+        if m.has(
+            "lateral raise", "front raise", "side raise", "raise", "upright row", "y raise",
+            "t raise", "scaption", "external rotation", "internal rotation", "rotator")
+        {
             return m.has("upright row") ? .horizontalPull : .shoulderRaise
         }
         // A bare "press" that reached this point is a pressing movement of some kind.
@@ -217,16 +230,20 @@ enum ExerciseMetadataDeriver {
         if m.has("curl", "curls", "preacher", "concentration", "drag curl", "spider curl", "zottman") {
             return target == .hamstrings ? .kneeFlexion : .elbowFlexion
         }
-        if m.has("extension", "pushdown", "push down", "kickback", "skull crusher", "skullcrusher",
-                 "french press", "triceps", "tricep", "close grip bench") {
+        if m.has(
+            "extension", "pushdown", "push down", "kickback", "skull crusher", "skullcrusher",
+            "french press", "triceps", "tricep", "close grip bench")
+        {
             return .elbowExtension
         }
         if m.has("wrist curl", "wrist flexion", "finger curl") { return .wristFlexion }
         if m.has("wrist extension", "reverse wrist", "wrist") { return .wristExtension }
 
         // Core.
-        if m.has("plank", "hollow", "dead bug", "ab wheel", "rollout", "roll out", "l sit",
-                 "front lever", "bird dog", "stomach vacuum") {
+        if m.has(
+            "plank", "hollow", "dead bug", "ab wheel", "rollout", "roll out", "l sit",
+            "front lever", "bird dog", "stomach vacuum")
+        {
             return .coreAntiExtension
         }
         if m.has("russian twist", "twist", "wood chop", "woodchop", "chop", "rotation", "rotational") {
@@ -235,8 +252,10 @@ enum ExerciseMetadataDeriver {
         if m.has("side bend", "side crunch", "side plank", "oblique", "lateral flexion", "windmill") {
             return .coreLateralFlexion
         }
-        if m.has("crunch", "sit up", "situp", "leg raise", "knee raise", "toe touch", "v up",
-                 "jackknife", "scissor", "flutter", "tuck", "reverse crunch", "hanging") {
+        if m.has(
+            "crunch", "sit up", "situp", "leg raise", "knee raise", "toe touch", "v up",
+            "jackknife", "scissor", "flutter", "tuck", "reverse crunch", "hanging")
+        {
             return .coreFlexion
         }
 
@@ -271,11 +290,11 @@ enum ExerciseMetadataDeriver {
         if isStretch { return .isolation }
         switch pattern {
         case .horizontalPush, .verticalPush, .horizontalPull, .verticalPull,
-             .squat, .hinge, .lunge, .carry, .hipThrust, .cardio:
+            .squat, .hinge, .lunge, .carry, .hipThrust, .cardio:
             return .compound
         case .chestFly, .shoulderRaise, .shrug, .elbowFlexion, .elbowExtension,
-             .kneeExtension, .kneeFlexion, .calfRaise, .hipAbduction, .hipAdduction,
-             .wristFlexion, .wristExtension, .neckMovement, .mobility:
+            .kneeExtension, .kneeFlexion, .calfRaise, .hipAbduction, .hipAdduction,
+            .wristFlexion, .wristExtension, .neckMovement, .mobility:
             return .isolation
         case .coreFlexion, .coreAntiExtension, .coreRotation, .coreLateralFlexion:
             // Loaded, multi-joint core work (ab wheel, hanging leg raise) behaves like a compound.
@@ -290,7 +309,8 @@ enum ExerciseMetadataDeriver {
         case .horizontalPush, .verticalPush, .chestFly, .elbowExtension: .push
         case .horizontalPull, .verticalPull, .shrug, .elbowFlexion, .shoulderRaise: .pull
         case .squat, .hinge, .lunge, .hipThrust, .kneeExtension, .kneeFlexion,
-             .calfRaise, .hipAbduction, .hipAdduction: .legs
+            .calfRaise, .hipAbduction, .hipAdduction:
+            .legs
         case .coreFlexion, .coreAntiExtension, .coreRotation, .coreLateralFlexion: .core
         case .cardio: .cardio
         case .carry, .wristFlexion, .wristExtension, .neckMovement, .mobility, .other: .neutral
@@ -301,9 +321,11 @@ enum ExerciseMetadataDeriver {
 
     static func laterality(_ m: NameMatcher, pattern: MovementPattern) -> Laterality {
         if m.has("alternate", "alternating", "alternated") { return .alternating }
-        if m.has("one arm", "single arm", "one leg", "single leg", "unilateral", "one hand",
-                 "single hand", "one side", "bulgarian", "pistol", "split squat", "step up",
-                 "lunge", "suitcase", "concentration", "curtsy", "single") {
+        if m.has(
+            "one arm", "single arm", "one leg", "single leg", "unilateral", "one hand",
+            "single hand", "one side", "bulgarian", "pistol", "split squat", "step up",
+            "lunge", "suitcase", "concentration", "curtsy", "single")
+        {
             return .unilateral
         }
         if pattern == .lunge { return .unilateral }
@@ -324,7 +346,7 @@ enum ExerciseMetadataDeriver {
         if bodyPart == .cardio || pattern == .cardio {
             switch equipment {
             case .stationaryBike, .ellipticalMachine, .stepmillMachine, .skiergMachine,
-                 .upperBodyErgometer, .leverageMachine, .sledMachine:
+                .upperBodyErgometer, .leverageMachine, .sledMachine:
                 return .distanceAndDuration
             default:
                 return m.has("run", "walk", "walking", "jog", "sprint") ? .distanceAndDuration : .duration
@@ -332,8 +354,10 @@ enum ExerciseMetadataDeriver {
         }
 
         // Held positions.
-        if m.has("plank", "hold", "holds", "hollow", "wall sit", "l sit", "iso", "isometric",
-                 "hang", "dead hang", "vacuum", "static") {
+        if m.has(
+            "plank", "hold", "holds", "hollow", "wall sit", "l sit", "iso", "isometric",
+            "hang", "dead hang", "vacuum", "static")
+        {
             return .duration
         }
 
@@ -371,17 +395,19 @@ enum ExerciseMetadataDeriver {
         if isStretch { return .beginner }
 
         // Movements that genuinely require an advanced base, regardless of anything else.
-        if m.has("muscle up", "planche", "front lever", "back lever", "handstand", "iron cross",
-                 "pistol", "snatch", "clean and jerk", "jerk", "overhead squat", "nordic",
-                 "one arm push up", "one arm pull up", "human flag", "dragon flag", "skin the cat",
-                 "deficit", "behind neck", "behind the neck", "sissy squat", "zercher") {
+        if m.has(
+            "muscle up", "planche", "front lever", "back lever", "handstand", "iron cross",
+            "pistol", "snatch", "clean and jerk", "jerk", "overhead squat", "nordic",
+            "one arm push up", "one arm pull up", "human flag", "dragon flag", "skin the cat",
+            "deficit", "behind neck", "behind the neck", "sissy squat", "zercher")
+        {
             return .advanced
         }
 
         var score = 0
         switch equipment {
         case .leverageMachine, .smithMachine, .assisted, .sledMachine, .stationaryBike,
-             .ellipticalMachine, .stepmillMachine, .skiergMachine, .upperBodyErgometer:
+            .ellipticalMachine, .stepmillMachine, .skiergMachine, .upperBodyErgometer:
             score -= 1
         case .cable, .band, .resistanceBand, .medicineBall, .roller:
             score += 0
@@ -399,9 +425,10 @@ enum ExerciseMetadataDeriver {
         case .squat, .hinge, .verticalPush, .verticalPull, .carry: score += 1
         case .lunge: score += 1
         case .elbowFlexion, .elbowExtension, .calfRaise, .shoulderRaise,
-             .wristFlexion, .wristExtension, .neckMovement,
-             .kneeExtension, .kneeFlexion, .hipAbduction, .hipAdduction,
-             .chestFly, .shrug, .hipThrust: score -= 1
+            .wristFlexion, .wristExtension, .neckMovement,
+            .kneeExtension, .kneeFlexion, .hipAbduction, .hipAdduction,
+            .chestFly, .shrug, .hipThrust:
+            score -= 1
         default: break
         }
 
@@ -688,18 +715,29 @@ enum ExerciseMetadataDeriver {
 
         switch equipment {
         case .leverageMachine, .smithMachine, .sledMachine, .assisted: tags.insert("machine")
-        case .cable: tags.insert("cable"); tags.insert("constant_tension")
+        case .cable:
+            tags.insert("cable")
+            tags.insert("constant_tension")
         case .barbell, .olympicBarbell, .trapBar, .ezBarbell:
-            tags.insert("free_weight"); tags.insert("bar")
+            tags.insert("free_weight")
+            tags.insert("bar")
         case .dumbbell, .kettlebell, .weighted:
-            tags.insert("free_weight"); tags.insert("handheld")
-        case .band, .resistanceBand: tags.insert("band"); tags.insert("portable")
-        case .bodyWeight: tags.insert("bodyweight"); tags.insert("portable")
+            tags.insert("free_weight")
+            tags.insert("handheld")
+        case .band, .resistanceBand:
+            tags.insert("band")
+            tags.insert("portable")
+        case .bodyWeight:
+            tags.insert("bodyweight")
+            tags.insert("portable")
         default: break
         }
 
         if laterality != .bilateral { tags.insert("unilateral") } else { tags.insert("bilateral") }
-        if isPlyometric { tags.insert("plyometric"); tags.insert("jump") }
+        if isPlyometric {
+            tags.insert("plyometric")
+            tags.insert("jump")
+        }
         if isStretch { tags.insert("stretch") }
 
         // Position and angle, which matter a great deal when finding a like-for-like swap.
@@ -721,7 +759,10 @@ enum ExerciseMetadataDeriver {
         if m.has("preacher") { tags.insert("preacher") }
         if m.has("deficit", "pause", "tempo") { tags.insert("advanced_variation") }
         if m.has("chest supported", "supported") { tags.insert("supported") }
-        if m.has("hanging") { tags.insert("hanging"); tags.insert("grip_limited") }
+        if m.has("hanging") {
+            tags.insert("hanging")
+            tags.insert("grip_limited")
+        }
 
         // Tags consumed by mobility-limitation filtering.
         //
@@ -733,9 +774,11 @@ enum ExerciseMetadataDeriver {
         // here, and it errs towards over-tagging: a wrongly excluded exercise costs the user one
         // option out of 500, while a wrongly included one costs them a shoulder.
         if pattern == .verticalPush || m.has("overhead") { tags.insert("overhead") }
-        if m.has("clean and press", "clean and jerk", "jerk", "snatch", "thruster", "push press",
-                 "turkish get up", "get up", "muscle up", "handstand", "overhead squat",
-                 "windmill", "waiters walk", "wall walk") {
+        if m.has(
+            "clean and press", "clean and jerk", "jerk", "snatch", "thruster", "push press",
+            "turkish get up", "get up", "muscle up", "handstand", "overhead squat",
+            "windmill", "waiters walk", "wall walk")
+        {
             tags.insert("overhead")
         }
         // A behind-the-neck *press* or triceps extension holds the load above the head; a

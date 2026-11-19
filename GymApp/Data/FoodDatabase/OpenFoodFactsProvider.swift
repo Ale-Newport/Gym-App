@@ -22,7 +22,8 @@ struct LooseNumber: Decodable, Hashable, Sendable {
             return
         }
         if let string = try? container.decode(String.self) {
-            let cleaned = string
+            let cleaned =
+                string
                 .replacingOccurrences(of: ",", with: ".")
                 .trimmingCharacters(in: .whitespaces)
             value = Double(cleaned)
@@ -163,11 +164,13 @@ actor OpenFoodFactsProvider: FoodDataProvider {
         self.identifier = identifier
         self.clock = clock
 
-        let version = appVersion
+        let version =
+            appVersion
             ?? (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)
             ?? "1.0"
         let os = ProcessInfo.processInfo.operatingSystemVersion
-        self.userAgent = "\(configuration.appName)/\(version) (iOS \(os.majorVersion).\(os.minorVersion); +\(configuration.contactURL))"
+        self.userAgent =
+            "\(configuration.appName)/\(version) (iOS \(os.majorVersion).\(os.minorVersion); +\(configuration.contactURL))"
 
         if let session {
             self.session = session
@@ -407,7 +410,8 @@ actor OpenFoodFactsProvider: FoodDataProvider {
         func per100(_ base: String) -> Double? {
             if let value = nutriments["\(base)_100g"]?.value { return value }
             if let perServing = nutriments["\(base)_serving"]?.value,
-               let servingGrams, servingGrams > 0 {
+                let servingGrams, servingGrams > 0
+            {
                 return perServing * 100 / servingGrams
             }
             return nil
@@ -425,7 +429,8 @@ actor OpenFoodFactsProvider: FoodDataProvider {
         // The Atwater fallback is held to the same 950 kcal ceiling `clampedEnergy` enforces. Each
         // macro is capped at 100 g independently, so three capped-but-nonsensical macros would
         // otherwise derive 1700 kcal per 100 g and poison the user's daily total.
-        let kilocalories = Self.clampedEnergy(energy)
+        let kilocalories =
+            Self.clampedEnergy(energy)
             ?? min(950, protein * 4 + carbs * 4 + fat * 9)
 
         // A product with neither energy nor any macro carries no information worth logging.
@@ -547,11 +552,21 @@ actor OpenFoodFactsProvider: FoodDataProvider {
     /// language-prefixed slugs such as `en:chicken-breasts`.
     private static let dietaryCategoryKeywords: [(tag: String, needles: [String])] = [
         ("poultry", ["poultry", "chicken", "turkey", "duck", "goose"]),
-        ("meat", ["meat", "beef", "pork", "lamb", "veal", "bacon", "ham", "sausage",
-                  "charcuterie", "salami", "venison", "offal"]),
+        (
+            "meat",
+            [
+                "meat", "beef", "pork", "lamb", "veal", "bacon", "ham", "sausage",
+                "charcuterie", "salami", "venison", "offal",
+            ]
+        ),
         ("fish", ["fish", "salmon", "tuna", "cod", "sardine", "anchov", "mackerel", "herring"]),
-        ("seafood", ["seafood", "shellfish", "crustacean", "mollusc", "prawn", "shrimp",
-                     "crab", "lobster", "mussel", "oyster", "squid", "octopus"]),
+        (
+            "seafood",
+            [
+                "seafood", "shellfish", "crustacean", "mollusc", "prawn", "shrimp",
+                "crab", "lobster", "mussel", "oyster", "squid", "octopus",
+            ]
+        ),
         ("dairy", ["dairy", "dairies", "milk", "cheese", "yogurt", "yoghurt", "cream", "butter"]),
         ("egg", ["egg"]),
         ("honey", ["honey"]),
@@ -629,7 +644,8 @@ actor OpenFoodFactsProvider: FoodDataProvider {
         let serving = (product.servingSize ?? "").lowercased()
         for text in [quantity, serving] {
             if text.contains("ml") || text.contains("cl") || text.hasSuffix("l")
-                || text.contains(" l") || text.contains("litre") || text.contains("liter") {
+                || text.contains(" l") || text.contains("litre") || text.contains("liter")
+            {
                 return true
             }
         }

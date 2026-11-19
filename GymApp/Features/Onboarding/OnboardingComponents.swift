@@ -128,7 +128,8 @@ struct OnboardingChoiceRow: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous)
-                    .strokeBorder(isSelected ? tint.opacity(0.55) : Color.appSeparator, lineWidth: isSelected ? 1.5 : 0.5)
+                    .strokeBorder(
+                        isSelected ? tint.opacity(0.55) : Color.appSeparator, lineWidth: isSelected ? 1.5 : 0.5)
             )
             .contentShape(RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
         }
@@ -306,7 +307,8 @@ struct OnboardingOptionTile: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous)
-                    .strokeBorder(isSelected ? tint.opacity(0.55) : Color.appSeparator, lineWidth: isSelected ? 1.5 : 0.5)
+                    .strokeBorder(
+                        isSelected ? tint.opacity(0.55) : Color.appSeparator, lineWidth: isSelected ? 1.5 : 0.5)
             )
             .contentShape(RoundedRectangle(cornerRadius: Metrics.cornerMedium, style: .continuous))
         }

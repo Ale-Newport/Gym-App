@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// Suggests meals that fit what is left of the day.
 ///
@@ -98,7 +98,8 @@ struct MealRecommendationsView: View {
 
                 ViewThatFits(in: .horizontal) {
                     HStack(alignment: .top, spacing: Metrics.spacing12) { remainingTiles(plan) }
-                    Grid(alignment: .leading, horizontalSpacing: Metrics.spacing12, verticalSpacing: Metrics.spacing12) {
+                    Grid(alignment: .leading, horizontalSpacing: Metrics.spacing12, verticalSpacing: Metrics.spacing12)
+                    {
                         GridRow {
                             remainingEnergyTile(plan)
                             remainingProteinTile(plan)
@@ -232,10 +233,13 @@ struct MealRecommendationsView: View {
                 }
 
                 if model.lastLoggedSuggestionID == suggestion.id {
-                    Label(L("nutritionLibrary.suggest.logged", L(model.slot.localizationKey)), systemImage: "checkmark.circle.fill")
-                        .font(.caption)
-                        .foregroundStyle(Color.appSuccess)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Label(
+                        L("nutritionLibrary.suggest.logged", L(model.slot.localizationKey)),
+                        systemImage: "checkmark.circle.fill"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(Color.appSuccess)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Button {
@@ -244,11 +248,13 @@ struct MealRecommendationsView: View {
                     Text(L("nutritionLibrary.suggest.log", L(model.slot.localizationKey)))
                 }
                 .buttonStyle(PrimaryButtonStyle(tint: .appNutrition))
-                .accessibilityLabel(Text(L(
-                    "nutritionLibrary.suggest.logAccessibility",
-                    suggestion.title,
-                    L(model.slot.localizationKey)
-                )))
+                .accessibilityLabel(
+                    Text(
+                        L(
+                            "nutritionLibrary.suggest.logAccessibility",
+                            suggestion.title,
+                            L(model.slot.localizationKey)
+                        )))
             }
         }
         .transition(reduceMotion ? .identity : .opacity)
@@ -308,12 +314,14 @@ struct MealRecommendationsView: View {
     private var emptySuggestionsState: some View {
         EmptyStateView(
             systemImage: model.hasNoRoomLeft ? "checkmark.circle" : "fork.knife",
-            title: L(model.hasNoRoomLeft
-                ? "nutritionLibrary.suggest.dayFullTitle"
-                : "nutritionLibrary.suggest.noneTitle"),
-            message: L(model.hasNoRoomLeft
-                ? "nutritionLibrary.suggest.dayFullMessage"
-                : "nutritionLibrary.suggest.noneMessage")
+            title: L(
+                model.hasNoRoomLeft
+                    ? "nutritionLibrary.suggest.dayFullTitle"
+                    : "nutritionLibrary.suggest.noneTitle"),
+            message: L(
+                model.hasNoRoomLeft
+                    ? "nutritionLibrary.suggest.dayFullMessage"
+                    : "nutritionLibrary.suggest.noneMessage")
         ) {
             VStack(spacing: Metrics.spacing8) {
                 NavigationLink {

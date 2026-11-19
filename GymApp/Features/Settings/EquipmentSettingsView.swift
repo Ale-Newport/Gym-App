@@ -112,10 +112,12 @@ struct EquipmentSettingsView: View {
         if let equipment = model.equipment, !equipment.availableEquipment.isEmpty {
             Section {
                 ForEach(equipment.availableEquipment) { item in
-                    Toggle(isOn: Binding(
-                        get: { equipment.temporarilyUnavailable.contains(item) },
-                        set: { model.setTemporarilyUnavailable(item, unavailable: $0) }
-                    )) {
+                    Toggle(
+                        isOn: Binding(
+                            get: { equipment.temporarilyUnavailable.contains(item) },
+                            set: { model.setTemporarilyUnavailable(item, unavailable: $0) }
+                        )
+                    ) {
                         Label {
                             Text(L(item.localizationKey)).fixedSize(horizontal: false, vertical: true)
                         } icon: {
@@ -156,7 +158,9 @@ struct EquipmentSettingsView: View {
                 step: incrementStep
             )
             .onChange(of: barDraft) { _, newValue in
-                guard let kilograms = kilograms(from: newValue), InputValidation.loadKg.contains(kilograms) else { return }
+                guard let kilograms = kilograms(from: newValue), InputValidation.loadKg.contains(kilograms) else {
+                    return
+                }
                 model.commit("barWeight") { model.updateIncrements(barbellBarWeightKg: kilograms) }
             }
 
@@ -168,7 +172,9 @@ struct EquipmentSettingsView: View {
                 step: incrementStep
             )
             .onChange(of: ezBarDraft) { _, newValue in
-                guard let kilograms = kilograms(from: newValue), InputValidation.loadKg.contains(kilograms) else { return }
+                guard let kilograms = kilograms(from: newValue), InputValidation.loadKg.contains(kilograms) else {
+                    return
+                }
                 model.commit("ezBarWeight") { model.updateIncrements(ezBarWeightKg: kilograms) }
             }
 
@@ -181,7 +187,8 @@ struct EquipmentSettingsView: View {
             )
             .onChange(of: machineDraft) { _, newValue in
                 guard let kilograms = kilograms(from: newValue),
-                      InputValidation.loadIncrementKg.contains(kilograms) else { return }
+                    InputValidation.loadIncrementKg.contains(kilograms)
+                else { return }
                 model.commit("machineStep") { model.updateIncrements(machineIncrementKg: kilograms) }
             }
 
@@ -194,7 +201,8 @@ struct EquipmentSettingsView: View {
             )
             .onChange(of: cableDraft) { _, newValue in
                 guard let kilograms = kilograms(from: newValue),
-                      InputValidation.loadIncrementKg.contains(kilograms) else { return }
+                    InputValidation.loadIncrementKg.contains(kilograms)
+                else { return }
                 model.commit("cableStep") { model.updateIncrements(cableIncrementKg: kilograms) }
             }
 

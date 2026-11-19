@@ -232,7 +232,8 @@ enum SessionRescheduler {
         today: Weekday
     ) -> Plan {
         // Days already spent training are not slots, whatever the availability list says.
-        var freeSlots = availableDays
+        var freeSlots =
+            availableDays
             .filter { $0.orderIndex >= today.orderIndex && trainedGroups[$0] == nil }
             .sorted()
 
@@ -243,17 +244,18 @@ enum SessionRescheduler {
             guard !freeSlots.isEmpty else {
                 // The week is full. The session keeps its day and is trained next week.
                 let day = session.weekday ?? today
-                moves.append(Move(
-                    templateID: session.templateID,
-                    title: session.title,
-                    from: session.weekday,
-                    to: day,
-                    waitsForNextWeek: true,
-                    explanation: Explanation(
-                        "workoutHub.reschedule.nextWeek",
-                        [session.title, L(day.localizationKey)]
-                    )
-                ))
+                moves.append(
+                    Move(
+                        templateID: session.templateID,
+                        title: session.title,
+                        from: session.weekday,
+                        to: day,
+                        waitsForNextWeek: true,
+                        explanation: Explanation(
+                            "workoutHub.reschedule.nextWeek",
+                            [session.title, L(day.localizationKey)]
+                        )
+                    ))
                 continue
             }
 
@@ -267,7 +269,8 @@ enum SessionRescheduler {
             for (index, slot) in freeSlots.enumerated() {
                 var conflict = 0.0
                 for (day, groups) in occupied {
-                    let cost = overlap(session.focusGroups, groups)
+                    let cost =
+                        overlap(session.focusGroups, groups)
                         * proximity(dayGap: slot.orderIndex - day.orderIndex)
                     conflict = max(conflict, cost)
                 }
@@ -299,22 +302,26 @@ enum SessionRescheduler {
             } else {
                 explanation = Explanation(
                     "workoutHub.reschedule.moved",
-                    [session.title, session.weekday.map { L($0.localizationKey) } ?? L("common.notSet"),
-                     L(chosen.localizationKey)]
+                    [
+                        session.title, session.weekday.map { L($0.localizationKey) } ?? L("common.notSet"),
+                        L(chosen.localizationKey),
+                    ]
                 )
             }
 
-            moves.append(Move(
-                templateID: session.templateID,
-                title: session.title,
-                from: session.weekday,
-                to: chosen,
-                waitsForNextWeek: false,
-                explanation: explanation
-            ))
+            moves.append(
+                Move(
+                    templateID: session.templateID,
+                    title: session.title,
+                    from: session.weekday,
+                    to: chosen,
+                    waitsForNextWeek: false,
+                    explanation: explanation
+                ))
         }
 
-        let summaryKey = moves.contains(where: \.changesSchedule)
+        let summaryKey =
+            moves.contains(where: \.changesSchedule)
             ? "workoutHub.reschedule.summary"
             : "workoutHub.reschedule.summaryNoChange"
         return Plan(moves: moves, summary: Explanation(summaryKey))
@@ -411,7 +418,8 @@ final class WorkoutHubViewModel {
 
             guard let todays else {
                 // A day the program deliberately leaves clear is a rest day, not a hole.
-                isRestDay = active.orderedTemplates.contains { $0.weekday == weekday && $0.isRestDay }
+                isRestDay =
+                    active.orderedTemplates.contains { $0.weekday == weekday && $0.isRestDay }
                     || !active.orderedTemplates.isEmpty
                 plan = nil
                 state = .empty
@@ -458,7 +466,8 @@ final class WorkoutHubViewModel {
 
         // The deload falls on the last week of the mesocycle. Derived rather than stored so a user
         // who changes the block length sees the change take effect immediately.
-        let isDeloadWeek = program.mesocycleLengthWeeks > 1
+        let isDeloadWeek =
+            program.mesocycleLengthWeeks > 1
             && (program.completedWeeks + 1) % program.mesocycleLengthWeeks == 0
 
         var items: [HubPlannedItem] = []
@@ -466,69 +475,75 @@ final class WorkoutHubViewModel {
             guard let exercise = catalogByID[slot.exerciseID] else {
                 // An exercise the catalogue no longer ships still has to be shown, or the user would
                 // silently train one movement fewer than the plan says.
-                items.append(HubPlannedItem(
+                items.append(
+                    HubPlannedItem(
+                        id: slot.id,
+                        exerciseID: slot.exerciseID,
+                        name: slot.exerciseID,
+                        trackingMode: .weightAndReps,
+                        sets: slot.targetSets,
+                        repRange: slot.repRange,
+                        weightKg: nil,
+                        restSeconds: slot.restSeconds,
+                        targetRIR: slot.targetRIR,
+                        rationale: Explanation("workoutHub.today.exerciseMissing"),
+                        requiresCalibration: false,
+                        templateSlotID: slot.id,
+                        substitutedFrom: slot.substitutedFromExerciseID,
+                        substitutionReason: nil
+                    ))
+                continue
+            }
+
+            let decision = ProgressionEngine.decide(
+                ProgressionInput(
+                    exercise: exercise,
+                    state: states[slot.exerciseID]
+                        ?? ProgressionStateSnapshot(
+                            exerciseID: slot.exerciseID, repRange: slot.repRange
+                        ),
+                    history: histories[slot.exerciseID] ?? ExerciseHistorySnapshot(exerciseID: slot.exerciseID),
+                    targetRIR: settings.targetRIROverride ?? targetRIR,
+                    increments: increments,
+                    strategy: settings.progressionStrategy,
+                    bodyWeightKg: profile.currentWeightKg,
+                    isDeloadWeek: isDeloadWeek,
+                    experience: profile.experience,
+                    goal: profile.primaryGoal
+                ))
+
+            // The user's own plan wins on set count unless the engine deliberately changed it —
+            // adding a set is a progression decision, and it carries an explanation when it happens.
+            let sets =
+                settings.autoProgressionEnabled
+                ? (decision.recommendedSets ?? slot.targetSets)
+                : slot.targetSets
+
+            items.append(
+                HubPlannedItem(
                     id: slot.id,
                     exerciseID: slot.exerciseID,
-                    name: slot.exerciseID,
-                    trackingMode: .weightAndReps,
-                    sets: slot.targetSets,
-                    repRange: slot.repRange,
-                    weightKg: nil,
+                    name: exercise.name,
+                    trackingMode: exercise.metadata.trackingMode,
+                    sets: InputValidation.clampedSets(sets),
+                    repRange: settings.autoProgressionEnabled ? decision.recommendedRepRange : slot.repRange,
+                    weightKg: settings.autoProgressionEnabled ? decision.recommendedWeightKg : nil,
                     restSeconds: slot.restSeconds,
-                    targetRIR: slot.targetRIR,
-                    rationale: Explanation("workoutHub.today.exerciseMissing"),
-                    requiresCalibration: false,
+                    targetRIR: decision.targetRIR,
+                    rationale: settings.autoProgressionEnabled ? decision.explanation : nil,
+                    requiresCalibration: decision.requiresCalibration,
                     templateSlotID: slot.id,
                     substitutedFrom: slot.substitutedFromExerciseID,
                     substitutionReason: nil
                 ))
-                continue
-            }
-
-            let decision = ProgressionEngine.decide(ProgressionInput(
-                exercise: exercise,
-                state: states[slot.exerciseID] ?? ProgressionStateSnapshot(
-                    exerciseID: slot.exerciseID, repRange: slot.repRange
-                ),
-                history: histories[slot.exerciseID] ?? ExerciseHistorySnapshot(exerciseID: slot.exerciseID),
-                targetRIR: settings.targetRIROverride ?? targetRIR,
-                increments: increments,
-                strategy: settings.progressionStrategy,
-                bodyWeightKg: profile.currentWeightKg,
-                isDeloadWeek: isDeloadWeek,
-                experience: profile.experience,
-                goal: profile.primaryGoal
-            ))
-
-            // The user's own plan wins on set count unless the engine deliberately changed it —
-            // adding a set is a progression decision, and it carries an explanation when it happens.
-            let sets = settings.autoProgressionEnabled
-                ? (decision.recommendedSets ?? slot.targetSets)
-                : slot.targetSets
-
-            items.append(HubPlannedItem(
-                id: slot.id,
-                exerciseID: slot.exerciseID,
-                name: exercise.name,
-                trackingMode: exercise.metadata.trackingMode,
-                sets: InputValidation.clampedSets(sets),
-                repRange: settings.autoProgressionEnabled ? decision.recommendedRepRange : slot.repRange,
-                weightKg: settings.autoProgressionEnabled ? decision.recommendedWeightKg : nil,
-                restSeconds: slot.restSeconds,
-                targetRIR: decision.targetRIR,
-                rationale: settings.autoProgressionEnabled ? decision.explanation : nil,
-                requiresCalibration: decision.requiresCalibration,
-                templateSlotID: slot.id,
-                substitutedFrom: slot.substitutedFromExerciseID,
-                substitutionReason: nil
-            ))
         }
 
         var notes: [Explanation] = []
         if isDeloadWeek {
-            notes.append(Explanation(
-                "workoutHub.today.deloadWeek", [String(program.mesocycleLengthWeeks)]
-            ))
+            notes.append(
+                Explanation(
+                    "workoutHub.today.deloadWeek", [String(program.mesocycleLengthWeeks)]
+                ))
         }
         if !settings.autoProgressionEnabled {
             notes.append(Explanation("workoutHub.today.autoProgressionOff"))
@@ -576,22 +591,23 @@ final class WorkoutHubViewModel {
     /// recommendation, which is a better guess than three sets of ten for a plank.
     func addExercise(_ exercise: Exercise) {
         guard var current = plan else { return }
-        current.items.append(HubPlannedItem(
-            id: UUID(),
-            exerciseID: exercise.id,
-            name: exercise.name,
-            trackingMode: exercise.metadata.trackingMode,
-            sets: 3,
-            repRange: exercise.metadata.recommendedRepRange,
-            weightKg: nil,
-            restSeconds: exercise.metadata.defaultRestSeconds,
-            targetRIR: 2,
-            rationale: Explanation("workoutHub.today.addedByYou"),
-            requiresCalibration: false,
-            templateSlotID: nil,
-            substitutedFrom: nil,
-            substitutionReason: nil
-        ))
+        current.items.append(
+            HubPlannedItem(
+                id: UUID(),
+                exerciseID: exercise.id,
+                name: exercise.name,
+                trackingMode: exercise.metadata.trackingMode,
+                sets: 3,
+                repRange: exercise.metadata.recommendedRepRange,
+                weightKg: nil,
+                restSeconds: exercise.metadata.defaultRestSeconds,
+                targetRIR: 2,
+                rationale: Explanation("workoutHub.today.addedByYou"),
+                requiresCalibration: false,
+                templateSlotID: nil,
+                substitutedFrom: nil,
+                substitutionReason: nil
+            ))
         plan = current
     }
 
@@ -918,9 +934,10 @@ final class TrainingCalendarViewModel {
             let gridStart = startOfGrid(for: monthInterval.start)
             let gridEnd = calendar.date(byAdding: .day, value: 42, to: gridStart) ?? monthInterval.end
             let sessions = try sessions(from: gridStart, to: gridEnd, context: context)
-            monthSessionCount = sessions.filter {
-                $0.status == .completed && monthInterval.contains($0.startedAt)
-            }.count
+            monthSessionCount =
+                sessions.filter {
+                    $0.status == .completed && monthInterval.contains($0.startedAt)
+                }.count
 
             monthDays = (0..<42).compactMap { offset in
                 guard let date = calendar.date(byAdding: .day, value: offset, to: gridStart) else { return nil }
@@ -974,11 +991,12 @@ final class TrainingCalendarViewModel {
         let inMonth = forcesVisible || calendar.isDate(date, equalTo: monthStart, toGranularity: .month)
 
         if let session = sessions.first(where: { calendar.isDate($0.startedAt, inSameDayAs: date) }) {
-            let state: HubDayState = switch session.status {
-            case .completed: .completed
-            case .inProgress: .inProgress
-            default: .missed
-            }
+            let state: HubDayState =
+                switch session.status {
+                case .completed: .completed
+                case .inProgress: .inProgress
+                default: .missed
+                }
             return HubCalendarDay(
                 date: date, dayNumber: dayNumber, isToday: isToday, isInVisibleMonth: inMonth,
                 state: state, title: session.titleSnapshot, focusGroups: session.focusGroups,
@@ -1033,9 +1051,11 @@ final class TrainingCalendarViewModel {
                     to: program,
                     reason: Explanation(
                         "workoutHub.calendar.movedReason",
-                        [HubFormat.title(of: template),
-                         from.map { L($0.localizationKey) } ?? L("common.notSet"),
-                         L(weekday.localizationKey)]
+                        [
+                            HubFormat.title(of: template),
+                            from.map { L($0.localizationKey) } ?? L("common.notSet"),
+                            L(weekday.localizationKey),
+                        ]
                     )
                 )
             }
@@ -1122,13 +1142,15 @@ final class TrainingCalendarViewModel {
             request.recovery = recovery
             request.increments = try profiles.increments()
             request.weekIndex = program.completedWeeks
-            request.isDeloadWeek = program.mesocycleLengthWeeks > 1
+            request.isDeloadWeek =
+                program.mesocycleLengthWeeks > 1
                 && (program.completedWeeks + 1) % program.mesocycleLengthWeeks == 0
             request.recentlyUsedExerciseIDs = recentIDs
             request.lockedExerciseIDs = lockedIDs
             // Seeded from the template so regenerating twice in a row does not produce the same
             // session again — the user asked for something different.
-            request.randomSeed = UInt64(truncatingIfNeeded: template.id.hashValue) ^ UInt64(Date().timeIntervalSince1970)
+            request.randomSeed =
+                UInt64(truncatingIfNeeded: template.id.hashValue) ^ UInt64(Date().timeIntervalSince1970)
 
             // The engine is pure and by far the most expensive part, so it runs off the main
             // actor. Every repository call around it stays here: `ModelContext` is not `Sendable`
@@ -1141,7 +1163,8 @@ final class TrainingCalendarViewModel {
             // Re-resolved across the suspension point: the store can change while the engine runs.
             guard let template = self.template(id: templateID) else { return }
 
-            let replacement = generated.trainingSessions.first { $0.orderIndex == template.orderIndex }
+            let replacement =
+                generated.trainingSessions.first { $0.orderIndex == template.orderIndex }
                 ?? generated.trainingSessions.first
             guard let replacement, !replacement.exercises.isEmpty else {
                 statusMessage = L("workoutHub.calendar.regenerateEmpty")
@@ -1205,10 +1228,11 @@ final class TrainingCalendarViewModel {
         for template in program.orderedTemplates where !template.isRestDay && template.id != missed.id {
             guard let weekday = template.weekday, weekday.orderIndex >= today.orderIndex else { continue }
             guard trained[weekday] == nil else { continue }
-            pending.append(SessionRescheduler.SessionInput(
-                templateID: template.id, title: HubFormat.title(of: template),
-                weekday: weekday, focusGroups: template.focusGroups, orderIndex: template.orderIndex
-            ))
+            pending.append(
+                SessionRescheduler.SessionInput(
+                    templateID: template.id, title: HubFormat.title(of: template),
+                    weekday: weekday, focusGroups: template.focusGroups, orderIndex: template.orderIndex
+                ))
         }
 
         pendingReschedule = SessionRescheduler.plan(
@@ -1252,7 +1276,8 @@ final class TrainingCalendarViewModel {
 
     private func report(_ error: Error) {
         if let repositoryError = error as? RepositoryError {
-            AppLog.training.error("Calendar change failed: \(repositoryError.diagnosticDetail ?? "-", privacy: .public)")
+            AppLog.training.error(
+                "Calendar change failed: \(repositoryError.diagnosticDetail ?? "-", privacy: .public)")
             errorMessage = repositoryError.explanation.text
         } else {
             AppLog.training.error("Calendar change failed: \(String(describing: error), privacy: .public)")
@@ -1331,7 +1356,8 @@ final class WorkoutHistoryViewModel {
             let month = calendar.dateInterval(of: .month, for: summary.date)?.start ?? summary.date
             buckets[month, default: []].append(summary)
         }
-        groups = buckets
+        groups =
+            buckets
             .map { MonthGroup(monthStart: $0.key, sessions: $0.value.sorted { $0.date > $1.date }) }
             .sorted { $0.monthStart > $1.monthStart }
 

@@ -229,13 +229,16 @@ struct TemplateLibraryView: View {
                     }
                 }
 
-                Text(L("program.session.summary",
-                       template.orderedExercises.count,
-                       template.totalPlannedSets,
-                       formatter.durationCompact(model.estimatedMinutes(of: template) * 60)))
-                    .font(.caption)
-                    .foregroundStyle(Color.appTextSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                Text(
+                    L(
+                        "program.session.summary",
+                        template.orderedExercises.count,
+                        template.totalPlannedSets,
+                        formatter.durationCompact(model.estimatedMinutes(of: template) * 60))
+                )
+                .font(.caption)
+                .foregroundStyle(Color.appTextSecondary)
+                .fixedSize(horizontal: false, vertical: true)
             }
 
             Spacer(minLength: Metrics.spacing8)
@@ -278,13 +281,16 @@ struct TemplatePreviewSheet: View {
                                     }
                                 }
                             }
-                            Text(L("program.session.summary",
-                                   template.orderedExercises.count,
-                                   template.totalPlannedSets,
-                                   formatter.durationCompact(model.estimatedMinutes(of: template) * 60)))
-                                .font(.footnote)
-                                .foregroundStyle(Color.appTextSecondary)
-                                .fixedSize(horizontal: false, vertical: true)
+                            Text(
+                                L(
+                                    "program.session.summary",
+                                    template.orderedExercises.count,
+                                    template.totalPlannedSets,
+                                    formatter.durationCompact(model.estimatedMinutes(of: template) * 60))
+                            )
+                            .font(.footnote)
+                            .foregroundStyle(Color.appTextSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
                         }
                     }
 
@@ -410,13 +416,16 @@ struct TemplateSourceSheet: View {
                                             .font(.subheadline.weight(.medium))
                                             .foregroundStyle(Color.appTextPrimary)
                                             .fixedSize(horizontal: false, vertical: true)
-                                        Text(L("program.session.summary",
-                                               session.orderedExercises.count,
-                                               session.totalPlannedSets,
-                                               formatter.durationCompact(model.estimatedMinutes(of: session) * 60)))
-                                            .font(.caption)
-                                            .foregroundStyle(Color.appTextSecondary)
-                                            .fixedSize(horizontal: false, vertical: true)
+                                        Text(
+                                            L(
+                                                "program.session.summary",
+                                                session.orderedExercises.count,
+                                                session.totalPlannedSets,
+                                                formatter.durationCompact(model.estimatedMinutes(of: session) * 60))
+                                        )
+                                        .font(.caption)
+                                        .foregroundStyle(Color.appTextSecondary)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     }
                                     .padding(.vertical, Metrics.spacing6)
                                     .frame(minHeight: Metrics.minimumTapTarget)

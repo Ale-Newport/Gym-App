@@ -153,7 +153,9 @@ struct FoodLogRow: View {
         Button(L("nutritionLog.food.details"), action: onShowDetails)
         if canDuplicate { Button(L("common.duplicate"), action: onDuplicate) }
         if canFavorite {
-            Button(isFavorite ? L("nutritionLog.action.unfavorite") : L("nutritionLog.action.favorite"), action: onToggleFavorite)
+            Button(
+                isFavorite ? L("nutritionLog.action.unfavorite") : L("nutritionLog.action.favorite"),
+                action: onToggleFavorite)
         }
         Button(L("common.delete")) { isConfirmingDelete = true }
     }

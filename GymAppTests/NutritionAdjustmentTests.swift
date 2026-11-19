@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+
 @testable import GymApp
 
 /// Behavioural tests for `NutritionAdjustmentEngine`.
@@ -249,7 +250,7 @@ struct NutritionAdjustmentTests {
         // A zero target still gets the 0.15 kg/week floor rather than a zero-width band.
         #expect(
             abs(NutritionAdjustmentEngine.toleranceKgPerWeek(targetWeekly: 0, confidence: 1.0) - 0.15)
-            < 0.0001
+                < 0.0001
         )
     }
 
@@ -298,7 +299,7 @@ struct NutritionAdjustmentTests {
             (Self.bulkingTargets(), Self.bulkingProfile, 4.0),
             (Self.bulkingTargets(), Self.bulkingProfile, -4.0),
             (Self.cuttingTargets(), Self.cuttingProfile, 3.0),
-            (Self.cuttingTargets(), Self.cuttingProfile, -3.0)
+            (Self.cuttingTargets(), Self.cuttingProfile, -3.0),
         ]
         for (current, profile, observed) in scenarios {
             let decision = Self.evaluate(
@@ -407,12 +408,12 @@ struct NutritionAdjustmentTests {
         )
         #expect(decision.action == .decrease)
 
-                let proposed = decision.newTargets?.kilocalories ?? 0
+        let proposed = decision.newTargets?.kilocalories ?? 0
         #expect(
             proposed >= floor,
             "proposed \(proposed) kcal against a floor of \(floor) kcal"
         )
-    
+
     }
 
     // MARK: - Approval
@@ -444,7 +445,7 @@ struct NutritionAdjustmentTests {
             Self.evaluate(current: Self.bulkingTargets(), profile: Self.bulkingProfile, observedWeekly: 0.4),
             Self.evaluate(current: Self.bulkingTargets(), profile: Self.bulkingProfile, observedWeekly: 0),
             Self.evaluate(current: Self.bulkingTargets(), profile: Self.bulkingProfile, observedWeekly: 1.5),
-            Self.evaluate(current: Self.cuttingTargets(), profile: Self.cuttingProfile, observedWeekly: 0.5)
+            Self.evaluate(current: Self.cuttingTargets(), profile: Self.cuttingProfile, observedWeekly: 0.5),
         ]
         for decision in decisions {
             #expect(decision.requiresUserApproval, "\(decision.action) came back applied, not proposed")
@@ -462,7 +463,7 @@ struct NutritionAdjustmentTests {
             Self.evaluate(
                 current: Self.bulkingTargets(), profile: Self.bulkingProfile,
                 observedWeekly: 0, adherence: 0.1
-            )
+            ),
         ]
         for decision in holds {
             #expect(decision.action == .hold)
@@ -505,7 +506,7 @@ struct NutritionAdjustmentTests {
             (Self.bulkingTargets(), Self.bulkingProfile, 0.0),
             (Self.bulkingTargets(), Self.bulkingProfile, 1.5),
             (Self.cuttingTargets(), Self.cuttingProfile, 0.4),
-            (Self.cuttingTargets(), Self.cuttingProfile, -1.1)
+            (Self.cuttingTargets(), Self.cuttingProfile, -1.1),
         ]
         for (current, profile, observed) in scenarios {
             let decision = Self.evaluate(current: current, profile: profile, observedWeekly: observed)
@@ -569,7 +570,7 @@ struct NutritionAdjustmentTests {
     @Test("A protein figure that alone overspends the new budget is rebuilt, not frozen")
     func overspendingProteinIsRebuilt() {
         var broken = Self.cuttingTargets(kilocalories: 1_600)
-        broken.proteinG = 600   // 2,400 kcal of protein against a 1,450 kcal budget
+        broken.proteinG = 600  // 2,400 kcal of protein against a 1,450 kcal budget
         let split = NutritionAdjustmentEngine.redistribute(
             delta: -150, current: broken, profile: Self.cuttingProfile, newKilocalories: 1_450
         )

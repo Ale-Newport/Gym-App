@@ -230,14 +230,15 @@ class ForgeUITestCase: XCTestCase {
     /// a Spanish override behind for everything that runs after it.
     @discardableResult
     func launch(_ scenario: ForgeScenario, extraArguments: [String] = []) -> XCUIApplication {
-        app.launchArguments = [
-            "-uiTestResetStore",
-            "-uiTestScenario", scenario.rawValue,
-            "-uiTestDisableAnimations",
-            "-AppleLanguages", "(en)",
-            "-AppleLocale", "en_US",
-            "-settings.languageOverride", "en"
-        ] + extraArguments
+        app.launchArguments =
+            [
+                "-uiTestResetStore",
+                "-uiTestScenario", scenario.rawValue,
+                "-uiTestDisableAnimations",
+                "-AppleLanguages", "(en)",
+                "-AppleLocale", "en_US",
+                "-settings.languageOverride", "en",
+            ] + extraArguments
         app.launch()
         return app
     }

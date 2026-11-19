@@ -781,7 +781,7 @@ struct RecoverySnapshotFieldsTests {
         let snapshot = RecoveryEngine.snapshot(
             sessions: [
                 makeOutcome(id: 1, hoursAgo: 120, groupSets: [.quads: 4]),
-                makeOutcome(id: 2, hoursAgo: 26, groupSets: [.quads: 4])
+                makeOutcome(id: 2, hoursAgo: 26, groupSets: [.quads: 4]),
             ],
             wellbeing: [], profile: TrainingProfileSnapshot(), now: referenceNow
         )
@@ -794,7 +794,7 @@ struct RecoverySnapshotFieldsTests {
             sessions: [
                 makeOutcome(id: 1, hoursAgo: 10, groupSets: [.quads: 4, .glutes: 1.5]),
                 makeOutcome(id: 2, hoursAgo: 100, groupSets: [.quads: 3]),
-                makeOutcome(id: 3, hoursAgo: 200, groupSets: [.quads: 99])
+                makeOutcome(id: 3, hoursAgo: 200, groupSets: [.quads: 99]),
             ],
             wellbeing: [], profile: TrainingProfileSnapshot(), now: referenceNow
         )
@@ -811,7 +811,7 @@ struct RecoverySnapshotFieldsTests {
                 makeOutcome(id: 1, hoursAgo: 10, groupSets: [.quads: 4]),
                 makeOutcome(id: 2, hoursAgo: 100, groupSets: [.quads: 4]),
                 makeOutcome(id: 3, hoursAgo: 200, groupSets: [.quads: 4]),
-                makeOutcome(id: 4, hoursAgo: 20, groupSets: [.quads: 4], completedSets: 0)
+                makeOutcome(id: 4, hoursAgo: 20, groupSets: [.quads: 4], completedSets: 0),
             ],
             wellbeing: [], profile: TrainingProfileSnapshot(), now: referenceNow
         )
@@ -823,7 +823,7 @@ struct RecoverySnapshotFieldsTests {
         let sessions = [
             makeOutcome(id: 1, hoursAgo: 10, groupSets: [.quads: 4], effort: .hard, averageRIR: 2),
             makeOutcome(id: 2, hoursAgo: 40, groupSets: [.back: 6], effort: .good, averageRIR: 1),
-            makeOutcome(id: 3, hoursAgo: 90, groupSets: [.chest: 5], effort: .easy, averageRIR: 3)
+            makeOutcome(id: 3, hoursAgo: 90, groupSets: [.chest: 5], effort: .easy, averageRIR: 3),
         ]
         let forward = RecoveryEngine.snapshot(
             sessions: sessions, wellbeing: [], profile: TrainingProfileSnapshot(), now: referenceNow

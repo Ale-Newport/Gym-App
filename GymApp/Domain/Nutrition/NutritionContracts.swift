@@ -59,8 +59,9 @@ struct NutritionProfileSnapshot: Hashable, Sendable {
     /// Meal slots the day is actually split into. Three meals collapse the snack budget into the
     /// main meals, which is how people with `mealsPerDay <= 3` actually eat.
     var activeSlots: [MealSlot] {
-        mealsPerDay >= 4 ? MealSlot.allCases.sorted { $0.sortIndex < $1.sortIndex }
-                         : [.breakfast, .lunch, .dinner]
+        mealsPerDay >= 4
+            ? MealSlot.allCases.sorted { $0.sortIndex < $1.sortIndex }
+            : [.breakfast, .lunch, .dinner]
     }
 
     /// Share of the day's energy this slot should carry, renormalised over `activeSlots` so the
@@ -443,9 +444,10 @@ enum DeterministicID {
         // arbitrary bytes wearing a UUID's clothes.
         bytes[6] = (bytes[6] & 0x0f) | 0x40
         bytes[8] = (bytes[8] & 0x3f) | 0x80
-        return UUID(uuid: (
-            bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
-            bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]
-        ))
+        return UUID(
+            uuid: (
+                bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
+                bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]
+            ))
     }
 }

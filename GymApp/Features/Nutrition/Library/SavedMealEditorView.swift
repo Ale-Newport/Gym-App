@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 /// Builds or edits a saved meal: a named set of portions that can be logged into any slot in one
 /// tap.
@@ -27,7 +27,9 @@ struct SavedMealEditorView: View {
     var body: some View {
         content
             .background(Color.appBackground)
-            .navigationTitle(L(model.isExistingMeal ? "nutritionLibrary.meals.editTitle" : "nutritionLibrary.meals.newTitle"))
+            .navigationTitle(
+                L(model.isExistingMeal ? "nutritionLibrary.meals.editTitle" : "nutritionLibrary.meals.newTitle")
+            )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -277,8 +279,9 @@ struct PortionDraftRow: View {
 
     private var unitLabel: String {
         if draft.unit == .serving,
-           let index = draft.servingIndex,
-           draft.servings.indices.contains(index) {
+            let index = draft.servingIndex,
+            draft.servings.indices.contains(index)
+        {
             return draft.servings[index].name
         }
         return L(draft.unit.localizationKey)
@@ -311,9 +314,16 @@ struct MacroTotalsCard: View {
                 // row folds into a 2×2 grid rather than squeezing the numbers into illegibility.
                 ViewThatFits(in: .horizontal) {
                     HStack(alignment: .top, spacing: Metrics.spacing12) { tiles }
-                    Grid(alignment: .leading, horizontalSpacing: Metrics.spacing12, verticalSpacing: Metrics.spacing12) {
-                        GridRow { energyTile; proteinTile }
-                        GridRow { carbsTile; fatTile }
+                    Grid(alignment: .leading, horizontalSpacing: Metrics.spacing12, verticalSpacing: Metrics.spacing12)
+                    {
+                        GridRow {
+                            energyTile
+                            proteinTile
+                        }
+                        GridRow {
+                            carbsTile
+                            fatTile
+                        }
                     }
                 }
             }

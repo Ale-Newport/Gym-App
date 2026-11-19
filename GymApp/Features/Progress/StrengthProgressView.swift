@@ -184,7 +184,9 @@ struct StrengthProgressView: View {
                         .lineStyle(StrokeStyle(lineWidth: 2, dash: [4, 3]))
                         .foregroundStyle(Color.appRecovery)
                         .symbol(.square)
-                        .accessibilityLabel(Text(L("progress.strength.legend.topSet") + ", " + formatter.mediumDate(point.date)))
+                        .accessibilityLabel(
+                            Text(L("progress.strength.legend.topSet") + ", " + formatter.mediumDate(point.date))
+                        )
                         .accessibilityValue(Text(formatter.weight(point.value)))
                     }
                     ForEach(model.oneRepMaxPoints) { point in
@@ -197,7 +199,9 @@ struct StrengthProgressView: View {
                         .lineStyle(StrokeStyle(lineWidth: 2.5, lineCap: .round))
                         .foregroundStyle(Color.appAccent)
                         .symbol(.circle)
-                        .accessibilityLabel(Text(L("progress.strength.legend.estimate") + ", " + formatter.mediumDate(point.date)))
+                        .accessibilityLabel(
+                            Text(L("progress.strength.legend.estimate") + ", " + formatter.mediumDate(point.date))
+                        )
                         .accessibilityValue(Text(formatter.weight(point.value)))
                     }
                 }
@@ -286,12 +290,15 @@ private struct TrainedExercisePickerSheet: View {
                                         .font(.subheadline.weight(.medium))
                                         .foregroundStyle(Color.appTextPrimary)
                                         .fixedSize(horizontal: false, vertical: true)
-                                    Text(L("progress.strength.sessionsAndLast",
-                                           exercise.sessionCount,
-                                           formatter.shortDate(exercise.lastPerformed)))
-                                        .font(.caption)
-                                        .foregroundStyle(Color.appTextSecondary)
-                                        .fixedSize(horizontal: false, vertical: true)
+                                    Text(
+                                        L(
+                                            "progress.strength.sessionsAndLast",
+                                            exercise.sessionCount,
+                                            formatter.shortDate(exercise.lastPerformed))
+                                    )
+                                    .font(.caption)
+                                    .foregroundStyle(Color.appTextSecondary)
+                                    .fixedSize(horizontal: false, vertical: true)
                                 }
                                 Spacer(minLength: Metrics.spacing8)
                                 if exercise.id == selectedID {

@@ -66,7 +66,7 @@ private func history(
             exerciseID: id,
             sets: [
                 performedSet(weight: load, reps: reps, rir: rirs[index]),
-                performedSet(weight: load, reps: reps, rir: rirs[index])
+                performedSet(weight: load, reps: reps, rir: rirs[index]),
             ]
         )
     }
@@ -138,7 +138,7 @@ struct DeloadSingleSignalTests {
             DeloadTuning.weightBlockLength,
             DeloadTuning.weightEffortInflation,
             DeloadTuning.weightSubjective,
-            DeloadTuning.weightMissedSets
+            DeloadTuning.weightMissedSets,
         ]
         #expect(abs(weights.reduce(0, +) - 1.0) < 1e-9)
         let heaviest = try #require(weights.max())
@@ -199,11 +199,12 @@ struct DeloadCorroborationTests {
         // 0.28 + 0.18 × 0.75 = 0.415.
         #expect(assessment.shouldDeload)
         #expect(abs(assessment.severity - 0.415) < 1e-9)
-        #expect(assessment.reasons.map(\.key) == [
-            "deload.summary.recommended",
-            "deload.reason.performanceRegression",
-            "deload.reason.blockLength"
-        ])
+        #expect(
+            assessment.reasons.map(\.key) == [
+                "deload.summary.recommended",
+                "deload.reason.performanceRegression",
+                "deload.reason.blockLength",
+            ])
     }
 
     @Test("A marginal call gets the gentle end of the prescription")
@@ -237,20 +238,21 @@ struct DeloadCorroborationTests {
         #expect(abs(assessment.severity - 0.685) < 1e-9)
         #expect(abs(assessment.volumeReduction - 0.481428571) < 1e-6)
         #expect(abs(assessment.intensityReduction - 0.140714285) < 1e-6)
-        #expect(assessment.reasons.map(\.key) == [
-            "deload.summary.recommended",
-            "deload.reason.performanceRegression",
-            "deload.reason.elevatedFatigue",
-            "deload.reason.blockLength",
-            "deload.reason.subjective"
-        ])
+        #expect(
+            assessment.reasons.map(\.key) == [
+                "deload.summary.recommended",
+                "deload.reason.performanceRegression",
+                "deload.reason.elevatedFatigue",
+                "deload.reason.blockLength",
+                "deload.reason.subjective",
+            ])
         #expect(assessment.reasons.first?.arguments == ["48", "14"])
     }
 
     @Test("Severity rises with each corroborating signal")
     func severityScalesWithTheNumberOfSignals() {
         let regressions = keyed([
-            regressingHistory(id: "a"), regressingHistory(id: "b"), regressingHistory(id: "c")
+            regressingHistory(id: "a"), regressingHistory(id: "b"), regressingHistory(id: "c"),
         ])
         let loadedRecovery = RecoverySnapshot(
             fatigue: [.quads: 0.70, .hamstrings: 0.70, .glutes: 0.65, .back: 0.62],
@@ -307,11 +309,12 @@ struct DeloadCorroborationTests {
         #expect(abs(assessment.severity - 0.25) < 1e-9)
         #expect(assessment.volumeReduction == 0)
         #expect(assessment.intensityReduction == 0)
-        #expect(assessment.reasons.map(\.key) == [
-            "deload.summary.watch",
-            "deload.reason.effortInflation",
-            "deload.reason.blockLength"
-        ])
+        #expect(
+            assessment.reasons.map(\.key) == [
+                "deload.summary.watch",
+                "deload.reason.effortInflation",
+                "deload.reason.blockLength",
+            ])
     }
 }
 
@@ -462,7 +465,7 @@ struct DeloadSignalTests {
             histories: keyed([
                 history(id: "a", loads: [99, 99.5, 100]),
                 history(id: "b", loads: [99, 99.5, 100]),
-                history(id: "c", loads: [99, 99.5, 100])
+                history(id: "c", loads: [99, 99.5, 100]),
             ])
         )
         #expect(quiet == DeloadAssessment.none)

@@ -150,12 +150,14 @@ struct ExerciseRecommendationEngine: Sendable {
                 // the lats a little indirect credit — the slot exists to train the target group.
                 let direct = candidate.exercise.primaryGroup == request.targetGroup
                 if pickIsDirect && !direct { continue }
-                let adjusted = candidate.score * Self.diversityMultiplier(
-                    candidate.exercise,
-                    patternCounts: patternCounts,
-                    equipmentCounts: equipmentCounts,
-                    targetCounts: targetCounts
-                )
+                let adjusted =
+                    candidate.score
+                    * Self.diversityMultiplier(
+                        candidate.exercise,
+                        patternCounts: patternCounts,
+                        equipmentCounts: equipmentCounts,
+                        targetCounts: targetCounts
+                    )
                 // Strict `>` keeps the pre-sorted, deterministic order as the tie-breaker.
                 if (direct && !pickIsDirect) || adjusted > pickValue {
                     pickValue = adjusted
@@ -261,7 +263,8 @@ struct ExerciseRecommendationEngine: Sendable {
         let patterns = Double(patternCounts[exercise.metadata.movementPattern] ?? 0)
         let equipment = Double(equipmentCounts[exercise.equipment] ?? 0)
         let targets = Double(targetCounts[exercise.target] ?? 0)
-        let penalty = repeatPatternPenalty * patterns
+        let penalty =
+            repeatPatternPenalty * patterns
             + repeatEquipmentPenalty * equipment
             + repeatTargetPenalty * targets
         return max(diversityFloor, 1 - penalty)
