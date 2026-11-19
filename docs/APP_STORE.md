@@ -118,7 +118,7 @@ Forge ofrece estimaciones de forma física y nutrición para adultos sanos. No e
 
 | Field | Value |
 |---|---|
-| Support URL | `https://ale-newport.github.io/Gym-App/` — the page is `docs/index.html`; it goes live when GitHub Pages is switched on for the `/docs` folder (section 7). |
+| Support URL | `https://ale-newport.github.io/Gym-App/` — the page is `docs/index.html`, served by GitHub Pages from the `/docs` folder of `main`. |
 | Privacy Policy URL | `https://ale-newport.github.io/Gym-App/privacy.html` — `docs/privacy.html`, generated from `docs/PRIVACY.md`; regenerate it when that file changes. |
 | Marketing URL | Optional |
 
@@ -174,11 +174,10 @@ Forge needs no account and works fully offline. On first launch a five-screen se
 
 Everything below needs your Apple account or a public web page, so it is yours to do.
 
-1. **Publish the two web pages.** GitHub → the `Gym-App` repository → Settings → Pages → *Deploy from
-   a branch* → branch `main`, folder `/docs` → Save. Wait a minute, then open the two URLs in
-   section 3 and check they load. (Pages needs a public repository on a free plan. If you would
-   rather not, any host works — upload `docs/index.html`, `docs/privacy.html` and `docs/site.css`.)
-   If you want an email on the support page, add it to the Contact block of `docs/index.html`.
+1. **The two web pages are live.** GitHub Pages deploys `main` → `/docs`, so
+   <https://ale-newport.github.io/Gym-App/> and <https://ale-newport.github.io/Gym-App/privacy.html>
+   update on every push to `main`. If you want an email on the support page, add it to the Contact
+   block of `docs/index.html`.
 2. **Create the app record.** [App Store Connect](https://appstoreconnect.apple.com) → My Apps → +
    → New App. Platform iOS, languages English (primary) and Spanish, name *Forge: Workout &
    Nutrition*, bundle ID `com.alejandronewport.forge`, SKU `forge-ios-1`.

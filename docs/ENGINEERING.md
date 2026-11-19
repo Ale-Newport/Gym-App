@@ -365,8 +365,9 @@ Done:
 Left, because each needs your Apple account or a public web page:
 
 1. Create the app record in App Store Connect with bundle id `com.alejandronewport.forge`.
-2. Publish the support and privacy pages (`docs/index.html`, `docs/privacy.html` — enable GitHub
-   Pages on the `/docs` folder of `main`) and paste both URLs into the listing.
+2. Paste the support and privacy URLs into the listing. Both pages are already live on GitHub Pages
+   (`main` → `/docs`): <https://ale-newport.github.io/Gym-App/> and
+   <https://ale-newport.github.io/Gym-App/privacy.html>.
 3. Organizer → *Forge 1.0.0 (1)* → **Distribute App** → **App Store Connect** → **Upload**.
 4. Fill the listing from [`docs/APP_STORE.md`](APP_STORE.md), attach the screenshots, select the
    build and submit.
