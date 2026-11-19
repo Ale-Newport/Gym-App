@@ -1,0 +1,40 @@
+name: Dependabot auto-merge
+
+# Turns on auto-merge for Dependabot's GitHub Actions updates, so they merge by themselves once
+# everything the branch ruleset requires is satisfied: green CI *and* the code owner's approval.
+# Nothing here approves the pull request or bypasses a rule — the repository does not allow
+# workflows to approve, and the owner's review stays the gate.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  enable-auto-merge:
+    name: Enable auto-merge
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Only GitHub Actions version bumps
+        id: scope
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          case "$HEAD_REF" in
+            dependabot/github_actions/*) echo "eligible=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "eligible=false" >> "$GITHUB_OUTPUT"; echo "Not an Actions update; leaving it for review." ;;
+          esac
+
+      - name: Merge automatically once approved and green
+        if: steps.scope.outputs.eligible == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --auto --squash "$PR_URL"

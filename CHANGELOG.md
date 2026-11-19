@@ -6,6 +6,32 @@ All notable changes to Forge are recorded here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Restoring a backup no longer drops bundled foods from saved meals, recipes and log entries: the
+  bundled foods they use (and favourites) now travel with the backup and are matched back to the
+  local food database by catalogue id, so their calories are counted again.
+- After Settings → Reset or a "Replace" restore, the bundled food database is rebuilt straight away
+  instead of staying empty until the next launch.
+- If the saved data cannot be opened at launch, Forge now says so on a blocking screen instead of
+  silently starting an empty, unsaved session that looked like a fresh install.
+- At the largest accessibility text sizes, stat rows stack instead of breaking words letter by
+  letter, numbers grow with the text, exercise names and the date are no longer cut off.
+- The Open Food Facts request identifies Forge with its own support page, as their terms ask.
+
+### Changed
+
+- Health and camera permission prompts are translated into all ten languages.
+- The app and widget versions are set in one place, so they can never disagree.
+- 41 unused interface strings were removed; CI now fails on unused or missing keys.
+
+### Project
+
+- Swift sources are formatted with the swift-format bundled in Xcode, checked in CI.
+- The UI test suite runs in CI; one test no longer depends on the simulator's language.
+- A test pins the 1.0 storage schema so a model change cannot ship without a migration.
+- Dependabot's GitHub Actions updates merge automatically once approved and green.
+
 ## [1.0.0] — 2026-11-19
 
 The first public release: the app as prepared for the App Store, plus the project infrastructure

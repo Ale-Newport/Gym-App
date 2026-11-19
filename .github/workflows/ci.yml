@@ -39,8 +39,11 @@ jobs:
           git diff --exit-code -- GymApp/Resources/Localizable.xcstrings \
             || { echo "::error::Localizable.xcstrings is stale. Run: python3 Tools/build_localizations.py"; exit 1; }
 
-      - name: Every key the code uses is defined
-        run: python Tools/check_localization_keys.py --strict
+      - name: Every key the code uses is defined, and every defined key is used
+        run: python Tools/check_localization_keys.py --strict --fail-on-unused
+
+      - name: Permission prompts are translated and match project.yml
+        run: python Tools/check_infoplist_strings.py
 
       - name: Bundled JSON is valid
         run: |
@@ -103,6 +106,9 @@ jobs:
           echo "udid=$udid" >> "$GITHUB_OUTPUT"
           xcrun simctl list devices | grep "$udid"
 
+      - name: Swift sources are formatted (swift-format, bundled with Xcode)
+        run: xcrun swift-format lint --strict --recursive --parallel GymApp GymAppWidgets GymAppTests GymAppUITests
+
       - name: Build the app and the widget (Release, simulator)
         run: |
           set -o pipefail
@@ -126,4 +132,59 @@ jobs:
         with:
           name: unit-test-results
           path: build/UnitTests.xcresult
+          retention-days: 7
+
+  ui-tests:
+    name: UI tests
+    runs-on: macos-26
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select the newest Xcode
+        run: |
+          xcode="$(ls -d /Applications/Xcode_*.app | sort -V | tail -n1)"
+          sudo xcode-select -s "$xcode/Contents/Developer"
+          xcodebuild -version
+
+      - name: Pick and boot an iPhone simulator
+        id: sim
+        run: |
+          udid="$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in data if "iOS" in k),
+                       key=lambda k: [int(p) for p in k.rsplit("iOS-", 1)[1].split("-")])
+          for runtime in reversed(ios):
+              phones = [d for d in data[runtime] if d["name"].startswith("iPhone")]
+              if phones:
+                  print(phones[0]["udid"]); break
+          ')"
+          test -n "$udid"
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$udid"
+          xcrun simctl bootstatus "$udid" -b
+
+      # The App Store screenshot suite drives every screen in ten languages to produce marketing
+      # images; it is a tool, not a check, so it is skipped here.
+      - name: Run the UI tests
+        run: |
+          set -o pipefail
+          mkdir -p build
+          xcodebuild test -project GymApp.xcodeproj -scheme GymApp \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -only-testing:GymAppUITests -skip-testing:GymAppUITests/AppStoreScreenshotTests \
+            -derivedDataPath build/dd -resultBundlePath build/UITests.xcresult \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build/ui-tests.log \
+            | grep -E "error:|failed|passed|Executed|\*\* TEST" || true
+          grep -q "\*\* TEST SUCCEEDED \*\*" build/ui-tests.log
+
+      - name: Upload the UI test results
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-test-results
+          path: build/UITests.xcresult
           retention-days: 7

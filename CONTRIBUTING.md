@@ -47,6 +47,9 @@ need no Apple account. To start the app from a known state, pass a fixture on la
    - **Engines stay pure.** Code under `GymApp/Domain/` takes value types and returns value types:
      no SwiftUI, no SwiftData, no clock, no I/O. That is what keeps the training logic testable.
    - **SwiftData is touched only in `GymApp/Data/Repositories/`.**
+   - **Changing a `@Model` needs a schema version.** Read the steps on `GymAppMigrationPlan` in
+     `GymApp/Core/Persistence/PersistenceController.swift` first; `SchemaFingerprintTests` fails
+     until they are done.
    - **No new dependencies, no network calls, no tracking.** Open an issue first if you think the
      project needs one.
    - **Explain changes to the user.** If an engine changes a number, it says why.
@@ -55,8 +58,10 @@ need no Apple account. To start the app from a known state, pass a fixture on la
 5. Run the checks CI runs:
 
    ```bash
+   swift format format -i -r GymApp GymAppWidgets GymAppTests GymAppUITests   # formats in place
    python3 Tools/build_localizations.py --report
-   python3 Tools/check_localization_keys.py --strict
+   python3 Tools/check_localization_keys.py --strict --fail-on-unused
+   python3 Tools/check_infoplist_strings.py
    xcodebuild test -project GymApp.xcodeproj -scheme GymApp -only-testing:GymAppTests \
      -destination 'platform=iOS Simulator,name=iPhone 17'
    ```

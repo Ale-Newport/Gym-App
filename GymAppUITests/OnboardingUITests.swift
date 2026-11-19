@@ -158,9 +158,14 @@ final class OnboardingUITests: ForgeUITestCase {
 
         // The prompt appears only when the app has never asked; a simulator that already answered
         // it goes straight through, so a missing alert is not a failure.
+        // The alert is SpringBoard's, in the simulator's language, so it is answered by position
+        // rather than by the word "Allow": the confirming button is the last one in every locale.
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let allow = springboard.alerts.buttons["Allow"]
-        if allow.waitForExistence(timeout: Timeout.quick) { allow.tap() }
+        let alert = springboard.alerts.firstMatch
+        if alert.waitForExistence(timeout: Timeout.quick) {
+            let buttons = alert.buttons
+            buttons.element(boundBy: buttons.count - 1).tap()
+        }
 
         awaitExistence(stepTitle(EN.Onboarding.readyTitle), "The plan step", timeout: Timeout.engine)
     }
