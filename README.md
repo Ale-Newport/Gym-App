@@ -52,11 +52,11 @@ No account is required. Core planning and tracking run locally; optional feature
 ## Try it in the Simulator without building
 
 Every [release](https://github.com/Ale-Newport/Gym-App/releases/latest) ships `Forge-Simulator.zip`,
-a ready-built Simulator app. On a Mac with Xcode and an iPhone simulator installed, download it and
-run (change `"iPhone 17"` to any simulator listed by `xcrun simctl list devices available`):
+a ready-built Simulator app (Release, Apple silicon and Intel). On a Mac with Xcode and an iPhone
+simulator installed, download it and run (change `"iPhone 17"` to any simulator listed by `xcrun simctl list devices available`):
 
 ```bash
-unzip -oq ~/Downloads/Forge-Simulator.zip -d ~/Downloads && open -a Simulator && (xcrun simctl boot "iPhone 17" 2>/dev/null; true) && xcrun simctl install booted ~/Downloads/Forge.app && xcrun simctl launch booted com.alejandronewport.forge
+cd ~/Downloads && { [ -d Forge.app ] || unzip -oq Forge-Simulator.zip; } && open -a Simulator && (xcrun simctl boot "iPhone 17" 2>/dev/null; true) && xcrun simctl install booted Forge.app && xcrun simctl launch booted com.alejandronewport.forge
 ```
 
 ## Run in Simulator
