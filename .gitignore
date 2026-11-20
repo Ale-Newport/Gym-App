@@ -22,8 +22,36 @@ __pycache__/
 *.pyc
 .venv/
 
-# Local Claude Code settings
+# Local AI-agent and editor-assistant files
 .claude/
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+.cursor/
+.cursorrules
+.aider*
+.codex/
+.windsurf/
+.continue/
+
+# Private drafts, plans and notes that stay local
+LAUNCH*.md
+LAUNCH_KIT*
+launch/
+docs/launch/
+*.draft.md
+NOTES.local.md
+
+# Logs, backups and scratch output
+*.log
+*.bak
+*.orig
+*.tmp
+*.bundle
+backups/
+tmp/
+
+# XcodeGen
 .xcodegen.lock/
 
 # Build products and results
